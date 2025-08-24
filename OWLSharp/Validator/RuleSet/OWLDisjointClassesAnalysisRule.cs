@@ -29,40 +29,69 @@ namespace OWLSharp.Validator
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-            Dictionary<long, long> idvsCache = new Dictionary<long, long>();
-
+            Dictionary<long, List<OWLIndividualExpression>> idvsCache = new Dictionary<long, List<OWLIndividualExpression>>();
+            Dictionary<long, long> idvsCounter = new Dictionary<long, long>();
+            
             foreach (OWLDisjointClasses disjClasses in ontology.GetClassAxiomsOfType<OWLDisjointClasses>())
             {
+                List<OWLClassExpression> classExpressions = disjClasses.ClassExpressions.ToList();
+                
                 //DisjointClasses(CLS1,CLS2) ^ SubClassOf(CLS1,CLS2) -> ERROR
                 //DisjointClasses(CLS1,CLS2) ^ SubClassOf(CLS2,CLS1) -> ERROR
                 //DisjointClasses(CLS1,CLS2) ^ EquivalentClasses(CLS1,CLS2) -> ERROR
-                if (disjClasses.ClassExpressions.Any(outerClass =>
-                      disjClasses.ClassExpressions.Any(innerClass => !outerClass.GetIRI().Equals(innerClass.GetIRI())
-                                                                       && (ontology.CheckIsSubClassOf(outerClass, innerClass)
-                                                                            || ontology.CheckIsSubClassOf(innerClass, outerClass)
-                                                                            || ontology.CheckAreEquivalentClasses(outerClass, innerClass)))))
-                    issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error,
-                        rulename,
-                        $"Violated DisjointClasses axiom with signature: '{disjClasses.GetXML()}'",
-                        rulesugg));
-
-                //DisjointClasses(CLS1,CLS2) ^ ClassAssertion(CLS1,IDV) ^ ClassAssertion(CLS2,IDV) -> ERROR
-                idvsCache.Clear();
-                foreach (OWLClassExpression disjClass in disjClasses.ClassExpressions)
-                    foreach (OWLIndividualExpression disjClassIdv in ontology.GetIndividualsOf(disjClass, validatorContext.ClassAssertions))
+                #region T-BOX Analysis
+                bool violatesTBox = false;
+                for (int i = 0; i < classExpressions.Count && !violatesTBox; i++)
+                {
+                    OWLClassExpression outerClass = classExpressions[i];
+                    for (int j = i + 1; j < classExpressions.Count; j++)
                     {
-                        RDFResource disjClassIdvIRI = disjClassIdv.GetIRI();
-                        if (!idvsCache.ContainsKey(disjClassIdvIRI.PatternMemberID))
-                            idvsCache.Add(disjClassIdvIRI.PatternMemberID, 0);
-                        idvsCache[disjClassIdvIRI.PatternMemberID]++;
+                        OWLClassExpression innerClass = classExpressions[j];
+                        if (!outerClass.GetIRI().Equals(innerClass.GetIRI())
+                             && (ontology.CheckIsSubClassOf(outerClass, innerClass)
+                                  || ontology.CheckIsSubClassOf(innerClass, outerClass)
+                                  || ontology.CheckAreEquivalentClasses(outerClass, innerClass)))
+                        {
+                            violatesTBox = true;
+                            issues.Add(new OWLIssue(
+                                OWLEnums.OWLIssueSeverity.Error,
+                                rulename,
+                                $"Violated DisjointClasses axiom (T-BOX) with signature: '{disjClasses.GetXML()}'",
+                                rulesugg));
+                            break;
+                        }
                     }
-                if (idvsCache.Any(idvc => idvc.Value > 1))
-                    issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error,
-                        rulename,
-                        $"Violated DisjointClasses axiom with signature: '{disjClasses.GetXML()}'",
-                        rulesugg2));
+                }
+                #endregion
+                
+                //DisjointClasses(CLS1,CLS2) ^ ClassAssertion(CLS1,IDV) ^ ClassAssertion(CLS2,IDV) -> ERROR
+                #region A-BOX Analysis
+                bool violatesABox = false;
+                for (int i = 0; i < classExpressions.Count && !violatesABox; i++)
+                {
+                    OWLClassExpression classExpr = classExpressions[i];
+                    RDFResource classExprIRI = classExpr.GetIRI();
+                    if (!idvsCache.ContainsKey(classExprIRI.PatternMemberID))
+                        idvsCache.Add(classExprIRI.PatternMemberID, ontology.GetIndividualsOf(classExpr, validatorContext.ClassAssertions));
+                    foreach (OWLIndividualExpression idvExpr in idvsCache[classExprIRI.PatternMemberID])
+                    {
+                        RDFResource idvExprIRI = idvExpr.GetIRI();
+                        if (!idvsCounter.ContainsKey(idvExprIRI.PatternMemberID))
+                            idvsCounter.Add(idvExprIRI.PatternMemberID, 0);
+                        if (++idvsCounter[idvExprIRI.PatternMemberID] > 1)
+                        {
+                            violatesABox = true;
+                            issues.Add(new OWLIssue(
+                                OWLEnums.OWLIssueSeverity.Error,
+                                rulename,
+                                $"Violated DisjointClasses axiom (A-BOX) with signature: '{disjClasses.GetXML()}'",
+                                rulesugg2));
+                            break;
+                        }
+                    }
+                }
+                idvsCounter.Clear();
+                #endregion
             }
 
             return issues;

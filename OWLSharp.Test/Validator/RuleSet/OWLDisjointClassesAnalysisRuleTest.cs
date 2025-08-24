@@ -24,7 +24,7 @@ public class OWLDisjointClassesAnalysisRuleTest
 {
     #region Tests
     [TestMethod]
-    public void ShouldAnalyzeDisjointClassesSubClassOfCase()
+    public void ShouldAnalyzeDisjointClassesSubClassOfCase1()
     {
         OWLOntology ontology = new OWLOntology
         {
@@ -34,6 +34,38 @@ public class OWLDisjointClassesAnalysisRuleTest
                 new OWLSubClassOf(
                     new OWLClass(RDFVocabulary.FOAF.PERSON),
                     new OWLClass(RDFVocabulary.FOAF.ORGANIZATION))
+            ],
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
+                new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION))
+            ]
+        };
+        OWLValidatorContext validatorContext = new OWLValidatorContext
+        {
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+        };
+        List<OWLIssue> issues = OWLDisjointClassesAnalysisRule.ExecuteRule(ontology, validatorContext);
+
+        Assert.IsNotNull(issues);
+        Assert.HasCount(1, issues);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointClassesAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointClassesAnalysisRule.rulesugg)));
+    }
+    
+    [TestMethod]
+    public void ShouldAnalyzeDisjointClassesSubClassOfCase2()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [
+                new OWLDisjointClasses([
+                    new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]),
+                new OWLSubClassOf(
+                    new OWLClass(RDFVocabulary.FOAF.ORGANIZATION),
+                    new OWLClass(RDFVocabulary.FOAF.PERSON))
             ],
             DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
@@ -128,6 +160,62 @@ public class OWLDisjointClassesAnalysisRuleTest
         Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointClassesAnalysisRule.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointClassesAnalysisRule.rulesugg2)));
+    }
+    
+    [TestMethod]
+    public void ShouldAnalyzeDisjointClassesWithBothViolations()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [
+                new OWLDisjointClasses([
+                    new OWLClass(RDFVocabulary.FOAF.PERSON),
+                    new OWLClass(RDFVocabulary.FOAF.ORGANIZATION),
+                    new OWLClass(RDFVocabulary.FOAF.AGENT),
+                    new OWLClass(RDFVocabulary.FOAF.ACCOUNT)]),
+                new OWLSubClassOf(
+                    new OWLClass(RDFVocabulary.FOAF.PERSON),
+                    new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)),
+                new OWLSubClassOf(
+                    new OWLClass(RDFVocabulary.FOAF.AGENT),
+                    new OWLClass(RDFVocabulary.FOAF.PERSON)),
+                new OWLEquivalentClasses([
+                    new OWLClass(RDFVocabulary.FOAF.AGENT),
+                    new OWLClass(RDFVocabulary.FOAF.ACCOUNT)])
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.FOAF.PERSON),
+                    new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.FOAF.ORGANIZATION),
+                    new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.FOAF.ACCOUNT),
+                    new OWLNamedIndividual(new RDFResource("ex:Stiv")))
+            ],
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
+                new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)),
+                new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT)),
+                new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ACCOUNT)),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv")))
+            ]
+        };
+        OWLValidatorContext validatorContext = new OWLValidatorContext
+        {
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+        };
+        List<OWLIssue> issues = OWLDisjointClassesAnalysisRule.ExecuteRule(ontology, validatorContext);
+
+        Assert.IsNotNull(issues);
+        Assert.HasCount(2, issues);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.Exists(iss => iss.Description.Contains("(T-BOX)")));
+        Assert.IsTrue(issues.Exists(iss => iss.Description.Contains("(A-BOX)")));
     }
     #endregion
 }
