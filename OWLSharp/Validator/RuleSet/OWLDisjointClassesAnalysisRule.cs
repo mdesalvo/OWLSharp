@@ -31,11 +31,11 @@ namespace OWLSharp.Validator
             //Temporary working variables
             Dictionary<long, List<OWLIndividualExpression>> idvsCache = new Dictionary<long, List<OWLIndividualExpression>>();
             Dictionary<long, long> idvsCounter = new Dictionary<long, long>();
-            
+
             foreach (OWLDisjointClasses disjClasses in ontology.GetClassAxiomsOfType<OWLDisjointClasses>())
             {
                 List<OWLClassExpression> classExpressions = disjClasses.ClassExpressions.ToList();
-                
+
                 //DisjointClasses(CLS1,CLS2) ^ SubClassOf(CLS1,CLS2) -> ERROR
                 //DisjointClasses(CLS1,CLS2) ^ SubClassOf(CLS2,CLS1) -> ERROR
                 //DisjointClasses(CLS1,CLS2) ^ EquivalentClasses(CLS1,CLS2) -> ERROR
@@ -63,7 +63,7 @@ namespace OWLSharp.Validator
                     }
                 }
                 #endregion
-                
+
                 //DisjointClasses(CLS1,CLS2) ^ ClassAssertion(CLS1,IDV) ^ ClassAssertion(CLS2,IDV) -> ERROR
                 #region A-BOX Analysis
                 bool violatesABox = false;

@@ -54,7 +54,7 @@ public class OWLDisjointClassesAnalysisRuleTest
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointClassesAnalysisRule.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointClassesAnalysisRule.rulesugg)));
     }
-    
+
     [TestMethod]
     public void ShouldAnalyzeDisjointClassesSubClassOfCase2()
     {
@@ -161,7 +161,7 @@ public class OWLDisjointClassesAnalysisRuleTest
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointClassesAnalysisRule.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointClassesAnalysisRule.rulesugg2)));
     }
-    
+
     [TestMethod]
     public void ShouldAnalyzeDisjointClassesWithBothViolations()
     {
