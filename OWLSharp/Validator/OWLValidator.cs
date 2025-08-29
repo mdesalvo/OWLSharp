@@ -159,7 +159,7 @@ namespace OWLSharp.Validator
                     OWLEvents.RaiseInfo($"Completed OWL2 rule {ruleString} => {issueRegistry[ruleString].Count} issues");
                 });
 
-                //Process issues registry
+                //Process issues
                 issues.AddRange(issueRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLIssue>()));
                 issueRegistry.Clear();
 
