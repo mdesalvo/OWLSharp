@@ -25,6 +25,12 @@ namespace OWLSharp.Ontology
 {
     internal static class SWRLNormalizeSpaceBuiltIn
     {
+        #region Statics
+        private const string NormalizeSpacesReplacement = " ";
+        private const string NormalizeSpacesPattern = @"\s{2,}";
+        private static Lazy<Regex> NormalizeSpacesRegex = new Lazy<Regex>(() => new Regex(NormalizeSpacesPattern, RegexOptions.Compiled));
+        #endregion
+
         #region Methods
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
@@ -92,7 +98,7 @@ namespace OWLSharp.Ontology
             {
                 string leftPMValue = leftPatternMember is RDFLiteral leftPMLit ? leftPMLit.Value : leftPatternMember.ToString();
                 string rightPMValue = rightPatternMember is RDFLiteral rightPMLit ? rightPMLit.Value : rightPatternMember.ToString();
-                return string.Equals(leftPMValue, Regex.Replace(rightPMValue, "\\s{2,}", " "));
+                return string.Equals(leftPMValue, NormalizeSpacesRegex.Value.Replace(rightPMValue, NormalizeSpacesReplacement));
             }
             return false;
         }
