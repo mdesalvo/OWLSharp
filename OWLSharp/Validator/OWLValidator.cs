@@ -11,10 +11,12 @@
    limitations under the License.
 */
 
+#if !NET8_0_OR_GREATER
+using Dasync.Collections;
+#endif
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Dasync.Collections;
 using OWLSharp.Ontology;
 
 namespace OWLSharp.Validator
@@ -54,7 +56,11 @@ namespace OWLSharp.Validator
                 };
 
                 //Execute validator rules
-                await Rules.ParallelForEachAsync(rule => Task.Run(() =>
+#if !NET8_0_OR_GREATER
+                await Rules.ParallelForEachAsync(async (rule, _) =>
+#else
+                await Parallel.ForEachAsync(Rules, async (rule, _) =>
+#endif
                 {
                     string ruleString = rule.ToString();
                     OWLEvents.RaiseInfo($"Launching OWL2 rule {ruleString}...");
@@ -151,7 +157,7 @@ namespace OWLSharp.Validator
                     }
 
                     OWLEvents.RaiseInfo($"Completed OWL2 rule {ruleString} => {issueRegistry[ruleString].Count} issues");
-                }));
+                });
 
                 //Process issues registry
                 issues.AddRange(issueRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLIssue>()));

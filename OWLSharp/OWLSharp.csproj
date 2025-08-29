@@ -7,7 +7,7 @@
     <Authors>Marco De Salvo</Authors>
     <Copyright>Marco De Salvo</Copyright>
     <Description>Lightweight and friendly .NET library for working with OWL2 ontologies</Description>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
     <SignAssembly>false</SignAssembly>
     <Product>OWLSharp</Product>
     <PackageId>OWLSharp</PackageId>
@@ -47,6 +47,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="RDFSharp" Version="3.20.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
     <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
   </ItemGroup>
 </Project>

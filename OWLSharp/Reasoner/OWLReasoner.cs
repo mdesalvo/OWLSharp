@@ -11,10 +11,13 @@
    limitations under the License.
 */
 
+#if !NET8_0_OR_GREATER
 using Dasync.Collections;
+#endif
 using OWLSharp.Ontology;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OWLSharp.Reasoner
@@ -55,7 +58,11 @@ namespace OWLSharp.Reasoner
                 };
 
                 //Execute OWL2 reasoner rules
-                await Rules.ParallelForEachAsync(rule => Task.Run(() =>
+#if !NET8_0_OR_GREATER
+                await Rules.ParallelForEachAsync(async (rule, _) =>
+#else
+                await Parallel.ForEachAsync(Rules, async (rule, _) =>
+#endif
                 {
                     string ruleString = rule.ToString();
                     OWLEvents.RaiseInfo($"Launching OWL2 rule {ruleString}...");
@@ -140,10 +147,14 @@ namespace OWLSharp.Reasoner
                     }
 
                     OWLEvents.RaiseInfo($"Completed OWL2 rule {ruleString} => {inferenceRegistry[ruleString].Count} candidate inferences");
-                }));
+                });
 
                 //Execute SWRL reasoner rules
-                await ontology.Rules.ParallelForEachAsync(async swrlRule =>
+#if !NET8_0_OR_GREATER
+                await ontology.Rules.ParallelForEachAsync(async (swrlRule, _) =>
+#else
+                await Parallel.ForEachAsync(ontology.Rules, async (swrlRule, _) =>
+#endif
                 {
                     string swrlRuleString = swrlRule.ToString();
                     OWLEvents.RaiseInfo($"Launching SWRL rule {swrlRuleString}...");
@@ -153,61 +164,57 @@ namespace OWLSharp.Reasoner
                     OWLEvents.RaiseInfo($"Completed SWRL rule {swrlRuleString} => {inferenceRegistry[swrlRuleString].Count} candidate inferences");
                 });
 
-                //Process inference registry
-                await Task.Run(async () =>
-                {
-                    //Fetch axioms commonly targeted by rules
-                    Task<HashSet<string>> clsAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Select(asn => asn.GetXML())));
-                    Task<HashSet<string>> dtPropAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>().Select(asn => asn.GetXML())));
-                    Task<HashSet<string>> opPropAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Select(asn => asn.GetXML())));
-                    Task<HashSet<string>> diffIdvsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLDifferentIndividuals>().Select(asn => asn.GetXML())));
-                    Task<HashSet<string>> sameIdvsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLSameIndividual>().Select(asn => asn.GetXML())));
-                    Task<HashSet<string>> dsjClsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetClassAxiomsOfType<OWLDisjointClasses>().Select(asn => asn.GetXML())));
-                    Task<HashSet<string>> eqvClsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetClassAxiomsOfType<OWLEquivalentClasses>().Select(asn => asn.GetXML())));
-                    Task<HashSet<string>> subClsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetClassAxiomsOfType<OWLSubClassOf>().Select(asn => asn.GetXML())));
-                    Task<HashSet<string>> dsjDtPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetDataPropertyAxiomsOfType<OWLDisjointDataProperties>().Select(asn => asn.GetXML())));
-                    Task<HashSet<string>> eqvDtPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetDataPropertyAxiomsOfType<OWLEquivalentDataProperties>().Select(asn => asn.GetXML())));
-                    Task<HashSet<string>> subDtPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>().Select(asn => asn.GetXML())));
-                    Task<HashSet<string>> dsjOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLDisjointObjectProperties>().Select(asn => asn.GetXML())));
-                    Task<HashSet<string>> eqvOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLEquivalentObjectProperties>().Select(asn => asn.GetXML())));
-                    Task<HashSet<string>> subOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>().Select(asn => asn.GetXML())));
-                    Task<HashSet<string>> invOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLInverseObjectProperties>().Select(asn => asn.GetXML())));
-                    await Task.WhenAll(clsAsnAxiomsTask, dtPropAsnAxiomsTask, opPropAsnAxiomsTask, diffIdvsAxiomsTask, sameIdvsAxiomsTask, dsjClsAxiomsTask, eqvClsAxiomsTask, subClsAxiomsTask,
-                        dsjDtPropAxiomsTask, eqvDtPropAxiomsTask, subDtPropAxiomsTask, dsjOpPropAxiomsTask, eqvOpPropAxiomsTask, subOpPropAxiomsTask, invOpPropAxiomsTask);
+                //Process inferences: fetch axioms commonly targeted by rules
+                Task<HashSet<string>> clsAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Select(asn => asn.GetXML())));
+                Task<HashSet<string>> dtPropAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>().Select(asn => asn.GetXML())));
+                Task<HashSet<string>> opPropAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Select(asn => asn.GetXML())));
+                Task<HashSet<string>> diffIdvsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLDifferentIndividuals>().Select(asn => asn.GetXML())));
+                Task<HashSet<string>> sameIdvsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLSameIndividual>().Select(asn => asn.GetXML())));
+                Task<HashSet<string>> dsjClsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetClassAxiomsOfType<OWLDisjointClasses>().Select(asn => asn.GetXML())));
+                Task<HashSet<string>> eqvClsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetClassAxiomsOfType<OWLEquivalentClasses>().Select(asn => asn.GetXML())));
+                Task<HashSet<string>> subClsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetClassAxiomsOfType<OWLSubClassOf>().Select(asn => asn.GetXML())));
+                Task<HashSet<string>> dsjDtPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetDataPropertyAxiomsOfType<OWLDisjointDataProperties>().Select(asn => asn.GetXML())));
+                Task<HashSet<string>> eqvDtPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetDataPropertyAxiomsOfType<OWLEquivalentDataProperties>().Select(asn => asn.GetXML())));
+                Task<HashSet<string>> subDtPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>().Select(asn => asn.GetXML())));
+                Task<HashSet<string>> dsjOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLDisjointObjectProperties>().Select(asn => asn.GetXML())));
+                Task<HashSet<string>> eqvOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLEquivalentObjectProperties>().Select(asn => asn.GetXML())));
+                Task<HashSet<string>> subOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>().Select(asn => asn.GetXML())));
+                Task<HashSet<string>> invOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLInverseObjectProperties>().Select(asn => asn.GetXML())));
+                await Task.WhenAll(clsAsnAxiomsTask, dtPropAsnAxiomsTask, opPropAsnAxiomsTask, diffIdvsAxiomsTask, sameIdvsAxiomsTask, dsjClsAxiomsTask, eqvClsAxiomsTask, subClsAxiomsTask,
+                    dsjDtPropAxiomsTask, eqvDtPropAxiomsTask, subDtPropAxiomsTask, dsjOpPropAxiomsTask, eqvOpPropAxiomsTask, subOpPropAxiomsTask, invOpPropAxiomsTask);
 
-                    //Deduplicate inferences by analyzing explicit knowledge
-                    foreach (KeyValuePair<string, List<OWLInference>> inferenceRegistryEntry in inferenceRegistry.Where(ir => ir.Value?.Count > 0))
-                        inferenceRegistryEntry.Value.RemoveAll(inf =>
-                        {
-                            string infXML = inf.Axiom.GetXML();
-                            return clsAsnAxiomsTask.Result.Contains(infXML)
-                                   || dtPropAsnAxiomsTask.Result.Contains(infXML)
-                                   || opPropAsnAxiomsTask.Result.Contains(infXML)
-                                   || diffIdvsAxiomsTask.Result.Contains(infXML)
-                                   || sameIdvsAxiomsTask.Result.Contains(infXML)
-                                   || dsjClsAxiomsTask.Result.Contains(infXML)
-                                   || eqvClsAxiomsTask.Result.Contains(infXML)
-                                   || subClsAxiomsTask.Result.Contains(infXML)
-                                   || dsjDtPropAxiomsTask.Result.Contains(infXML)
-                                   || eqvDtPropAxiomsTask.Result.Contains(infXML)
-                                   || subDtPropAxiomsTask.Result.Contains(infXML)
-                                   || dsjOpPropAxiomsTask.Result.Contains(infXML)
-                                   || eqvOpPropAxiomsTask.Result.Contains(infXML)
-                                   || subOpPropAxiomsTask.Result.Contains(infXML)
-                                   || invOpPropAxiomsTask.Result.Contains(infXML);
-                        });
+                //Process inferences: deduplicate inferences by analyzing explicit knowledge
+                foreach (KeyValuePair<string, List<OWLInference>> inferenceRegistryEntry in inferenceRegistry.Where(ir => ir.Value?.Count > 0))
+                    inferenceRegistryEntry.Value.RemoveAll(inf =>
+                    {
+                        string infXML = inf.Axiom.GetXML();
+                        return clsAsnAxiomsTask.Result.Contains(infXML)
+                               || dtPropAsnAxiomsTask.Result.Contains(infXML)
+                               || opPropAsnAxiomsTask.Result.Contains(infXML)
+                               || diffIdvsAxiomsTask.Result.Contains(infXML)
+                               || sameIdvsAxiomsTask.Result.Contains(infXML)
+                               || dsjClsAxiomsTask.Result.Contains(infXML)
+                               || eqvClsAxiomsTask.Result.Contains(infXML)
+                               || subClsAxiomsTask.Result.Contains(infXML)
+                               || dsjDtPropAxiomsTask.Result.Contains(infXML)
+                               || eqvDtPropAxiomsTask.Result.Contains(infXML)
+                               || subDtPropAxiomsTask.Result.Contains(infXML)
+                               || dsjOpPropAxiomsTask.Result.Contains(infXML)
+                               || eqvOpPropAxiomsTask.Result.Contains(infXML)
+                               || subOpPropAxiomsTask.Result.Contains(infXML)
+                               || invOpPropAxiomsTask.Result.Contains(infXML);
+                    });
 
-                    //Collect inferences and perform final cleanup
-                    inferences.AddRange(inferenceRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLInference>()).Distinct());
-                    inferenceRegistry.Clear();
-                });
+                //Process inferences: collect inferences and perform final cleanup
+                inferences.AddRange(inferenceRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLInference>()).Distinct());
+                inferenceRegistry.Clear();
 
                 OWLEvents.RaiseInfo($"Completed OWL2/SWRL reasoner on ontology {ontology.IRI} => {inferences.Count} unique inferences");
             }
 
             return inferences;
         }
-        #endregion
+#endregion
     }
 
     internal sealed class OWLReasonerContext
