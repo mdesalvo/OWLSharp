@@ -23,10 +23,10 @@ namespace OWLSharp.Ontology
     {
         #region Methods
         public static List<OWLDeclaration> GetDeclarationAxiomsOfType<T>(this OWLOntology ontology) where T : OWLExpression, IOWLEntity
-            => ontology?.DeclarationAxioms.Where(ax => ax.Expression is T).ToList() ?? new List<OWLDeclaration>();
+            => ontology?.DeclarationAxioms.Where(ax => ax.Expression is T).ToList() ?? [];
 
         public static List<T> GetDeclaredEntitiesOfType<T>(this OWLOntology ontology) where T : OWLExpression, IOWLEntity
-            => ontology?.GetDeclarationAxiomsOfType<T>().ConvertAll(ax => (T)ax.Expression) ?? new List<T>();
+            => ontology?.GetDeclarationAxiomsOfType<T>().ConvertAll(ax => (T)ax.Expression) ?? [];
 
         public static bool CheckHasEntity<T>(this OWLOntology ontology, T entity) where T : OWLExpression, IOWLEntity
             => GetDeclarationAxiomsOfType<T>(ontology).Any(ax => ax.Expression.GetIRI().Equals(entity?.GetIRI()));

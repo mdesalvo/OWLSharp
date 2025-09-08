@@ -11,9 +11,6 @@
    limitations under the License.
 */
 
-#if !NET8_0_OR_GREATER
-using Dasync.Collections;
-#endif
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,7 +21,7 @@ namespace OWLSharp.Validator
     public sealed class OWLValidator
     {
         #region Properties
-        public List<OWLEnums.OWLValidatorRules> Rules { get; internal set; } = new List<OWLEnums.OWLValidatorRules>();
+        public List<OWLEnums.OWLValidatorRules> Rules { get; internal set; } = [];
         #endregion
 
         #region Methods
@@ -36,12 +33,12 @@ namespace OWLSharp.Validator
 
         public async Task<List<OWLIssue>> ApplyToOntologyAsync(OWLOntology ontology)
         {
-            List<OWLIssue> issues = new List<OWLIssue>();
+            List<OWLIssue> issues = [];
 
             if (ontology != null)
             {
                 OWLEvents.RaiseInfo($"Launching OWL2 validator on ontology '{ontology.IRI}'...");
-                Rules = Rules.Distinct().ToList();
+                Rules = [.. Rules.Distinct()];
 
                 //Initialize issue registry
                 Dictionary<string, List<OWLIssue>> issueRegistry = new Dictionary<string, List<OWLIssue>>(Rules.Count);
@@ -56,11 +53,7 @@ namespace OWLSharp.Validator
                 };
 
                 //Execute validator rules
-#if !NET8_0_OR_GREATER
-                await Rules.ParallelForEachAsync(async (rule, _) =>
-#else
                 await Parallel.ForEachAsync(Rules, async (rule, _) =>
-#endif
                 {
                     string ruleString = rule.ToString();
                     OWLEvents.RaiseInfo($"Launching OWL2 rule {ruleString}...");

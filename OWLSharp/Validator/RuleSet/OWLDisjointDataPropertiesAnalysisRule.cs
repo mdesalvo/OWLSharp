@@ -25,10 +25,10 @@ namespace OWLSharp.Validator
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
-            List<OWLIssue> issues = new List<OWLIssue>();
+            List<OWLIssue> issues = [];
 
             //Temporary working variables
-            List<OWLDataPropertyAssertion> disjDtPropAsns = new List<OWLDataPropertyAssertion>();
+            List<OWLDataPropertyAssertion> disjDtPropAsns = [];
 
             //DisjointDataProperties(DP1,DP2) ^ DataPropertyAssertion(DP1,IDV,LIT) ^ DataPropertyAssertion(DP2,IDV,LIT) -> ERROR
             foreach (OWLDisjointDataProperties disjDtProps in ontology.GetDataPropertyAxiomsOfType<OWLDisjointDataProperties>())

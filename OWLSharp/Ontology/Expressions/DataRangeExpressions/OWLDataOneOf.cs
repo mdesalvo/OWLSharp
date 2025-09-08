@@ -54,7 +54,7 @@ namespace OWLSharp.Ontology
 
             sb.Append('(');
             sb.Append('{');
-            sb.Append(string.Join(",", Literals.Select(lit => lit.ToSWRLString())));
+            sb.AppendJoin(",", Literals.Select(lit => lit.ToSWRLString()));
             sb.Append('}');
             sb.Append(')');
 
@@ -64,7 +64,7 @@ namespace OWLSharp.Ontology
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
-            expressionIRI = expressionIRI ?? GetIRI();
+            expressionIRI ??= GetIRI();
 
             RDFCollection dataOneOfCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Literal);
             foreach (OWLLiteral dataOneOfLiteral in Literals)

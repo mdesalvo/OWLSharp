@@ -23,19 +23,22 @@ namespace OWLSharp.Reasoner
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
-            List<OWLInference> inferences = new List<OWLInference>();
+            List<OWLInference> inferences = [];
 
             //Temporary working variables
             List<OWLEquivalentClasses> equivalentClassesAxioms = ontology.GetClassAxiomsOfType<OWLEquivalentClasses>();
             List<OWLDisjointClasses> disjointClassesAxioms = ontology.GetClassAxiomsOfType<OWLDisjointClasses>();
             List<OWLDisjointUnion> disjointUnionAxioms = ontology.GetClassAxiomsOfType<OWLDisjointUnion>();
-            List<OWLClassExpression> inScopeClsExprs = new List<OWLClassExpression>(ontology.GetDeclarationAxiomsOfType<OWLClass>()
-                                                                                            .Select(ax => (OWLClass)ax.Expression));
-            inScopeClsExprs.AddRange(reasonerContext.ClassAssertions.Select(ax => ax.ClassExpression));
-            inScopeClsExprs.AddRange(equivalentClassesAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)));
-            inScopeClsExprs.AddRange(disjointClassesAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)));
-            inScopeClsExprs.AddRange(disjointUnionAxioms.Select(ax => ax.ClassIRI));
-            inScopeClsExprs.AddRange(disjointUnionAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)));
+            List<OWLClassExpression> inScopeClsExprs =
+            [
+                .. ontology.GetDeclarationAxiomsOfType<OWLClass>()
+                                                                                                .Select(ax => (OWLClass)ax.Expression),
+                .. reasonerContext.ClassAssertions.Select(ax => ax.ClassExpression),
+                .. equivalentClassesAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)),
+                .. disjointClassesAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)),
+                .. disjointUnionAxioms.Select(ax => ax.ClassIRI),
+                .. disjointUnionAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)),
+            ];
             foreach (OWLClassExpression inScopeClsExpr in OWLExpressionHelper.RemoveDuplicates(inScopeClsExprs))
             {
                 inScopeClsExprs.AddRange(ontology.GetSuperClassesOf(inScopeClsExpr));

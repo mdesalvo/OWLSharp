@@ -26,10 +26,10 @@ namespace OWLSharp.Ontology
 
         internal static List<T> RemoveDuplicates<T>(List<T> axioms) where T : OWLAxiom
         {
-            List<T> deduplicatedAxioms = new List<T>();
+            List<T> deduplicatedAxioms = [];
             if (axioms?.Count > 0)
             {
-                HashSet<string> lookup = new HashSet<string>();
+                HashSet<string> lookup = [];
                 axioms.ForEach(axiom =>
                 {
                     string axiomID = axiom.GetXML();

@@ -43,7 +43,7 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         internal SWRLRule()
-            => Annotations = new List<OWLAnnotation>();
+            => Annotations = [];
         public SWRLRule(RDFLiteral ruleName, RDFLiteral ruleDescription, SWRLAntecedent antecedent, SWRLConsequent consequent) : this()
         {
             #region Guards

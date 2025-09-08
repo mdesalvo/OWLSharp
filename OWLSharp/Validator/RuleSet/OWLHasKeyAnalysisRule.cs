@@ -26,7 +26,7 @@ namespace OWLSharp.Validator
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
-            List<OWLIssue> issues = new List<OWLIssue>();
+            List<OWLIssue> issues = [];
 
             foreach (OWLHasKey hasKeyAxiom in ontology.KeyAxioms)
             {
@@ -41,11 +41,11 @@ namespace OWLSharp.Validator
         private static List<OWLIssue> AnalyzeKeyValues(OWLOntology ontology, OWLHasKey hasKeyAxiom, List<OWLIndividualExpression> hasKeyClassIdvs,
             List<OWLObjectPropertyAssertion> opAsns, List<OWLDataPropertyAssertion> dpAsns)
         {
-            List<OWLIssue> issues = new List<OWLIssue>();
+            List<OWLIssue> issues = [];
 
             //Temporary working variables
-            Dictionary<string, List<OWLIndividualExpression>> objectKeyValueRegister = new Dictionary<string, List<OWLIndividualExpression>>();
-            Dictionary<string, List<OWLIndividualExpression>> dataKeyValueRegister = new Dictionary<string, List<OWLIndividualExpression>>();
+            Dictionary<string, List<OWLIndividualExpression>> objectKeyValueRegister = [];
+            Dictionary<string, List<OWLIndividualExpression>> dataKeyValueRegister = [];
 
             #region Compute Keys
             //Iterate individuals of the HasKey axiom's class in order to calculate their key values
@@ -54,7 +54,7 @@ namespace OWLSharp.Validator
                 RDFResource idvExprIRI = idvExpr.GetIRI();
 
                 #region Object Keys
-                if (hasKeyAxiom.ObjectPropertyExpressions.Count(opex => opex is OWLObjectProperty) > 0)
+                if (hasKeyAxiom.ObjectPropertyExpressions.Any(opex => opex is OWLObjectProperty))
                 {
                     //Calculate the object key values of the current individual
                     StringBuilder objSB = new StringBuilder();
@@ -62,8 +62,8 @@ namespace OWLSharp.Validator
                     {
                         List<OWLObjectPropertyAssertion> keyObjectPropertyAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, keyObjectProperty);
                         if (keyObjectPropertyAsns.Count > 0)
-                            objSB.Append(string.Join("§§", keyObjectPropertyAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(idvExprIRI))
-                                                                                .Select(asn => asn.TargetIndividualExpression.GetIRI().ToString())));
+                            objSB.AppendJoin("§§", keyObjectPropertyAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(idvExprIRI))
+                                                                                .Select(asn => asn.TargetIndividualExpression.GetIRI().ToString()));
                     }
 
                     //Collect the object key values of the current individual into the register
@@ -71,7 +71,7 @@ namespace OWLSharp.Validator
                     if (!string.IsNullOrEmpty(objSBValue))
                     {
                         if (!objectKeyValueRegister.ContainsKey(objSBValue))
-                            objectKeyValueRegister.Add(objSBValue, new List<OWLIndividualExpression>());
+                            objectKeyValueRegister.Add(objSBValue, []);
                         objectKeyValueRegister[objSBValue].Add(idvExpr);
                     }
                 }
@@ -86,8 +86,8 @@ namespace OWLSharp.Validator
                     {
                         List<OWLDataPropertyAssertion> keyDataPropertyAsns = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, keyDataProperty);
                         if (keyDataPropertyAsns.Count > 0)
-                            dtSB.Append(string.Join("§§", keyDataPropertyAsns.Where(asn => asn.IndividualExpression.GetIRI().Equals(idvExprIRI))
-                                                                             .Select(asn => asn.Literal.GetLiteral().ToString())));
+                            dtSB.AppendJoin("§§", keyDataPropertyAsns.Where(asn => asn.IndividualExpression.GetIRI().Equals(idvExprIRI))
+                                                                             .Select(asn => asn.Literal.GetLiteral().ToString()));
                     }
 
                     //Collect the data key values of the current individual into the register
@@ -95,7 +95,7 @@ namespace OWLSharp.Validator
                     if (!string.IsNullOrEmpty(dtSBValue))
                     {
                         if (!dataKeyValueRegister.ContainsKey(dtSBValue))
-                            dataKeyValueRegister.Add(dtSBValue, new List<OWLIndividualExpression>());
+                            dataKeyValueRegister.Add(dtSBValue, []);
                         dataKeyValueRegister[dtSBValue].Add(idvExpr);
                     }
                 }

@@ -33,7 +33,7 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(SWRLDifferentIndividualsAtom), ElementName="DifferentIndividualsAtom")]
         [XmlElement(typeof(SWRLObjectPropertyAtom), ElementName="ObjectPropertyAtom")]
         [XmlElement(typeof(SWRLSameIndividualAtom), ElementName="SameIndividualAtom")]
-        public List<SWRLAtom> Atoms { get; set; } = new List<SWRLAtom>();
+        public List<SWRLAtom> Atoms { get; set; } = [];
         #endregion
 
         #region Interfaces
@@ -44,7 +44,7 @@ namespace OWLSharp.Ontology
         #region Methods
         internal List<OWLInference> Evaluate(DataTable antecedentResults, OWLOntology ontology)
         {
-            List<OWLInference>  inferences = new List<OWLInference> ();
+            List<OWLInference>  inferences = [];
 
             //Execute the consequent atoms
             if (antecedentResults != null)

@@ -108,7 +108,7 @@ namespace OWLSharp.Ontology
                     OWLOntology owlOntology = (OWLOntology)xmlSerializer.Deserialize(reader);
 
                     //Remove duplicated prefixes
-                    List<OWLPrefix> prefixes = new List<OWLPrefix>();
+                    List<OWLPrefix> prefixes = [];
                     owlOntology.Prefixes.ForEach(pfx =>
                     {
                         if (!prefixes.Any(pfxs => string.Equals(pfxs.Name, pfx.Name, StringComparison.OrdinalIgnoreCase)))
@@ -124,7 +124,7 @@ namespace OWLSharp.Ontology
         internal static string SerializeObject<T>(T objectToSerialize, XmlSerializerNamespaces xmlSerializerNamespaces=null) where T : class
         {
             //Hide hard-coded .NET prefixes (e.g: xsi)
-            (xmlSerializerNamespaces ?? (xmlSerializerNamespaces = new XmlSerializerNamespaces())).Add(string.Empty, string.Empty);
+            (xmlSerializerNamespaces ??= new XmlSerializerNamespaces()).Add(string.Empty, string.Empty);
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
             using (UTF8StringWriter stringWriter = new UTF8StringWriter())

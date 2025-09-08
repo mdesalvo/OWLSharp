@@ -54,7 +54,7 @@ namespace OWLSharp.Ontology
         {
             RDFGraph graph = new RDFGraph();
 
-            List<RDFResource> idvExpressionIRIs = new List<RDFResource>();
+            List<RDFResource> idvExpressionIRIs = [];
             foreach (OWLIndividualExpression individualExpression in IndividualExpressions)
             {
                 RDFResource idvExpressionIRI = individualExpression.GetIRI();
@@ -63,7 +63,7 @@ namespace OWLSharp.Ontology
             }
 
             //Axiom Triple(s)
-            List<RDFTriple> axiomTriples = new List<RDFTriple>();
+            List<RDFTriple> axiomTriples = [];
             for (int i = 0; i < IndividualExpressions.Count - 1; i++)
                 for (int j = i + 1; j < IndividualExpressions.Count; j++)
                 {

@@ -50,7 +50,7 @@ namespace OWLSharp.Ontology
             List<OWLIndividualExpression> atomClassIndividuals = IndividualsCache ?? ontology.GetIndividualsOf((OWLClassExpression)Predicate);
 
             //Save them into the atom result
-            Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();
+            Dictionary<string, string> atomResultBindings = [];
             foreach (OWLIndividualExpression atomClassIndividual in atomClassIndividuals)
             {
                 atomResultBindings.Add(leftArgumentString, atomClassIndividual.GetIRI().ToString());
@@ -66,7 +66,7 @@ namespace OWLSharp.Ontology
 
         internal override List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology)
         {
-            List<OWLInference> inferences = new List<OWLInference>();
+            List<OWLInference> inferences = [];
             string leftArgumentString = LeftArgument.ToString();
             string classAtomString = ToString();
 
@@ -92,7 +92,7 @@ namespace OWLSharp.Ontology
                     //Build the inference individual
                     OWLIndividualExpression clsAsnIdvExpr;
                     if (leftArgumentValueResource.IsBlank)
-                        clsAsnIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString().Substring(6));
+                        clsAsnIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString()[6..]);
                     else
                         clsAsnIdvExpr = new OWLNamedIndividual(leftArgumentValueResource);
 

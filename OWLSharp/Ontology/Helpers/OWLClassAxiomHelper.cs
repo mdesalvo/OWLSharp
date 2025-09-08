@@ -24,7 +24,7 @@ namespace OWLSharp.Ontology
     {
         #region Methods
         public static List<T> GetClassAxiomsOfType<T>(this OWLOntology ontology) where T : OWLClassAxiom
-            => ontology?.ClassAxioms.OfType<T>().ToList() ?? new List<T>();
+            => ontology?.ClassAxioms.OfType<T>().ToList() ?? [];
 
         public static bool CheckHasClassAxiom<T>(this OWLOntology ontology, T classAxiom) where T : OWLClassAxiom
             => GetClassAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), classAxiom?.GetXML()));
@@ -48,7 +48,7 @@ namespace OWLSharp.Ontology
             #region Utilities
             List<OWLClassExpression> FindSubClassesOf(RDFResource classExprIRI, List<OWLSubClassOf> axioms, HashSet<long> visitContext)
             {
-                List<OWLClassExpression> foundSubClassExprs = new List<OWLClassExpression>();
+                List<OWLClassExpression> foundSubClassExprs = [];
 
                 #region VisitContext
                 if (!visitContext.Add(classExprIRI.PatternMemberID))
@@ -68,11 +68,11 @@ namespace OWLSharp.Ontology
             }
             #endregion
 
-            List<OWLClassExpression> subClassExprs = new List<OWLClassExpression>();
+            List<OWLClassExpression> subClassExprs = [];
             if (ontology != null && classExpr != null)
             {
                 RDFResource clsExprIRI = classExpr.GetIRI();
-                HashSet<long> visitContext = new HashSet<long>();
+                HashSet<long> visitContext = [];
                 List<OWLSubClassOf> subClassOfAxs = GetClassAxiomsOfType<OWLSubClassOf>(ontology);
                 List<OWLClassExpression> equivClassesOfClassExpr = GetEquivalentClasses(ontology, classExpr);
 
@@ -106,7 +106,7 @@ namespace OWLSharp.Ontology
             #region Utilities
             List<OWLClassExpression> FindSuperClassesOf(RDFResource classExprIRI, List<OWLSubClassOf> axioms, HashSet<long> visitContext)
             {
-                List<OWLClassExpression> foundSuperClassExprs = new List<OWLClassExpression>();
+                List<OWLClassExpression> foundSuperClassExprs = [];
 
                 #region VisitContext
                 if (!visitContext.Add(classExprIRI.PatternMemberID))
@@ -126,11 +126,11 @@ namespace OWLSharp.Ontology
             }
             #endregion
 
-            List<OWLClassExpression> superClassExprs = new List<OWLClassExpression>();
+            List<OWLClassExpression> superClassExprs = [];
             if (ontology != null && classExpr != null)
             {
                 RDFResource clsExprIRI = classExpr.GetIRI();
-                HashSet<long> visitContext = new HashSet<long>();
+                HashSet<long> visitContext = [];
                 List<OWLSubClassOf> subClassOfAxs = GetClassAxiomsOfType<OWLSubClassOf>(ontology);
 
                 //SubClassOf(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
@@ -159,7 +159,7 @@ namespace OWLSharp.Ontology
             #region Utilities
             List<OWLClassExpression> FindEquivalentClasses(RDFResource classExprIRI, List<OWLEquivalentClasses> axioms, HashSet<long> visitContext)
             {
-                List<OWLClassExpression> foundEquivClassExprs = new List<OWLClassExpression>();
+                List<OWLClassExpression> foundEquivClassExprs = [];
 
                 #region VisitContext
                 if (!visitContext.Add(classExprIRI.PatternMemberID))
@@ -180,9 +180,9 @@ namespace OWLSharp.Ontology
             }
             #endregion
 
-            List<OWLClassExpression> equivClassExprs = new List<OWLClassExpression>();
+            List<OWLClassExpression> equivClassExprs = [];
             if (ontology != null && classExpr != null)
-                equivClassExprs.AddRange(FindEquivalentClasses(classExpr.GetIRI(), GetClassAxiomsOfType<OWLEquivalentClasses>(ontology), new HashSet<long>()));
+                equivClassExprs.AddRange(FindEquivalentClasses(classExpr.GetIRI(), GetClassAxiomsOfType<OWLEquivalentClasses>(ontology), []));
             return equivClassExprs;
         }
 
@@ -194,7 +194,7 @@ namespace OWLSharp.Ontology
             #region Utilities
             List<OWLClassExpression> FindDisjointClasses(RDFResource classExprIRI, List<OWLDisjointClasses> axioms, HashSet<long> visitContext)
             {
-                List<OWLClassExpression> foundDisjClassExprs = new List<OWLClassExpression>();
+                List<OWLClassExpression> foundDisjClassExprs = [];
 
                 #region VisitContext
                 if (!visitContext.Add(classExprIRI.PatternMemberID))
@@ -211,10 +211,10 @@ namespace OWLSharp.Ontology
             }
             #endregion
 
-            List<OWLClassExpression> disjClassExprs = new List<OWLClassExpression>();
+            List<OWLClassExpression> disjClassExprs = [];
             if (ontology != null && classExpr != null)
             {
-                HashSet<long> visitContext = new HashSet<long>();
+                HashSet<long> visitContext = [];
                 List<OWLDisjointClasses> disjointClassAxioms = GetClassAxiomsOfType<OWLDisjointClasses>(ontology);
                 disjClassExprs.AddRange(FindDisjointClasses(classExpr.GetIRI(), disjointClassAxioms, visitContext));
 

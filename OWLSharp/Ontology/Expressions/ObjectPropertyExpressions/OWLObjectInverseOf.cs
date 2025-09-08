@@ -50,7 +50,7 @@ namespace OWLSharp.Ontology
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
-            expressionIRI = expressionIRI ?? GetIRI();
+            expressionIRI ??= GetIRI();
 
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.INVERSE_OF, ObjectProperty.GetIRI()));
             return graph.UnionWith(ObjectProperty.ToRDFGraph());

@@ -55,7 +55,7 @@ namespace OWLSharp.Ontology
             sb.Append('(');
             sb.Append(Datatype.ToSWRLString());
             sb.Append('[');
-            sb.Append(string.Join(", ", FacetRestrictions.Select(fct => fct.ToSWRLString())));
+            sb.AppendJoin(", ", FacetRestrictions.Select(fct => fct.ToSWRLString()));
             sb.Append(']');
             sb.Append(')');
 
@@ -65,7 +65,7 @@ namespace OWLSharp.Ontology
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
-            expressionIRI = expressionIRI ?? GetIRI();
+            expressionIRI ??= GetIRI();
 
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE));
             graph = graph.UnionWith(Datatype.ToRDFGraph());

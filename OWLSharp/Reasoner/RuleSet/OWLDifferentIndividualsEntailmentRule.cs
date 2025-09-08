@@ -23,7 +23,7 @@ namespace OWLSharp.Reasoner
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
-            List<OWLInference> inferences = new List<OWLInference>();
+            List<OWLInference> inferences = [];
 
             if (ontology.GetAssertionAxiomsOfType<OWLDifferentIndividuals>().Count > 0)
             {
@@ -31,7 +31,7 @@ namespace OWLSharp.Reasoner
                                                                                .Select(ax => (OWLNamedIndividual)ax.Expression))
                   foreach (OWLIndividualExpression differentIdvExpr in ontology.GetDifferentIndividuals(declaredNamedIndividual))
                   {
-                      OWLDifferentIndividuals inference = new OWLDifferentIndividuals(new List<OWLIndividualExpression> { declaredNamedIndividual, differentIdvExpr }) { IsInference=true };
+                      OWLDifferentIndividuals inference = new OWLDifferentIndividuals([declaredNamedIndividual, differentIdvExpr]) { IsInference=true };
                       inference.GetXML();
                       inferences.Add(new OWLInference(rulename, inference));
                   }

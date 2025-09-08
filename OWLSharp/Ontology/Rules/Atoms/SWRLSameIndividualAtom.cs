@@ -68,7 +68,7 @@ namespace OWLSharp.Ontology
                 //Build the atom's right argument individual
                 OWLIndividualExpression rightArgumentIdvExpr;
                 if (rightArgumentIndividual.GetResource().IsBlank)
-                    rightArgumentIdvExpr = new OWLAnonymousIndividual(rightArgumentIndividual.ToString().Substring(6));
+                    rightArgumentIdvExpr = new OWLAnonymousIndividual(rightArgumentIndividual.ToString()[6..]);
                 else
                     rightArgumentIdvExpr = new OWLNamedIndividual(rightArgumentIndividual.GetResource());
 
@@ -76,7 +76,7 @@ namespace OWLSharp.Ontology
                 List<OWLIndividualExpression> sameIndividuals = ontology.GetSameIndividuals(rightArgumentIdvExpr);
 
                 //Save them into the atom result
-                Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();
+                Dictionary<string, string> atomResultBindings = [];
                 foreach (OWLIndividualExpression sameIndividual in sameIndividuals)
                 {
                     atomResultBindings.Add(leftArgumentString, sameIndividual.GetIRI().ToString());
@@ -99,7 +99,7 @@ namespace OWLSharp.Ontology
 
                     //Save them into the atom result
                     string declaredIdvIRI = declaredIdv.GetIRI().ToString();
-                    Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();
+                    Dictionary<string, string> atomResultBindings = [];
                     foreach (OWLIndividualExpression sameIndividual in sameIndividuals)
                     {
                         atomResultBindings.Add(leftArgumentString, declaredIdvIRI);
@@ -118,7 +118,7 @@ namespace OWLSharp.Ontology
 
         internal override List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology)
         {
-            List<OWLInference> inferences = new List<OWLInference>();
+            List<OWLInference> inferences = [];
             string leftArgumentString = LeftArgument.ToString();
             string rightArgumentString = RightArgument.ToString();
             string sameAsAtomString = ToString();
@@ -161,19 +161,19 @@ namespace OWLSharp.Ontology
                     //Build the inference individual (source)
                     OWLIndividualExpression leftArgIdvExpr;
                     if (leftArgumentValueResource.IsBlank)
-                        leftArgIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString().Substring(6));
+                        leftArgIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString()[6..]);
                     else
                         leftArgIdvExpr = new OWLNamedIndividual(leftArgumentValueResource);
 
                     //Build the inference individual (target)
                     OWLIndividualExpression rightArgIdvExpr;
                     if (rightArgumentValueResource.IsBlank)
-                        rightArgIdvExpr = new OWLAnonymousIndividual(rightArgumentValueResource.ToString().Substring(6));
+                        rightArgIdvExpr = new OWLAnonymousIndividual(rightArgumentValueResource.ToString()[6..]);
                     else
                         rightArgIdvExpr = new OWLNamedIndividual(rightArgumentValueResource);
 
                     //Create the inference
-                    OWLSameIndividual inference = new OWLSameIndividual(new List<OWLIndividualExpression> { leftArgIdvExpr, rightArgIdvExpr }) { IsInference = true };
+                    OWLSameIndividual inference = new OWLSameIndividual([leftArgIdvExpr, rightArgIdvExpr]) { IsInference = true };
                     inference.GetXML();
                     inferences.Add(new OWLInference(sameAsAtomString, inference));
                 }

@@ -34,7 +34,7 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         static SWRLBuiltInRegister()
-            => Instance = new SWRLBuiltInRegister { Register = new List<SWRLBuiltIn>() };
+            => Instance = new SWRLBuiltInRegister { Register = [] };
         #endregion
 
         #region Interfaces

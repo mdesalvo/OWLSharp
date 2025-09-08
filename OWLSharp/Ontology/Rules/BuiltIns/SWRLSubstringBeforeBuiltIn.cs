@@ -129,7 +129,7 @@ namespace OWLSharp.Ontology
                 //Split
                 int sepIndex = rightPMSTRValue.IndexOf(rightPMSEPValue, StringComparison.Ordinal);
                 return sepIndex == -1 ? string.Equals(leftPMValue, rightPMSTRValue, StringComparison.Ordinal)
-                                      : string.Equals(leftPMValue, rightPMSTRValue.Substring(0, sepIndex), StringComparison.Ordinal);
+                                      : string.Equals(leftPMValue, rightPMSTRValue[..sepIndex], StringComparison.Ordinal);
             }
             return false;
         }

@@ -25,7 +25,7 @@ namespace OWLSharp.Reasoner
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
-            List<OWLInference> inferences = new List<OWLInference>();
+            List<OWLInference> inferences = [];
 
             foreach (OWLHasKey hasKeyAxiom in ontology.KeyAxioms)
             {
@@ -40,11 +40,11 @@ namespace OWLSharp.Reasoner
         private static List<OWLInference> AnalyzeKeyValues(OWLHasKey hasKeyAxiom, List<OWLIndividualExpression> hasKeyClassIdvs,
             List<OWLObjectPropertyAssertion> opAsns, List<OWLDataPropertyAssertion> dpAsns)
         {
-            List<OWLInference> inferences = new List<OWLInference>();
+            List<OWLInference> inferences = [];
 
             //Temporary working variables
-            Dictionary<string, List<OWLIndividualExpression>> objectKeyValueRegister = new Dictionary<string, List<OWLIndividualExpression>>();
-            Dictionary<string, List<OWLIndividualExpression>> dataKeyValueRegister = new Dictionary<string, List<OWLIndividualExpression>>();
+            Dictionary<string, List<OWLIndividualExpression>> objectKeyValueRegister = [];
+            Dictionary<string, List<OWLIndividualExpression>> dataKeyValueRegister = [];
 
             #region Compute Keys
             //Iterate individuals of the HasKey axiom's class in order to calculate their key values
@@ -61,8 +61,8 @@ namespace OWLSharp.Reasoner
                     {
                         List<OWLObjectPropertyAssertion> keyObjectPropertyAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, keyObjectProperty);
                         if (keyObjectPropertyAsns.Count > 0)
-                            objSB.Append(string.Join("§§", keyObjectPropertyAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(idvExprIRI))
-                                                                                .Select(asn => asn.TargetIndividualExpression.GetIRI().ToString())));
+                            objSB.AppendJoin("§§", keyObjectPropertyAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(idvExprIRI))
+                                                                                .Select(asn => asn.TargetIndividualExpression.GetIRI().ToString()));
                     }
 
                     //Collect the object key values of the current individual into the register
@@ -70,7 +70,7 @@ namespace OWLSharp.Reasoner
                     if (!string.IsNullOrEmpty(objSBValue))
                     {
                         if (!objectKeyValueRegister.ContainsKey(objSBValue))
-                            objectKeyValueRegister.Add(objSBValue, new List<OWLIndividualExpression>());
+                            objectKeyValueRegister.Add(objSBValue, []);
                         objectKeyValueRegister[objSBValue].Add(idvExpr);
                     }
                 }
@@ -85,8 +85,8 @@ namespace OWLSharp.Reasoner
                     {
                         List<OWLDataPropertyAssertion> keyDataPropertyAsns = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, keyDataProperty);
                         if (keyDataPropertyAsns.Count > 0)
-                            dtSB.Append(string.Join("§§", keyDataPropertyAsns.Where(asn => asn.IndividualExpression.GetIRI().Equals(idvExprIRI))
-                                                                             .Select(asn => asn.Literal.GetLiteral().ToString())));
+                            dtSB.AppendJoin("§§", keyDataPropertyAsns.Where(asn => asn.IndividualExpression.GetIRI().Equals(idvExprIRI))
+                                                                             .Select(asn => asn.Literal.GetLiteral().ToString()));
                     }
 
                     //Collect the data key values of the current individual into the register
@@ -94,7 +94,7 @@ namespace OWLSharp.Reasoner
                     if (!string.IsNullOrEmpty(dtSBValue))
                     {
                         if (!dataKeyValueRegister.ContainsKey(dtSBValue))
-                            dataKeyValueRegister.Add(dtSBValue, new List<OWLIndividualExpression>());
+                            dataKeyValueRegister.Add(dtSBValue, []);
                         dataKeyValueRegister[dtSBValue].Add(idvExpr);
                     }
                 }

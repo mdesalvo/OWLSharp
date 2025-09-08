@@ -27,7 +27,7 @@ namespace OWLSharp.Ontology
         #region Properties
 
         internal static readonly Dictionary<string, (OWLOntology Ontology, DateTime ExpireTimestamp)> OntologyCache
-            = new Dictionary<string, (OWLOntology, DateTime)>();
+            = [];
         #endregion
 
         #region Methods
@@ -49,20 +49,21 @@ namespace OWLSharp.Ontology
                         string ontologyIRIString = ontologyIRI.ToString();
 
                         //Cache-Expire
-                        if (OntologyCache.ContainsKey(ontologyIRIString) && OntologyCache[ontologyIRIString].ExpireTimestamp < DateTime.UtcNow)
+                        if (OntologyCache.TryGetValue(ontologyIRIString, out (OWLOntology Ontology, DateTime ExpireTimestamp) cacheHitValue) && cacheHitValue.ExpireTimestamp < DateTime.UtcNow)
                             OntologyCache.Remove(ontologyIRIString);
 
                         //Cache-Miss
-                        if (!OntologyCache.ContainsKey(ontologyIRIString))
+                        if (!OntologyCache.TryGetValue(ontologyIRIString, out (OWLOntology Ontology, DateTime ExpireTimestamp) cacheMissValue))
                         {
                             RDFGraph importGraph = await RDFGraph.FromUriAsync(ontologyIRI, timeoutMilliseconds, true);
                             OWLOntology importOntology = await OWLOntology.FromRDFGraphAsync(importGraph);
+                            cacheMissValue = (importOntology, DateTime.UtcNow.AddMilliseconds(cacheMilliseconds));
                             //Save the fetched ontology into the cache for the given amount of milliseconds
-                            OntologyCache.Add(ontologyIRIString, (importOntology, DateTime.UtcNow.AddMilliseconds(cacheMilliseconds)));
+                            OntologyCache.Add(ontologyIRIString, cacheMissValue);
                         }
 
                         //Cache-Hit
-                        OWLOntology importedOntology = OntologyCache[ontologyIRIString].Ontology;
+                        OWLOntology importedOntology = cacheMissValue.Ontology;
                         #endregion
 
                         //Imports

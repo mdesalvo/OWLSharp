@@ -77,7 +77,7 @@ namespace OWLSharp.Ontology
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
-            expressionIRI = expressionIRI ?? GetIRI();
+            expressionIRI ??= GetIRI();
 
             RDFResource objPropExpressionIRI = ObjectPropertyExpression.GetIRI();
             RDFResource clsExpressionIRI = ClassExpression.GetIRI();

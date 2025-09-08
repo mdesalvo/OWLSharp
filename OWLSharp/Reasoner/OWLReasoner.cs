@@ -11,9 +11,6 @@
    limitations under the License.
 */
 
-#if !NET8_0_OR_GREATER
-using Dasync.Collections;
-#endif
 using OWLSharp.Ontology;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +21,7 @@ namespace OWLSharp.Reasoner
     public sealed class OWLReasoner
     {
         #region Properties
-        public List<OWLEnums.OWLReasonerRules> Rules { get; internal set; } = new List<OWLEnums.OWLReasonerRules>();
+        public List<OWLEnums.OWLReasonerRules> Rules { get; internal set; } = [];
         #endregion
 
         #region Methods
@@ -36,12 +33,12 @@ namespace OWLSharp.Reasoner
 
         public async Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology)
         {
-            List<OWLInference> inferences = new List<OWLInference>();
+            List<OWLInference> inferences = [];
 
             if (ontology != null)
             {
                 OWLEvents.RaiseInfo($"Launching OWL2/SWRL reasoner on ontology '{ontology.IRI}'...");
-                Rules = Rules.Distinct().ToList();
+                Rules = [.. Rules.Distinct()];
 
                 //Initialize inference registry
                 Dictionary<string, List<OWLInference>> inferenceRegistry = new Dictionary<string, List<OWLInference>>(Rules.Count + ontology.Rules.Count);
@@ -76,11 +73,7 @@ namespace OWLSharp.Reasoner
                     dsjDtPropAxiomsTask, eqvDtPropAxiomsTask, subDtPropAxiomsTask, dsjOpPropAxiomsTask, eqvOpPropAxiomsTask, subOpPropAxiomsTask, invOpPropAxiomsTask);
 
                 //Execute OWL2 reasoner rules
-#if !NET8_0_OR_GREATER
-                await Rules.ParallelForEachAsync(async (rule, _) =>
-#else
                 await Parallel.ForEachAsync(Rules, async (rule, _) =>
-#endif
                 {
                     string ruleString = rule.ToString();
                     OWLEvents.RaiseInfo($"Launching OWL2 rule {ruleString}...");
@@ -168,11 +161,7 @@ namespace OWLSharp.Reasoner
                 });
 
                 //Execute SWRL reasoner rules
-#if !NET8_0_OR_GREATER
-                await ontology.Rules.ParallelForEachAsync(async (swrlRule, _) =>
-#else
                 await Parallel.ForEachAsync(ontology.Rules, async (swrlRule, _) =>
-#endif
                 {
                     string swrlRuleString = swrlRule.ToString();
                     OWLEvents.RaiseInfo($"Launching SWRL rule {swrlRuleString}...");

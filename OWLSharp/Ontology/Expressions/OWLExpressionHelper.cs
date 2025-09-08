@@ -23,10 +23,10 @@ namespace OWLSharp.Ontology
         #region Methods
         internal static List<T> RemoveDuplicates<T>(List<T> expressions) where T : OWLExpression
         {
-            List<T> deduplicatedExpressions = new List<T>();
+            List<T> deduplicatedExpressions = [];
             if (expressions?.Count > 0)
             {
-                HashSet<long> lookup = new HashSet<long>();
+                HashSet<long> lookup = [];
                 expressions.ForEach(expression =>
                 {
                     long expressionID = expression.GetIRI().PatternMemberID;

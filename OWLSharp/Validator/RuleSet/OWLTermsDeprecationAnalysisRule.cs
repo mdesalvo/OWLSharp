@@ -25,14 +25,14 @@ namespace OWLSharp.Validator
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
-            List<OWLIssue> issues = new List<OWLIssue>();
+            List<OWLIssue> issues = [];
 
             //Temporary working variables
-            List<string> declaredClasses = ontology.GetDeclaredEntitiesOfType<OWLClass>().Select(cls => cls.GetIRI().ToString()).Distinct().ToList();
-            List<string> declaredDatatypes = ontology.GetDeclaredEntitiesOfType<OWLDatatype>().Select(dtt => dtt.GetIRI().ToString()).Distinct().ToList();
-            List<string> declaredDataProperties = ontology.GetDeclaredEntitiesOfType<OWLDataProperty>().Select(dtp => dtp.GetIRI().ToString()).Distinct().ToList();
-            List<string> declaredObjectProperties = ontology.GetDeclaredEntitiesOfType<OWLObjectProperty>().Select(obp => obp.GetIRI().ToString()).Distinct().ToList();
-            List<string> declaredAnnotationProperties = ontology.GetDeclaredEntitiesOfType<OWLAnnotationProperty>().Select(anp => anp.GetIRI().ToString()).Distinct().ToList();
+            List<string> declaredClasses = [.. ontology.GetDeclaredEntitiesOfType<OWLClass>().Select(cls => cls.GetIRI().ToString()).Distinct()];
+            List<string> declaredDatatypes = [.. ontology.GetDeclaredEntitiesOfType<OWLDatatype>().Select(dtt => dtt.GetIRI().ToString()).Distinct()];
+            List<string> declaredDataProperties = [.. ontology.GetDeclaredEntitiesOfType<OWLDataProperty>().Select(dtp => dtp.GetIRI().ToString()).Distinct()];
+            List<string> declaredObjectProperties = [.. ontology.GetDeclaredEntitiesOfType<OWLObjectProperty>().Select(obp => obp.GetIRI().ToString()).Distinct()];
+            List<string> declaredAnnotationProperties = [.. ontology.GetDeclaredEntitiesOfType<OWLAnnotationProperty>().Select(anp => anp.GetIRI().ToString()).Distinct()];
 
             foreach (OWLAnnotationAssertion annAsn in ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
                                                               .Where(asn => asn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.DEPRECATED)

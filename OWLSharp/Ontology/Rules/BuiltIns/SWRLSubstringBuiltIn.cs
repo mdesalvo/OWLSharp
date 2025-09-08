@@ -143,7 +143,7 @@ namespace OWLSharp.Ontology
                 {
                     //startIndex
                     if (builtInArguments.Count == 3)
-                        return string.Equals(leftPMValue, rightPMValue.Substring(leftNumberIDX));
+                        return string.Equals(leftPMValue, rightPMValue[leftNumberIDX..]);
 
                     //startIndex+length
                     if (rightPatternMemberLEN is RDFTypedLiteral leftTypedLiteralLEN

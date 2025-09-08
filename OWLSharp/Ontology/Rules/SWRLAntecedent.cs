@@ -34,19 +34,19 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(SWRLDifferentIndividualsAtom), ElementName="DifferentIndividualsAtom")]
         [XmlElement(typeof(SWRLObjectPropertyAtom), ElementName="ObjectPropertyAtom")]
         [XmlElement(typeof(SWRLSameIndividualAtom), ElementName="SameIndividualAtom")]
-        public List<SWRLAtom> Atoms { get; set; } = new List<SWRLAtom>();
+        public List<SWRLAtom> Atoms { get; set; } = [];
 
         [XmlElement(ElementName="BuiltInAtom")]
-        public List<SWRLBuiltIn> BuiltIns { get; set; } = new List<SWRLBuiltIn>();
+        public List<SWRLBuiltIn> BuiltIns { get; set; } = [];
         #endregion
 
         #region Interfaces
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(string.Join(" ^ ", Atoms));
+            sb.AppendJoin(" ^ ", Atoms);
             sb.Append(Atoms.Count > 0 && BuiltIns.Count > 0 ? " ^ " : string.Empty);
-            sb.Append(string.Join(" ^ ", BuiltIns));
+            sb.AppendJoin(" ^ ", BuiltIns);
             return sb.ToString();
         }
         #endregion
@@ -55,7 +55,7 @@ namespace OWLSharp.Ontology
         internal DataTable Evaluate(OWLOntology ontology)
         {
             //Execute the antecedent atoms
-            List<DataTable> atomResults = new List<DataTable>();
+            List<DataTable> atomResults = [];
             Atoms.ForEach(atom => atomResults.Add(atom.EvaluateOnAntecedent(ontology)));
 
             //Join results of antecedent atoms

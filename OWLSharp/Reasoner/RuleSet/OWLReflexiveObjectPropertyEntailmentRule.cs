@@ -22,7 +22,7 @@ namespace OWLSharp.Reasoner
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
-            List<OWLInference> inferences = new List<OWLInference>();
+            List<OWLInference> inferences = [];
 
             //ReflexiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDVX) -> ObjectPropertyAssertion(OP,IDV1,IDV1)
             foreach (OWLReflexiveObjectProperty refObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLReflexiveObjectProperty>())

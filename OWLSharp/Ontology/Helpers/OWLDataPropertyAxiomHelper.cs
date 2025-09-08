@@ -24,7 +24,7 @@ namespace OWLSharp.Ontology
     {
         #region Methods
         public static List<T> GetDataPropertyAxiomsOfType<T>(this OWLOntology ontology) where T : OWLDataPropertyAxiom
-            => ontology?.DataPropertyAxioms.OfType<T>().ToList() ?? new List<T>();
+            => ontology?.DataPropertyAxioms.OfType<T>().ToList() ?? [];
 
         public static bool CheckHasDataPropertyAxiom<T>(this OWLOntology ontology, T dataPropertyAxiom) where T : OWLDataPropertyAxiom
             => GetDataPropertyAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), dataPropertyAxiom?.GetXML()));
@@ -48,7 +48,7 @@ namespace OWLSharp.Ontology
             #region Utilities
             List<OWLDataProperty> FindSubDataPropertiesOf(RDFResource dataPropertyIRI, List<OWLSubDataPropertyOf> axioms, HashSet<long> visitContext)
             {
-                List<OWLDataProperty> foundSubDataProperties = new List<OWLDataProperty>();
+                List<OWLDataProperty> foundSubDataProperties = [];
 
                 #region VisitContext
                 if (!visitContext.Add(dataPropertyIRI.PatternMemberID))
@@ -68,11 +68,11 @@ namespace OWLSharp.Ontology
             }
             #endregion
 
-            List<OWLDataProperty> subDataProperties = new List<OWLDataProperty>();
+            List<OWLDataProperty> subDataProperties = [];
             if (ontology != null && dataProperty != null)
             {
                 RDFResource dtPropIRI = dataProperty.GetIRI();
-                HashSet<long> visitContext = new HashSet<long>();
+                HashSet<long> visitContext = [];
                 List<OWLSubDataPropertyOf> subDtPropOfAxs = GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>(ontology);
                 List<OWLDataProperty> equivDtPropsOfDataProperty = GetEquivalentDataProperties(ontology, dataProperty);
 
@@ -98,7 +98,7 @@ namespace OWLSharp.Ontology
             #region Utilities
             List<OWLDataProperty> FindSuperDataPropertiesOf(RDFResource dtPropIRI, List<OWLSubDataPropertyOf> axioms, HashSet<long> visitContext)
             {
-                List<OWLDataProperty> foundSuperDataProperties = new List<OWLDataProperty>();
+                List<OWLDataProperty> foundSuperDataProperties = [];
 
                 #region VisitContext
                 if (!visitContext.Add(dtPropIRI.PatternMemberID))
@@ -118,11 +118,11 @@ namespace OWLSharp.Ontology
             }
             #endregion
 
-            List<OWLDataProperty> superDataProperties = new List<OWLDataProperty>();
+            List<OWLDataProperty> superDataProperties = [];
             if (ontology != null && dataProperty != null)
             {
                 RDFResource dtPropIRI = dataProperty.GetIRI();
-                HashSet<long> visitContext = new HashSet<long>();
+                HashSet<long> visitContext = [];
                 List<OWLSubDataPropertyOf> subDtPropOfAxs = GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>(ontology);
 
                 //SubDataPropertyOf(P1,P2) ^ SubDataPropertyOf(P2,P3) -> SubDataPropertyOf(P1,P3)
@@ -147,7 +147,7 @@ namespace OWLSharp.Ontology
             #region Utilities
             List<OWLDataProperty> FindEquivalentDataProperties(RDFResource dtPropIRI, List<OWLEquivalentDataProperties> axioms, HashSet<long> visitContext)
             {
-                List<OWLDataProperty> foundEquivalentDataProperties = new List<OWLDataProperty>();
+                List<OWLDataProperty> foundEquivalentDataProperties = [];
 
                 #region VisitContext
                 if (!visitContext.Add(dtPropIRI.PatternMemberID))
@@ -168,9 +168,9 @@ namespace OWLSharp.Ontology
             }
             #endregion
 
-            List<OWLDataProperty> equivalentDataProperties = new List<OWLDataProperty>();
+            List<OWLDataProperty> equivalentDataProperties = [];
             if (ontology != null && dataProperty != null)
-                equivalentDataProperties.AddRange(FindEquivalentDataProperties(dataProperty.GetIRI(), GetDataPropertyAxiomsOfType<OWLEquivalentDataProperties>(ontology), new HashSet<long>()));
+                equivalentDataProperties.AddRange(FindEquivalentDataProperties(dataProperty.GetIRI(), GetDataPropertyAxiomsOfType<OWLEquivalentDataProperties>(ontology), []));
             return equivalentDataProperties;
         }
 
@@ -179,7 +179,7 @@ namespace OWLSharp.Ontology
 
         public static List<OWLDataProperty> GetDisjointDataProperties(this OWLOntology ontology, OWLDataProperty dataProperty)
         {
-            List<OWLDataProperty> disjointDataProperties = new List<OWLDataProperty>();
+            List<OWLDataProperty> disjointDataProperties = [];
 
             if (ontology != null && dataProperty != null)
             {
