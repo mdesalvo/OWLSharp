@@ -22,7 +22,7 @@ namespace OWLSharp.Reasoner
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
-            List<OWLInference> inferences = [];
+            List<OWLInference> inferences = new List<OWLInference>();
 
             //DataPropertyDomain(DP,C) ^ DataPropertyAssertion(DP, I, LIT) -> ClassAssertion(C,I)
             foreach (OWLDataPropertyDomain dataPropertyDomain in ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyDomain>())

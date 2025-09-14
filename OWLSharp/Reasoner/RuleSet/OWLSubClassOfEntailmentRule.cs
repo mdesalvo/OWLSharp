@@ -23,7 +23,7 @@ namespace OWLSharp.Reasoner
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
-            List<OWLInference> inferences = [];
+            List<OWLInference> inferences = new List<OWLInference>();
 
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
                                                        .Select(ax => (OWLClass)ax.Expression))

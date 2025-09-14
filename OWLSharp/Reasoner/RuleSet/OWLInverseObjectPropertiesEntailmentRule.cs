@@ -24,7 +24,7 @@ namespace OWLSharp.Reasoner
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
-            List<OWLInference> inferences = [];
+            List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables
             List<OWLInverseObjectProperties> invObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLInverseObjectProperties>();
@@ -92,7 +92,7 @@ namespace OWLSharp.Reasoner
 
         internal static List<(bool,OWLObjectPropertyExpression)> GetInverseObjectProperties(this OWLOntology ontology, OWLObjectProperty objProp, List<OWLInverseObjectProperties> invObjProps)
         {
-            List<(bool,OWLObjectPropertyExpression)> invObjPropExprs = [];
+            List<(bool,OWLObjectPropertyExpression)> invObjPropExprs = new List<(bool,OWLObjectPropertyExpression)>();
             if (ontology != null && objProp != null)
             {
                 RDFResource objPropExprIRI = objProp.GetIRI();

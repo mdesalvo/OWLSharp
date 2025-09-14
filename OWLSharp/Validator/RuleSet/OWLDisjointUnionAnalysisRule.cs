@@ -25,10 +25,10 @@ namespace OWLSharp.Validator
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
-            List<OWLIssue> issues = [];
+            List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-            Dictionary<long, HashSet<long>> idvsCache = [];
+            Dictionary<long, HashSet<long>> idvsCache = new Dictionary<long, HashSet<long>>();
 
             //DisjointUnion(CLS,(CLS1,CLS2)) ^ ClassAssertion(CLS1,IDV) ^ ClassAssertion(CLS2,IDV) -> ERROR
             foreach (OWLDisjointUnion disjUnion in ontology.GetClassAxiomsOfType<OWLDisjointUnion>())
@@ -39,7 +39,7 @@ namespace OWLSharp.Validator
                     {
                         RDFResource disjUnionMemberIdvIRI = disjUnionMemberIdv.GetIRI();
                         if (!idvsCache.ContainsKey(disjUnionMemberIdvIRI.PatternMemberID))
-                            idvsCache.Add(disjUnionMemberIdvIRI.PatternMemberID, []);
+                            idvsCache.Add(disjUnionMemberIdvIRI.PatternMemberID, new HashSet<long>());
                         idvsCache[disjUnionMemberIdvIRI.PatternMemberID].Add(disjUnionMember.GetIRI().PatternMemberID);
                     }
 

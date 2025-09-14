@@ -86,32 +86,41 @@ namespace OWLSharp.Ontology
             {
                 case RDFResource leftPatternMemberRes:
                     {
-                        comparisonExpression = rightPatternMember switch
+                        switch (rightPatternMember)
                         {
-                            RDFResource rightPatternMemberRes => new RDFComparisonExpression(
-                                                                                    RDFQueryEnums.RDFComparisonFlavors.NotEqualTo,
-                                                                                    new RDFConstantExpression(leftPatternMemberRes),
-                                                                                    new RDFConstantExpression(rightPatternMemberRes)),
-                            _ => new RDFComparisonExpression(
-                                                                    RDFQueryEnums.RDFComparisonFlavors.NotEqualTo,
-                                                                    new RDFConstantExpression(leftPatternMemberRes),
-                                                                    new RDFConstantExpression((RDFLiteral)rightPatternMember)),
-                        };
+                            case RDFResource rightPatternMemberRes:
+                                comparisonExpression = new RDFComparisonExpression(
+                                                        RDFQueryEnums.RDFComparisonFlavors.NotEqualTo,
+                                                        new RDFConstantExpression(leftPatternMemberRes),
+                                                        new RDFConstantExpression(rightPatternMemberRes));
+                                break;
+                            default:
+                                comparisonExpression = new RDFComparisonExpression(
+                                        RDFQueryEnums.RDFComparisonFlavors.NotEqualTo,
+                                        new RDFConstantExpression(leftPatternMemberRes),
+                                        new RDFConstantExpression((RDFLiteral)rightPatternMember));
+                                break;
+                        }
                         break;
                     }
                 default:
                     {
-                        comparisonExpression = rightPatternMember switch
+                        switch (rightPatternMember)
                         {
-                            RDFResource rightPatternMemberRes => new RDFComparisonExpression(
-                                                                                    RDFQueryEnums.RDFComparisonFlavors.NotEqualTo,
-                                                                                    new RDFConstantExpression((RDFLiteral)leftPatternMember),
-                                                                                    new RDFConstantExpression(rightPatternMemberRes)),
-                            _ => new RDFComparisonExpression(
-                                                                    RDFQueryEnums.RDFComparisonFlavors.NotEqualTo,
-                                                                    new RDFConstantExpression((RDFLiteral)leftPatternMember),
-                                                                    new RDFConstantExpression((RDFLiteral)rightPatternMember)),
-                        };
+                            case RDFResource rightPatternMemberRes:
+                                comparisonExpression = new RDFComparisonExpression(
+                                                        RDFQueryEnums.RDFComparisonFlavors.NotEqualTo,
+                                                        new RDFConstantExpression((RDFLiteral)leftPatternMember),
+                                                        new RDFConstantExpression(rightPatternMemberRes));
+
+                                break;
+                            default:
+                                comparisonExpression = new RDFComparisonExpression(
+                                        RDFQueryEnums.RDFComparisonFlavors.NotEqualTo,
+                                        new RDFConstantExpression((RDFLiteral)leftPatternMember),
+                                        new RDFConstantExpression((RDFLiteral)rightPatternMember));
+                                break;
+                        }
                         break;
                     }
             }

@@ -23,7 +23,7 @@ namespace OWLSharp.Validator
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
-            List<OWLIssue> issues = [];
+            List<OWLIssue> issues = new List<OWLIssue>();
 
             //DataPropertyAssertion(DP,IDV,LIT) ^ DataPropertyDomain(DP,C) ^ ClassAssertion(ObjectComplementOf(C),IDV) -> ERROR
             foreach (OWLDataPropertyDomain dpDomain in ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyDomain>())

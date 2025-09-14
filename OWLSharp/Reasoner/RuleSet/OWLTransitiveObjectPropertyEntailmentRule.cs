@@ -25,10 +25,10 @@ namespace OWLSharp.Reasoner
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
-            List<OWLInference> inferences = [];
+            List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables
-            HashSet<long> visitContext = [];
+            HashSet<long> visitContext = new HashSet<long>();
 
             //TransitiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV2,IDV3) -> ObjectPropertyAssertion(OP,IDV1,IDV3)
             foreach (OWLTransitiveObjectProperty trnObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLTransitiveObjectProperty>())
@@ -51,7 +51,7 @@ namespace OWLSharp.Reasoner
 
                 #region Analysis
                 //Iterate object assertions to find inference opportunities (transitive closure)
-                List<IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion>> trnObjPropAsnGroups = [.. trnObjPropAsns.GroupBy(asn => asn.SourceIndividualExpression)];
+                List<IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion>> trnObjPropAsnGroups = trnObjPropAsns.GroupBy(asn => asn.SourceIndividualExpression).ToList();
                 foreach (IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion> trnObjPropAsnGroup in trnObjPropAsnGroups)
                 {
                     RDFResource trnObjPropAsnGroupKeyIRI = trnObjPropAsnGroup.Key.GetIRI();
@@ -72,7 +72,7 @@ namespace OWLSharp.Reasoner
         private static List<OWLIndividualExpression> FindTransitiveRelatedIndividuals(RDFResource trnObjPropAsnGroupKeyIRI,
             List<IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion>> trnObjPropAsnGroups, HashSet<long> visitContext)
         {
-            List<OWLIndividualExpression> transitiveRelatedIdvExprs = [];
+            List<OWLIndividualExpression> transitiveRelatedIdvExprs = new List<OWLIndividualExpression>();
 
             #region VisitContext
             if (!visitContext.Add(trnObjPropAsnGroupKeyIRI.PatternMemberID))

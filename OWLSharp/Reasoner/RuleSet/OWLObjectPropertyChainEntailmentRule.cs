@@ -26,7 +26,7 @@ namespace OWLSharp.Reasoner
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
-            List<OWLInference> inferences = [];
+            List<OWLInference> inferences = new List<OWLInference>();
 
             //Prepare subgraph for analysis of property chain
             Lazy<RDFGraph> lazyOPAsnsGraph = new Lazy<RDFGraph>(() =>

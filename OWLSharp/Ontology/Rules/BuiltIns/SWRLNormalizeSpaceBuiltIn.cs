@@ -28,7 +28,7 @@ namespace OWLSharp.Ontology
         #region Statics
         private const string NormalizeSpacesReplacement = " ";
         private const string NormalizeSpacesPattern = @"\s{2,}";
-        private static readonly Lazy<Regex> NormalizeSpacesRegex = new Lazy<Regex>(() => new Regex(NormalizeSpacesPattern, RegexOptions.Compiled));
+        private static Lazy<Regex> NormalizeSpacesRegex = new Lazy<Regex>(() => new Regex(NormalizeSpacesPattern, RegexOptions.Compiled));
         #endregion
 
         #region Methods

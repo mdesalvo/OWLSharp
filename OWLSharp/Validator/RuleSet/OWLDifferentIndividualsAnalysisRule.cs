@@ -26,7 +26,7 @@ namespace OWLSharp.Validator
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
-            List<OWLIssue> issues = [];
+            List<OWLIssue> issues = new List<OWLIssue>();
 
             foreach (OWLDifferentIndividuals diffIdvsAxiom in ontology.GetAssertionAxiomsOfType<OWLDifferentIndividuals>())
             {

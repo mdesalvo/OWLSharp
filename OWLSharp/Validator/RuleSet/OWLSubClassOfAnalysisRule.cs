@@ -26,10 +26,10 @@ namespace OWLSharp.Validator
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
-            List<OWLIssue> issues = [];
+            List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-            Dictionary<string, List<OWLIndividualExpression>> individualsCache = [];
+            Dictionary<string, List<OWLIndividualExpression>> individualsCache = new Dictionary<string, List<OWLIndividualExpression>>();
 
             foreach (OWLSubClassOf subClassOf in ontology.GetClassAxiomsOfType<OWLSubClassOf>())
             {

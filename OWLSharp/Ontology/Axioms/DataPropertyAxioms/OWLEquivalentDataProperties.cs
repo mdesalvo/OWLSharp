@@ -52,7 +52,7 @@ namespace OWLSharp.Ontology
         {
             RDFGraph graph = new RDFGraph();
 
-            List<RDFResource> dtPropIRIs = [];
+            List<RDFResource> dtPropIRIs = new List<RDFResource>();
             foreach (OWLDataProperty dataProperty in DataProperties)
             {
                 dtPropIRIs.Add(dataProperty.GetIRI());
@@ -60,7 +60,7 @@ namespace OWLSharp.Ontology
             }
 
             //Axiom Triple(s)
-            List<RDFTriple> axiomTriples = [];
+            List<RDFTriple> axiomTriples = new List<RDFTriple>();
             for (int i = 0; i < DataProperties.Count - 1; i++)
                 for (int j = i + 1; j < DataProperties.Count; j++)
                 {

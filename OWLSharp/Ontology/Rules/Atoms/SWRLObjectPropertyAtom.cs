@@ -64,10 +64,11 @@ namespace OWLSharp.Ontology
             List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
             List<OWLObjectPropertyAssertion> atomPredicateAssertions = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, (OWLObjectProperty)Predicate);
             if (RightArgument is SWRLIndividualArgument rightArgumentIndividual)
-                atomPredicateAssertions = [.. atomPredicateAssertions.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(rightArgumentIndividual.GetResource()))];
+                atomPredicateAssertions = atomPredicateAssertions.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(rightArgumentIndividual.GetResource()))
+                                                                 .ToList();
 
             //Save them into the atom result
-            Dictionary<string, string> atomResultBindings = [];
+            Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();
             foreach (OWLObjectPropertyAssertion atomPredicateAssertion in atomPredicateAssertions)
             {
                 atomResultBindings.Add(leftArgumentString, atomPredicateAssertion.SourceIndividualExpression.GetIRI().ToString());
@@ -85,7 +86,7 @@ namespace OWLSharp.Ontology
 
         internal override List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology)
         {
-            List<OWLInference> inferences = [];
+            List<OWLInference> inferences = new List<OWLInference>();
             string leftArgumentString = LeftArgument.ToString();
             string rightArgumentString = RightArgument.ToString();
             string objectPropertyAtomString = ToString();
@@ -128,14 +129,14 @@ namespace OWLSharp.Ontology
                     //Build the inference individual (source)
                     OWLIndividualExpression opAsnSrcIdvExpr;
                     if (leftArgumentValueResource.IsBlank)
-                        opAsnSrcIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString()[6..]);
+                        opAsnSrcIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString().Substring(6));
                     else
                         opAsnSrcIdvExpr = new OWLNamedIndividual(leftArgumentValueResource);
 
                     //Build the inference individual (target)
                     OWLIndividualExpression opAsnTgtIdvExpr;
                     if (rightArgumentValueResource.IsBlank)
-                        opAsnTgtIdvExpr = new OWLAnonymousIndividual(rightArgumentValueResource.ToString()[6..]);
+                        opAsnTgtIdvExpr = new OWLAnonymousIndividual(rightArgumentValueResource.ToString().Substring(6));
                     else
                         opAsnTgtIdvExpr = new OWLNamedIndividual(rightArgumentValueResource);
 

@@ -68,10 +68,11 @@ namespace OWLSharp.Ontology
             List<OWLAnnotationAssertion> annAsns = ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>();
             List<OWLAnnotationAssertion> atomPredicateAssertions = OWLAnnotationAxiomHelper.SelectAnnotationAssertionsByAPEX(annAsns, (OWLAnnotationProperty)Predicate);
             if (RightArgument is SWRLLiteralArgument rightArgumentLiteral)
-                atomPredicateAssertions = [.. atomPredicateAssertions.Where(asn => asn.ValueLiteral?.GetLiteral().Equals(rightArgumentLiteral.GetLiteral()) ?? false)];
+                atomPredicateAssertions = atomPredicateAssertions.Where(asn => asn.ValueLiteral?.GetLiteral().Equals(rightArgumentLiteral.GetLiteral()) ?? false)
+                                                                 .ToList();
 
             //Save them into the atom result
-            Dictionary<string, string> atomResultBindings = [];
+            Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();
             foreach (OWLAnnotationAssertion atomPredicateAssertion in atomPredicateAssertions)
             {
                 atomResultBindings.Add(leftArgumentString, atomPredicateAssertion.SubjectIRI);
@@ -89,7 +90,7 @@ namespace OWLSharp.Ontology
 
         internal override List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology)
         {
-            List<OWLInference> inferences = [];
+            List<OWLInference> inferences = new List<OWLInference>();
             string leftArgumentString = LeftArgument.ToString();
             string rightArgumentString = RightArgument.ToString();
             string annotationPropertyAtomString = ToString();

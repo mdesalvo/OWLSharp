@@ -22,7 +22,7 @@ namespace OWLSharp.Reasoner
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
-            List<OWLInference> inferences = [];
+            List<OWLInference> inferences = new List<OWLInference>();
 
             //ObjectPropertyRange(OP,C) ^ ObjectPropertyAssertion(OP, I1, I2) -> ClassAssertion(C,I2)
             foreach (OWLObjectPropertyRange objectPropertyRange in ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyRange>())

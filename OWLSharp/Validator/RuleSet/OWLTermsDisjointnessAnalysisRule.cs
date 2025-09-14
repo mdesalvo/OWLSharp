@@ -24,15 +24,15 @@ namespace OWLSharp.Validator
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
-            List<OWLIssue> issues = [];
+            List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-            List<string> declaredClasses = [.. ontology.GetDeclaredEntitiesOfType<OWLClass>().Select(cls => cls.GetIRI().ToString()).Distinct()];
-            List<string> declaredDatatypes = [.. ontology.GetDeclaredEntitiesOfType<OWLDatatype>().Select(dtt => dtt.GetIRI().ToString()).Distinct()];
-            List<string> declaredDataProperties = [.. ontology.GetDeclaredEntitiesOfType<OWLDataProperty>().Select(dtp => dtp.GetIRI().ToString()).Distinct()];
-            List<string> declaredObjectProperties = [.. ontology.GetDeclaredEntitiesOfType<OWLObjectProperty>().Select(obp => obp.GetIRI().ToString()).Distinct()];
-            List<string> declaredAnnotationProperties = [.. ontology.GetDeclaredEntitiesOfType<OWLAnnotationProperty>().Select(anp => anp.GetIRI().ToString()).Distinct()];
-            List<string> declaredNamedIndividuals = [.. ontology.GetDeclaredEntitiesOfType<OWLNamedIndividual>().Select(idv => idv.GetIRI().ToString()).Distinct()];
+            List<string> declaredClasses = ontology.GetDeclaredEntitiesOfType<OWLClass>().Select(cls => cls.GetIRI().ToString()).Distinct().ToList();
+            List<string> declaredDatatypes = ontology.GetDeclaredEntitiesOfType<OWLDatatype>().Select(dtt => dtt.GetIRI().ToString()).Distinct().ToList();
+            List<string> declaredDataProperties = ontology.GetDeclaredEntitiesOfType<OWLDataProperty>().Select(dtp => dtp.GetIRI().ToString()).Distinct().ToList();
+            List<string> declaredObjectProperties = ontology.GetDeclaredEntitiesOfType<OWLObjectProperty>().Select(obp => obp.GetIRI().ToString()).Distinct().ToList();
+            List<string> declaredAnnotationProperties = ontology.GetDeclaredEntitiesOfType<OWLAnnotationProperty>().Select(anp => anp.GetIRI().ToString()).Distinct().ToList();
+            List<string> declaredNamedIndividuals = ontology.GetDeclaredEntitiesOfType<OWLNamedIndividual>().Select(idv => idv.GetIRI().ToString()).Distinct().ToList();
 
             foreach (string clashingClass in declaredClasses.Where(cls => declaredDatatypes.Contains(cls)
                                                                             || declaredDataProperties.Contains(cls)

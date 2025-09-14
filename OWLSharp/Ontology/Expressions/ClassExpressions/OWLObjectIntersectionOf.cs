@@ -71,7 +71,7 @@ namespace OWLSharp.Ontology
             StringBuilder sb = new StringBuilder();
 
             sb.Append('(');
-            sb.AppendJoin(" and ", ClassExpressions.Select(clsExpr => clsExpr.ToSWRLString()));
+            sb.Append(string.Join(" and ", ClassExpressions.Select(clsExpr => clsExpr.ToSWRLString())));
             sb.Append(')');
 
             return sb.ToString();
@@ -80,7 +80,7 @@ namespace OWLSharp.Ontology
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
-            expressionIRI ??= GetIRI();
+            expressionIRI = expressionIRI ?? GetIRI();
 
             RDFCollection objectIntersectionOfCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
             foreach (OWLClassExpression classExpression in ClassExpressions)

@@ -24,7 +24,7 @@ namespace OWLSharp.Validator
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
-            List<OWLIssue> issues = [];
+            List<OWLIssue> issues = new List<OWLIssue>();
 
             //ClassAssertion(CLS,IDV) ^ ClassAssertion(ObjectComplementOf(CLS),IDV) -> ERROR
             foreach (var classAsnMap in validatorContext.ClassAssertions

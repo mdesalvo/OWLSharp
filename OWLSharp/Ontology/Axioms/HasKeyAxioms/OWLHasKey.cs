@@ -68,8 +68,8 @@ namespace OWLSharp.Ontology
             #endregion
 
             ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLHasKey because given \"classExpression\" parameter is null");
-            ObjectPropertyExpressions = objectPropertyExpressions ?? [];
-            DataProperties = dataProperties ?? [];
+            ObjectPropertyExpressions = objectPropertyExpressions ?? new List<OWLObjectPropertyExpression>();
+            DataProperties = dataProperties ?? new List<OWLDataProperty>();
         }
         #endregion
 

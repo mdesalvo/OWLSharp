@@ -25,7 +25,7 @@ namespace OWLSharp.Ontology
     {
         #region Methods
         public static List<T> GetAssertionAxiomsOfType<T>(this OWLOntology ontology) where T : OWLAssertionAxiom
-            => ontology?.AssertionAxioms.OfType<T>().ToList() ?? [];
+            => ontology?.AssertionAxioms.OfType<T>().ToList() ?? new List<T>();
 
         public static bool CheckHasAssertionAxiom<T>(this OWLOntology ontology, T assertionAxiom) where T : OWLAssertionAxiom
             => GetAssertionAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), assertionAxiom?.GetXML()));
@@ -49,7 +49,7 @@ namespace OWLSharp.Ontology
             #region Utilities
             List<OWLIndividualExpression> FindSameIndividuals(RDFResource idvExprIRI, List<OWLSameIndividual> axioms, HashSet<long> visitContext)
             {
-                List<OWLIndividualExpression> foundSameIndividuals = [];
+                List<OWLIndividualExpression> foundSameIndividuals = new List<OWLIndividualExpression>();
 
                 #region VisitContext
                 if (!visitContext.Add(idvExprIRI.PatternMemberID))
@@ -70,9 +70,9 @@ namespace OWLSharp.Ontology
             }
             #endregion
 
-            List<OWLIndividualExpression> sameIndividuals = [];
+            List<OWLIndividualExpression> sameIndividuals = new List<OWLIndividualExpression>();
             if (ontology != null && idvExpr != null)
-                sameIndividuals.AddRange(FindSameIndividuals(idvExpr.GetIRI(), GetAssertionAxiomsOfType<OWLSameIndividual>(ontology), []));
+                sameIndividuals.AddRange(FindSameIndividuals(idvExpr.GetIRI(), GetAssertionAxiomsOfType<OWLSameIndividual>(ontology), new HashSet<long>()));
             return sameIndividuals;
         }
 
@@ -81,7 +81,7 @@ namespace OWLSharp.Ontology
 
         public static List<OWLIndividualExpression> GetDifferentIndividuals(this OWLOntology ontology, OWLIndividualExpression idvExpr)
         {
-            List<OWLIndividualExpression> differentIndividuals = [];
+            List<OWLIndividualExpression> differentIndividuals = new List<OWLIndividualExpression>();
 
             //There is no reasoning on individual difference (apart simmetry), being this totally under OWA domain
             if (ontology != null && idvExpr != null)
@@ -108,7 +108,7 @@ namespace OWLSharp.Ontology
             #region Utilities
             List<OWLIndividualExpression> FindIndividualsOf(OWLClassExpression visitingClsExpr, HashSet<long> visitContext)
             {
-                List<OWLIndividualExpression> foundVisitingClsExprIndividuals = [];
+                List<OWLIndividualExpression> foundVisitingClsExprIndividuals = new List<OWLIndividualExpression>();
                 RDFResource visitingClsExprIRI = visitingClsExpr.GetIRI();
 
                 #region VisitContext
@@ -341,7 +341,7 @@ namespace OWLSharp.Ontology
                             {
                                 //DataSomeValuesFrom is an OWL-DL syntactic shortcut for qualified DataMinCardinality(1)
                                 //so we threat them the same way, fetching restricted data property and qualified datarange
-                                List<OWLDataProperty> onProps = [];
+                                List<OWLDataProperty> onProps = new List<OWLDataProperty>();
                                 switch (equivClsExpr)
                                 {
                                     case OWLDataMinCardinality dtMinCard:
@@ -360,7 +360,7 @@ namespace OWLSharp.Ontology
 
                                 //Compute data property assertions in scope of DMNC/DSVF restriction
                                 bool isQualified = onDataRangeExpr != null;
-                                List<OWLDataPropertyAssertion> inScopeDtPropAssertions = [];
+                                List<OWLDataPropertyAssertion> inScopeDtPropAssertions = new List<OWLDataPropertyAssertion>();
                                 foreach (OWLDataProperty onProp in onProps)
                                     inScopeDtPropAssertions.AddRange(SelectDataAssertionsByDPEX(dataPropertyAssertions, onProp));
 
@@ -399,10 +399,10 @@ namespace OWLSharp.Ontology
             }
             #endregion
 
-            List<OWLIndividualExpression> classIndividuals = [];
+            List<OWLIndividualExpression> classIndividuals = new List<OWLIndividualExpression>();
             if (ontology != null && clsExpr != null)
             {
-                classIndividuals.AddRange(FindIndividualsOf(clsExpr, []));
+                classIndividuals.AddRange(FindIndividualsOf(clsExpr, new HashSet<long>()));
 
                 //This additional entailment can be quite expensive, so it is on-demand
                 if (enableSameAsEntailment)
@@ -571,22 +571,22 @@ namespace OWLSharp.Ontology
         internal static List<OWLObjectPropertyAssertion> SelectObjectAssertionsByOPEX(List<OWLObjectPropertyAssertion> objPropAsnAxioms, OWLObjectPropertyExpression objPropExpr)
         {
             RDFResource opexIRI = objPropExpr is OWLObjectInverseOf objPropExprInvOf ? objPropExprInvOf.ObjectProperty.GetIRI() : objPropExpr.GetIRI();
-            return [.. objPropAsnAxioms.Where(ax => (ax.ObjectPropertyExpression is OWLObjectInverseOf asnObjInvOf && asnObjInvOf.ObjectProperty.GetIRI().Equals(opexIRI))
-                                                  || (ax.ObjectPropertyExpression is OWLObjectProperty asnObjProp && asnObjProp.GetIRI().Equals(opexIRI)))];
+            return objPropAsnAxioms.Where(ax => (ax.ObjectPropertyExpression is OWLObjectInverseOf asnObjInvOf && asnObjInvOf.ObjectProperty.GetIRI().Equals(opexIRI))
+                                                  || (ax.ObjectPropertyExpression is OWLObjectProperty asnObjProp && asnObjProp.GetIRI().Equals(opexIRI))).ToList();
         }
 
         internal static List<OWLDataPropertyAssertion> SelectDataAssertionsByDPEX(List<OWLDataPropertyAssertion> dtPropAsnAxioms, OWLDataProperty dtProp)
-            => [.. dtPropAsnAxioms.Where(ax => ax.DataProperty.GetIRI().Equals(dtProp.GetIRI()))];
+            => dtPropAsnAxioms.Where(ax => ax.DataProperty.GetIRI().Equals(dtProp.GetIRI())).ToList();
 
         internal static List<OWLNegativeObjectPropertyAssertion> SelectNegativeObjectAssertionsByOPEX(List<OWLNegativeObjectPropertyAssertion> negObjPropAsnAxioms, OWLObjectPropertyExpression objPropExpr)
         {
             RDFResource opexIRI = objPropExpr is OWLObjectInverseOf objPropExprInvOf ? objPropExprInvOf.ObjectProperty.GetIRI() : objPropExpr.GetIRI();
-            return [.. negObjPropAsnAxioms.Where(ax => (ax.ObjectPropertyExpression is OWLObjectInverseOf asnObjInvOf && asnObjInvOf.ObjectProperty.GetIRI().Equals(opexIRI))
-                                                       || (ax.ObjectPropertyExpression is OWLObjectProperty asnObjProp && asnObjProp.GetIRI().Equals(opexIRI)))];
+            return negObjPropAsnAxioms.Where(ax => (ax.ObjectPropertyExpression is OWLObjectInverseOf asnObjInvOf && asnObjInvOf.ObjectProperty.GetIRI().Equals(opexIRI))
+                                                       || (ax.ObjectPropertyExpression is OWLObjectProperty asnObjProp && asnObjProp.GetIRI().Equals(opexIRI))).ToList();
         }
 
         internal static List<OWLNegativeDataPropertyAssertion> SelectNegativeDataAssertionsByDPEX(List<OWLNegativeDataPropertyAssertion> negDtPropAsnAxioms, OWLDataProperty dtProp)
-            => [.. negDtPropAsnAxioms.Where(ax => ax.DataProperty.GetIRI().Equals(dtProp.GetIRI()))];
+            => negDtPropAsnAxioms.Where(ax => ax.DataProperty.GetIRI().Equals(dtProp.GetIRI())).ToList();
 
         internal static List<OWLObjectPropertyAssertion> CalibrateObjectAssertions(OWLOntology ontology)
         {

@@ -24,7 +24,7 @@ namespace OWLSharp.Validator
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
-            List<OWLIssue> issues = [];
+            List<OWLIssue> issues = new List<OWLIssue>();
 
             //EquivalentObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP1,OP2) -> ERROR
             //EquivalentObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP2,OP1) -> ERROR

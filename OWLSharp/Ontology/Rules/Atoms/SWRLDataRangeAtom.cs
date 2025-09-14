@@ -43,12 +43,13 @@ namespace OWLSharp.Ontology
             RDFQueryEngine.AddColumn(atomResult, leftArgumentString);
 
             //Extract data property assertions of the atom predicate
-            List<OWLLiteral> dpAsnLiterals = [.. ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
+            List<OWLLiteral> dpAsnLiterals = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
                                                      .Where(dpAsn => ontology.CheckIsLiteralOf((OWLDataRangeExpression)Predicate, dpAsn.Literal))
-                                                     .Select(dpAsn => dpAsn.Literal)];
+                                                     .Select(dpAsn => dpAsn.Literal)
+                                                     .ToList();
 
             //Save them into the atom result
-            Dictionary<string, string> atomResultBindings = [];
+            Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();
             foreach (OWLLiteral dpAsnLiteral in dpAsnLiterals)
             {
                 atomResultBindings.Add(leftArgumentString, dpAsnLiteral.GetLiteral().ToString());
@@ -64,7 +65,7 @@ namespace OWLSharp.Ontology
 
         //This kind of atom does not emit inferences
         internal override List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology)
-            => [];
+            => new List<OWLInference>();
 
         internal override RDFGraph ToRDFGraph(RDFCollection atomsList)
         {

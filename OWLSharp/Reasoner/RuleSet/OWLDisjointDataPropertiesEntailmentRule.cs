@@ -23,14 +23,14 @@ namespace OWLSharp.Reasoner
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
-            List<OWLInference> inferences = [];
+            List<OWLInference> inferences = new List<OWLInference>();
 
             foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
                                                                      .Select(ax => (OWLDataProperty)ax.Expression))
             {
                 foreach (OWLDataProperty disjointDataProperty in ontology.GetDisjointDataProperties(declaredDataProperty))
                 {
-                    OWLDisjointDataProperties inference = new OWLDisjointDataProperties([declaredDataProperty, disjointDataProperty]) { IsInference=true };
+                    OWLDisjointDataProperties inference = new OWLDisjointDataProperties(new List<OWLDataProperty> { declaredDataProperty, disjointDataProperty }) { IsInference=true };
                     inference.GetXML();
                     inferences.Add(new OWLInference(rulename, inference));
                 }

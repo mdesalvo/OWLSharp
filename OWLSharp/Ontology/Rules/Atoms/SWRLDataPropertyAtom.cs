@@ -64,10 +64,11 @@ namespace OWLSharp.Ontology
             List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
             List<OWLDataPropertyAssertion> atomPredicateAssertions = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, (OWLDataProperty)Predicate);
             if (RightArgument is SWRLLiteralArgument rightArgumentLiteral)
-                atomPredicateAssertions = [.. atomPredicateAssertions.Where(asn => asn.Literal.GetLiteral().Equals(rightArgumentLiteral.GetLiteral()))];
+                atomPredicateAssertions = atomPredicateAssertions.Where(asn => asn.Literal.GetLiteral().Equals(rightArgumentLiteral.GetLiteral()))
+                                                                 .ToList();
 
             //Save them into the atom result
-            Dictionary<string, string> atomResultBindings = [];
+            Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();
             foreach (OWLDataPropertyAssertion atomPredicateAssertion in atomPredicateAssertions)
             {
                 atomResultBindings.Add(leftArgumentString, atomPredicateAssertion.IndividualExpression.GetIRI().ToString());
@@ -85,7 +86,7 @@ namespace OWLSharp.Ontology
 
         internal override List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology)
         {
-            List<OWLInference> inferences = [];
+            List<OWLInference> inferences = new List<OWLInference>();
             string leftArgumentString = LeftArgument.ToString();
             string rightArgumentString = RightArgument.ToString();
             string dataPropertyAtomString = ToString();
@@ -128,7 +129,7 @@ namespace OWLSharp.Ontology
                     //Build the inference individual
                     OWLIndividualExpression dpAsnIdvExpr;
                     if (leftArgumentValueResource.IsBlank)
-                        dpAsnIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString()[6..]);
+                        dpAsnIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString().Substring(6));
                     else
                         dpAsnIdvExpr = new OWLNamedIndividual(leftArgumentValueResource);
 

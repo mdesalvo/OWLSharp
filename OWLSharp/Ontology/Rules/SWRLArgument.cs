@@ -124,7 +124,7 @@ namespace OWLSharp.Ontology
                 throw new SWRLException("Cannot create SWRLVariableArgument because given \"variable\" parameter is null");
             #endregion
 
-            IRI = new RDFResource($"urn:swrl:var#{variable.VariableName[1..]}").ToString();
+            IRI = new RDFResource($"urn:swrl:var#{variable.VariableName.Substring(1)}").ToString();
         }
         #endregion
 

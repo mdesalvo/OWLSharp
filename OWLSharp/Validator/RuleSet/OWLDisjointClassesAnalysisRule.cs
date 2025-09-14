@@ -14,6 +14,7 @@
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OWLSharp.Validator
 {
@@ -25,15 +26,15 @@ namespace OWLSharp.Validator
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
-            List<OWLIssue> issues = [];
+            List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-            Dictionary<long, List<OWLIndividualExpression>> idvsCache = [];
-            Dictionary<long, long> idvsCounter = [];
+            Dictionary<long, List<OWLIndividualExpression>> idvsCache = new Dictionary<long, List<OWLIndividualExpression>>();
+            Dictionary<long, long> idvsCounter = new Dictionary<long, long>();
 
             foreach (OWLDisjointClasses disjClasses in ontology.GetClassAxiomsOfType<OWLDisjointClasses>())
             {
-                List<OWLClassExpression> classExpressions = [.. disjClasses.ClassExpressions];
+                List<OWLClassExpression> classExpressions = disjClasses.ClassExpressions.ToList();
 
                 //DisjointClasses(CLS1,CLS2) ^ SubClassOf(CLS1,CLS2) -> ERROR
                 //DisjointClasses(CLS1,CLS2) ^ SubClassOf(CLS2,CLS1) -> ERROR

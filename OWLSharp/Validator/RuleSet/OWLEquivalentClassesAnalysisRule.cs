@@ -24,7 +24,7 @@ namespace OWLSharp.Validator
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
-            List<OWLIssue> issues = [];
+            List<OWLIssue> issues = new List<OWLIssue>();
 
             //EquivalentClasses(CLS1,CLS2) ^ SubClassOf(CLS1,CLS2) -> ERROR
             //EquivalentClasses(CLS1,CLS2) ^ SubClassOf(CLS2,CLS1) -> ERROR

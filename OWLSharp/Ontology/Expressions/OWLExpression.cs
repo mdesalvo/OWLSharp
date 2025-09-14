@@ -78,7 +78,7 @@ namespace OWLSharp.Ontology
 
     //Derived
 
-    public class OWLAnnotationPropertyExpression : OWLExpression;
+    public class OWLAnnotationPropertyExpression : OWLExpression { }
 
     public class OWLClassExpression : OWLExpression
     {
@@ -132,15 +132,15 @@ namespace OWLSharp.Ontology
         #endregion
     }
 
-    public class OWLDataPropertyExpression : OWLExpression;
+    public class OWLDataPropertyExpression : OWLExpression { }
 
-    public class OWLObjectPropertyExpression : OWLExpression;
+    public class OWLObjectPropertyExpression : OWLExpression { }
 
-    public class OWLIndividualExpression : OWLExpression;
+    public class OWLIndividualExpression : OWLExpression { }
 
-    public class OWLLiteralExpression : OWLExpression;
+    public class OWLLiteralExpression : OWLExpression { }
 
     //Entity
 
-    public interface IOWLEntity;
+    public interface IOWLEntity { }
 }

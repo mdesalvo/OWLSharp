@@ -30,7 +30,7 @@ namespace OWLSharp.Validator
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
-            List<OWLIssue> issues = [];
+            List<OWLIssue> issues = new List<OWLIssue>();
 
             if (ontology.GetSuperObjectPropertiesOf(new OWLObjectProperty(RDFVocabulary.OWL.TOP_OBJECT_PROPERTY)).Count > 0)
                 issues.Add(new OWLIssue(

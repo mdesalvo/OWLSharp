@@ -27,7 +27,7 @@ namespace OWLSharp.Ontology
         #region Properties
 
         internal static readonly Dictionary<string, (OWLOntology Ontology, DateTime ExpireTimestamp)> OntologyCache
-            = [];
+            = new Dictionary<string, (OWLOntology, DateTime)>();
         #endregion
 
         #region Methods
@@ -49,21 +49,20 @@ namespace OWLSharp.Ontology
                         string ontologyIRIString = ontologyIRI.ToString();
 
                         //Cache-Expire
-                        if (OntologyCache.TryGetValue(ontologyIRIString, out (OWLOntology Ontology, DateTime ExpireTimestamp) cacheHitValue) && cacheHitValue.ExpireTimestamp < DateTime.UtcNow)
+                        if (OntologyCache.ContainsKey(ontologyIRIString) && OntologyCache[ontologyIRIString].ExpireTimestamp < DateTime.UtcNow)
                             OntologyCache.Remove(ontologyIRIString);
 
                         //Cache-Miss
-                        if (!OntologyCache.TryGetValue(ontologyIRIString, out (OWLOntology Ontology, DateTime ExpireTimestamp) cacheMissValue))
+                        if (!OntologyCache.ContainsKey(ontologyIRIString))
                         {
                             RDFGraph importGraph = await RDFGraph.FromUriAsync(ontologyIRI, timeoutMilliseconds, true);
                             OWLOntology importOntology = await OWLOntology.FromRDFGraphAsync(importGraph);
-                            cacheMissValue = (importOntology, DateTime.UtcNow.AddMilliseconds(cacheMilliseconds));
                             //Save the fetched ontology into the cache for the given amount of milliseconds
-                            OntologyCache.Add(ontologyIRIString, cacheMissValue);
+                            OntologyCache.Add(ontologyIRIString, (importOntology, DateTime.UtcNow.AddMilliseconds(cacheMilliseconds)));
                         }
 
                         //Cache-Hit
-                        OWLOntology importedOntology = cacheMissValue.Ontology;
+                        OWLOntology importedOntology = OntologyCache[ontologyIRIString].Ontology;
                         #endregion
 
                         //Imports

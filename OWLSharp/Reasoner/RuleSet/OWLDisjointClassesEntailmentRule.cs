@@ -23,7 +23,7 @@ namespace OWLSharp.Reasoner
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
-            List<OWLInference> inferences = [];
+            List<OWLInference> inferences = new List<OWLInference>();
 
             //EquivalentClasses(C1,C2) ^ DisjointClasses(C2,C3) -> DisjointClasses(C1,C3)
             //SubClassOf(C1,C2) ^ DisjointClasses(C2,C3) -> DisjointClasses(C1,C3)
@@ -32,7 +32,7 @@ namespace OWLSharp.Reasoner
             {
                 foreach (OWLClassExpression disjointClass in ontology.GetDisjointClasses(declaredClass))
                 {
-                    OWLDisjointClasses inference = new OWLDisjointClasses([declaredClass, disjointClass]) { IsInference=true };
+                    OWLDisjointClasses inference = new OWLDisjointClasses(new List<OWLClassExpression> { declaredClass, disjointClass }) { IsInference=true };
                     inference.GetXML();
                     inferences.Add(new OWLInference(rulename, inference));
                 }

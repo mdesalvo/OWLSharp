@@ -23,7 +23,7 @@ namespace OWLSharp.Reasoner
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
-            List<OWLInference> inferences = [];
+            List<OWLInference> inferences = new List<OWLInference>();
 
             foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
                                                                      .Select(ax => (OWLDataProperty)ax.Expression))
@@ -32,7 +32,7 @@ namespace OWLSharp.Reasoner
                 List<OWLDataProperty> equivalentDataProperties = ontology.GetEquivalentDataProperties(declaredDataProperty);
                 foreach (OWLDataProperty equivalentDataProperty in equivalentDataProperties)
                 {
-                    OWLEquivalentDataProperties inference = new OWLEquivalentDataProperties([declaredDataProperty, equivalentDataProperty]) { IsInference=true };
+                    OWLEquivalentDataProperties inference = new OWLEquivalentDataProperties(new List<OWLDataProperty> { declaredDataProperty, equivalentDataProperty }) { IsInference=true };
                     inference.GetXML();
                     inferences.Add(new OWLInference(rulename, inference));
                 }

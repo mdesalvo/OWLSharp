@@ -25,10 +25,10 @@ namespace OWLSharp.Validator
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
-            List<OWLIssue> issues = [];
+            List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-            List<OWLObjectPropertyAssertion> disjObPropAsns = [];
+            List<OWLObjectPropertyAssertion> disjObPropAsns = new List<OWLObjectPropertyAssertion>();
 
             //DisjointObjectProperties(OP1,OP2) ^ ObjectPropertyAssertion(OP1,IDV1,IDV2) ^ ObjectPropertyAssertion(OP2,IDV1,IDV2) -> ERROR
             foreach (OWLDisjointObjectProperties disjObProps in ontology.GetObjectPropertyAxiomsOfType<OWLDisjointObjectProperties>())

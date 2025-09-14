@@ -24,7 +24,7 @@ namespace OWLSharp.Ontology
     {
         #region Methods
         public static List<T> GetAnnotationAxiomsOfType<T>(this OWLOntology ontology) where T : OWLAnnotationAxiom
-            => ontology?.AnnotationAxioms.OfType<T>().ToList() ?? [];
+            => ontology?.AnnotationAxioms.OfType<T>().ToList() ?? new List<T>();
 
         public static bool CheckHasAnnotationAxiom<T>(this OWLOntology ontology, T annotationAxiom) where T : OWLAnnotationAxiom
             => GetAnnotationAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), annotationAxiom?.GetXML()));
@@ -48,7 +48,7 @@ namespace OWLSharp.Ontology
             #region Utilities
             List<OWLAnnotationProperty> FindSubAnnotationPropertiesOf(RDFResource annPropIRI, List<OWLSubAnnotationPropertyOf> axioms, HashSet<long> visitContext)
             {
-                List<OWLAnnotationProperty> foundSubAnnotationProperties = [];
+                List<OWLAnnotationProperty> foundSubAnnotationProperties = new List<OWLAnnotationProperty>();
 
                 #region VisitContext
                 if (!visitContext.Add(annPropIRI.PatternMemberID))
@@ -68,11 +68,11 @@ namespace OWLSharp.Ontology
             }
             #endregion
 
-            List<OWLAnnotationProperty> subAnnotationProperties = [];
+            List<OWLAnnotationProperty> subAnnotationProperties = new List<OWLAnnotationProperty>();
             if (ontology != null && annotationProperty != null)
             {
                 RDFResource dtPropIRI = annotationProperty.GetIRI();
-                subAnnotationProperties.AddRange(FindSubAnnotationPropertiesOf(dtPropIRI, GetAnnotationAxiomsOfType<OWLSubAnnotationPropertyOf>(ontology), []));
+                subAnnotationProperties.AddRange(FindSubAnnotationPropertiesOf(dtPropIRI, GetAnnotationAxiomsOfType<OWLSubAnnotationPropertyOf>(ontology), new HashSet<long>()));
             }
             return OWLExpressionHelper.RemoveDuplicates(subAnnotationProperties);
         }
@@ -85,7 +85,7 @@ namespace OWLSharp.Ontology
             #region Utilities
             List<OWLAnnotationProperty> FindSuperAnnotationPropertiesOf(RDFResource annPropIRI, List<OWLSubAnnotationPropertyOf> axioms, HashSet<long> visitContext)
             {
-                List<OWLAnnotationProperty> foundSuperAnnotationProperties = [];
+                List<OWLAnnotationProperty> foundSuperAnnotationProperties = new List<OWLAnnotationProperty>();
 
                 #region VisitContext
                 if (!visitContext.Add(annPropIRI.PatternMemberID))
@@ -105,11 +105,11 @@ namespace OWLSharp.Ontology
             }
             #endregion
 
-            List<OWLAnnotationProperty> superAnnotationProperties = [];
+            List<OWLAnnotationProperty> superAnnotationProperties = new List<OWLAnnotationProperty>();
             if (ontology != null && annotationProperty != null)
             {
                 RDFResource dtPropIRI = annotationProperty.GetIRI();
-                superAnnotationProperties.AddRange(FindSuperAnnotationPropertiesOf(dtPropIRI, GetAnnotationAxiomsOfType<OWLSubAnnotationPropertyOf>(ontology), []));
+                superAnnotationProperties.AddRange(FindSuperAnnotationPropertiesOf(dtPropIRI, GetAnnotationAxiomsOfType<OWLSubAnnotationPropertyOf>(ontology), new HashSet<long>()));
             }
             return OWLExpressionHelper.RemoveDuplicates(superAnnotationProperties);
         }
@@ -117,7 +117,7 @@ namespace OWLSharp.Ontology
 
         #region Utilities
         internal static List<OWLAnnotationAssertion> SelectAnnotationAssertionsByAPEX(List<OWLAnnotationAssertion> annAsnAxioms, OWLAnnotationProperty annProp)
-            => [.. annAsnAxioms.Where(ax => ax.AnnotationProperty.GetIRI().Equals(annProp.GetIRI()))];
+            => annAsnAxioms.Where(ax => ax.AnnotationProperty.GetIRI().Equals(annProp.GetIRI())).ToList();
         #endregion
     }
 }

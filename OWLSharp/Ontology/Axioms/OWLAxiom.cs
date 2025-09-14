@@ -76,12 +76,12 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         internal OWLAxiom()
-            => Annotations = [];
+            => Annotations = new List<OWLAnnotation>();
         #endregion
 
         #region Methods
         public string GetXML()
-            => AxiomXML ??= OWLSerializer.SerializeObject(this);
+            => AxiomXML ?? (AxiomXML = OWLSerializer.SerializeObject(this));
 
         public virtual RDFGraph ToRDFGraph()
             => new RDFGraph();

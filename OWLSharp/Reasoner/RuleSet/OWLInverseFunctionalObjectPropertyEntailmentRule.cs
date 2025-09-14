@@ -23,10 +23,10 @@ namespace OWLSharp.Reasoner
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
-            List<OWLInference> inferences = [];
+            List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables
-            Dictionary<string, List<OWLIndividualExpression>> idvxLookup = [];
+            Dictionary<string, List<OWLIndividualExpression>> idvxLookup = new Dictionary<string, List<OWLIndividualExpression>>();
 
             //InverseFunctionalObjectProperty(IFOP) ^ ObjectPropertyAssertion(IFOP,IDV1,IDVX) ^ ObjectPropertyAssertion(FOP,IDV2,IDVX) -> SameIndividual(IDV1,IDV2)
             foreach (OWLInverseFunctionalObjectProperty ifop in ontology.GetObjectPropertyAxiomsOfType<OWLInverseFunctionalObjectProperty>())
@@ -50,7 +50,7 @@ namespace OWLSharp.Reasoner
 
                     string idvx = fopAsnTargetIdvExpr.GetIRI().ToString();
                     if (!idvxLookup.ContainsKey(idvx))
-                        idvxLookup.Add(idvx, []);
+                        idvxLookup.Add(idvx, new List<OWLIndividualExpression>());
                     idvxLookup[idvx].Add(fopAsnSourceIdvExpr);
                 }
                 foreach (List<OWLIndividualExpression> idvxLookupEntry in idvxLookup.Values.Where(idvExprs => idvExprs.Count > 1))
