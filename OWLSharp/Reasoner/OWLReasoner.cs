@@ -186,22 +186,41 @@ namespace OWLSharp.Reasoner
                 foreach (KeyValuePair<string, List<OWLInference>> inferenceRegistryEntry in inferenceRegistry.Where(ir => ir.Value?.Count > 0))
                     inferenceRegistryEntry.Value.RemoveAll(inf =>
                     {
-                        string infXML = inf.Axiom.GetXML();
-                        return clsAsnAxiomsTask.Result.Contains(infXML)
-                               || dtPropAsnAxiomsTask.Result.Contains(infXML)
-                               || opPropAsnAxiomsTask.Result.Contains(infXML)
-                               || diffIdvsAxiomsTask.Result.Contains(infXML)
-                               || sameIdvsAxiomsTask.Result.Contains(infXML)
-                               || dsjClsAxiomsTask.Result.Contains(infXML)
-                               || eqvClsAxiomsTask.Result.Contains(infXML)
-                               || subClsAxiomsTask.Result.Contains(infXML)
-                               || dsjDtPropAxiomsTask.Result.Contains(infXML)
-                               || eqvDtPropAxiomsTask.Result.Contains(infXML)
-                               || subDtPropAxiomsTask.Result.Contains(infXML)
-                               || dsjOpPropAxiomsTask.Result.Contains(infXML)
-                               || eqvOpPropAxiomsTask.Result.Contains(infXML)
-                               || subOpPropAxiomsTask.Result.Contains(infXML)
-                               || invOpPropAxiomsTask.Result.Contains(infXML);
+                        switch (inf.Axiom.GetType().Name)
+                        {
+                            case nameof(OWLClassAssertion):
+                                return clsAsnAxiomsTask.Result.Contains(inf.Axiom.GetXML());
+                            case nameof(OWLDataPropertyAssertion):
+                                return dtPropAsnAxiomsTask.Result.Contains(inf.Axiom.GetXML());
+                            case nameof(OWLObjectPropertyAssertion):
+                                return opPropAsnAxiomsTask.Result.Contains(inf.Axiom.GetXML());
+                            case nameof(OWLDifferentIndividuals):
+                                return diffIdvsAxiomsTask.Result.Contains(inf.Axiom.GetXML());
+                            case nameof(OWLSameIndividual):
+                                return sameIdvsAxiomsTask.Result.Contains(inf.Axiom.GetXML());
+                            case nameof(OWLDisjointClasses):
+                                return dsjClsAxiomsTask.Result.Contains(inf.Axiom.GetXML());
+                            case nameof(OWLEquivalentClasses):
+                                return eqvClsAxiomsTask.Result.Contains(inf.Axiom.GetXML());
+                            case nameof(OWLSubClassOf):
+                                return subClsAxiomsTask.Result.Contains(inf.Axiom.GetXML());
+                            case nameof(OWLDisjointDataProperties):
+                                return dsjDtPropAxiomsTask.Result.Contains(inf.Axiom.GetXML());
+                            case nameof(OWLEquivalentDataProperties):
+                                return eqvDtPropAxiomsTask.Result.Contains(inf.Axiom.GetXML());
+                            case nameof(OWLSubDataPropertyOf):
+                                return subDtPropAxiomsTask.Result.Contains(inf.Axiom.GetXML());
+                            case nameof(OWLDisjointObjectProperties):
+                                return dsjOpPropAxiomsTask.Result.Contains(inf.Axiom.GetXML());
+                            case nameof(OWLEquivalentObjectProperties):
+                                return eqvOpPropAxiomsTask.Result.Contains(inf.Axiom.GetXML());
+                            case nameof(OWLSubObjectPropertyOf):
+                                return subOpPropAxiomsTask.Result.Contains(inf.Axiom.GetXML());
+                            case nameof(OWLInverseObjectProperties):
+                                return invOpPropAxiomsTask.Result.Contains(inf.Axiom.GetXML());
+                            //Not explicitly handled inference type: just keep it
+                            default: return true;
+                        }
                     });
 
                 //Collect inferences
