@@ -2900,7 +2900,7 @@ namespace OWLSharp.Ontology
                 Uri remappedUri = RDFModelUtilities.RemapUriForDereference(uri);
 
                 HttpWebRequest webRequest = WebRequest.CreateHttp(remappedUri);
-                webRequest.MaximumAutomaticRedirections = 4;
+                webRequest.MaximumAutomaticRedirections = 3;
                 webRequest.AllowAutoRedirect = true;
                 webRequest.Timeout = timeoutMilliseconds;
                 webRequest.Accept = "application/owl+xml,application/rdf+xml,text/turtle,application/turtle,application/x-turtle,application/n-triples,application/trix";

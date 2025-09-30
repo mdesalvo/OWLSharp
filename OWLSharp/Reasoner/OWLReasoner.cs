@@ -76,11 +76,7 @@ namespace OWLSharp.Reasoner
                     dsjDtPropAxiomsTask, eqvDtPropAxiomsTask, subDtPropAxiomsTask, dsjOpPropAxiomsTask, eqvOpPropAxiomsTask, subOpPropAxiomsTask, invOpPropAxiomsTask);
 
                 //Execute OWL2 reasoner rules
-#if !NET8_0_OR_GREATER
-                await Rules.ParallelForEachAsync(async (rule, _) =>
-#else
-                await Parallel.ForEachAsync(Rules, async (rule, _) =>
-#endif
+                Parallel.ForEach(Rules, rule =>
                 {
                     string ruleString = rule.ToString();
                     OWLEvents.RaiseInfo($"Launching OWL2 rule {ruleString}...");
@@ -168,11 +164,11 @@ namespace OWLSharp.Reasoner
                 });
 
                 //Execute SWRL reasoner rules
-#if !NET8_0_OR_GREATER
+                #if !NET8_0_OR_GREATER
                 await ontology.Rules.ParallelForEachAsync(async (swrlRule, _) =>
-#else
+                #else
                 await Parallel.ForEachAsync(ontology.Rules, async (swrlRule, _) =>
-#endif
+                #endif
                 {
                     string swrlRuleString = swrlRule.ToString();
                     OWLEvents.RaiseInfo($"Launching SWRL rule {swrlRuleString}...");

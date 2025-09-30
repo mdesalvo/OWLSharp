@@ -56,11 +56,7 @@ namespace OWLSharp.Validator
                 };
 
                 //Execute validator rules
-#if !NET8_0_OR_GREATER
-                await Rules.ParallelForEachAsync(async (rule, _) =>
-#else
-                await Parallel.ForEachAsync(Rules, async (rule, _) =>
-#endif
+                Parallel.ForEach(Rules, rule =>
                 {
                     string ruleString = rule.ToString();
                     OWLEvents.RaiseInfo($"Launching OWL2 rule {ruleString}...");
