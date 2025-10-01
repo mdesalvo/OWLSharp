@@ -11,9 +11,6 @@
    limitations under the License.
 */
 
-#if !NET8_0_OR_GREATER
-using Dasync.Collections;
-#endif
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,20 +18,34 @@ using OWLSharp.Ontology;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// OWLValidator analyzes an ontology with the goal of evidencing modeling pitfalls and inconsistencies affecting its T-BOX/A-BOX
+    /// </summary>
     public sealed class OWLValidator
     {
         #region Properties
+        /// <summary>
+        /// The set of rules to be applied by the validator
+        /// </summary>
         public List<OWLEnums.OWLValidatorRules> Rules { get; internal set; } = new List<OWLEnums.OWLValidatorRules>();
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Adds the given rule to the validator
+        /// </summary>
+        /// <returns>The validator itself</returns>
         public OWLValidator AddRule(OWLEnums.OWLValidatorRules rule)
         {
             Rules.Add(rule);
             return this;
         }
 
-        public async Task<List<OWLIssue>> ApplyToOntologyAsync(OWLOntology ontology)
+        /// <summary>
+        /// Executes the validator's list of rules on the given ontology
+        /// </summary>
+        /// <returns>The list of detected issues</returns>
+        public Task<List<OWLIssue>> ApplyToOntologyAsync(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
@@ -47,7 +58,7 @@ namespace OWLSharp.Validator
                 Dictionary<string, List<OWLIssue>> issueRegistry = new Dictionary<string, List<OWLIssue>>(Rules.Count);
                 Rules.ForEach(rule => issueRegistry.Add(rule.ToString(), null));
 
-                //Initialize validator context
+                //Initialize validator context (prefetch most commonly required axiom types)
                 OWLValidatorContext validatorContext = new OWLValidatorContext
                 {
                     ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
@@ -162,11 +173,14 @@ namespace OWLSharp.Validator
                 OWLEvents.RaiseInfo($"Completed OWL2 validator on ontology {ontology.IRI} => {issues.Count} issues");
             }
 
-            return issues;
+            return Task.FromResult(issues);
         }
         #endregion
     }
 
+    /// <summary>
+    /// OWLValidatorContext helps the validator at prefetching the most commonly required axiom types
+    /// </summary>
     internal sealed class OWLValidatorContext
     {
         internal List<OWLClassAssertion> ClassAssertions { get; set; }
