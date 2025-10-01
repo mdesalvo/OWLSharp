@@ -247,7 +247,7 @@ namespace OWLSharp.Reasoner
 
             return inferences;
         }
-#endregion
+        #endregion
     }
 
     /// <summary>
