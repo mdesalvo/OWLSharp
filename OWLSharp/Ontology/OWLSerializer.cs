@@ -25,6 +25,9 @@ using System;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLSerializer is responsible for XML serialization and deserialization of any kind of ontology elements
+    /// </summary>
     internal static class OWLSerializer
     {
         private static readonly XmlWriterSettings DefaultXmlWriterSettings = new XmlWriterSettings
@@ -48,12 +51,15 @@ namespace OWLSharp.Ontology
             IgnoreProcessingInstructions = true
         };
 
+        /// <summary>
+        /// Serializes the given ontology into an OWL2/XML string representation
+        /// </summary>
         internal static string SerializeOntology(OWLOntology ontology)
         {
             XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
             //Hide hard-coded .NET prefixes (e.g: xsi)
             xmlSerializerNamespaces.Add(string.Empty, string.Empty);
-            //Initialize Semantic Web prefixes
+            //Initialize commonly expected prefixes
             xmlSerializerNamespaces.Add(RDFVocabulary.OWL.PREFIX, RDFVocabulary.OWL.BASE_URI);
             xmlSerializerNamespaces.Add(RDFVocabulary.RDFS.PREFIX, RDFVocabulary.RDFS.BASE_URI);
             xmlSerializerNamespaces.Add(RDFVocabulary.RDF.PREFIX, RDFVocabulary.RDF.BASE_URI);
@@ -88,16 +94,19 @@ namespace OWLSharp.Ontology
             #endregion
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(OWLOntology));
-            using (UTF8StringWriter stringWriter = new UTF8StringWriter())
+            using (UTF8StringWriter utf8StringWriter = new UTF8StringWriter())
             {
-                using (XmlWriter writer = XmlWriter.Create(stringWriter, DefaultXmlWriterSettings))
+                using (XmlWriter xmlWriter = XmlWriter.Create(utf8StringWriter, DefaultXmlWriterSettings))
                 {
-                    xmlSerializer.Serialize(writer, exportOntology, xmlSerializerNamespaces);
-                    return stringWriter.ToString();
+                    xmlSerializer.Serialize(xmlWriter, exportOntology, xmlSerializerNamespaces);
+                    return utf8StringWriter.ToString();
                 }
             }
         }
 
+        /// <summary>
+        /// Deserializes the given OWL2/XML string into an ontology representation
+        /// </summary>
         internal static OWLOntology DeserializeOntology(string ontology)
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(OWLOntology));
@@ -121,22 +130,30 @@ namespace OWLSharp.Ontology
             }
         }
 
+        /// <summary>
+        /// Serializes the given ontology element into an OWL2/XML string representation
+        /// </summary>
         internal static string SerializeObject<T>(T objectToSerialize, XmlSerializerNamespaces xmlSerializerNamespaces=null) where T : class
         {
             //Hide hard-coded .NET prefixes (e.g: xsi)
-            (xmlSerializerNamespaces ?? (xmlSerializerNamespaces = new XmlSerializerNamespaces())).Add(string.Empty, string.Empty);
+            if (xmlSerializerNamespaces == null)
+                xmlSerializerNamespaces = new XmlSerializerNamespaces();
+            xmlSerializerNamespaces.Add(string.Empty, string.Empty);
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
-            using (UTF8StringWriter stringWriter = new UTF8StringWriter())
+            using (UTF8StringWriter utf8StringWriter = new UTF8StringWriter())
             {
-                using (XmlWriter writer = XmlWriter.Create(stringWriter, CompactXmlWriterSettings))
+                using (XmlWriter xmlWriter = XmlWriter.Create(utf8StringWriter, CompactXmlWriterSettings))
                 {
-                    xmlSerializer.Serialize(writer, objectToSerialize, xmlSerializerNamespaces);
-                    return stringWriter.ToString();
+                    xmlSerializer.Serialize(xmlWriter, objectToSerialize, xmlSerializerNamespaces);
+                    return utf8StringWriter.ToString();
                 }
             }
         }
 
+        /// <summary>
+        /// Deserializes the given OWL2/XML string into an ontology element representation
+        /// </summary>
         internal static T DeserializeObject<T>(string objectToDeserialize) where T : class
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
@@ -150,6 +167,9 @@ namespace OWLSharp.Ontology
         }
     }
 
+    /// <summary>
+    /// UTF8StringWriter is just a StringWriter forcing usage of UTF encoding
+    /// </summary>
     internal sealed class UTF8StringWriter : StringWriter
     {
         public override Encoding Encoding => Encoding.UTF8;
