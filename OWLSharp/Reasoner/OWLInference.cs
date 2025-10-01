@@ -40,8 +40,8 @@ namespace OWLSharp.Reasoner
         /// <exception cref="OWLException"></exception>
         public OWLInference(string ruleName, OWLAxiom axiom)
         {
-            RuleName = ruleName?.Trim() ?? throw new OWLException("Cannot create inference because given \"ruleName\" parameter is null");
-            Axiom = axiom ?? throw new OWLException("Cannot create inference because given \"axiom\" parameter is null");
+            RuleName = ruleName?.Trim() ?? throw new OWLException($"Cannot create inference because given '{nameof(ruleName)}' parameter is null");
+            Axiom = axiom ?? throw new OWLException($"Cannot create inference because given '{nameof(axiom)}' parameter is null");
         }
         #endregion
 

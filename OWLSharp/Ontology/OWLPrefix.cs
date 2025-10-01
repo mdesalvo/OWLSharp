@@ -19,22 +19,36 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLPrefix represents a directive stating that the ontology shortcuts terms using the given namespace
+    /// </summary>
     [XmlRoot("Prefix")]
     public sealed class OWLPrefix
     {
         #region Properties
+        /// <summary>
+        /// The name of the prefix (e.g: rdfs)
+        /// </summary>
         [XmlAttribute("name", DataType="NCName")]
         public string Name { get; set; }
 
+        /// <summary>
+        /// The IRI of the prefix (e.g: http://www.w3.org/2000/01/rdf-schema#)
+        /// </summary>
         [XmlAttribute("IRI", DataType="anyURI")]
         public string IRI { get; set; }
         #endregion
 
         #region Ctors
         internal OWLPrefix() { }
+
+        /// <summary>
+        /// Builds an ontology prefix from the given namespace
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLPrefix(RDFNamespace rdfNamespace)
         {
-            Name = rdfNamespace?.NamespacePrefix ?? throw new OWLException("Cannot create OWLPrefix because given \"rdfNamespace\" parameter is null");
+            Name = rdfNamespace?.NamespacePrefix ?? throw new OWLException($"Cannot create OWLPrefix because given '{nameof(rdfNamespace)}' parameter is null");
             IRI = rdfNamespace.NamespaceUri.ToString();
         }
         #endregion

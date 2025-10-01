@@ -20,24 +20,45 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLAnnotation represents an ontology element suitable for annotating the ontology itself
+    /// </summary>
     [XmlRoot("Annotation")]
     public sealed class OWLAnnotation
     {
         #region Properties
+        /// <summary>
+        /// Represents a nested annotation (the annotation of this annotation)
+        /// </summary>
         [XmlElement]
         public OWLAnnotation Annotation { get; set; }
 
+        /// <summary>
+        /// Represents the property used for this annotation (e.g: http://www.w3.org/2000/01/rdf-schema#comment)
+        /// </summary>
         [XmlElement]
         public OWLAnnotationProperty AnnotationProperty { get; set; }
 
         //AnnotationValue (cannot be a self-object, since this would introduce an additional XmlElement)
 
+        /// <summary>
+        /// Represents the annotation value to be used in case of IRI (e.g: http://example.org/value)
+        /// </summary>
         [XmlElement("IRI", DataType="anyURI")]
         public string ValueIRI { get; set; }
+        /// <summary>
+        /// Represents the annotation value to be used in case of abbreviated IRI (e.g: ex:value)
+        /// </summary>
         [XmlElement("AbbreviatedIRI", DataType="QName")]
         public XmlQualifiedName ValueAbbreviatedIRI { get; set; }
+        /// <summary>
+        /// Represents the annotation value to be used in case of anonymous individual (e.g: Anon12345)
+        /// </summary>
         [XmlElement("AnonymousIndividual")]
         public OWLAnonymousIndividual ValueAnonymousIndividual { get; set; }
+        /// <summary>
+        /// Represents the annotation value to be used in case of literal (e.g: "value")
+        /// </summary>
         [XmlElement("Literal")]
         public OWLLiteral ValueLiteral { get; set; }
         #endregion

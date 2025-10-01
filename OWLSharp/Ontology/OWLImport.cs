@@ -19,23 +19,34 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLImport represents a directive stating that the ontology uses term definitions from the given ontology IRI
+    /// </summary>
     [XmlRoot("Import")]
     public sealed class OWLImport
     {
         #region Properties
+        /// <summary>
+        /// The IRI of the referenced ontology (e.g: http://www.w3.org/2000/01/rdf-schema#)
+        /// </summary>
         [XmlText(DataType="anyURI")]
         public string IRI { get; set; }
         #endregion
 
         #region Ctors
         internal OWLImport() { }
+
+        /// <summary>
+        /// Builds a new import directive with the given IRI
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLImport(RDFResource iri)
         {
             #region Guards
             if (iri == null)
-                throw new OWLException("Cannot create OWLImport because given \"iri\" parameter is null");
+                throw new OWLException($"Cannot create OWLImport because given '{nameof(iri)}' parameter is null");
             if (iri.IsBlank)
-                throw new OWLException("Cannot create OWLImport because given \"iri\" parameter is a blank resource");
+                throw new OWLException($"Cannot create OWLImport because given '{nameof(iri)}' parameter is a blank resource");
             #endregion
 
             IRI = iri.ToString();

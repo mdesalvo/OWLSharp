@@ -168,7 +168,7 @@ namespace OWLSharp.Ontology
     }
 
     /// <summary>
-    /// UTF8StringWriter is just a StringWriter forcing usage of UTF encoding
+    /// UTF8StringWriter is a StringWriter requiring usage of Encoding.UTF8
     /// </summary>
     internal sealed class UTF8StringWriter : StringWriter
     {
