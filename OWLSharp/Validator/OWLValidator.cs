@@ -52,9 +52,10 @@ namespace OWLSharp.Validator
             if (ontology != null)
             {
                 OWLEvents.RaiseInfo($"Launching OWL2 validator on ontology '{ontology.IRI}'...");
-                Rules = Rules.Distinct().ToList();
 
+                #region Init registry & context
                 //Initialize issue registry
+                Rules = Rules.Distinct().ToList();
                 Dictionary<string, List<OWLIssue>> issueRegistry = new Dictionary<string, List<OWLIssue>>(Rules.Count);
                 Rules.ForEach(rule => issueRegistry.Add(rule.ToString(), null));
 
@@ -65,8 +66,9 @@ namespace OWLSharp.Validator
                     DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
                     ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
                 };
+                #endregion
 
-                #region Core
+                #region Process rules
                 //Execute validator rules
                 Parallel.ForEach(Rules, rule =>
                 {
@@ -168,9 +170,10 @@ namespace OWLSharp.Validator
                 });
                 #endregion
 
+                #region Finalize
                 //Process issues
                 issues.AddRange(issueRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLIssue>()));
-                issueRegistry.Clear();
+                #endregion
 
                 OWLEvents.RaiseInfo($"Completed OWL2 validator on ontology {ontology.IRI} => {issues.Count} issues");
             }

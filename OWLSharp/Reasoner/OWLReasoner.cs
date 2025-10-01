@@ -21,19 +21,33 @@ using System.Threading.Tasks;
 
 namespace OWLSharp.Reasoner
 {
+    /// <summary>
+    /// OWLReasoner analyzes an ontology with the goal of inferring unstated knowledge from its T-BOX/A-BOX
+    /// </summary>
     public sealed class OWLReasoner
     {
         #region Properties
+        /// <summary>
+        /// The set of rules to be applied by the reasoner
+        /// </summary>
         public List<OWLEnums.OWLReasonerRules> Rules { get; internal set; } = new List<OWLEnums.OWLReasonerRules>();
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Adds the given rule to the reasoner
+        /// </summary>
+        /// <returns>The reasoner itself</returns>
         public OWLReasoner AddRule(OWLEnums.OWLReasonerRules rule)
         {
             Rules.Add(rule);
             return this;
         }
 
+        /// <summary>
+        /// Applies the reasoner on the given ontology
+        /// </summary>
+        /// <returns>The list of discovered inferences</returns>
         public async Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
@@ -41,14 +55,15 @@ namespace OWLSharp.Reasoner
             if (ontology != null)
             {
                 OWLEvents.RaiseInfo($"Launching OWL2/SWRL reasoner on ontology '{ontology.IRI}'...");
-                Rules = Rules.Distinct().ToList();
 
+                #region Init registry & context
                 //Initialize inference registry
+                Rules = Rules.Distinct().ToList();
                 Dictionary<string, List<OWLInference>> inferenceRegistry = new Dictionary<string, List<OWLInference>>(Rules.Count + ontology.Rules.Count);
                 Rules.ForEach(owl2Rule => inferenceRegistry.Add(owl2Rule.ToString(), null));
                 ontology.Rules.ForEach(swrlRule => inferenceRegistry.Add(swrlRule.ToString(), null));
 
-                //Initialize reasoner context
+                //Initialize reasoner context (prefetch most commonly required axiom types)
                 OWLReasonerContext reasonerContext = new OWLReasonerContext
                 {
                     ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
@@ -56,7 +71,7 @@ namespace OWLSharp.Reasoner
                     ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
                 };
 
-                //Initialize axioms XML
+                //Initialize axioms XML (required for inference deduplication phhase)
                 Task<HashSet<string>> clsAsnAxiomsTask = Task.Run(() => new HashSet<string>(reasonerContext.ClassAssertions.Select(asn => asn.GetXML())));
                 Task<HashSet<string>> dtPropAsnAxiomsTask = Task.Run(() => new HashSet<string>(reasonerContext.DataPropertyAssertions.Select(asn => asn.GetXML())));
                 Task<HashSet<string>> opPropAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Select(asn => asn.GetXML())));
@@ -72,9 +87,9 @@ namespace OWLSharp.Reasoner
                 Task<HashSet<string>> eqvOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLEquivalentObjectProperties>().Select(asn => asn.GetXML())));
                 Task<HashSet<string>> subOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>().Select(asn => asn.GetXML())));
                 Task<HashSet<string>> invOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLInverseObjectProperties>().Select(asn => asn.GetXML())));
-                await Task.WhenAll(clsAsnAxiomsTask, dtPropAsnAxiomsTask, opPropAsnAxiomsTask, diffIdvsAxiomsTask, sameIdvsAxiomsTask, dsjClsAxiomsTask, eqvClsAxiomsTask, subClsAxiomsTask,
-                    dsjDtPropAxiomsTask, eqvDtPropAxiomsTask, subDtPropAxiomsTask, dsjOpPropAxiomsTask, eqvOpPropAxiomsTask, subOpPropAxiomsTask, invOpPropAxiomsTask);
+                #endregion
 
+                #region Process rules
                 //Execute OWL2 reasoner rules
                 Parallel.ForEach(Rules, rule =>
                 {
@@ -164,11 +179,11 @@ namespace OWLSharp.Reasoner
                 });
 
                 //Execute SWRL reasoner rules
-                #if !NET8_0_OR_GREATER
+#if !NET8_0_OR_GREATER
                 await ontology.Rules.ParallelForEachAsync(async (swrlRule, _) =>
-                #else
+#else
                 await Parallel.ForEachAsync(ontology.Rules, async (swrlRule, _) =>
-                #endif
+#endif
                 {
                     string swrlRuleString = swrlRule.ToString();
                     OWLEvents.RaiseInfo($"Launching SWRL rule {swrlRuleString}...");
@@ -177,8 +192,12 @@ namespace OWLSharp.Reasoner
 
                     OWLEvents.RaiseInfo($"Completed SWRL rule {swrlRuleString} => {inferenceRegistry[swrlRuleString].Count} candidate inferences");
                 });
+                #endregion
 
-                //Deduplicate inferences by analyzing explicit knowledge
+                #region Deduplicate & finalize
+                //Deduplicate inferences (in order to not state already known knowledge)
+                await Task.WhenAll(clsAsnAxiomsTask, dtPropAsnAxiomsTask, opPropAsnAxiomsTask, diffIdvsAxiomsTask, sameIdvsAxiomsTask, dsjClsAxiomsTask, eqvClsAxiomsTask, subClsAxiomsTask,
+                    dsjDtPropAxiomsTask, eqvDtPropAxiomsTask, subDtPropAxiomsTask, dsjOpPropAxiomsTask, eqvOpPropAxiomsTask, subOpPropAxiomsTask, invOpPropAxiomsTask);
                 foreach (KeyValuePair<string, List<OWLInference>> inferenceRegistryEntry in inferenceRegistry.Where(ir => ir.Value?.Count > 0))
                     inferenceRegistryEntry.Value.RemoveAll(inf =>
                     {
@@ -221,7 +240,7 @@ namespace OWLSharp.Reasoner
 
                 //Collect inferences
                 inferences.AddRange(inferenceRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLInference>()).Distinct());
-                inferenceRegistry.Clear();
+                #endregion
 
                 OWLEvents.RaiseInfo($"Completed OWL2/SWRL reasoner on ontology {ontology.IRI} => {inferences.Count} unique inferences");
             }
@@ -231,6 +250,9 @@ namespace OWLSharp.Reasoner
 #endregion
     }
 
+    /// <summary>
+    /// OWLReasonerContext helps the reasoner at prefetching the most commonly required axiom types
+    /// </summary>
     internal sealed class OWLReasonerContext
     {
         internal List<OWLClassAssertion> ClassAssertions { get; set; }
