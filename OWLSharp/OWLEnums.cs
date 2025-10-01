@@ -16,13 +16,22 @@
 
 namespace OWLSharp
 {
+    /// <summary>
+    /// OWLEnums represents a collector for all the enumerations used by the "OWLSharp" namespace
+    /// </summary>
     public static class OWLEnums
     {
+        /// <summary>
+        /// OWLFormats represents an enumeration for supported OWL2 ontology serialization data formats
+        /// </summary>
         public enum OWLFormats
         {
             OWL2XML = 1
         }
 
+        /// <summary>
+        /// OWLReasonerRules represents an enumeration for supported RDFS/OWL2 reasoner rules
+        /// </summary>
         public enum OWLReasonerRules
         {
             ClassAssertionEntailment = 1,
@@ -52,12 +61,9 @@ namespace OWLSharp
             TransitiveObjectPropertyEntailment = 25
         }
 
-        public enum OWLIssueSeverity
-        {
-            Warning = 1,
-            Error = 2
-        }
-
+        /// <summary>
+        /// OWLValidatorRules represents an enumeration for supported RDFS/OWL2 validator rules
+        /// </summary>
         public enum OWLValidatorRules
         {
             AsymmetricObjectPropertyAnalysis = 1,
@@ -89,6 +95,15 @@ namespace OWLSharp
             TermsDisjointnessAnalysis = 27,
             ThingNothingAnalysis = 28,
             TopBottomAnalysis = 29
+        }
+
+        /// <summary>
+        /// OWLIssueSeverity represents an enumeration for possible severities of RDFS/OWL2 validator rules
+        /// </summary>
+        public enum OWLIssueSeverity
+        {
+            Warning = 1,
+            Error = 2
         }
     }
 }
