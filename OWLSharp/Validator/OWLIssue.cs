@@ -14,7 +14,7 @@
 namespace OWLSharp.Validator
 {
     /// <summary>
-    /// OWLIssue represents a modeling pitfall or inconsistency discovered by a validator on an ontology
+    /// OWLIssue represents a modeling pitfall or inconsistency discovered by a validator when applied over an ontology
     /// </summary>
     public sealed class OWLIssue
     {
@@ -23,14 +23,17 @@ namespace OWLSharp.Validator
         /// The severity of the issue
         /// </summary>
         public OWLEnums.OWLIssueSeverity Severity { get; }
+
         /// <summary>
         /// The name of the validator rule which evidenced the issue
         /// </summary>
         public string RuleName { get; }
+
         /// <summary>
         /// The description of the issue
         /// </summary>
         public string Description { get; }
+
         /// <summary>
         /// A potential action to be considered for resolving the issue
         /// </summary>

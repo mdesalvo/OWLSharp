@@ -42,7 +42,7 @@ namespace OWLSharp.Validator
         }
 
         /// <summary>
-        /// Executes the validator's list of rules on the given ontology
+        /// Applies the validator on the given ontology
         /// </summary>
         /// <returns>The list of detected issues</returns>
         public Task<List<OWLIssue>> ApplyToOntologyAsync(OWLOntology ontology)
@@ -66,6 +66,7 @@ namespace OWLSharp.Validator
                     ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
                 };
 
+                #region Core
                 //Execute validator rules
                 Parallel.ForEach(Rules, rule =>
                 {
@@ -165,6 +166,7 @@ namespace OWLSharp.Validator
 
                     OWLEvents.RaiseInfo($"Completed OWL2 rule {ruleString} => {issueRegistry[ruleString].Count} issues");
                 });
+                #endregion
 
                 //Process issues
                 issues.AddRange(issueRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLIssue>()));

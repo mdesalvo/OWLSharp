@@ -16,14 +16,28 @@ using System;
 
 namespace OWLSharp.Reasoner
 {
+    /// <summary>
+    /// OWLInference represents any kind of knowledge emitted by a reasoner when applied over an ontology
+    /// </summary>
     public sealed class OWLInference : IEquatable<OWLInference>
     {
         #region Properties
+        /// <summary>
+        /// The name of the reasoner rule which emitted the inference
+        /// </summary>
         public string RuleName { get; }
+
+        /// <summary>
+        /// The axiom representing the inferred knowledge
+        /// </summary>
         public OWLAxiom Axiom { get; }
         #endregion
 
         #region Ctors
+        /// <summary>
+        /// Builds an inference with the given characteristics
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLInference(string ruleName, OWLAxiom axiom)
         {
             RuleName = ruleName?.Trim() ?? throw new OWLException("Cannot create inference because given \"ruleName\" parameter is null");
@@ -34,6 +48,9 @@ namespace OWLSharp.Reasoner
         #region Interfaces
         public bool Equals(OWLInference other)
             => string.Equals(ToString(), other?.ToString());
+
+        public override bool Equals(object other)
+            => other is OWLInference otherInference && Equals(otherInference);
 
         public override string ToString()
             => Axiom.GetXML();
