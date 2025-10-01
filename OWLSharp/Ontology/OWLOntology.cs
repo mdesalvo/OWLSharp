@@ -1634,7 +1634,7 @@ namespace OWLSharp.Ontology
                             SWRLRule rule = new SWRLRule();
                             RDFResource ruleSubject = (RDFResource)ruleTriple.Subject;
                             RDFGraph ruleGraph = graph[s: ruleSubject];
-                            
+
                             //Load annotations
                             foreach (RDFTriple ruleLabel in ruleGraph.SelectTriples(p: RDFVocabulary.RDFS.LABEL))
                             {

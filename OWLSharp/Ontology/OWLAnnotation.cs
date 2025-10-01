@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// OWLAnnotation represents an ontology element suitable for annotating the ontology itself
+    /// OWLAnnotation represents an ontology element suitable for annotating the ontology itself with a value
     /// </summary>
     [XmlRoot("Annotation")]
     public sealed class OWLAnnotation
@@ -39,23 +39,26 @@ namespace OWLSharp.Ontology
         [XmlElement]
         public OWLAnnotationProperty AnnotationProperty { get; set; }
 
-        //AnnotationValue (cannot be a self-object, since this would introduce an additional XmlElement)
+        /* AnnotationValue (cannot be a self-object, since this would introduce an additional XmlElement) */
 
         /// <summary>
         /// Represents the annotation value to be used in case of IRI (e.g: http://example.org/value)
         /// </summary>
         [XmlElement("IRI", DataType="anyURI")]
         public string ValueIRI { get; set; }
+
         /// <summary>
         /// Represents the annotation value to be used in case of abbreviated IRI (e.g: ex:value)
         /// </summary>
         [XmlElement("AbbreviatedIRI", DataType="QName")]
         public XmlQualifiedName ValueAbbreviatedIRI { get; set; }
+
         /// <summary>
         /// Represents the annotation value to be used in case of anonymous individual (e.g: Anon12345)
         /// </summary>
         [XmlElement("AnonymousIndividual")]
         public OWLAnonymousIndividual ValueAnonymousIndividual { get; set; }
+
         /// <summary>
         /// Represents the annotation value to be used in case of literal (e.g: "value")
         /// </summary>
@@ -66,20 +69,44 @@ namespace OWLSharp.Ontology
         #region Ctors
         internal OWLAnnotation() { }
         internal OWLAnnotation(OWLAnnotationProperty annotationProperty) : this()
-            => AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"annotationProperty\" parameter is null");
+            => AnnotationProperty = annotationProperty ?? throw new OWLException($"Cannot create OWLAnnotationAssertion because given '{nameof(annotationProperty)}' parameter is null");
+
+        /// <summary>
+        /// Builds an annotation with the given property and IRI value
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLAnnotation(OWLAnnotationProperty annotationProperty, RDFResource valueIri) : this(annotationProperty)
-            => ValueIRI = valueIri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotation because given \"valueIri\" parameter is null");
+            => ValueIRI = valueIri?.ToString() ?? throw new OWLException($"Cannot create OWLAnnotation because given '{nameof(valueIri)}' parameter is null");
+
+        /// <summary>
+        /// Builds an annotation with the given property and abbreviated IRI value
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLAnnotation(OWLAnnotationProperty annotationProperty, XmlQualifiedName valueAbbreviatedIri) : this(annotationProperty)
-            => ValueAbbreviatedIRI = valueAbbreviatedIri ?? throw new OWLException("Cannot create OWLAnnotation because given \"valueAbbreviatedIri\" parameter is null");
+            => ValueAbbreviatedIRI = valueAbbreviatedIri ?? throw new OWLException($"Cannot create OWLAnnotation because given '{nameof(valueAbbreviatedIri)}' parameter is null");
+
+        /// <summary>
+        /// Builds an annotation with the given property and anonymous individual value
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLAnnotation(OWLAnnotationProperty annotationProperty, OWLAnonymousIndividual valueAnonymousIndividual) : this(annotationProperty)
-            => ValueAnonymousIndividual = valueAnonymousIndividual ?? throw new OWLException("Cannot create OWLAnnotation because given \"valueAnonymousIndividual\" parameter is null");
+            => ValueAnonymousIndividual = valueAnonymousIndividual ?? throw new OWLException($"Cannot create OWLAnnotation because given '{nameof(valueAnonymousIndividual)}' parameter is null");
+
+        /// <summary>
+        /// Builds an annotation with the given property and literal value
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLAnnotation(OWLAnnotationProperty annotationProperty, OWLLiteral valueLiteral) : this(annotationProperty)
-            => ValueLiteral = valueLiteral ?? throw new OWLException("Cannot create OWLAnnotation because given \"valueLiteral\" parameter is null");
+            => ValueLiteral = valueLiteral ?? throw new OWLException($"Cannot create OWLAnnotation because given '{nameof(valueLiteral)}' parameter is null");
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Sets the nested annotation of this annotation
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public void Annotate(OWLAnnotation annotation)
-            => Annotation = annotation ?? throw new OWLException("Cannot annotate annotation because given \"annotation\" parameter is null");
+            => Annotation = annotation ?? throw new OWLException($"Cannot annotate annotation because given '{nameof(annotation)}' parameter is null");
 
         internal RDFGraph ToRDFGraph(RDFTriple axiomTriple)
         {
