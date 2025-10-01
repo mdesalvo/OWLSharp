@@ -33,7 +33,7 @@ namespace OWLSharp.Ontology
             Indent = true,
             NewLineHandling = NewLineHandling.None
         };
-        private static readonly XmlWriterSettings TestXmlWriterSettings = new XmlWriterSettings
+        private static readonly XmlWriterSettings CompactXmlWriterSettings = new XmlWriterSettings
         {
             Encoding = Encoding.UTF8,
             Indent = false,
@@ -129,7 +129,7 @@ namespace OWLSharp.Ontology
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
             using (UTF8StringWriter stringWriter = new UTF8StringWriter())
             {
-                using (XmlWriter writer = XmlWriter.Create(stringWriter, TestXmlWriterSettings))
+                using (XmlWriter writer = XmlWriter.Create(stringWriter, CompactXmlWriterSettings))
                 {
                     xmlSerializer.Serialize(writer, objectToSerialize, xmlSerializerNamespaces);
                     return stringWriter.ToString();
