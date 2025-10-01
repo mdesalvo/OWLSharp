@@ -51,6 +51,7 @@ namespace OWLSharp.Reasoner
         public async Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
+            Rules = Rules.Distinct().ToList();
 
             if (ontology != null)
             {
@@ -58,7 +59,6 @@ namespace OWLSharp.Reasoner
 
                 #region Init registry & context
                 //Initialize inference registry
-                Rules = Rules.Distinct().ToList();
                 Dictionary<string, List<OWLInference>> inferenceRegistry = new Dictionary<string, List<OWLInference>>(Rules.Count + ontology.Rules.Count);
                 Rules.ForEach(owl2Rule => inferenceRegistry.Add(owl2Rule.ToString(), null));
                 ontology.Rules.ForEach(swrlRule => inferenceRegistry.Add(swrlRule.ToString(), null));
@@ -194,7 +194,7 @@ namespace OWLSharp.Reasoner
                 });
                 #endregion
 
-                #region Deduplicate & finalize
+                #region Deduplicate & finalize inferences
                 //Deduplicate inferences (in order to not state already known knowledge)
                 await Task.WhenAll(clsAsnAxiomsTask, dtPropAsnAxiomsTask, opPropAsnAxiomsTask, diffIdvsAxiomsTask, sameIdvsAxiomsTask, dsjClsAxiomsTask, eqvClsAxiomsTask, subClsAxiomsTask,
                     dsjDtPropAxiomsTask, eqvDtPropAxiomsTask, subDtPropAxiomsTask, dsjOpPropAxiomsTask, eqvOpPropAxiomsTask, subOpPropAxiomsTask, invOpPropAxiomsTask);

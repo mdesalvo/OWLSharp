@@ -48,6 +48,7 @@ namespace OWLSharp.Validator
         public Task<List<OWLIssue>> ApplyToOntologyAsync(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
+            Rules = Rules.Distinct().ToList();
 
             if (ontology != null)
             {
@@ -55,7 +56,6 @@ namespace OWLSharp.Validator
 
                 #region Init registry & context
                 //Initialize issue registry
-                Rules = Rules.Distinct().ToList();
                 Dictionary<string, List<OWLIssue>> issueRegistry = new Dictionary<string, List<OWLIssue>>(Rules.Count);
                 Rules.ForEach(rule => issueRegistry.Add(rule.ToString(), null));
 
@@ -170,7 +170,7 @@ namespace OWLSharp.Validator
                 });
                 #endregion
 
-                #region Finalize
+                #region Finalize issues
                 //Process issues
                 issues.AddRange(issueRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLIssue>()));
                 #endregion
