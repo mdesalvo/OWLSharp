@@ -24,6 +24,9 @@ using RDFSharp.Query;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLRule represents a DL-safe rule expressed in SWRL
+    /// </summary>
     [XmlRoot("DLSafeRule")]
     public sealed class SWRLRule
     {

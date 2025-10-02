@@ -28,36 +28,65 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLOntology represents an OWL2 ontology modeled according to OWL2/XML specification.<br/>
+    /// It formalizes the knowledge of an application domain in terms of structural (T-BOX) and assertional (A-BOX) axioms,
+    /// along with DL-safe reasoning rules modeled in SWRL (R-BOX).
+    /// </summary>
     [XmlRoot("Ontology")]
     public sealed class OWLOntology
     {
         #region Properties
+        /// <summary>
+        /// The IRI of the ontology (e.g: http://www.w3.org/2000/01/rdf-schema#)
+        /// </summary>
         [XmlAttribute("ontologyIRI", DataType="anyURI")]
         public string IRI { get; set; }
 
+        /// <summary>
+        /// The version IRI of the ontology, which eventually represents the current version of the artifact
+        /// </summary>
         [XmlAttribute("ontologyVersion", DataType="anyURI")]
         public string VersionIRI { get; set; }
 
+        /// <summary>
+        /// The set of prefixes which might be used for shortening IRIs of the ontology axioms (e.g: rdf, rdfs)
+        /// </summary>
         [XmlElement("Prefix")]
         public List<OWLPrefix> Prefixes { get; internal set; }
 
+        /// <summary>
+        /// The set of imported ontologies, from which this ontology is expected to use some terms
+        /// </summary>
         [XmlElement("Import")]
         public List<OWLImport> Imports { get; internal set; }
 
+        /// <summary>
+        /// The set of annotations about this ontology (e.g: comment, label, author)
+        /// </summary>
         [XmlElement("Annotation")]
         public List<OWLAnnotation> Annotations { get; internal set; }
 
         //Axioms
 
+        /// <summary>
+        /// Axioms stating the formal existence of well-known ontology entities (classes, object properties, ...)
+        /// </summary>
         [XmlElement("Declaration")]
         public List<OWLDeclaration> DeclarationAxioms { get; internal set; }
 
+        /// <summary>
+        /// Axioms stating any kind of possible relationships between the classes of the ontology domain
+        /// </summary>
         [XmlElement(typeof(OWLSubClassOf), ElementName="SubClassOf")]
         [XmlElement(typeof(OWLEquivalentClasses), ElementName="EquivalentClasses")]
         [XmlElement(typeof(OWLDisjointClasses), ElementName="DisjointClasses")]
         [XmlElement(typeof(OWLDisjointUnion), ElementName="DisjointUnion")]
         public List<OWLClassAxiom> ClassAxioms { get; internal set; }
 
+        /// <summary>
+        /// Axioms stating any kind of possible relationships between the object properties of the ontology domain
+        /// </summary>
         [XmlElement(typeof(OWLSubObjectPropertyOf), ElementName="SubObjectPropertyOf")]
         [XmlElement(typeof(OWLEquivalentObjectProperties), ElementName="EquivalentObjectProperties")]
         [XmlElement(typeof(OWLDisjointObjectProperties), ElementName="DisjointObjectProperties")]
@@ -73,6 +102,9 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLTransitiveObjectProperty), ElementName="TransitiveObjectProperty")]
         public List<OWLObjectPropertyAxiom> ObjectPropertyAxioms { get; internal set; }
 
+        /// <summary>
+        /// Axioms stating any kind of possible relationships between the data properties of the ontology domain
+        /// </summary>
         [XmlElement(typeof(OWLSubDataPropertyOf), ElementName="SubDataPropertyOf")]
         [XmlElement(typeof(OWLEquivalentDataProperties), ElementName="EquivalentDataProperties")]
         [XmlElement(typeof(OWLDisjointDataProperties), ElementName="DisjointDataProperties")]
@@ -81,12 +113,22 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLFunctionalDataProperty), ElementName="FunctionalDataProperty")]
         public List<OWLDataPropertyAxiom> DataPropertyAxioms { get; internal set; }
 
+        /// <summary>
+        /// Axioms stating the formal definition of custom datatypes characterizing the ontology domain
+        /// </summary>
         [XmlElement(ElementName="DatatypeDefinition")]
         public List<OWLDatatypeDefinition> DatatypeDefinitionAxioms { get; internal set; }
 
+        /// <summary>
+        /// Axioms formalizing the "semantic uniqueness" of the individuals of a given class,
+        /// specifying the properties on which their values should be assumed to be unique
+        /// </summary>
         [XmlElement(ElementName="HasKey")]
         public List<OWLHasKey> KeyAxioms { get; internal set; }
 
+        /// <summary>
+        /// Axioms stating any kind of possible relationships between the individuals of the ontology domain
+        /// </summary>
         [XmlElement(typeof(OWLSameIndividual), ElementName="SameIndividual")]
         [XmlElement(typeof(OWLDifferentIndividuals), ElementName="DifferentIndividuals")]
         [XmlElement(typeof(OWLClassAssertion), ElementName="ClassAssertion")]
@@ -96,6 +138,10 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLNegativeDataPropertyAssertion), ElementName="NegativeDataPropertyAssertion")]
         public List<OWLAssertionAxiom> AssertionAxioms { get; internal set; }
 
+        /// <summary>
+        /// Axioms stating any kind of possible relationships between the annotation properties of the ontology domain,
+        /// along with expressing annotations describing any kind of declared ontology entity (e.g: comment, label)
+        /// </summary>
         [XmlElement(typeof(OWLAnnotationAssertion), ElementName="AnnotationAssertion")]
         [XmlElement(typeof(OWLSubAnnotationPropertyOf), ElementName="SubAnnotationPropertyOf")]
         [XmlElement(typeof(OWLAnnotationPropertyDomain), ElementName="AnnotationPropertyDomain")]
@@ -104,11 +150,17 @@ namespace OWLSharp.Ontology
 
         //Rules
 
+        /// <summary>
+        /// DL-safe rules expressed in SWRL, which are available to any ontology reasoner for processing
+        /// </summary>
         [XmlElement("DLSafeRule")]
         public List<SWRLRule> Rules { get; internal set; }
         #endregion
 
         #region Ctors
+        /// <summary>
+        /// Builds an empty ontology having just the predefines set of prefixes (rdf, rdfs, xml, xsd, owl)
+        /// </summary>
         public OWLOntology()
         {
             Prefixes = new List<OWLPrefix>
@@ -136,12 +188,18 @@ namespace OWLSharp.Ontology
             Rules = new List<SWRLRule>();
         }
 
-        public OWLOntology(Uri ontologyIRI, Uri ontologyVersionIRI = null) : this()
+        /// <summary>
+        /// Builds an ontology having the given IRI and eventual version IRI
+        /// </summary>
+        public OWLOntology(Uri ontologyIRI, Uri ontologyVersionIRI=null) : this()
         {
             IRI = ontologyIRI?.ToString();
             VersionIRI = ontologyVersionIRI?.ToString();
         }
 
+        /// <summary>
+        /// Builds an ontology having the same IRI, version IRI, prefixes, T-BOX, A-BOX and R-BOX of the given one
+        /// </summary>
         public OWLOntology(OWLOntology ontology)
         {
             IRI = ontology?.IRI;
@@ -174,12 +232,23 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Adds the given annotation to the set of this ontology's annotations
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public void Annotate(OWLAnnotation annotation)
-            => Annotations.Add(annotation ?? throw new OWLException("Cannot annotate ontology because given \"annotation\" parameter is null"));
+            => Annotations.Add(annotation ?? throw new OWLException($"Cannot annotate ontology because given '{nameof(annotation)}' parameter is null"));
 
+        /// <summary>
+        /// Adds the given prefix to the set of this ontology's prefixes
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public void Prefix(OWLPrefix prefix)
-            => Prefixes.Add(prefix ?? throw new OWLException("Cannot prefix ontology because given \"prefix\" parameter is null"));
+            => Prefixes.Add(prefix ?? throw new OWLException($"Cannot prefix ontology because given '{nameof(prefix)}' parameter is null"));
 
+        /// <summary>
+        /// Exports this ontology to an equivalent RDFGraph object (includes inferred axioms by default)
+        /// </summary>
         public Task<RDFGraph> ToRDFGraphAsync(bool includeInferences=true)
             => ToRDFGraphAsync(includeInferences, false);
         internal Task<RDFGraph> ToRDFGraphAsync(bool includeInferences, bool includeImports)
@@ -205,7 +274,7 @@ namespace OWLSharp.Ontology
                     foreach (OWLAnnotation annotation in Annotations)
                         graph = graph.UnionWith(annotation.ToRDFGraphInternal(ontologyIRI));
 
-                    //Axioms
+                    //Axioms (consider inferred/imported axioms only if specified)
                     foreach (OWLDeclaration declarationAxiom in DeclarationAxioms.Where(ax => (includeImports || !ax.IsImport) && (includeInferences || !ax.IsInference)))
                         graph = graph.UnionWith(declarationAxiom.ToRDFGraph());
                     foreach (OWLClassAxiom classAxiom in ClassAxioms.Where(ax => (includeImports || !ax.IsImport) && (includeInferences || !ax.IsInference)))
@@ -223,7 +292,7 @@ namespace OWLSharp.Ontology
                     foreach (OWLAnnotationAxiom annotationAxiom in AnnotationAxioms.Where(ax => (includeImports || !ax.IsImport) && (includeInferences || !ax.IsInference)))
                         graph = graph.UnionWith(annotationAxiom.ToRDFGraph());
 
-                    //Rules
+                    //Rules (consider imported axioms only if specified)
                     foreach (SWRLRule rule in Rules.Where(rl => includeImports || !rl.IsImport))
                         graph = graph.UnionWith(rule.ToRDFGraph());
 
@@ -234,16 +303,24 @@ namespace OWLSharp.Ontology
                     return graph;
                 });
 
+        /// <summary>
+        /// Exports this ontology to a file serialized in the given format (includes inferred axioms by default)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public Task ToFileAsync(OWLEnums.OWLFormats owlFormat, string outputFile, bool includeInferences=true)
             => string.IsNullOrWhiteSpace(outputFile)
-                ? throw new OWLException("Cannot write ontology to file because given \"outputFile\" parameter is null or empty")
+                ? throw new OWLException($"Cannot write ontology to file because given '{nameof(outputFile)}' parameter is null or empty")
                 : ToStreamAsync(owlFormat, new FileStream(outputFile, FileMode.Create), includeInferences);
 
+        /// <summary>
+        /// Exports this ontology to a stream serialized in the given format (includes inferred axioms by default)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public Task ToStreamAsync(OWLEnums.OWLFormats owlFormat, Stream outputStream, bool includeInferences=true)
             => Task.Run(() =>
                 {
                     if (outputStream == null)
-                        throw new OWLException("Cannot write ontology to stream because given \"outputStream\" parameter is null");
+                        throw new OWLException($"Cannot write ontology to stream because given '{nameof(outputStream)}' parameter is null");
 
                     #region Exclude Imports/Inferences
                     OWLOntology exportOntology = new OWLOntology(this);
@@ -278,15 +355,21 @@ namespace OWLSharp.Ontology
                     }
                 });
 
+        /// <summary>
+        /// Imports the given RDFGraph object into an equivalent OWLOntology object.<br/><br/>
+        /// Consider that translating from RDF expressivity to OWL2 expressivity is lossy by definition,<br/>
+        /// so at the end unrepresentable semantic artifacts might be lost (e.g: lists, collections) 
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static Task<OWLOntology> FromRDFGraphAsync(RDFGraph graph)
             => Task.Run(() =>
                 {
                     if (graph == null)
-                        throw new OWLException("Cannot read ontology from graph because: given \"graph\" parameter is null");
-
-                    RDFGraph typeGraph = graph[p: RDFVocabulary.RDF.TYPE];
+                        throw new OWLException($"Cannot read ontology from graph because: given '{nameof(graph)}' parameter is null");
 
                     #region Utilities
+                    RDFGraph typeGraph = graph[p: RDFVocabulary.RDF.TYPE];
+
                     //Ontology
                     void LoadOntology(out OWLOntology ont)
                     {
@@ -397,6 +480,7 @@ namespace OWLSharp.Ontology
                             }, new RDFResource(ont.IRI), annAxiomsGraph, out List<OWLAnnotation> ontologyAnnotations);
                         ont.Annotations = ontologyAnnotations;
                     }
+
                     //Axioms
                     void LoadFunctionalObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
                     {
@@ -1532,6 +1616,7 @@ namespace OWLSharp.Ontology
                             }
                         }
                     }
+
                     //Annotations
                     void LoadAxiomAnnotations(OWLOntology ont, RDFTriple axiomTriple, OWLAxiom axiom, RDFGraph annAxiomsGraph)
                     {
@@ -1626,6 +1711,7 @@ namespace OWLSharp.Ontology
                             LoadNestedAnnotation(ont, nestedAnnotationTriple, annotation.Annotation, annAxiomsGraph);
                         }
                     }
+
                     //Rules
                     void LoadRules(OWLOntology ont)
                     {
@@ -2022,6 +2108,7 @@ namespace OWLSharp.Ontology
                         builtin = null;
                         return false;
                     }
+
                     //Expressions
                     void LoadAnnotationPropertyExpression(OWLOntology ont, RDFResource apIRI, out OWLAnnotationPropertyExpression apex)
                     {
@@ -2810,6 +2897,7 @@ namespace OWLSharp.Ontology
                     LoadDeclarations(ontology);
                     PrefetchAnnotationAxioms(ontology, out RDFGraph annotationAxiomsGraph);
                     LoadOntologyAnnotations(ontology, annotationAxiomsGraph);
+
                     //Axioms
                     LoadFunctionalObjectProperties(ontology, annotationAxiomsGraph);
                     LoadInverseFunctionalObjectProperties(ontology, annotationAxiomsGraph);
@@ -2847,27 +2935,36 @@ namespace OWLSharp.Ontology
                     LoadSubAnnotationProperties(ontology, annotationAxiomsGraph);
                     LoadAnnotationPropertyDomain(ontology, annotationAxiomsGraph);
                     LoadAnnotationPropertyRange(ontology, annotationAxiomsGraph);
+
                     //Rules
                     LoadRules(ontology);
 
                     return ontology;
                 });
 
+        /// <summary>
+        /// Imports the given file serialized in the given format into an OWLOntology object
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static Task<OWLOntology> FromFileAsync(OWLEnums.OWLFormats owlFormat, string inputFile)
         {
             if (string.IsNullOrWhiteSpace(inputFile))
-                throw new OWLException("Cannot read ontology from file because given \"inputFile\" parameter is null or empty");
+                throw new OWLException($"Cannot read ontology from file because given '{nameof(inputFile)}' parameter is null or empty");
             if (!File.Exists(inputFile))
-                throw new OWLException("Cannot read ontology from file because given \"inputFile\" parameter (" + inputFile + ") does not indicate an existing file");
+                throw new OWLException($"Cannot read ontology from file because given '{nameof(inputFile)}' parameter ({inputFile}) does not indicate an existing file");
 
             return FromStreamAsync(owlFormat, new FileStream(inputFile, FileMode.Open));
         }
 
+        /// <summary>
+        /// Imports the given stream serialized in the given format into an OWLOntology object
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static Task<OWLOntology> FromStreamAsync(OWLEnums.OWLFormats owlFormat, Stream inputStream)
             => Task.Run(() =>
                 {
                     if (inputStream == null)
-                        throw new OWLException("Cannot read ontology from stream because given \"inputStream\" parameter is null");
+                        throw new OWLException($"Cannot read ontology from stream because given '{nameof(inputStream)}' parameter is null");
 
                     try
                     {
@@ -2887,12 +2984,16 @@ namespace OWLSharp.Ontology
                     }
                 });
 
+        /// <summary>
+        /// Imports the given IRI into an OWLOntology object (aborting with failure in case of timeout)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static async Task<OWLOntology> FromUriAsync(Uri uri, int timeoutMilliseconds=20000)
         {
             if (uri == null)
-                throw new OWLException("Cannot read ontology from Uri because given \"uri\" parameter is null or empty");
+                throw new OWLException($"Cannot read ontology from Uri because given '{nameof(uri)}' parameter is null or empty");
             if (!uri.IsAbsoluteUri)
-                throw new OWLException("Cannot read ontology from Uri because given \"uri\" parameter does not represent an absolute Uri.");
+                throw new OWLException($"Cannot read ontology from Uri because given '{nameof(uri)}' parameter does not represent an absolute Uri.");
 
             try
             {
@@ -2903,7 +3004,7 @@ namespace OWLSharp.Ontology
                 webRequest.MaximumAutomaticRedirections = 3;
                 webRequest.AllowAutoRedirect = true;
                 webRequest.Timeout = timeoutMilliseconds;
-                webRequest.Accept = "application/owl+xml,application/rdf+xml,text/turtle,application/turtle,application/x-turtle,application/n-triples,application/trix";
+                webRequest.Accept = "application/owl+xml,application/rdf+xml,text/turtle,application/turtle,application/x-turtle,application/n-triples";
 
                 HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
                 if (webRequest.HaveResponse)
@@ -2934,10 +3035,6 @@ namespace OWLSharp.Ontology
                     //N-TRIPLES
                     if (responseContentType.Contains("application/n-triples"))
                         return await FromRDFGraphAsync(await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.NTriples, webResponse.GetResponseStream(), true));
-
-                    //TRIX
-                    if (responseContentType.Contains("application/trix"))
-                        return await FromRDFGraphAsync(await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.TriX, webResponse.GetResponseStream(), true));
                 }
             }
             catch (Exception ex)
