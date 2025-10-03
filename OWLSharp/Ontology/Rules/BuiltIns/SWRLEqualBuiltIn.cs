@@ -22,6 +22,9 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLEqualBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#equal built-in
+    /// </summary>
     internal static class SWRLEqualBuiltIn
     {
         #region Methods
@@ -94,9 +97,9 @@ namespace OWLSharp.Ontology
                     {
                         case RDFResource rightPatternMemberRes:
                             comparisonExpression = new RDFComparisonExpression(
-                                                    RDFQueryEnums.RDFComparisonFlavors.EqualTo,
-                                                    new RDFConstantExpression(leftPatternMemberRes),
-                                                    new RDFConstantExpression(rightPatternMemberRes));
+                                    RDFQueryEnums.RDFComparisonFlavors.EqualTo,
+                                    new RDFConstantExpression(leftPatternMemberRes),
+                                    new RDFConstantExpression(rightPatternMemberRes));
                             break;
                         default:
                             comparisonExpression = new RDFComparisonExpression(
@@ -113,9 +116,9 @@ namespace OWLSharp.Ontology
                     {
                         case RDFResource rightPatternMemberRes:
                             comparisonExpression = new RDFComparisonExpression(
-                                                    RDFQueryEnums.RDFComparisonFlavors.EqualTo,
-                                                    new RDFConstantExpression((RDFLiteral)leftPatternMember),
-                                                    new RDFConstantExpression(rightPatternMemberRes));
+                                    RDFQueryEnums.RDFComparisonFlavors.EqualTo,
+                                    new RDFConstantExpression((RDFLiteral)leftPatternMember),
+                                    new RDFConstantExpression(rightPatternMemberRes));
 
                             break;
                         default:

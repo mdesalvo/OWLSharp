@@ -22,6 +22,9 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLContainsIgnoreCaseBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#containsIgnoreCase built-in
+    /// </summary>
     internal static class SWRLContainsIgnoreCaseBuiltIn
     {
         #region Methods

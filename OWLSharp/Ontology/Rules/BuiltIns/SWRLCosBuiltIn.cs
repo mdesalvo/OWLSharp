@@ -23,6 +23,9 @@ using System.Globalization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLCosBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#cos built-in
+    /// </summary>
     internal static class SWRLCosBuiltIn
     {
         #region Methods

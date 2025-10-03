@@ -23,6 +23,9 @@ using System.Xml;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLDayTimeDurationBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#dayTimeDuration built-in
+    /// </summary>
     internal static class SWRLDayTimeDurationBuiltIn
     {
         internal static readonly RDFDatatype XSD_DURATION = RDFDatatypeRegister.GetDatatype(RDFModelEnums.RDFDatatypes.XSD_DURATION);

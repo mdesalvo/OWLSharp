@@ -23,6 +23,9 @@ using System.Globalization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLDivideBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#divide built-in
+    /// </summary>
     internal static class SWRLDivideBuiltIn
     {
         #region Methods

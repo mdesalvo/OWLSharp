@@ -22,6 +22,9 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLBooleanNotBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#booleanNot built-in
+    /// </summary>
     internal static class SWRLBooleanNotBuiltIn
     {
         #region Methods

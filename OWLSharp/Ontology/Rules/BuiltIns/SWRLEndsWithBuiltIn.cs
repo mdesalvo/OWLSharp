@@ -22,6 +22,9 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLEndsWithBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#endsWith built-in
+    /// </summary>
     internal static class SWRLEndsWithBuiltIn
     {
         #region Methods
