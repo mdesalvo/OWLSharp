@@ -24,16 +24,26 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLDataRangeAtom is a SWRL atom suitable for filtering and reasoning on datarange expressions
+    /// </summary>
     [XmlRoot("DataRangeAtom")]
     public sealed class SWRLDataRangeAtom : SWRLAtom
     {
         #region Ctors
         internal SWRLDataRangeAtom() { }
+
+        /// <summary>
+        /// Builds a datarange atom with the given predicate and unary argument
+        /// </summary>
         public SWRLDataRangeAtom(OWLDataRangeExpression datarangeExpression, SWRLVariableArgument leftArgument)
             : base(datarangeExpression, leftArgument, null) { }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Evaluates the atom in the context of being part of a SWRL antecedent
+        /// </summary>
         internal override DataTable EvaluateOnAntecedent(OWLOntology ontology)
         {
             string leftArgumentString = LeftArgument.ToString();
@@ -63,10 +73,15 @@ namespace OWLSharp.Ontology
             return atomResult;
         }
 
-        //This kind of atom does not emit inferences
+        /// <summary>
+        /// Evaluates the atom in the context of being part of a SWRL consequent
+        /// </summary>
         internal override List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology)
-            => new List<OWLInference>();
+            => new List<OWLInference>(); //This kind of atom does not emit inferences
 
+        /// <summary>
+        /// Exports this SWRL atom to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFCollection atomsList)
         {
             RDFGraph graph = new RDFGraph();

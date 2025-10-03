@@ -24,6 +24,9 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLSameIndividualAtom is a SWRL atom suitable for filtering and reasoning on same individual assertions
+    /// </summary>
     [XmlRoot("SameIndividualAtom")]
     public sealed class SWRLSameIndividualAtom : SWRLAtom
     {
@@ -31,26 +34,38 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         internal SWRLSameIndividualAtom() { }
+
+        /// <summary>
+        /// Builds a same indvidual atom with the given arguments
+        /// </summary>
+        /// <exception cref="SWRLException"></exception>
         public SWRLSameIndividualAtom(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
             : base(SameAs, leftArgument, rightArgument)
         {
             #region Guards
             if (rightArgument == null)
-                throw new SWRLException("Cannot create atom because given \"rightArgument\" parameter is null");
+                throw new SWRLException($"Cannot create atom because given '{nameof(rightArgument)}' parameter is null");
             #endregion
         }
 
+        /// <summary>
+        /// Builds a same indvidual atom with the given arguments
+        /// </summary>
+        /// <exception cref="SWRLException"></exception>
         public SWRLSameIndividualAtom(SWRLVariableArgument leftArgument, SWRLIndividualArgument rightArgument)
             : base(SameAs, leftArgument, rightArgument)
         {
             #region Guards
             if (rightArgument == null)
-                throw new SWRLException("Cannot create atom because given \"rightArgument\" parameter is null");
+                throw new SWRLException($"Cannot create atom because given '{nameof(rightArgument)}' parameter is null");
             #endregion
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Evaluates the atom in the context of being part of a SWRL antecedent
+        /// </summary>
         internal override DataTable EvaluateOnAntecedent(OWLOntology ontology)
         {
             string leftArgumentString = LeftArgument.ToString();
@@ -116,6 +131,9 @@ namespace OWLSharp.Ontology
             return atomResult;
         }
 
+        /// <summary>
+        /// Evaluates the atom in the context of being part of a SWRL consequent
+        /// </summary>
         internal override List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
@@ -129,8 +147,7 @@ namespace OWLSharp.Ontology
                 return inferences;
 
             //The antecedent results table MUST have a column corresponding to the atom's right argument (if variable)
-            if (RightArgument is SWRLVariableArgument
-                    && !antecedentResults.Columns.Contains(rightArgumentString))
+            if (RightArgument is SWRLVariableArgument && !antecedentResults.Columns.Contains(rightArgumentString))
                 return inferences;
             #endregion
 
@@ -143,8 +160,7 @@ namespace OWLSharp.Ontology
                     continue;
 
                 //The current row MUST have a BOUND value in the column corresponding to the atom's right argument (if variable)
-                if (RightArgument is SWRLVariableArgument
-                        && currentRow.IsNull(rightArgumentString))
+                if (RightArgument is SWRLVariableArgument && currentRow.IsNull(rightArgumentString))
                     continue;
                 #endregion
 
@@ -182,6 +198,9 @@ namespace OWLSharp.Ontology
             return inferences;
         }
 
+        /// <summary>
+        /// Exports this SWRL atom to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFCollection atomsList)
         {
             RDFGraph graph = new RDFGraph();

@@ -25,8 +25,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// SWRLDataPropertyAtom is a SWRL atom having a datatype property as predicate.<br/>
-    /// It is mainly used for filtering and reasoning on data property assertions.
+    /// SWRLDataPropertyAtom is a SWRL atom suitable for filtering and reasoning on data property assertions
     /// </summary>
     [XmlRoot("DataPropertyAtom")]
     public sealed class SWRLDataPropertyAtom : SWRLAtom

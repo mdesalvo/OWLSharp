@@ -25,8 +25,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// SWRLAnnotationPropertyAtom is a SWRL atom having an annotation property as predicate.<br/>
-    /// It is mainly used for filtering and reasoning on annotation property assertions.
+    /// SWRLAnnotationPropertyAtom is a SWRL atom suitable for filtering and reasoning on annotation property assertions
     /// </summary>
     [XmlRoot("AnnotationPropertyAtom")]
     public sealed class SWRLAnnotationPropertyAtom : SWRLAtom
