@@ -22,7 +22,7 @@ using RDFSharp.Query;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// OWLOntologyHelper simplifies OWLOntology modeling with a set of facilities
+    /// OWLOntologyHelper simplifies ontology modeling and querying with a set of facilities
     /// </summary>
     public static class OWLOntologyHelper
     {
