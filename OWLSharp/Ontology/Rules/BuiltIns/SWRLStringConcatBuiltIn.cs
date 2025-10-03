@@ -25,6 +25,10 @@ namespace OWLSharp.Ontology
     internal static class SWRLStringConcatBuiltIn
     {
         #region Methods
+        /// <summary>
+        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// </summary>
+        /// <exception cref="ArgumentException"></exception>
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
@@ -34,7 +38,7 @@ namespace OWLSharp.Ontology
 
             #region Arguments
             string leftValue = null, rightValue = null;
-            for (int i=0; i<builtInArguments.Count; i++)
+            for (int i = 0; i < builtInArguments.Count; i++)
             {
                 //Parse current argument
                 RDFPatternMember patternMember = null;
@@ -59,20 +63,22 @@ namespace OWLSharp.Ontology
                     string argValue = patternMember is RDFLiteral pmLit ? pmLit.Value : patternMember.ToString();
 
                     //First argument concurs to the left value
-                    if (i==0)
+                    if (i == 0)
                         leftValue = argValue;
                     //Other arguments concur to the right value
                     else if (rightValue == null)
                         rightValue = argValue;
                     else
-                        rightValue = string.Concat(rightValue,argValue);
+                        rightValue = string.Concat(rightValue, argValue);
                 }
                 //In case of type error just discard the current row
                 else
+                {
                     return false;
+                }
             }
 
-            return string.Equals(leftValue, rightValue);
+            return string.Equals(leftValue, rightValue, StringComparison.Ordinal);
             #endregion
         }
         #endregion

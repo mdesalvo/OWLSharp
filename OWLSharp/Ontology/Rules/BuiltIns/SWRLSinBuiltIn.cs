@@ -26,6 +26,10 @@ namespace OWLSharp.Ontology
     internal static class SWRLSinBuiltIn
     {
         #region Methods
+        /// <summary>
+        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// </summary>
+        /// <exception cref="ArgumentException"></exception>
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
@@ -81,7 +85,9 @@ namespace OWLSharp.Ontology
                  && rightPatternMember is RDFTypedLiteral rightTypedLiteral
                  && rightTypedLiteral.HasDecimalDatatype()
                  && double.TryParse(rightTypedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double rightNumber))
+            {
                 return leftNumber == Math.Sin(rightNumber);
+            }
 
             return false;
         }

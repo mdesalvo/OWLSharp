@@ -23,13 +23,13 @@ using System.Data;
 namespace OWLSharp.Test.Ontology;
 
 [TestClass]
-public class SWRLEXTLangMatchesBuiltInTest
+public class SWRLLangMatchesBuiltInTest
 {
     #region Tests
     [TestMethod]
     public void ShouldCreateEXTLangMatchesBuiltIn()
     {
-        SWRLBuiltIn builtin = SWRLBuiltIn.EXTLangMatches(
+        SWRLBuiltIn builtin = SWRLBuiltIn.LangMatches(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
 
@@ -43,14 +43,14 @@ public class SWRLEXTLangMatchesBuiltInTest
         Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg
                       && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
         Assert.IsTrue(string.Equals("owlsharp:langMatches(?X,?Y)", builtin.ToString()));
-        Assert.ThrowsExactly<SWRLException>(() => _ = SWRLBuiltIn.EXTLangMatches(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
-        Assert.ThrowsExactly<SWRLException>(() => _ = SWRLBuiltIn.EXTLangMatches(new SWRLVariableArgument(new RDFVariable("?X")), null));
+        Assert.ThrowsExactly<SWRLException>(() => _ = SWRLBuiltIn.LangMatches(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
+        Assert.ThrowsExactly<SWRLException>(() => _ = SWRLBuiltIn.LangMatches(new SWRLVariableArgument(new RDFVariable("?X")), null));
     }
 
     [TestMethod]
     public void ShouldSerializeEXTLangMatchesBuiltIn()
     {
-        SWRLBuiltIn builtin = SWRLBuiltIn.EXTLangMatches(
+        SWRLBuiltIn builtin = SWRLBuiltIn.LangMatches(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
 
@@ -133,7 +133,7 @@ public class SWRLEXTLangMatchesBuiltInTest
         antecedentResults.Rows.Add("http://example.org/", "http://example.org/hello");
         antecedentResults.Rows.Add("hello@EN-US", "hi@EN-US");
 
-        SWRLBuiltIn builtin = SWRLBuiltIn.EXTLangMatches(
+        SWRLBuiltIn builtin = SWRLBuiltIn.LangMatches(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
 
@@ -151,7 +151,7 @@ public class SWRLEXTLangMatchesBuiltInTest
 
         //Test with unexisting variables
 
-        SWRLBuiltIn builtin2 = SWRLBuiltIn.EXTLangMatches(
+        SWRLBuiltIn builtin2 = SWRLBuiltIn.LangMatches(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
         DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
@@ -159,7 +159,7 @@ public class SWRLEXTLangMatchesBuiltInTest
         Assert.HasCount(2, builtinResults2.Columns);
         Assert.HasCount(4, builtinResults2.Rows);
 
-        SWRLBuiltIn builtin3 = SWRLBuiltIn.EXTLangMatches(
+        SWRLBuiltIn builtin3 = SWRLBuiltIn.LangMatches(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Y")));
         DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);

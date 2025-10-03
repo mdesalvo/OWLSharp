@@ -23,9 +23,16 @@ using System.Globalization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLAbsBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#abs built-in
+    /// </summary>
     internal static class SWRLAbsBuiltIn
     {
         #region Methods
+        /// <summary>
+        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// </summary>
+        /// <exception cref="ArgumentException"></exception>
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
@@ -81,7 +88,9 @@ namespace OWLSharp.Ontology
                  && rightPatternMember is RDFTypedLiteral rightTypedLiteral
                  && rightTypedLiteral.HasDecimalDatatype()
                  && double.TryParse(rightTypedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double rightNumber))
+            {
                 return leftNumber == Math.Abs(rightNumber);
+            }
 
             return false;
         }

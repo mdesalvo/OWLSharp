@@ -28,6 +28,10 @@ namespace OWLSharp.Ontology
         internal static readonly RDFDatatype XSD_DURATION = RDFDatatypeRegister.GetDatatype(RDFModelEnums.RDFDatatypes.XSD_DURATION);
 
         #region Methods
+        /// <summary>
+        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// </summary>
+        /// <exception cref="ArgumentException"></exception>
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
@@ -151,22 +155,26 @@ namespace OWLSharp.Ontology
                                           && rightPMTLitMINUTE.HasDecimalDatatype();
             bool isNumericRightPMSECOND = rightPatternMemberHOUR is RDFTypedLiteral rightPMTLitSECOND
                                           && rightPMTLitSECOND.HasDecimalDatatype();
-            if (isDurationLeftPM && isNumericRightPMDAY && isNumericRightPMHOUR && isNumericRightPMMINUTE && isNumericRightPMSECOND)
-                if (XSD_DURATION.Validate(((RDFLiteral)leftPatternMember).Value).Item1)
-                {
-                    //Get left duration
-                    TimeSpan leftDuration = XmlConvert.ToTimeSpan(((RDFLiteral)leftPatternMember).Value);
+            if (isDurationLeftPM
+                 && isNumericRightPMDAY
+                 && isNumericRightPMHOUR
+                 && isNumericRightPMMINUTE
+                 && isNumericRightPMSECOND
+                 && XSD_DURATION.Validate(((RDFLiteral)leftPatternMember).Value).Item1)
+            {
+                //Get left duration
+                TimeSpan leftDuration = XmlConvert.ToTimeSpan(((RDFLiteral)leftPatternMember).Value);
 
-                    //Get right duration
-                    int rightDurationDay = Convert.ToInt32(((RDFLiteral)rightPatternMemberDAY).Value);
-                    int rightDurationHour = Convert.ToInt32(((RDFLiteral)rightPatternMemberHOUR).Value);
-                    int rightDurationMinute = Convert.ToInt32(((RDFLiteral)rightPatternMemberMINUTE).Value);
-                    int rightDurationSecond = Convert.ToInt32(((RDFLiteral)rightPatternMemberSECOND).Value);
-                    TimeSpan rightDuration = XmlConvert.ToTimeSpan($"P{rightDurationDay}DT{rightDurationHour}H{rightDurationMinute}M{rightDurationSecond}S");
+                //Get right duration
+                int rightDurationDay = Convert.ToInt32(((RDFLiteral)rightPatternMemberDAY).Value);
+                int rightDurationHour = Convert.ToInt32(((RDFLiteral)rightPatternMemberHOUR).Value);
+                int rightDurationMinute = Convert.ToInt32(((RDFLiteral)rightPatternMemberMINUTE).Value);
+                int rightDurationSecond = Convert.ToInt32(((RDFLiteral)rightPatternMemberSECOND).Value);
+                TimeSpan rightDuration = XmlConvert.ToTimeSpan($"P{rightDurationDay}DT{rightDurationHour}H{rightDurationMinute}M{rightDurationSecond}S");
 
-                    //Compare dates
-                    return leftDuration.Equals(rightDuration);
-                }
+                //Compare dates
+                return leftDuration.Equals(rightDuration);
+            }
             return false;
         }
         #endregion

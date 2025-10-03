@@ -25,6 +25,10 @@ namespace OWLSharp.Ontology
     internal static class SWRLContainsBuiltIn
     {
         #region Methods
+        /// <summary>
+        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// </summary>
+        /// <exception cref="ArgumentException"></exception>
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards

@@ -25,6 +25,10 @@ namespace OWLSharp.Ontology
     internal static class SWRLBooleanNotBuiltIn
     {
         #region Methods
+        /// <summary>
+        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// </summary>
+        /// <exception cref="ArgumentException"></exception>
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
@@ -80,7 +84,9 @@ namespace OWLSharp.Ontology
                  && rightPatternMember is RDFTypedLiteral rightTypedLiteral
                  && rightTypedLiteral.HasBooleanDatatype()
                  && bool.TryParse(rightTypedLiteral.Value, out bool rightBool))
+            {
                 return leftBool == !rightBool;
+            }
 
             return false;
         }

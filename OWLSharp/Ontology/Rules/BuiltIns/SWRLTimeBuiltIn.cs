@@ -27,6 +27,10 @@ namespace OWLSharp.Ontology
         internal static readonly RDFDatatype XSD_TIME = RDFDatatypeRegister.GetDatatype(RDFModelEnums.RDFDatatypes.XSD_TIME);
 
         #region Methods
+        /// <summary>
+        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// </summary>
+        /// <exception cref="ArgumentException"></exception>
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
@@ -150,31 +154,35 @@ namespace OWLSharp.Ontology
                                         && rightPMTLitSECOND.HasDecimalDatatype();
             bool isStringRightPMTZ = rightPatternMemberTZ is RDFPlainLiteral
                                       || (rightPatternMemberTZ is RDFTypedLiteral rightPMTLitTZ && rightPMTLitTZ.HasStringDatatype());
-            if (isDateTimeLeftPM && isNumericRightPMHOUR && isNumericRightPMMINUTE && isNumericRightPMSECOND && isStringRightPMTZ)
-                if (XSD_TIME.Validate(((RDFLiteral)leftPatternMember).Value).Item1)
-                {
-                    string targetTZ = ((RDFLiteral)rightPatternMemberTZ).Value;
-                    TimeZoneInfo rightTimeTZ = TimeZoneInfo.FindSystemTimeZoneById(
-                                                    string.IsNullOrWhiteSpace(targetTZ) ? "UTC" : targetTZ); //Fallback to "UTC" in absence of input
+            if (isDateTimeLeftPM
+                 && isNumericRightPMHOUR
+                 && isNumericRightPMMINUTE
+                 && isNumericRightPMSECOND
+                 && isStringRightPMTZ
+                 && XSD_TIME.Validate(((RDFLiteral)leftPatternMember).Value).Item1)
+            {
+                string targetTZ = ((RDFLiteral)rightPatternMemberTZ).Value;
+                TimeZoneInfo rightTimeTZ = TimeZoneInfo.FindSystemTimeZoneById(
+                                             string.IsNullOrWhiteSpace(targetTZ) ? "UTC" : targetTZ); //Fallback to "UTC" in absence of input
 
-                    //Get left time and convert to destination timezone
-                    DateTime leftTime = DateTime.Parse(((RDFLiteral)leftPatternMember).Value);
-                    DateTime convertedLeftTime = TimeZoneInfo.ConvertTime(leftTime, rightTimeTZ);
+                //Get left time and convert to destination timezone
+                DateTime leftTime = DateTime.Parse(((RDFLiteral)leftPatternMember).Value);
+                DateTime convertedLeftTime = TimeZoneInfo.ConvertTime(leftTime, rightTimeTZ);
 
-                    //Get right time and convert to destination timezone
-                    DateTime rightTime = new DateTime(
-                        leftTime.Year,
-                        leftTime.Month,
-                        leftTime.Day,
-                        Convert.ToInt32(((RDFLiteral)rightPatternMemberHOUR).Value),
-                        Convert.ToInt32(((RDFLiteral)rightPatternMemberMINUTE).Value),
-                        Convert.ToInt32(((RDFLiteral)rightPatternMemberSECOND).Value),
-                        DateTimeKind.Utc);
-                    DateTime convertedRightTime = TimeZoneInfo.ConvertTime(rightTime, rightTimeTZ);
+                //Get right time and convert to destination timezone
+                DateTime rightTime = new DateTime(
+                    leftTime.Year,
+                    leftTime.Month,
+                    leftTime.Day,
+                    Convert.ToInt32(((RDFLiteral)rightPatternMemberHOUR).Value),
+                    Convert.ToInt32(((RDFLiteral)rightPatternMemberMINUTE).Value),
+                    Convert.ToInt32(((RDFLiteral)rightPatternMemberSECOND).Value),
+                    DateTimeKind.Utc);
+                DateTime convertedRightTime = TimeZoneInfo.ConvertTime(rightTime, rightTimeTZ);
 
-                    //Compare times
-                    return convertedLeftTime.Equals(convertedRightTime);
-                }
+                //Compare times
+                return convertedLeftTime.Equals(convertedRightTime);
+            }
             return false;
         }
         #endregion

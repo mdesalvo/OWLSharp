@@ -28,6 +28,10 @@ namespace OWLSharp.Ontology
         internal static readonly RDFDatatype XSD_DURATION = RDFDatatypeRegister.GetDatatype(RDFModelEnums.RDFDatatypes.XSD_DURATION);
 
         #region Methods
+        /// <summary>
+        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// </summary>
+        /// <exception cref="ArgumentException"></exception>
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
@@ -105,20 +109,22 @@ namespace OWLSharp.Ontology
                                          && rightPMTLitYEAR.HasDecimalDatatype();
             bool isNumericRightPMMONTH = rightPatternMemberMONTH is RDFTypedLiteral rightPMTLitMONTH
                                           && rightPMTLitMONTH.HasDecimalDatatype();
-            if (isDurationLeftPM && isNumericRightPMYEAR && isNumericRightPMMONTH)
-                if (XSD_DURATION.Validate(((RDFLiteral)leftPatternMember).Value).Item1)
-                {
-                    //Get left duration
-                    TimeSpan leftDuration = XmlConvert.ToTimeSpan(((RDFLiteral)leftPatternMember).Value);
+            if (isDurationLeftPM
+                 && isNumericRightPMYEAR
+                 && isNumericRightPMMONTH
+                 && XSD_DURATION.Validate(((RDFLiteral)leftPatternMember).Value).Item1)
+            {
+                //Get left duration
+                TimeSpan leftDuration = XmlConvert.ToTimeSpan(((RDFLiteral)leftPatternMember).Value);
 
-                    //Get right duration
-                    int rightDurationYear = Convert.ToInt32(((RDFLiteral)rightPatternMemberYEAR).Value);
-                    int rightDurationMonth = Convert.ToInt32(((RDFLiteral)rightPatternMemberMONTH).Value);
-                    TimeSpan rightDuration = XmlConvert.ToTimeSpan($"P{rightDurationYear}Y{rightDurationMonth}M");
+                //Get right duration
+                int rightDurationYear = Convert.ToInt32(((RDFLiteral)rightPatternMemberYEAR).Value);
+                int rightDurationMonth = Convert.ToInt32(((RDFLiteral)rightPatternMemberMONTH).Value);
+                TimeSpan rightDuration = XmlConvert.ToTimeSpan($"P{rightDurationYear}Y{rightDurationMonth}M");
 
-                    //Compare dates
-                    return leftDuration.Equals(rightDuration);
-                }
+                //Compare dates
+                return leftDuration.Equals(rightDuration);
+            }
             return false;
         }
         #endregion

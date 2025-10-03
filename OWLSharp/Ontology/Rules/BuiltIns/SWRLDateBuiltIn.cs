@@ -27,6 +27,10 @@ namespace OWLSharp.Ontology
         internal static readonly RDFDatatype XSD_DATE = RDFDatatypeRegister.GetDatatype(RDFModelEnums.RDFDatatypes.XSD_DATE);
 
         #region Methods
+        /// <summary>
+        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// </summary>
+        /// <exception cref="ArgumentException"></exception>
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
@@ -150,28 +154,35 @@ namespace OWLSharp.Ontology
                                         && rightPMTLitDAY.HasDecimalDatatype();
             bool isStringRightPMTZ = rightPatternMemberTZ is RDFPlainLiteral
                                       || (rightPatternMemberTZ is RDFTypedLiteral rightPMTLitTZ && rightPMTLitTZ.HasStringDatatype());
-            if (isDateTimeLeftPM && isNumericRightPMYEAR && isNumericRightPMMONTH && isNumericRightPMDAY && isStringRightPMTZ)
-                if (XSD_DATE.Validate(((RDFLiteral)leftPatternMember).Value).Item1)
-                {
-                    string targetTZ = ((RDFLiteral)rightPatternMemberTZ).Value;
-                    TimeZoneInfo rightDateTZ = TimeZoneInfo.FindSystemTimeZoneById(
-                                                    string.IsNullOrWhiteSpace(targetTZ) ? "UTC" : targetTZ); //Fallback to "UTC" in absence of input
+            if (isDateTimeLeftPM
+                 && isNumericRightPMYEAR
+                 && isNumericRightPMMONTH
+                 && isNumericRightPMDAY
+                 && isStringRightPMTZ
+                 && XSD_DATE.Validate(((RDFLiteral)leftPatternMember).Value).Item1)
+            {
+                string targetTZ = ((RDFLiteral)rightPatternMemberTZ).Value;
+                TimeZoneInfo rightDateTZ = TimeZoneInfo.FindSystemTimeZoneById(
+                                             string.IsNullOrWhiteSpace(targetTZ) ? "UTC" : targetTZ); //Fallback to "UTC" in absence of input
 
-                    //Get left date and convert to destination timezone
-                    DateTime leftDate = DateTime.Parse(((RDFLiteral)leftPatternMember).Value);
-                    DateTime convertedLeftDate = TimeZoneInfo.ConvertTime(leftDate, rightDateTZ);
+                //Get left date and convert to destination timezone
+                DateTime leftDate = DateTime.Parse(((RDFLiteral)leftPatternMember).Value);
+                DateTime convertedLeftDate = TimeZoneInfo.ConvertTime(leftDate, rightDateTZ);
 
-                    //Get right date and convert to destination timezone
-                    DateTime rightDate = new DateTime(
-                        Convert.ToInt32(((RDFLiteral)rightPatternMemberYEAR).Value),
-                        Convert.ToInt32(((RDFLiteral)rightPatternMemberMONTH).Value),
-                        Convert.ToInt32(((RDFLiteral)rightPatternMemberDAY).Value),
-                        0,0,0,DateTimeKind.Utc);
-                    DateTime convertedRightDate = TimeZoneInfo.ConvertTime(rightDate, rightDateTZ);
+                //Get right date and convert to destination timezone
+                DateTime rightDate = new DateTime(
+                    Convert.ToInt32(((RDFLiteral)rightPatternMemberYEAR).Value),
+                    Convert.ToInt32(((RDFLiteral)rightPatternMemberMONTH).Value),
+                    Convert.ToInt32(((RDFLiteral)rightPatternMemberDAY).Value),
+                    0,
+                    0,
+                    0,
+                    DateTimeKind.Utc);
+                DateTime convertedRightDate = TimeZoneInfo.ConvertTime(rightDate, rightDateTZ);
 
-                    //Compare dates
-                    return convertedLeftDate.Equals(convertedRightDate);
-                }
+                //Compare dates
+                return convertedLeftDate.Equals(convertedRightDate);
+            }
             return false;
         }
         #endregion

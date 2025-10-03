@@ -32,6 +32,10 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// </summary>
+        /// <exception cref="ArgumentException"></exception>
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
@@ -98,7 +102,7 @@ namespace OWLSharp.Ontology
             {
                 string leftPMValue = leftPatternMember is RDFLiteral leftPMLit ? leftPMLit.Value : leftPatternMember.ToString();
                 string rightPMValue = rightPatternMember is RDFLiteral rightPMLit ? rightPMLit.Value : rightPatternMember.ToString();
-                return string.Equals(leftPMValue, NormalizeSpacesRegex.Value.Replace(rightPMValue, NormalizeSpacesReplacement));
+                return string.Equals(leftPMValue, NormalizeSpacesRegex.Value.Replace(rightPMValue, NormalizeSpacesReplacement), StringComparison.Ordinal);
             }
             return false;
         }

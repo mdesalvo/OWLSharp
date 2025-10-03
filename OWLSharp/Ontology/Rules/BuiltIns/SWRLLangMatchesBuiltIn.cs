@@ -22,9 +22,13 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
-    internal static class SWRLEXTLangMatchesBuiltIn
+    internal static class SWRLLangMatchesBuiltIn
     {
         #region Methods
+        /// <summary>
+        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// </summary>
+        /// <exception cref="ArgumentException"></exception>
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
@@ -75,7 +79,7 @@ namespace OWLSharp.Ontology
             #endregion
 
             if (leftPatternMember is RDFPlainLiteral leftPMLit && rightPatternMember is RDFPlainLiteral rightPMLit)
-                return string.Equals(leftPMLit.Language, rightPMLit.Language);
+                return string.Equals(leftPMLit.Language, rightPMLit.Language, StringComparison.Ordinal);
 
             return false;
         }

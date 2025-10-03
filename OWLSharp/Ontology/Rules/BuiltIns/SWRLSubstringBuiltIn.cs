@@ -26,6 +26,10 @@ namespace OWLSharp.Ontology
     internal static class SWRLSubstringBuiltIn
     {
         #region Methods
+        /// <summary>
+        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// </summary>
+        /// <exception cref="ArgumentException"></exception>
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
@@ -149,7 +153,9 @@ namespace OWLSharp.Ontology
                     if (rightPatternMemberLEN is RDFTypedLiteral leftTypedLiteralLEN
                         && leftTypedLiteralLEN.HasDecimalDatatype()
                         && int.TryParse(leftTypedLiteralLEN.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int leftNumberLEN))
+                    {
                         return string.Equals(leftPMValue, rightPMValue.Substring(leftNumberIDX, leftNumberLEN));
+                    }
                 }
             }
             return false;
