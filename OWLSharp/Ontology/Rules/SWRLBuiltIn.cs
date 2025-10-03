@@ -681,7 +681,7 @@ namespace OWLSharp.Ontology
         //Extension BuiltIns
 
         /// <summary>
-        /// Builds an extension https://github.com/mdesalvo/OWLSharp#langMatches built-in
+        /// Builds a https://github.com/mdesalvo/OWLSharp#langMatches built-in
         /// </summary>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn EXTLangMatches(SWRLArgument leftArg, SWRLArgument rightArg)

@@ -18,17 +18,27 @@ using System.Linq;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLHelper simplifies SWRL modeling with a set of facilities
+    /// </summary>
     public static class SWRLHelper
     {
         #region Methods
+        /// <summary>
+        /// Checks if the given ontology has the given SWRL rule in its R-BOX
+        /// </summary>
         public static bool CheckHasRule(this OWLOntology ontology, SWRLRule rule)
-            => ontology?.Rules.Any(rl => string.Equals(rl.GetXML(), rule?.GetXML())) ?? false;
+            => ontology != null && rule != null && ontology.Rules.Any(rl => string.Equals(rl.GetXML(), rule.GetXML()));
 
+        /// <summary>
+        /// Declares the given SWRL rule to the R-BOX of the given ontology
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static void DeclareRule(this OWLOntology ontology, SWRLRule rule)
         {
             #region Guards
             if (rule == null)
-                throw new OWLException("Cannot declare SWRL rule because given \"rule\" parameter is null");
+                throw new OWLException($"Cannot declare SWRL rule because given '{nameof(rule)}' parameter is null");
             #endregion
 
             if (!CheckHasRule(ontology, rule))
