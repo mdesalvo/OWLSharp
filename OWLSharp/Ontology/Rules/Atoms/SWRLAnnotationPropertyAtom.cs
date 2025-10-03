@@ -24,6 +24,10 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLAnnotationPropertyAtom is a SWRL atom having an annotation property as predicate.<br/>
+    /// It is mainly used for filtering and reasoning on annotation property assertions.
+    /// </summary>
     [XmlRoot("AnnotationPropertyAtom")]
     public sealed class SWRLAnnotationPropertyAtom : SWRLAtom
     {
@@ -33,26 +37,38 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         internal SWRLAnnotationPropertyAtom() { }
+
+        /// <summary>
+        /// Builds an annotation property atom with the given predicate and arguments
+        /// </summary>
+        /// <exception cref="SWRLException"></exception>
         public SWRLAnnotationPropertyAtom(OWLAnnotationProperty annotationProperty, SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
             : base(annotationProperty, leftArgument, rightArgument)
         {
             #region Guards
             if (rightArgument == null)
-                throw new SWRLException("Cannot create atom because given \"rightArgument\" parameter is null");
+                throw new SWRLException($"Cannot create atom because given '{nameof(rightArgument)}' parameter is null");
             #endregion
         }
 
+        /// <summary>
+        /// Builds an annotation property atom with the given predicate and arguments
+        /// </summary>
+        /// <exception cref="SWRLException"></exception>
         public SWRLAnnotationPropertyAtom(OWLAnnotationProperty annotationProperty, SWRLVariableArgument leftArgument, SWRLLiteralArgument rightArgument)
             : base(annotationProperty, leftArgument, rightArgument)
         {
             #region Guards
             if (rightArgument == null)
-                throw new SWRLException("Cannot create atom because given \"rightArgument\" parameter is null");
+                throw new SWRLException($"Cannot create atom because given '{nameof(rightArgument)}' parameter is null");
             #endregion
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Evaluates the atom in the context of being part of a SWRL antecedent
+        /// </summary>
         internal override DataTable EvaluateOnAntecedent(OWLOntology ontology)
         {
             string leftArgumentString = LeftArgument.ToString();
@@ -68,8 +84,7 @@ namespace OWLSharp.Ontology
             List<OWLAnnotationAssertion> annAsns = ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>();
             List<OWLAnnotationAssertion> atomPredicateAssertions = OWLAnnotationAxiomHelper.SelectAnnotationAssertionsByAPEX(annAsns, (OWLAnnotationProperty)Predicate);
             if (RightArgument is SWRLLiteralArgument rightArgumentLiteral)
-                atomPredicateAssertions = atomPredicateAssertions.Where(asn => asn.ValueLiteral?.GetLiteral().Equals(rightArgumentLiteral.GetLiteral()) ?? false)
-                                                                 .ToList();
+                atomPredicateAssertions = atomPredicateAssertions.Where(asn => asn.ValueLiteral?.GetLiteral().Equals(rightArgumentLiteral.GetLiteral()) ?? false).ToList();
 
             //Save them into the atom result
             Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();
@@ -88,6 +103,9 @@ namespace OWLSharp.Ontology
             return atomResult;
         }
 
+        /// <summary>
+        /// Evaluates the atom in the context of being part of a SWRL consequent
+        /// </summary>
         internal override List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
@@ -101,8 +119,7 @@ namespace OWLSharp.Ontology
                 return inferences;
 
             //The antecedent results table MUST have a column corresponding to the atom's right argument (if variable)
-            if (RightArgument is SWRLVariableArgument
-                    && !antecedentResults.Columns.Contains(rightArgumentString))
+            if (RightArgument is SWRLVariableArgument && !antecedentResults.Columns.Contains(rightArgumentString))
                 return inferences;
             #endregion
 
@@ -115,8 +132,7 @@ namespace OWLSharp.Ontology
                     continue;
 
                 //The current row MUST have a BOUND value in the column corresponding to the atom's right argument (if variable)
-                if (RightArgument is SWRLVariableArgument
-                        && currentRow.IsNull(rightArgumentString))
+                if (RightArgument is SWRLVariableArgument && currentRow.IsNull(rightArgumentString))
                     continue;
                 #endregion
 
@@ -146,6 +162,9 @@ namespace OWLSharp.Ontology
             return inferences;
         }
 
+        /// <summary>
+        /// Exports this SWRL atom to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFCollection atomsList)
         {
             RDFGraph graph = new RDFGraph();
