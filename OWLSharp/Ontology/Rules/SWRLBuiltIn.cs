@@ -760,7 +760,6 @@ namespace OWLSharp.Ontology
                     bool keepRow;
                     switch (IRI)
                     {
-                        //Official BuiltIns => handle them directly
                         case "http://www.w3.org/2003/11/swrlb#abs":
                             keepRow = SWRLAbsBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
@@ -811,6 +810,9 @@ namespace OWLSharp.Ontology
                             break;
                         case "http://www.w3.org/2003/11/swrlb#integerDivide":
                             keepRow = SWRLIntegerDivideBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "https://github.com/mdesalvo/OWLSharp#langMatches":
+                            keepRow = SWRLLangMatchesBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
                         case "http://www.w3.org/2003/11/swrlb#lessThan":
                             keepRow = SWRLLessThanBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
@@ -893,16 +895,9 @@ namespace OWLSharp.Ontology
                         case "http://www.w3.org/2003/11/swrlb#yearMonthDuration":
                             keepRow = SWRLYearMonthDurationBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
-
-                        //Extension BuiltIns => handle them directly
-                        case "https://github.com/mdesalvo/OWLSharp#langMatches":
-                            keepRow = SWRLLangMatchesBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-
-                        //Custom BuiltIns => handle them via register
                         default:
                             SWRLBuiltIn customBuiltIn = SWRLBuiltInRegister.GetBuiltIn(IRI)
-                                                          ?? throw new NotImplementedException($"unsupported IRI {IRI}");
+                                                          ?? throw new NotImplementedException($"unregistered IRI {IRI}");
                             //Assign the built-in arguments before evaluation
                             customBuiltIn.Arguments = Arguments;
                             //Evaluate the built-in on the current row
