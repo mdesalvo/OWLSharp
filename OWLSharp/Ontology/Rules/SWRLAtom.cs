@@ -25,7 +25,11 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
-    //Register here all derived types of SWRLAtom
+    /// <summary>
+    /// SWRLAtom represents the foundational aspect for building SWRL antecedents and SWRL consequents.<br/><br/>
+    /// Atoms in SWRL are predicates applied on a single argument (the left argument, when semantic is unary)<br/>
+    /// or at most on a pair of arguments (the left and right arguments, when semantic is binary).
+    /// </summary>
     [XmlInclude(typeof(SWRLAnnotationPropertyAtom))]
     [XmlInclude(typeof(SWRLClassAtom))]
     [XmlInclude(typeof(SWRLDataPropertyAtom))]
@@ -36,6 +40,9 @@ namespace OWLSharp.Ontology
     public abstract class SWRLAtom
     {
         #region Properties
+        /// <summary>
+        /// The OWL expression representing the predicate of the atom
+        /// </summary>
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=1)]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=1)]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=1)]
@@ -68,11 +75,17 @@ namespace OWLSharp.Ontology
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool ShouldSerializePredicate() => Predicate.GetType() != typeof(OWLExpression);
 
+        /// <summary>
+        /// The left argument of the atom
+        /// </summary>
         [XmlElement(typeof(SWRLIndividualArgument), ElementName="NamedIndividual", Order=2)]
         [XmlElement(typeof(SWRLLiteralArgument), ElementName="Literal", Order=2)]
         [XmlElement(typeof(SWRLVariableArgument), ElementName="Variable", Order=2)]
         public SWRLArgument LeftArgument { get; set; }
 
+        /// <summary>
+        /// The right argument of the atom (required in case of binary semantic)
+        /// </summary>
         [XmlElement(typeof(SWRLIndividualArgument), ElementName="NamedIndividual", Order=3)]
         [XmlElement(typeof(SWRLLiteralArgument), ElementName="Literal", Order=3)]
         [XmlElement(typeof(SWRLVariableArgument), ElementName="Variable", Order=3)]
@@ -81,15 +94,23 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         internal SWRLAtom() { }
+
+        /// <summary>
+        /// Builds an atom with the given predicate and arguments
+        /// </summary>
+        /// <exception cref="SWRLException"></exception>
         internal SWRLAtom(OWLExpression predicate, SWRLArgument leftArgument, SWRLArgument rightArgument)
         {
-            Predicate = predicate ?? throw new SWRLException("Cannot create atom because given \"predicate\" parameter is null");
-            LeftArgument = leftArgument ?? throw new SWRLException("Cannot create atom because given \"leftArgument\" parameter is null");
+            Predicate = predicate ?? throw new SWRLException($"Cannot create atom because given '{nameof(predicate)}' parameter is null");
+            LeftArgument = leftArgument ?? throw new SWRLException($"Cannot create atom because given '{nameof(leftArgument)}' parameter is null");
             RightArgument = rightArgument;
         }
         #endregion
 
         #region Interfaces
+        /// <summary>
+        /// Gets the string representation of the atom
+        /// </summary>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -135,10 +156,19 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Evaluates the atom in the context of being part of a SWRL antecedent
+        /// </summary>
         internal abstract DataTable EvaluateOnAntecedent(OWLOntology ontology);
 
+        /// <summary>
+        /// Evaluates the atom in the context of being part of a SWRL consequent
+        /// </summary>
         internal abstract List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology);
 
+        /// <summary>
+        /// Exports this SWRL atom to an equivalent RDFGraph object
+        /// </summary>
         internal abstract RDFGraph ToRDFGraph(RDFCollection atomsList);
         #endregion
     }
