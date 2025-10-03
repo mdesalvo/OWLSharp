@@ -23,10 +23,16 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLAntecedent represents the part of a SWRL rule which analyzes and filters knowledge (it is also called "Body")
+    /// </summary>
     [XmlRoot("Body")]
     public sealed class SWRLAntecedent
     {
         #region Properties
+        /// <summary>
+        /// The set of atoms responsible for analyzing the ontology knowledge
+        /// </summary>
         [XmlElement(typeof(SWRLAnnotationPropertyAtom), ElementName="AnnotationPropertyAtom")]
         [XmlElement(typeof(SWRLClassAtom), ElementName="ClassAtom")]
         [XmlElement(typeof(SWRLDataPropertyAtom), ElementName="DataPropertyAtom")]
@@ -36,26 +42,36 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(SWRLSameIndividualAtom), ElementName="SameIndividualAtom")]
         public List<SWRLAtom> Atoms { get; set; } = new List<SWRLAtom>();
 
+        /// <summary>
+        /// The set of built-ins responsible for filtering the ontology knowledge
+        /// </summary>
         [XmlElement(ElementName="BuiltInAtom")]
         public List<SWRLBuiltIn> BuiltIns { get; set; } = new List<SWRLBuiltIn>();
         #endregion
 
         #region Interfaces
+        /// <summary>
+        /// Gets the string representation of this SWRL antecedent (atom1 ^ ...atomN ^ builtin1 ^ ...builtinN)
+        /// </summary>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(string.Join(" ^ ", Atoms));
-            sb.Append(Atoms.Count > 0 && BuiltIns.Count > 0 ? " ^ " : string.Empty);
-            sb.Append(string.Join(" ^ ", BuiltIns));
+            sb.Append(string.Join(" ^ ", Atoms))
+              .Append(Atoms.Count > 0 && BuiltIns.Count > 0 ? " ^ " : string.Empty)
+              .Append(string.Join(" ^ ", BuiltIns));
             return sb.ToString();
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Analyzes and filters the ontology knowledge by sequentially applying the set of atoms and built-ins.<br/>
+        /// The result of the process is a tabular binding of variables ready for evaluation by the consequent.
+        /// </summary>
         internal DataTable Evaluate(OWLOntology ontology)
         {
             //Execute the antecedent atoms
-            List<DataTable> atomResults = new List<DataTable>();
+            List<DataTable> atomResults = new List<DataTable>(Atoms.Count);
             Atoms.ForEach(atom => atomResults.Add(atom.EvaluateOnAntecedent(ontology)));
 
             //Join results of antecedent atoms
@@ -68,6 +84,9 @@ namespace OWLSharp.Ontology
             return antecedentResult;
         }
 
+        /// <summary>
+        /// Exports this SWRL antecedent to an equivalent RDFGraph object
+        /// </summary>
         internal RDFGraph ToRDFGraph(RDFResource ruleBN)
         {
             RDFGraph graph = new RDFGraph();

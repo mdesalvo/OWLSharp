@@ -22,10 +22,16 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLConsequent represents the part of a SWRL rule which emits logical derivations (it is also called "Head")
+    /// </summary>
     [XmlRoot("Head")]
     public sealed class SWRLConsequent
     {
         #region Properties
+        /// <summary>
+        /// The set of atoms responsible for emitting the logical derivations
+        /// </summary>
         [XmlElement(typeof(SWRLAnnotationPropertyAtom), ElementName="AnnotationPropertyAtom")]
         [XmlElement(typeof(SWRLClassAtom), ElementName="ClassAtom")]
         [XmlElement(typeof(SWRLDataPropertyAtom), ElementName="DataPropertyAtom")]
@@ -37,11 +43,17 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Interfaces
+        /// <summary>
+        /// Gets the string representation of this SWRL consequent (atom1 ^ ...atomN)
+        /// </summary>
         public override string ToString()
             => string.Join(" ^ ", Atoms);
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Materializes the logical derivations by applying the set of axioms on the given antecedent results
+        /// </summary>
         internal List<OWLInference> Evaluate(DataTable antecedentResults, OWLOntology ontology)
         {
             List<OWLInference>  inferences = new List<OWLInference> ();
@@ -54,6 +66,9 @@ namespace OWLSharp.Ontology
             return inferences;
         }
 
+        /// <summary>
+        /// Exports this SWRL consequent to an equivalent RDFGraph object
+        /// </summary>
         internal RDFGraph ToRDFGraph(RDFResource ruleBN)
         {
             RDFGraph graph = new RDFGraph();
