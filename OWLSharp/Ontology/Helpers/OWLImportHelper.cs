@@ -22,25 +22,35 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLImportHelper simplifies OWLImport directive modeling with a set of facilities
+    /// </summary>
     public static class OWLImportHelper
     {
         #region Properties
-
+        /// <summary>
+        /// Singleton cache of imported ontologies
+        /// </summary>
         internal static readonly Dictionary<string, (OWLOntology Ontology, DateTime ExpireTimestamp)> OntologyCache
             = new Dictionary<string, (OWLOntology, DateTime)>();
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Tries to import the ontology at the given IRI into the given working ontology.
+        /// In case of success, it also caches the retrieved ontology for the specified amount of milliseconds.
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static Task ImportAsync(this OWLOntology ontology, Uri ontologyIRI, int timeoutMilliseconds=20000, int cacheMilliseconds=3600000)
             => ImportAsync(ontology, ontologyIRI, timeoutMilliseconds, cacheMilliseconds, true);
-        internal static Task ImportAsync(this OWLOntology ontology, Uri ontologyIRI, int timeoutMilliseconds, int cacheMilliseconds, bool shouldCollectImport)
+        private static Task ImportAsync(this OWLOntology ontology, Uri ontologyIRI, int timeoutMilliseconds, int cacheMilliseconds, bool shouldCollectImport)
             => Task.Run(async () =>
                 {
                     #region Guards
                     if (ontology == null)
-                        throw new OWLException("Cannot import ontology because given \"ontology\" parameter is null");
+                        throw new OWLException($"Cannot import ontology because given '{nameof(ontology)}' parameter is null");
                     if (ontologyIRI == null)
-                        throw new OWLException("Cannot import ontology because given \"ontologyIRI\" parameter is null");
+                        throw new OWLException($"Cannot import ontology because given '{nameof(ontologyIRI)}' parameter is null");
                     #endregion
 
                     try
@@ -57,7 +67,7 @@ namespace OWLSharp.Ontology
                         {
                             RDFGraph importGraph = await RDFGraph.FromUriAsync(ontologyIRI, timeoutMilliseconds, true);
                             OWLOntology importOntology = await OWLOntology.FromRDFGraphAsync(importGraph);
-                            //Save the fetched ontology into the cache for the given amount of milliseconds
+                            //Save the ontology into the cache for the given amount of milliseconds
                             OntologyCache.Add(ontologyIRIString, (importOntology, DateTime.UtcNow.AddMilliseconds(cacheMilliseconds)));
                         }
 
@@ -95,10 +105,14 @@ namespace OWLSharp.Ontology
                     }
                 });
 
+        /// <summary>
+        /// Tries to resolve each OWLImport directive found in the given ontology.
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static Task ResolveImportsAsync(this OWLOntology ontology, int timeoutMilliseconds=20000, int cacheMilliseconds=3600000)
             => Task.Run(async () =>
                 {
-                    foreach (OWLImport import in ontology?.Imports.ToList())
+                    foreach (OWLImport import in ontology?.Imports ?? Enumerable.Empty<OWLImport>())
                         await ImportAsync(ontology, new Uri(import.IRI), timeoutMilliseconds, cacheMilliseconds, false);
                 });
         #endregion

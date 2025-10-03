@@ -56,7 +56,7 @@ namespace OWLSharp.Ontology
         public List<OWLPrefix> Prefixes { get; internal set; }
 
         /// <summary>
-        /// The set of imported ontologies, from which this ontology is expected to use some terms
+        /// The set of imported ontologies, from which this ontology is expected to use some terms in its T-BOX or A-BOX
         /// </summary>
         [XmlElement("Import")]
         public List<OWLImport> Imports { get; internal set; }
