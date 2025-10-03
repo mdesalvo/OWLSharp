@@ -692,12 +692,12 @@ namespace OWLSharp.Ontology
                         default:
                             SWRLBuiltIn customBuiltIn = SWRLBuiltInRegister.GetBuiltIn(IRI)
                                                           ?? throw new NotImplementedException($"unsupported IRI {IRI}");
-                            //Since the custom builtIn may have been registered with different arguments,
-                            //we must temporary swap them with ones coming from the executing builtIn
-                            List<SWRLArgument> registeredArguments = customBuiltIn.Arguments;
+                            //Since the built-in is stored in the register without arguments,
+                            //we have to populate them at evaluation time. After processing,
+                            //the built-in can be safely restored to its original state.
                             customBuiltIn.Arguments = Arguments;
                             keepRow = customBuiltIn.EvaluatorFunction(currentRow);
-                            customBuiltIn.Arguments = registeredArguments;
+                            customBuiltIn.Arguments = null;
                             break;
                     }
 
