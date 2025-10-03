@@ -31,15 +31,27 @@ namespace OWLSharp.Ontology
     public sealed class SWRLRule
     {
         #region Properties
+        /// <summary>
+        /// The set of annotations about this SWRL rule (e.g: comment, label, author)
+        /// </summary>
         [XmlElement("Annotation")]
         public List<OWLAnnotation> Annotations { get; set; }
 
+        /// <summary>
+        /// The antecedent of this SWRL rule (also called "Body")
+        /// </summary>
         [XmlElement("Body")]
         public SWRLAntecedent Antecedent { get; set; }
 
+        /// <summary>
+        /// The consequent of this SWRL rule (also called "Head")
+        /// </summary>
         [XmlElement("Head")]
         public SWRLConsequent Consequent { get; set; }
 
+        /// <summary>
+        /// Indicates that this SWRL rule has been imported from another ontology
+        /// </summary>
         [XmlIgnore]
         public bool IsImport { get; set; }
         #endregion
@@ -47,13 +59,18 @@ namespace OWLSharp.Ontology
         #region Ctors
         internal SWRLRule()
             => Annotations = new List<OWLAnnotation>();
+
+        /// <summary>
+        /// Builds a SWRL rule with the given name, description, antecedent and consequent
+        /// </summary>
+        /// <exception cref="SWRLException"></exception>
         public SWRLRule(RDFLiteral ruleName, RDFLiteral ruleDescription, SWRLAntecedent antecedent, SWRLConsequent consequent) : this()
         {
             #region Guards
             if (ruleName == null)
-                throw new SWRLException("Cannot create SWRL rule because given \"ruleName\" parameter is null");
+                throw new SWRLException($"Cannot create SWRL rule because given '{nameof(ruleName)}' parameter is null");
             if (ruleDescription == null)
-                throw new SWRLException("Cannot create SWRL rule because given \"ruleDescription\" parameter is null");
+                throw new SWRLException($"Cannot create SWRL rule because given '{nameof(ruleDescription)}' parameter is null");
             #endregion
 
             Annotations.Add(
@@ -64,20 +81,29 @@ namespace OWLSharp.Ontology
                 new OWLAnnotation(
                     new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                     new OWLLiteral(ruleDescription)));
-            Antecedent = antecedent ?? throw new SWRLException("Cannot create SWRL rule because given \"antecedent\" parameter is null");
-            Consequent = consequent ?? throw new SWRLException("Cannot create SWRL rule because given \"consequent\" parameter is null");
+            Antecedent = antecedent ?? throw new SWRLException($"Cannot create SWRL rule because given '{nameof(antecedent)}' parameter is null");
+            Consequent = consequent ?? throw new SWRLException($"Cannot create SWRL rule because given '{nameof(consequent)}' is null");
         }
         #endregion
 
         #region Interfaces
+        /// <summary>
+        /// Gets the string representation of this SWRL rule (antecedent -> consequent)
+        /// </summary>
         public override string ToString()
             => $"{Antecedent} -> {Consequent}";
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the OWL2/XML representation of this SWRL rule
+        /// </summary>
         public string GetXML()
             => OWLSerializer.SerializeObject(this);
 
+        /// <summary>
+        /// Exports this SWRL rule to an equivalent RDFGraph object
+        /// </summary>
         public RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
@@ -97,19 +123,21 @@ namespace OWLSharp.Ontology
 
             return graph;
         }
-
-        internal Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology)
-            => Task.Run(() => Consequent?.Evaluate(Antecedent?.Evaluate(ontology), ontology)
-                                       ?? Enumerable.Empty<OWLInference>().ToList());
         #endregion
 
         #region Utilities
+        internal Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology)
+            => Task.Run(() => Consequent?.Evaluate(Antecedent?.Evaluate(ontology), ontology)
+                                       ?? Enumerable.Empty<OWLInference>().ToList());
+
         internal static RDFGraph ReifySWRLCollection(RDFCollection collection, bool isAtomList)
         {
             RDFGraph reifColl = new RDFGraph();
             RDFResource reifSubj = collection.ReificationSubject;
             int itemCount = 0;
 
+            //Conceptually equivalent to the reification of RDF lists, except for supporting
+            //the emission of an additional "rdf:type swrl:AtomList" triple for each element
             foreach (RDFPatternMember collectionItem in collection)
             {
                 itemCount++;
@@ -130,7 +158,9 @@ namespace OWLSharp.Ontology
                     reifSubj = newSub;
                 }
                 else
+                {
                     reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.REST, RDFVocabulary.RDF.NIL));
+                }
             }
 
             return reifColl;
