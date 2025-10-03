@@ -21,16 +21,23 @@ using RDFSharp.Query;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLOntologyHelper simplifies OWLOntology modeling with a set of facilities
+    /// </summary>
     public static class OWLOntologyHelper
     {
         #region Methods
+        /// <summary>
+        /// Applies the given SPARQL ASK query to the given ontology, contextually executing the given OWL reasoner for inference materialization
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static async Task<RDFAskQueryResult> ApplyToOntologyAsync(this RDFAskQuery askQuery, OWLOntology ontology, OWLReasoner reasoner=null)
         {
             #region Guards
             if (askQuery == null)
-                throw new OWLException("Cannot apply SPARQL ASK query to ontology because given \"askQuery\" parameter is null");
+                throw new OWLException($"Cannot apply SPARQL ASK query to ontology because given '{nameof(askQuery)}' parameter is null");
             if (ontology == null)
-                throw new OWLException("Cannot apply SPARQL ASK query to ontology because given \"ontology\" parameter is null");
+                throw new OWLException($"Cannot apply SPARQL ASK query to ontology because given '{nameof(ontology)}' parameter is null");
             #endregion
 
             //Apply reasoner and integrate inferred axioms
@@ -44,13 +51,17 @@ namespace OWLSharp.Ontology
             return await askQuery.ApplyToGraphAsync(graph);
         }
 
+        /// <summary>
+        /// Applies the given SPARQL CONSTRUCT query to the given ontology, contextually executing the given OWL reasoner for inference materialization
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static async Task<RDFConstructQueryResult> ApplyToOntologyAsync(this RDFConstructQuery constructQuery, OWLOntology ontology, OWLReasoner reasoner=null)
         {
             #region Guards
             if (constructQuery == null)
-                throw new OWLException("Cannot apply SPARQL CONSTRUCT query to ontology because given \"constructQuery\" parameter is null");
+                throw new OWLException($"Cannot apply SPARQL CONSTRUCT query to ontology because given '{nameof(constructQuery)}' parameter is null");
             if (ontology == null)
-                throw new OWLException("Cannot apply SPARQL CONSTRUCT query to ontology because given \"ontology\" parameter is null");
+                throw new OWLException($"Cannot apply SPARQL CONSTRUCT query to ontology because given '{nameof(ontology)}' parameter is null");
             #endregion
 
             //Apply reasoner and integrate inferred axioms
@@ -64,13 +75,17 @@ namespace OWLSharp.Ontology
             return await constructQuery.ApplyToGraphAsync(graph);
         }
 
+        /// <summary>
+        /// Applies the given SPARQL DESCRIBE query to the given ontology, contextually executing the given OWL reasoner for inference materialization
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static async Task<RDFDescribeQueryResult> ApplyToOntologyAsync(this RDFDescribeQuery describeQuery, OWLOntology ontology, OWLReasoner reasoner=null)
         {
             #region Guards
             if (describeQuery == null)
-                throw new OWLException("Cannot apply SPARQL CONSTRUCT query to ontology because given \"describeQuery\" parameter is null");
+                throw new OWLException($"Cannot apply SPARQL DESCRIBE query to ontology because given '{nameof(describeQuery)}' parameter is null");
             if (ontology == null)
-                throw new OWLException("Cannot apply SPARQL CONSTRUCT query to ontology because given \"ontology\" parameter is null");
+                throw new OWLException($"Cannot apply SPARQL DESCRIBE query to ontology because given '{nameof(ontology)}' parameter is null");
             #endregion
 
             //Apply reasoner and integrate inferred axioms
@@ -84,13 +99,17 @@ namespace OWLSharp.Ontology
             return await describeQuery.ApplyToGraphAsync(graph);
         }
 
+        /// <summary>
+        /// Applies the given SPARQL SELECT query to the given ontology, contextually executing the given OWL reasoner for inference materialization
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static async Task<RDFSelectQueryResult> ApplyToOntologyAsync(this RDFSelectQuery selectQuery, OWLOntology ontology, OWLReasoner reasoner=null)
         {
             #region Guards
             if (selectQuery == null)
-                throw new OWLException("Cannot apply SPARQL SELECT query to ontology because given \"selectQuery\" parameter is null");
+                throw new OWLException($"Cannot apply SPARQL SELECT query to ontology because given '{nameof(selectQuery)}' parameter is null");
             if (ontology == null)
-                throw new OWLException("Cannot apply SPARQL SELECT query to ontology because given \"ontology\" parameter is null");
+                throw new OWLException($"Cannot apply SPARQL SELECT query to ontology because given '{nameof(ontology)}' parameter is null");
             #endregion
 
             //Apply reasoner and integrate inferred axioms
@@ -106,6 +125,9 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Utilities
+        /// <summary>
+        /// Executes the given OWL reasoner on the given ontology and merges inferred axioms into its knowledge
+        /// </summary>
         private static async Task ApplyReasonerToOntologyAsync(this OWLOntology ontology, OWLReasoner reasoner)
         {
             foreach (OWLInference inference in await reasoner.ApplyToOntologyAsync(ontology))
