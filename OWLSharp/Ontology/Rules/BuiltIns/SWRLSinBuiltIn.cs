@@ -23,6 +23,9 @@ using System.Globalization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLSinBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#sin built-in
+    /// </summary>
     internal static class SWRLSinBuiltIn
     {
         #region Methods

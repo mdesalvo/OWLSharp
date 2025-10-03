@@ -23,6 +23,9 @@ using System.Text.RegularExpressions;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLReplaceBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#replace built-in
+    /// </summary>
     internal static class SWRLReplaceBuiltIn
     {
         #region Methods

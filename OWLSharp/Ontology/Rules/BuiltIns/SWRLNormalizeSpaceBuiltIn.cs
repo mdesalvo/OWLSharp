@@ -23,6 +23,9 @@ using System.Text.RegularExpressions;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLNormalizeSpaceBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#normalizeSpace built-in
+    /// </summary>
     internal static class SWRLNormalizeSpaceBuiltIn
     {
         #region Statics

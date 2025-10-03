@@ -23,6 +23,9 @@ using System.Globalization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLStringLengthBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#stringLength built-in
+    /// </summary>
     internal static class SWRLStringLengthBuiltIn
     {
         #region Methods

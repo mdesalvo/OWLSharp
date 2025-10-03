@@ -23,6 +23,9 @@ using System.Text.RegularExpressions;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLMatchesBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#matches built-in
+    /// </summary>
     internal static class SWRLMatchesBuiltIn
     {
         #region Methods

@@ -22,6 +22,9 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLSubstringBeforeBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#substringBefore built-in
+    /// </summary>
     internal static class SWRLSubstringBeforeBuiltIn
     {
         #region Methods

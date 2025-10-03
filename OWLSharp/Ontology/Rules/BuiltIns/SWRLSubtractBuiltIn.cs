@@ -23,6 +23,9 @@ using System.Globalization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLSubtractBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#subtract built-in
+    /// </summary>
     internal static class SWRLSubtractBuiltIn
     {
         #region Methods

@@ -23,6 +23,9 @@ using System.Xml;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLYearMonthDurationBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#yearMonthDuration built-in
+    /// </summary>
     internal static class SWRLYearMonthDurationBuiltIn
     {
         internal static readonly RDFDatatype XSD_DURATION = RDFDatatypeRegister.GetDatatype(RDFModelEnums.RDFDatatypes.XSD_DURATION);

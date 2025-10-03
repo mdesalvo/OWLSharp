@@ -23,6 +23,9 @@ using System.Globalization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLModBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#mod built-in
+    /// </summary>
     internal static class SWRLModBuiltIn
     {
         #region Methods

@@ -22,6 +22,9 @@ using System.Data;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLNotEqualBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#notEqual built-in
+    /// </summary>
     internal static class SWRLNotEqualBuiltIn
     {
         #region Methods

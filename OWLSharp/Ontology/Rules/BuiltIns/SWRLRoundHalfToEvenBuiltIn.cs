@@ -23,6 +23,9 @@ using System.Globalization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLRoundHalfToEvenBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#roundHalfToEven built-in
+    /// </summary>
     internal static class SWRLRoundHalfToEvenBuiltIn
     {
         #region Methods

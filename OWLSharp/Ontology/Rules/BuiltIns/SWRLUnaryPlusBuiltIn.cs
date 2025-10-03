@@ -23,6 +23,9 @@ using System.Globalization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLUnaryPlusBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#unaryPlus built-in
+    /// </summary>
     internal static class SWRLUnaryPlusBuiltIn
     {
         #region Methods

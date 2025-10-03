@@ -23,6 +23,9 @@ using System.Globalization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLRoundBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#round built-in
+    /// </summary>
     internal static class SWRLRoundBuiltIn
     {
         #region Methods

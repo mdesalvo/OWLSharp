@@ -22,6 +22,9 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLLangMatchesBuiltIn implements the extension https://github.com/mdesalvo/OWLSharp#langMatches built-in
+    /// </summary>
     internal static class SWRLLangMatchesBuiltIn
     {
         #region Methods

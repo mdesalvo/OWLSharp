@@ -22,6 +22,9 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLLowerCaseBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#lowerCase built-in
+    /// </summary>
     internal static class SWRLLowerCaseBuiltIn
     {
         #region Methods

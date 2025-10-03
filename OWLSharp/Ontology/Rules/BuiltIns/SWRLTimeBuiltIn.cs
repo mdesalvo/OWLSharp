@@ -22,6 +22,9 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLTimeBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#time built-in
+    /// </summary>
     internal static class SWRLTimeBuiltIn
     {
         internal static readonly RDFDatatype XSD_TIME = RDFDatatypeRegister.GetDatatype(RDFModelEnums.RDFDatatypes.XSD_TIME);

@@ -22,6 +22,9 @@ using System.Data;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLGreaterThanOrEqualBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#greaterThanOrEqual built-in
+    /// </summary>
     internal static class SWRLGreaterThanOrEqualBuiltIn
     {
         #region Methods

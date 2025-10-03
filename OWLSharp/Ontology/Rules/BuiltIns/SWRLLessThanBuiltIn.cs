@@ -22,6 +22,9 @@ using System.Data;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLLessThanBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#lessThan built-in
+    /// </summary>
     internal static class SWRLLessThanBuiltIn
     {
         #region Methods

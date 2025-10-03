@@ -23,6 +23,9 @@ using System.Globalization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLMultiplyBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#multiply built-in
+    /// </summary>
     internal static class SWRLMultiplyBuiltIn
     {
         #region Methods

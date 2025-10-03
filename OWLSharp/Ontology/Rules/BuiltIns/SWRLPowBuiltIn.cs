@@ -23,6 +23,9 @@ using System.Globalization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// SWRLPowBuiltIn implements the standard http://www.w3.org/2003/11/swrlb#pow built-in
+    /// </summary>
     internal static class SWRLPowBuiltIn
     {
         #region Methods
