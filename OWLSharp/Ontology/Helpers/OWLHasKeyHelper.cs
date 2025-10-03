@@ -18,17 +18,27 @@ using System.Linq;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLHasKeyHelper simplifies HasKey axiom modeling with a set of facilities
+    /// </summary>
     public static class OWLHasKeyHelper
     {
         #region Methods
+        /// <summary>
+        /// Checks if the given ontology has the given HasKey axiom in its T-BOX
+        /// </summary>
         public static bool CheckHasKey(this OWLOntology ontology, OWLHasKey hasKey)
             => ontology?.KeyAxioms.Any(ax => string.Equals(ax.GetXML(), hasKey?.GetXML())) ?? false;
 
+        /// <summary>
+        /// Declares the given HasKey axiom to the T-BOX of the given ontology
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static void DeclareHasKey(this OWLOntology ontology, OWLHasKey hasKey)
         {
             #region Guards
             if (hasKey == null)
-                throw new OWLException("Cannot declare has key because given \"hasKey\" parameter is null");
+                throw new OWLException($"Cannot declare has key because given '{nameof(hasKey)}' parameter is null");
             #endregion
 
             if (!CheckHasKey(ontology, hasKey))
