@@ -113,8 +113,8 @@ public class SWRLDataRangeAtomTest
         DataTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
-        Assert.AreEqual(1, antecedentResult.Columns.Count);
-        Assert.AreEqual(1, antecedentResult.Rows.Count);
+        Assert.HasCount(1, antecedentResult.Columns);
+        Assert.HasCount(1, antecedentResult.Rows);
         Assert.IsTrue(string.Equals(antecedentResult.Rows[0]["?P"].ToString(), "hello^^http://www.w3.org/2001/XMLSchema#string"));
     }
 

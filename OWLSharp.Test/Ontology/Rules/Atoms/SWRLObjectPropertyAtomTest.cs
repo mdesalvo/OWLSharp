@@ -177,8 +177,8 @@ public class SWRLObjectPropertyAtomTest
         DataTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
-        Assert.AreEqual(2, antecedentResult.Columns.Count);
-        Assert.AreEqual(1, antecedentResult.Rows.Count);
+        Assert.HasCount(2, antecedentResult.Columns);
+        Assert.HasCount(1, antecedentResult.Rows);
         Assert.IsTrue(string.Equals(antecedentResult.Rows[0]["?P"].ToString(), "ex:Mark"));
         Assert.IsTrue(string.Equals(antecedentResult.Rows[0]["?Q"].ToString(), "ex:John"));
     }
@@ -208,8 +208,8 @@ public class SWRLObjectPropertyAtomTest
         DataTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
-        Assert.AreEqual(1, antecedentResult.Columns.Count);
-        Assert.AreEqual(1, antecedentResult.Rows.Count);
+        Assert.HasCount(1, antecedentResult.Columns);
+        Assert.HasCount(1, antecedentResult.Rows);
         Assert.IsTrue(string.Equals(antecedentResult.Rows[0]["?P"].ToString(), "ex:Mark"));
     }
 
@@ -238,8 +238,8 @@ public class SWRLObjectPropertyAtomTest
         DataTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
-        Assert.AreEqual(2, antecedentResult.Columns.Count);
-        Assert.AreEqual(1, antecedentResult.Rows.Count);
+        Assert.HasCount(2, antecedentResult.Columns);
+        Assert.HasCount(1, antecedentResult.Rows);
         Assert.IsTrue(string.Equals(antecedentResult.Rows[0]["?P"].ToString(), "ex:John"));
         Assert.IsTrue(string.Equals(antecedentResult.Rows[0]["?Q"].ToString(), "ex:Mark"));
     }

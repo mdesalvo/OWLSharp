@@ -1077,7 +1077,7 @@ public class OWLOntologyTest
         MemoryStream stream = new MemoryStream();
         await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2XML, stream, false);
         using StreamReader reader = new StreamReader(new MemoryStream(stream.ToArray()));
-        Assert.IsTrue(string.Equals(await reader.ReadToEndAsync(TestContext.CancellationTokenSource.Token),
+        Assert.IsTrue(string.Equals(await reader.ReadToEndAsync(TestContext.CancellationToken),
             """
             <?xml version="1.0" encoding="utf-8"?>
             <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont" ontologyVersion="ex:ont/v1">
@@ -1232,7 +1232,7 @@ public class OWLOntologyTest
 
         //Read from file and deserialize to test content
         OWLOntology ontology2 = OWLSerializer.DeserializeOntology(
-            await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileAsync.owx"), TestContext.CancellationTokenSource.Token));
+            await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileAsync.owx"), TestContext.CancellationToken));
 
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
@@ -1312,7 +1312,7 @@ public class OWLOntologyTest
 
         //Read from file and deserialize to test content
         OWLOntology ontology2 = OWLSerializer.DeserializeOntology(
-            await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileWithIgnoredImportKnwoledgeAsync.owx"), TestContext.CancellationTokenSource.Token));
+            await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileWithIgnoredImportKnwoledgeAsync.owx"), TestContext.CancellationToken));
 
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
@@ -1392,7 +1392,7 @@ public class OWLOntologyTest
 
         //Read from file and deserialize to test content
         OWLOntology ontology2 = OWLSerializer.DeserializeOntology(
-            await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileWithIgnoredInferredKnwoledgeAsync.owx"), TestContext.CancellationTokenSource.Token));
+            await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileWithIgnoredInferredKnwoledgeAsync.owx"), TestContext.CancellationToken));
 
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
@@ -1477,7 +1477,7 @@ public class OWLOntologyTest
         //Read from stream and deserialize to test content
         string fileContent;
         using (StreamReader reader = new StreamReader(new MemoryStream(stream.ToArray())))
-            fileContent = await reader.ReadToEndAsync(TestContext.CancellationTokenSource.Token);
+            fileContent = await reader.ReadToEndAsync(TestContext.CancellationToken);
         OWLOntology ontology2 = OWLSerializer.DeserializeOntology(fileContent);
 
         Assert.IsNotNull(ontology2);

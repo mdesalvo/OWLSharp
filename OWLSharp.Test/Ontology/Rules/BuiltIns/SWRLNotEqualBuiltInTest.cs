@@ -146,8 +146,8 @@ public class SWRLNotEqualBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(2, builtinResults.Columns.Count);
-        Assert.AreEqual(3, builtinResults.Rows.Count);
+        Assert.HasCount(2, builtinResults.Columns);
+        Assert.HasCount(3, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "-2^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "hello"));
@@ -162,16 +162,16 @@ public class SWRLNotEqualBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
         DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
-        Assert.AreEqual(2, builtinResults2.Columns.Count);
-        Assert.AreEqual(9, builtinResults2.Rows.Count);
+        Assert.HasCount(2, builtinResults2.Columns);
+        Assert.HasCount(9, builtinResults2.Rows);
 
         SWRLBuiltIn builtin3 = SWRLBuiltIn.NotEqual(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Y")));
         DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
-        Assert.AreEqual(2, builtinResults3.Columns.Count);
-        Assert.AreEqual(9, builtinResults3.Rows.Count);
+        Assert.HasCount(2, builtinResults3.Columns);
+        Assert.HasCount(9, builtinResults3.Rows);
 
         //Test exception on unknown builtIn
         Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLBuiltIn
@@ -213,8 +213,8 @@ public class SWRLNotEqualBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(1, builtinResults.Columns.Count);
-        Assert.AreEqual(1, builtinResults.Rows.Count);
+        Assert.HasCount(1, builtinResults.Columns);
+        Assert.HasCount(1, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "http://example.org/test2"));
     }
 
@@ -237,8 +237,8 @@ public class SWRLNotEqualBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(1, builtinResults.Columns.Count);
-        Assert.AreEqual(1, builtinResults.Rows.Count);
+        Assert.HasCount(1, builtinResults.Columns);
+        Assert.HasCount(1, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "-2^^http://www.w3.org/2001/XMLSchema#int"));
     }
 
@@ -261,8 +261,8 @@ public class SWRLNotEqualBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(1, builtinResults.Columns.Count);
-        Assert.AreEqual(1, builtinResults.Rows.Count);
+        Assert.HasCount(1, builtinResults.Columns);
+        Assert.HasCount(1, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "http://example.org/test1"));
     }
 
@@ -285,8 +285,8 @@ public class SWRLNotEqualBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(1, builtinResults.Columns.Count);
-        Assert.AreEqual(1, builtinResults.Rows.Count);
+        Assert.HasCount(1, builtinResults.Columns);
+        Assert.HasCount(1, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "-2^^http://www.w3.org/2001/XMLSchema#int"));
     }
     #endregion

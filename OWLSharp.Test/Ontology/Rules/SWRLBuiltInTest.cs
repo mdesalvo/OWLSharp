@@ -145,7 +145,7 @@ public class SWRLBuiltInTest
         table.Rows.Add("value3");
         SWRLBuiltInRegister.AddBuiltIn(builtin);
 
-        Assert.AreEqual(1, builtin.EvaluateOnAntecedent(table).Rows.Count);
+        Assert.HasCount(1, builtin.EvaluateOnAntecedent(table).Rows);
         return;
 
         bool Evaluator(DataRow datarow) => string.Equals(datarow["?VAR"].ToString(), "value");

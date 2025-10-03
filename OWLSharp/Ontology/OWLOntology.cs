@@ -358,7 +358,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Imports the given RDFGraph object into an equivalent OWLOntology object.<br/><br/>
         /// Consider that translating from RDF expressivity to OWL2 expressivity is lossy by definition,
-        /// so that unrepresentable semantic artifacts might be lost (e.g: lists, collections) 
+        /// so that unrepresentable semantic artifacts might be lost (e.g: lists, collections)
         /// </summary>
         /// <exception cref="OWLException"></exception>
         public static Task<OWLOntology> FromRDFGraphAsync(RDFGraph graph)

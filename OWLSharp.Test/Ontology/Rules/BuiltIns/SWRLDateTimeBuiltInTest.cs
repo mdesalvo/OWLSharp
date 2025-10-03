@@ -173,8 +173,8 @@ public class SWRLDateTimeBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(8, builtinResults.Columns.Count);
-        Assert.AreEqual(2, builtinResults.Rows.Count);
+        Assert.HasCount(8, builtinResults.Columns);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#int"));
@@ -205,8 +205,8 @@ public class SWRLDateTimeBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?T")));
         DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
-        Assert.AreEqual(8, builtinResults2.Columns.Count);
-        Assert.AreEqual(3, builtinResults2.Rows.Count);
+        Assert.HasCount(8, builtinResults2.Columns);
+        Assert.HasCount(3, builtinResults2.Rows);
 
         SWRLBuiltIn builtin3 = SWRLBuiltIn.DateTime(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -219,8 +219,8 @@ public class SWRLDateTimeBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?T")));
         DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
-        Assert.AreEqual(8, builtinResults3.Columns.Count);
-        Assert.AreEqual(3, builtinResults3.Rows.Count);
+        Assert.HasCount(8, builtinResults3.Columns);
+        Assert.HasCount(3, builtinResults3.Rows);
 
         SWRLBuiltIn builtin4 = SWRLBuiltIn.DateTime(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -233,8 +233,8 @@ public class SWRLDateTimeBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?T")));
         DataTable builtinResults4 = builtin4.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults4);
-        Assert.AreEqual(8, builtinResults4.Columns.Count);
-        Assert.AreEqual(3, builtinResults4.Rows.Count);
+        Assert.HasCount(8, builtinResults4.Columns);
+        Assert.HasCount(3, builtinResults4.Rows);
 
         SWRLBuiltIn builtin5 = SWRLBuiltIn.DateTime(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -247,8 +247,8 @@ public class SWRLDateTimeBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?T")));
         DataTable builtinResults5 = builtin5.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults5);
-        Assert.AreEqual(8, builtinResults5.Columns.Count);
-        Assert.AreEqual(3, builtinResults5.Rows.Count);
+        Assert.HasCount(8, builtinResults5.Columns);
+        Assert.HasCount(3, builtinResults5.Rows);
 
         SWRLBuiltIn builtin6 = SWRLBuiltIn.DateTime(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -261,8 +261,8 @@ public class SWRLDateTimeBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?T")));
         DataTable builtinResults6 = builtin6.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults6);
-        Assert.AreEqual(8, builtinResults6.Columns.Count);
-        Assert.AreEqual(3, builtinResults6.Rows.Count);
+        Assert.HasCount(8, builtinResults6.Columns);
+        Assert.HasCount(3, builtinResults6.Rows);
 
         SWRLBuiltIn builtin7 = SWRLBuiltIn.DateTime(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -275,8 +275,8 @@ public class SWRLDateTimeBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?F")));  //unexisting
         DataTable builtinResults7 = builtin7.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults7);
-        Assert.AreEqual(8, builtinResults7.Columns.Count);
-        Assert.AreEqual(3, builtinResults7.Rows.Count);
+        Assert.HasCount(8, builtinResults7.Columns);
+        Assert.HasCount(3, builtinResults7.Rows);
 
         //Test exception on unknown builtIn
         Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLBuiltIn
@@ -347,8 +347,8 @@ public class SWRLDateTimeBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(7, builtinResults.Columns.Count);
-        Assert.AreEqual(2, builtinResults.Rows.Count);
+        Assert.HasCount(7, builtinResults.Columns);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "22^^http://www.w3.org/2001/XMLSchema#int"));
@@ -414,8 +414,8 @@ public class SWRLDateTimeBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(7, builtinResults.Columns.Count);
-        Assert.AreEqual(2, builtinResults.Rows.Count);
+        Assert.HasCount(7, builtinResults.Columns);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "22^^http://www.w3.org/2001/XMLSchema#int"));
@@ -481,8 +481,8 @@ public class SWRLDateTimeBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(7, builtinResults.Columns.Count);
-        Assert.AreEqual(2, builtinResults.Rows.Count);
+        Assert.HasCount(7, builtinResults.Columns);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "22^^http://www.w3.org/2001/XMLSchema#int"));
@@ -556,8 +556,8 @@ public class SWRLDateTimeBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(7, builtinResults.Columns.Count);
-        Assert.AreEqual(2, builtinResults.Rows.Count);
+        Assert.HasCount(7, builtinResults.Columns);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#int"));
@@ -623,8 +623,8 @@ public class SWRLDateTimeBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(7, builtinResults.Columns.Count);
-        Assert.AreEqual(2, builtinResults.Rows.Count);
+        Assert.HasCount(7, builtinResults.Columns);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "05^^http://www.w3.org/2001/XMLSchema#int"));
@@ -690,8 +690,8 @@ public class SWRLDateTimeBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(7, builtinResults.Columns.Count);
-        Assert.AreEqual(2, builtinResults.Rows.Count);
+        Assert.HasCount(7, builtinResults.Columns);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "05^^http://www.w3.org/2001/XMLSchema#int"));
@@ -764,8 +764,8 @@ public class SWRLDateTimeBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(7, builtinResults.Columns.Count);
-        Assert.AreEqual(2, builtinResults.Rows.Count);
+        Assert.HasCount(7, builtinResults.Columns);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "05^^http://www.w3.org/2001/XMLSchema#int"));

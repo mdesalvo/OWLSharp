@@ -140,8 +140,8 @@ public class SWRLIntegerDivideBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(3, builtinResults.Columns.Count);
-        Assert.AreEqual(2, builtinResults.Rows.Count);
+        Assert.HasCount(3, builtinResults.Columns);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "13^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "5.0^^http://www.w3.org/2001/XMLSchema#float"));
@@ -157,8 +157,8 @@ public class SWRLIntegerDivideBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?F"))); //unexisting
         DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
-        Assert.AreEqual(3, builtinResults2.Columns.Count);
-        Assert.AreEqual(0, builtinResults2.Rows.Count);
+        Assert.HasCount(3, builtinResults2.Columns);
+        Assert.IsEmpty(builtinResults2.Rows);
 
         //Test exception on division by zero
         Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLBuiltIn
@@ -217,8 +217,8 @@ public class SWRLIntegerDivideBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(2, builtinResults.Columns.Count);
-        Assert.AreEqual(1, builtinResults.Rows.Count);
+        Assert.HasCount(2, builtinResults.Columns);
+        Assert.HasCount(1, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "13.0^^http://www.w3.org/2001/XMLSchema#float"));
     }

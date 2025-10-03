@@ -115,8 +115,8 @@ public class SWRLSubstringBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(3, builtinResults.Columns.Count);
-        Assert.AreEqual(2, builtinResults.Rows.Count);
+        Assert.HasCount(3, builtinResults.Columns);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "llo"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "hello"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
@@ -132,8 +132,8 @@ public class SWRLSubstringBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?F"))); //unexisting
         DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
-        Assert.AreEqual(3, builtinResults2.Columns.Count);
-        Assert.AreEqual(3, builtinResults2.Rows.Count);
+        Assert.HasCount(3, builtinResults2.Columns);
+        Assert.HasCount(3, builtinResults2.Rows);
 
         SWRLBuiltIn builtin3 = SWRLBuiltIn.Substring(
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
@@ -141,8 +141,8 @@ public class SWRLSubstringBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")));
         DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
-        Assert.AreEqual(3, builtinResults3.Columns.Count);
-        Assert.AreEqual(3, builtinResults3.Rows.Count);
+        Assert.HasCount(3, builtinResults3.Columns);
+        Assert.HasCount(3, builtinResults3.Rows);
 
         //Test exception on unknown builtIn
         Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLBuiltIn
@@ -182,8 +182,8 @@ public class SWRLSubstringBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(2, builtinResults.Columns.Count);
-        Assert.AreEqual(1, builtinResults.Rows.Count);
+        Assert.HasCount(2, builtinResults.Columns);
+        Assert.HasCount(1, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "llo"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
     }
@@ -206,8 +206,8 @@ public class SWRLSubstringBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(2, builtinResults.Columns.Count);
-        Assert.AreEqual(1, builtinResults.Rows.Count);
+        Assert.HasCount(2, builtinResults.Columns);
+        Assert.HasCount(1, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "llo"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "hello"));
     }
@@ -231,8 +231,8 @@ public class SWRLSubstringBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(2, builtinResults.Columns.Count);
-        Assert.AreEqual(2, builtinResults.Rows.Count);
+        Assert.HasCount(2, builtinResults.Columns);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "ll"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "hello"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "tp"));
@@ -260,8 +260,8 @@ public class SWRLSubstringBuiltInTest
         DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.AreEqual(4, builtinResults.Columns.Count);
-        Assert.AreEqual(2, builtinResults.Rows.Count);
+        Assert.HasCount(4, builtinResults.Columns);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "ll"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "hello"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
