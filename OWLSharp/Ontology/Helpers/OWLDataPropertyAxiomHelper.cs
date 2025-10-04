@@ -20,32 +20,52 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDataPropertyAxiomHelper simplifies data property axiom modeling and analysis with a set of facilities
+    /// </summary>
     public static class OWLDataPropertyAxiomHelper
     {
         #region Methods
+        /// <summary>
+        /// Enlists the given type of data property axiom from the T-BOX of the given ontology
+        /// </summary>
         public static List<T> GetDataPropertyAxiomsOfType<T>(this OWLOntology ontology) where T : OWLDataPropertyAxiom
             => ontology?.DataPropertyAxioms.OfType<T>().ToList() ?? new List<T>();
 
+        /// <summary>
+        /// Checks if the given ontology has the given data property axiom in its T-BOX
+        /// </summary>
         public static bool CheckHasDataPropertyAxiom<T>(this OWLOntology ontology, T dataPropertyAxiom) where T : OWLDataPropertyAxiom
             => GetDataPropertyAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), dataPropertyAxiom?.GetXML()));
 
+        /// <summary>
+        /// Declares the given data property axiom to the T-BOX of the given ontology
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static void DeclareDataPropertyAxiom<T>(this OWLOntology ontology, T dataPropertyAxiom) where T : OWLDataPropertyAxiom
         {
             #region Guards
             if (dataPropertyAxiom == null)
-                throw new OWLException("Cannot declare data property axiom because given \"dataPropertyAxiom\" parameter is null");
+                throw new OWLException($"Cannot declare data property axiom because given '{nameof(dataPropertyAxiom)}' parameter is null");
             #endregion
 
             if (!CheckHasDataPropertyAxiom(ontology, dataPropertyAxiom))
                 ontology?.DataPropertyAxioms.Add(dataPropertyAxiom);
         }
 
-        public static bool CheckIsSubDataPropertyOf(this OWLOntology ontology, OWLDataProperty subDataProperty, OWLDataProperty superDataProperty)
-            => ontology != null && subDataProperty != null && superDataProperty != null && GetSubDataPropertiesOf(ontology, superDataProperty).Any(dp => dp.GetIRI().Equals(subDataProperty.GetIRI()));
+        /// <summary>
+        /// Checks for the existence of an OWLSubDataPropertyOf axiom directly or indirectly relating the given child->mother data properties in the T-BOX of the given ontology
+        /// </summary>
+        public static bool CheckIsSubDataPropertyOf(this OWLOntology ontology, OWLDataProperty childDataProperty, OWLDataProperty motherDataProperty)
+            => ontology != null && childDataProperty != null && motherDataProperty != null && GetSubDataPropertiesOf(ontology, motherDataProperty).Any(dp => dp.GetIRI().Equals(childDataProperty.GetIRI()));
 
+        /// <summary>
+        /// Enlists the data properties which are directly or indirectly related as children to the given mother data property in the T-BOX of the given ontology
+        /// </summary>
         public static List<OWLDataProperty> GetSubDataPropertiesOf(this OWLOntology ontology, OWLDataProperty dataProperty)
         {
             #region Utilities
+            //Facility for recursive traversal of the OWLSubDataPropertyOf hierarchy
             List<OWLDataProperty> FindSubDataPropertiesOf(RDFResource dataPropertyIRI, List<OWLSubDataPropertyOf> axioms, HashSet<long> visitContext)
             {
                 List<OWLDataProperty> foundSubDataProperties = new List<OWLDataProperty>();
@@ -71,31 +91,38 @@ namespace OWLSharp.Ontology
             List<OWLDataProperty> subDataProperties = new List<OWLDataProperty>();
             if (ontology != null && dataProperty != null)
             {
-                RDFResource dtPropIRI = dataProperty.GetIRI();
                 HashSet<long> visitContext = new HashSet<long>();
                 List<OWLSubDataPropertyOf> subDtPropOfAxs = GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>(ontology);
-                List<OWLDataProperty> equivDtPropsOfDataProperty = GetEquivalentDataProperties(ontology, dataProperty);
 
                 //SubDataPropertyOf(P1,P2) ^ SubDataPropertyOf(P2,P3) -> SubDataPropertyOf(P1,P3)
-                subDataProperties.AddRange(FindSubDataPropertiesOf(dtPropIRI, subDtPropOfAxs, visitContext));
+                subDataProperties.AddRange(FindSubDataPropertiesOf(dataProperty.GetIRI(), subDtPropOfAxs, visitContext));
 
                 //EquivalentDataProperties(P1,P2) ^ SubDataPropertyOf(P2,P3) -> SubDataPropertyOf(P1,P3)
-                foreach (OWLDataProperty equivDtProp in equivDtPropsOfDataProperty)
+                foreach (OWLDataProperty equivDtProp in GetEquivalentDataProperties(ontology, dataProperty))
                     subDataProperties.AddRange(FindSubDataPropertiesOf(equivDtProp.GetIRI(), subDtPropOfAxs, visitContext));
 
                 //SubDataPropertyOf(P1,P2) ^ EquivalentDataProperties(P2,P3) -> SubDataPropertyOf(P1,P3)
                 foreach (OWLDataProperty subDataProperty in subDataProperties.ToList())
                     subDataProperties.AddRange(GetEquivalentDataProperties(ontology, subDataProperty));
+
+                return OWLExpressionHelper.RemoveDuplicates(subDataProperties);
             }
-            return OWLExpressionHelper.RemoveDuplicates(subDataProperties);
+            return subDataProperties;
         }
 
-        public static bool CheckIsSuperDataPropertyOf(this OWLOntology ontology, OWLDataProperty superDataProperty, OWLDataProperty subDataProperty)
-            => ontology != null && superDataProperty != null && subDataProperty != null && GetSuperDataPropertiesOf(ontology, subDataProperty).Any(dp => dp.GetIRI().Equals(superDataProperty.GetIRI()));
+        /// <summary>
+        /// Checks for the existence of an OWLSubDataPropertyOf axiom directly or indirectly relating the given mother->child data properties in the T-BOX of the given ontology
+        /// </summary>
+        public static bool CheckIsSuperDataPropertyOf(this OWLOntology ontology, OWLDataProperty motherDataProperty, OWLDataProperty childDataProperty)
+            => ontology != null && motherDataProperty != null && childDataProperty != null && GetSuperDataPropertiesOf(ontology, childDataProperty).Any(dp => dp.GetIRI().Equals(motherDataProperty.GetIRI()));
 
+        /// <summary>
+        /// Enlists the data properties which are directly or indirectly related as mother to the given child data property in the T-BOX of the given ontology
+        /// </summary>
         public static List<OWLDataProperty> GetSuperDataPropertiesOf(this OWLOntology ontology, OWLDataProperty dataProperty)
         {
             #region Utilities
+            //Facility for recursive traversal of the OWLSubDataPropertyOf hierarchy
             List<OWLDataProperty> FindSuperDataPropertiesOf(RDFResource dtPropIRI, List<OWLSubDataPropertyOf> axioms, HashSet<long> visitContext)
             {
                 List<OWLDataProperty> foundSuperDataProperties = new List<OWLDataProperty>();
@@ -121,12 +148,11 @@ namespace OWLSharp.Ontology
             List<OWLDataProperty> superDataProperties = new List<OWLDataProperty>();
             if (ontology != null && dataProperty != null)
             {
-                RDFResource dtPropIRI = dataProperty.GetIRI();
                 HashSet<long> visitContext = new HashSet<long>();
                 List<OWLSubDataPropertyOf> subDtPropOfAxs = GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>(ontology);
 
                 //SubDataPropertyOf(P1,P2) ^ SubDataPropertyOf(P2,P3) -> SubDataPropertyOf(P1,P3)
-                superDataProperties.AddRange(FindSuperDataPropertiesOf(dtPropIRI, subDtPropOfAxs, visitContext));
+                superDataProperties.AddRange(FindSuperDataPropertiesOf(dataProperty.GetIRI(), subDtPropOfAxs, visitContext));
 
                 //EquivalentDataProperties(P1,P2) ^ SubDataPropertyOf(P2,P3) -> SubDataPropertyOf(P1,P3)
                 foreach (OWLDataProperty equivDtProp in GetEquivalentDataProperties(ontology, dataProperty))
@@ -135,16 +161,25 @@ namespace OWLSharp.Ontology
                 //SubDataPropertyOf(P1,P2) ^ EquivalentDataProperties(P2,P3) -> SubDataPropertyOf(P1,P3)
                 foreach (OWLDataProperty superDataProperty in superDataProperties.ToList())
                     superDataProperties.AddRange(GetEquivalentDataProperties(ontology, superDataProperty));
+
+                return OWLExpressionHelper.RemoveDuplicates(superDataProperties);
             }
-            return OWLExpressionHelper.RemoveDuplicates(superDataProperties);
+            return superDataProperties;
         }
 
+        /// <summary>
+        /// Checks for the existence of an OWLEquivalentDataProperties axiom directly or indirectly relating the given data properties in the T-BOX of the given ontology
+        /// </summary>
         public static bool CheckAreEquivalentDataProperties(this OWLOntology ontology, OWLDataProperty leftDataProperty, OWLDataProperty rightDataProperty)
             => ontology != null && leftDataProperty != null && rightDataProperty != null && GetEquivalentDataProperties(ontology, leftDataProperty).Any(dex => dex.GetIRI().Equals(rightDataProperty.GetIRI()));
 
+        /// <summary>
+        /// Enlists the data properties which are directly or indirectly related as equivalent data properties to the given data property in the T-BOX of the given ontology
+        /// </summary>
         public static List<OWLDataProperty> GetEquivalentDataProperties(this OWLOntology ontology, OWLDataProperty dataProperty)
         {
             #region Utilities
+            //Facility for recursive traversal of the OWLEquivalentDataProperties relations
             List<OWLDataProperty> FindEquivalentDataProperties(RDFResource dtPropIRI, List<OWLEquivalentDataProperties> axioms, HashSet<long> visitContext)
             {
                 List<OWLDataProperty> foundEquivalentDataProperties = new List<OWLDataProperty>();
@@ -174,27 +209,36 @@ namespace OWLSharp.Ontology
             return equivalentDataProperties;
         }
 
+        /// <summary>
+        /// Checks for the existence of an OWLDisjointDataProperties axiom directly or indirectly relating the given data properties in the T-BOX of the given ontology
+        /// </summary>
         public static bool CheckAreDisjointDataProperties(this OWLOntology ontology, OWLDataProperty leftDataProperty, OWLDataProperty rightDataProperty)
             => ontology != null && leftDataProperty != null && rightDataProperty != null && GetDisjointDataProperties(ontology, leftDataProperty).Any(dex => dex.GetIRI().Equals(rightDataProperty.GetIRI()));
 
+        /// <summary>
+        /// Enlists the data properties which are directly or indirectly related as disjoint data properties to the given data property in the T-BOX of the given ontology
+        /// </summary>
         public static List<OWLDataProperty> GetDisjointDataProperties(this OWLOntology ontology, OWLDataProperty dataProperty)
         {
             List<OWLDataProperty> disjointDataProperties = new List<OWLDataProperty>();
-
             if (ontology != null && dataProperty != null)
             {
                 RDFResource dtPropIRI = dataProperty.GetIRI();
 
-                //There is no reasoning on data property disjointness (apart simmetry), being this totally under OWA domain
+                //We can only enlist explicitly declared disjoint data properties: no other kind
+                //of reasoning is possible, since this relation is protected under OWA behavior!
                 foreach (OWLDisjointDataProperties axiom in GetDataPropertyAxiomsOfType<OWLDisjointDataProperties>(ontology).Where(ax => ax.DataProperties.Any(dp => dp.GetIRI().Equals(dtPropIRI))))
                     disjointDataProperties.AddRange(axiom.DataProperties);
 
                 disjointDataProperties.RemoveAll(res => res.GetIRI().Equals(dtPropIRI));
+                return OWLExpressionHelper.RemoveDuplicates(disjointDataProperties);
             }
-
-            return OWLExpressionHelper.RemoveDuplicates(disjointDataProperties);
+            return disjointDataProperties;
         }
 
+        /// <summary>
+        /// Checks for the existence of an OWLFunctionalDataProperty axiom about the given data property in the T-BOX of the given ontology
+        /// </summary>
         public static bool CheckHasFunctionalDataProperty(this OWLOntology ontology, OWLDataProperty dataProperty)
             => ontology != null && dataProperty != null && GetDataPropertyAxiomsOfType<OWLFunctionalDataProperty>(ontology).Any(fdp => fdp.DataProperty.GetIRI().Equals(dataProperty.GetIRI()));
         #endregion

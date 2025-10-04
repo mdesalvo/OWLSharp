@@ -91,12 +91,11 @@ namespace OWLSharp.Ontology
             List<OWLObjectPropertyExpression> subObjPropExprs = new List<OWLObjectPropertyExpression>();
             if (ontology != null && objPropExpr != null)
             {
-                RDFResource objPropIRI = objPropExpr.GetIRI();
                 HashSet<long> visitContext = new HashSet<long>();
                 List<OWLSubObjectPropertyOf> subObjPropOfAxs = GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>(ontology);
 
                 //SubObjectPropertyOf(P1,P2) ^ SubObjectPropertyOf(P2,P3) -> SubObjectPropertyOf(P1,P3)
-                subObjPropExprs.AddRange(FindSubObjectPropertiesOf(objPropIRI, subObjPropOfAxs, visitContext));
+                subObjPropExprs.AddRange(FindSubObjectPropertiesOf(objPropExpr.GetIRI(), subObjPropOfAxs, visitContext));
 
                 //EquivalentObjectProperties(P1,P2) ^ SubObjectPropertyOf(P2,P3) -> SubObjectPropertyOf(P1,P3)
                 foreach (OWLObjectPropertyExpression equivObjPropExpr in GetEquivalentObjectProperties(ontology, objPropExpr))
@@ -149,12 +148,11 @@ namespace OWLSharp.Ontology
             List<OWLObjectPropertyExpression> superObjPropExprs = new List<OWLObjectPropertyExpression>();
             if (ontology != null && objPropExpr != null)
             {
-                RDFResource objPropExprIRI = objPropExpr.GetIRI();
                 HashSet<long> visitContext = new HashSet<long>();
                 List<OWLSubObjectPropertyOf> subObjPropOfAxs = GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>(ontology);
 
                 //SubObjectPropertyOf(P1,P2) ^ SubObjectPropertyOf(P2,P3) -> SubObjectPropertyOf(P1,P3)
-                superObjPropExprs.AddRange(FindSuperObjectPropertiesOf(objPropExprIRI, subObjPropOfAxs, visitContext));
+                superObjPropExprs.AddRange(FindSuperObjectPropertiesOf(objPropExpr.GetIRI(), subObjPropOfAxs, visitContext));
 
                 //EquivalentObjectProperties(P1,P2) ^ SubObjectPropertyOf(P2,P3) -> SubObjectPropertyOf(P1,P3)
                 foreach (OWLObjectPropertyExpression equivObjPropExpr in GetEquivalentObjectProperties(ontology, objPropExpr))
@@ -223,7 +221,6 @@ namespace OWLSharp.Ontology
         public static List<OWLObjectPropertyExpression> GetDisjointObjectProperties(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr)
         {
             List<OWLObjectPropertyExpression> disjointObjPropExprs = new List<OWLObjectPropertyExpression>();
-
             if (ontology != null && objPropExpr != null)
             {
                 RDFResource objPropExprIRI = objPropExpr.GetIRI();
