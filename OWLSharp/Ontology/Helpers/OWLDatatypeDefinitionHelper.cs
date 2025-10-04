@@ -18,17 +18,27 @@ using System.Linq;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDatatypeDefinitionHelper simplifies datatype definition axiom modeling with a set of facilities
+    /// </summary>
     public static class OWLDatatypeDefinitionHelper
     {
         #region Methods
+        /// <summary>
+        /// Checks if the given ontology has the given datatype definition in its T-BOX
+        /// </summary>
         public static bool CheckHasDatatypeDefinition(this OWLOntology ontology, OWLDatatypeDefinition datatypeDefinition)
             => ontology?.DatatypeDefinitionAxioms.Any(ax => string.Equals(ax.GetXML(), datatypeDefinition?.GetXML())) ?? false;
 
+        /// <summary>
+        /// Declares the given datatype definition to the T-BOX of the given ontology
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static void DeclareDatatypeDefinition(this OWLOntology ontology, OWLDatatypeDefinition datatypeDefinition)
         {
             #region Guards
             if (datatypeDefinition == null)
-                throw new OWLException("Cannot declare datatype definition because given \"datatypeDefinition\" parameter is null");
+                throw new OWLException($"Cannot declare datatype definition because given '{nameof(datatypeDefinition)}' parameter is null");
             #endregion
 
             if (!CheckHasDatatypeDefinition(ontology, datatypeDefinition))
