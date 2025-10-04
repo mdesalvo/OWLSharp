@@ -19,23 +19,39 @@ using System.Linq;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDeclarationHelper simplifies declaration axiom modeling with a set of facilities
+    /// </summary>
     public static class OWLDeclarationHelper
     {
         #region Methods
+        /// <summary>
+        /// Enlists the given type of declaration axiom from the T-BOX/A-BOX of the given ontology
+        /// </summary>
         public static List<OWLDeclaration> GetDeclarationAxiomsOfType<T>(this OWLOntology ontology) where T : OWLExpression, IOWLEntity
             => ontology?.DeclarationAxioms.Where(ax => ax.Expression is T).ToList() ?? new List<OWLDeclaration>();
 
+        /// <summary>
+        /// Enlists the given type of entity declaration from the T-BOX/A-BOX of the given ontology
+        /// </summary>
         public static List<T> GetDeclaredEntitiesOfType<T>(this OWLOntology ontology) where T : OWLExpression, IOWLEntity
             => ontology?.GetDeclarationAxiomsOfType<T>().ConvertAll(ax => (T)ax.Expression) ?? new List<T>();
 
+        /// <summary>
+        /// Checks if the given ontology has the given entity declaration in its T-BOX/A-BOX
+        /// </summary>
         public static bool CheckHasEntity<T>(this OWLOntology ontology, T entity) where T : OWLExpression, IOWLEntity
             => GetDeclarationAxiomsOfType<T>(ontology).Any(ax => ax.Expression.GetIRI().Equals(entity?.GetIRI()));
 
+        /// <summary>
+        /// Declares the given entity to the T-BOX/A-BOX of the given ontology
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static void DeclareEntity<T>(this OWLOntology ontology, T entityIRI) where T : OWLExpression, IOWLEntity
         {
             #region Guards
             if (entityIRI == null)
-                throw new OWLException("Cannot declare entity because given \"entityIRI\" parameter is null");
+                throw new OWLException($"Cannot declare entity because given '{nameof(entityIRI)}' parameter is null");
             #endregion
 
             if (!CheckHasEntity(ontology, entityIRI))
