@@ -20,32 +20,52 @@ using System.Linq;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLClassAxiomHelper simplifies class axiom modeling and analysis with a set of facilities
+    /// </summary>
     public static class OWLClassAxiomHelper
     {
         #region Methods
+        /// <summary>
+        /// Enlists the given type of class axiom from the T-BOX of the given ontology
+        /// </summary>
         public static List<T> GetClassAxiomsOfType<T>(this OWLOntology ontology) where T : OWLClassAxiom
             => ontology?.ClassAxioms.OfType<T>().ToList() ?? new List<T>();
 
+        /// <summary>
+        /// Checks if the given ontology has the given class axiom in its T-BOX
+        /// </summary>
         public static bool CheckHasClassAxiom<T>(this OWLOntology ontology, T classAxiom) where T : OWLClassAxiom
             => GetClassAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), classAxiom?.GetXML()));
 
+        /// <summary>
+        /// Declares the given class axiom to the T-BOX of the given ontology
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static void DeclareClassAxiom<T>(this OWLOntology ontology, T classAxiom) where T : OWLClassAxiom
         {
             #region Guards
             if (classAxiom == null)
-                throw new OWLException("Cannot declare class axiom because given \"classAxiom\" parameter is null");
+                throw new OWLException($"Cannot declare class axiom because given '{nameof(classAxiom)}' parameter is null");
             #endregion
 
             if (!CheckHasClassAxiom(ontology, classAxiom))
                 ontology?.ClassAxioms.Add(classAxiom);
         }
 
-        public static bool CheckIsSubClassOf(this OWLOntology ontology, OWLClassExpression subClassExpr, OWLClassExpression superClassExpr)
-            => ontology != null && subClassExpr != null && superClassExpr != null && GetSubClassesOf(ontology, superClassExpr).Any(cex => cex.GetIRI().Equals(subClassExpr.GetIRI()));
+        /// <summary>
+        /// Checks for the existence of an OWLSubClassOf axiom directly or indirectly relating the given child->mother class expressions in the T-BOX of the given ontology
+        /// </summary>
+        public static bool CheckIsSubClassOf(this OWLOntology ontology, OWLClassExpression childClassExpr, OWLClassExpression motherClassExpr)
+            => ontology != null && childClassExpr != null && motherClassExpr != null && GetSubClassesOf(ontology, motherClassExpr).Any(cex => cex.GetIRI().Equals(childClassExpr.GetIRI()));
 
+        /// <summary>
+        /// Enlists the class expressions which are directly or indirectly related as children to the given mother class expression in the T-BOX of the given ontology
+        /// </summary>
         public static List<OWLClassExpression> GetSubClassesOf(this OWLOntology ontology, OWLClassExpression classExpr)
         {
             #region Utilities
+            //Facility for recursive traversal of the OWLSubClassOf hierarchy
             List<OWLClassExpression> FindSubClassesOf(RDFResource classExprIRI, List<OWLSubClassOf> axioms, HashSet<long> visitContext)
             {
                 List<OWLClassExpression> foundSubClassExprs = new List<OWLClassExpression>();
@@ -94,16 +114,25 @@ namespace OWLSharp.Ontology
                 //EquivalentClasses(C1,ObjectUnionOf(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
                 foreach (OWLObjectUnionOf objectUnionOf in equivClassesOfClassExpr.OfType<OWLObjectUnionOf>())
                     subClassExprs.AddRange(objectUnionOf.ClassExpressions);
+
+                return OWLExpressionHelper.RemoveDuplicates(subClassExprs);
             }
-            return OWLExpressionHelper.RemoveDuplicates(subClassExprs);
+            return subClassExprs;
         }
 
-        public static bool CheckIsSuperClassOf(this OWLOntology ontology, OWLClassExpression superClassExpr, OWLClassExpression subClassExpr)
-            => ontology != null && superClassExpr != null && subClassExpr != null && GetSuperClassesOf(ontology, subClassExpr).Any(cex => cex.GetIRI().Equals(superClassExpr.GetIRI()));
+        /// <summary>
+        /// Checks for the existence of an OWLSubClassOf axiom directly or indirectly relating the given mother->child class expressions in the T-BOX of the given ontology
+        /// </summary>
+        public static bool CheckIsSuperClassOf(this OWLOntology ontology, OWLClassExpression motherClassExpr, OWLClassExpression childClassExpr)
+            => ontology != null && motherClassExpr != null && childClassExpr != null && GetSuperClassesOf(ontology, childClassExpr).Any(cex => cex.GetIRI().Equals(motherClassExpr.GetIRI()));
 
+        /// <summary>
+        /// Enlists the class expressions which are directly or indirectly related as mother to the given child class expression in the T-BOX of the given ontology
+        /// </summary>
         public static List<OWLClassExpression> GetSuperClassesOf(this OWLOntology ontology, OWLClassExpression classExpr)
         {
             #region Utilities
+            //Facility for recursive traversal of the OWLSubClassOf hierarchy
             List<OWLClassExpression> FindSuperClassesOf(RDFResource classExprIRI, List<OWLSubClassOf> axioms, HashSet<long> visitContext)
             {
                 List<OWLClassExpression> foundSuperClassExprs = new List<OWLClassExpression>();
@@ -147,16 +176,25 @@ namespace OWLSharp.Ontology
                 //DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
                 foreach (OWLDisjointUnion disjointUnion in GetClassAxiomsOfType<OWLDisjointUnion>(ontology).Where(ax => ax.ClassExpressions.Any(cex => cex.GetIRI().Equals(clsExprIRI))))
                     superClassExprs.Add(disjointUnion.ClassIRI);
+
+                return OWLExpressionHelper.RemoveDuplicates(superClassExprs);
             }
-            return OWLExpressionHelper.RemoveDuplicates(superClassExprs);
+            return superClassExprs;
         }
 
+        /// <summary>
+        /// Checks for the existence of an OWLEquivalentClasses axiom directly or indirectly relating the given class expressions in the T-BOX of the given ontology
+        /// </summary>
         public static bool CheckAreEquivalentClasses(this OWLOntology ontology, OWLClassExpression leftClassExpr, OWLClassExpression rightClassExpr)
             => ontology != null && leftClassExpr != null && rightClassExpr != null && GetEquivalentClasses(ontology, leftClassExpr).Any(cex => cex.GetIRI().Equals(rightClassExpr.GetIRI()));
 
+        /// <summary>
+        /// Enlists the class expressions which are directly or indirectly related as equivalent classes to the given class expression in the T-BOX of the given ontology
+        /// </summary>
         public static List<OWLClassExpression> GetEquivalentClasses(this OWLOntology ontology, OWLClassExpression classExpr)
         {
             #region Utilities
+            //Facility for recursive traversal of the OWLEquivalentClasses relations
             List<OWLClassExpression> FindEquivalentClasses(RDFResource classExprIRI, List<OWLEquivalentClasses> axioms, HashSet<long> visitContext)
             {
                 List<OWLClassExpression> foundEquivClassExprs = new List<OWLClassExpression>();
@@ -186,9 +224,15 @@ namespace OWLSharp.Ontology
             return equivClassExprs;
         }
 
+        /// <summary>
+        /// Checks for the existence of an OWLDisjointClasses axiom directly or indirectly relating the given class expressions in the T-BOX of the given ontology
+        /// </summary>
         public static bool CheckAreDisjointClasses(this OWLOntology ontology, OWLClassExpression leftClassExpr, OWLClassExpression rightClassExpr)
             => ontology != null && leftClassExpr != null && rightClassExpr != null && GetDisjointClasses(ontology, leftClassExpr).Any(cex => cex.GetIRI().Equals(rightClassExpr.GetIRI()));
 
+        /// <summary>
+        /// Enlists the class expressions which are directly or indirectly related as disjoint classes to the given class expression in the T-BOX of the given ontology
+        /// </summary>
         public static List<OWLClassExpression> GetDisjointClasses(this OWLOntology ontology, OWLClassExpression classExpr)
         {
             #region Utilities
