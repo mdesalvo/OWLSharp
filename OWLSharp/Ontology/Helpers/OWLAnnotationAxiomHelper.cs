@@ -20,32 +20,52 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLAnnotationAxiomHelper simplifies annotation axiom modeling and analysis with a set of facilities
+    /// </summary>
     public static class OWLAnnotationAxiomHelper
     {
         #region Methods
+        /// <summary>
+        /// Enlists the given type of annotation axiom from the T-BOX/A-BOX of the given ontology
+        /// </summary>
         public static List<T> GetAnnotationAxiomsOfType<T>(this OWLOntology ontology) where T : OWLAnnotationAxiom
             => ontology?.AnnotationAxioms.OfType<T>().ToList() ?? new List<T>();
 
+        /// <summary>
+        /// Checks if the given ontology has the given assertion axiom in its T-BOX/A-BOX
+        /// </summary>
         public static bool CheckHasAnnotationAxiom<T>(this OWLOntology ontology, T annotationAxiom) where T : OWLAnnotationAxiom
             => GetAnnotationAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), annotationAxiom?.GetXML()));
 
+        /// <summary>
+        /// Declares the given annotation axiom to the T-BOX/A-BOX of the given ontology
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static void DeclareAnnotationAxiom<T>(this OWLOntology ontology, T annotationAxiom) where T : OWLAnnotationAxiom
         {
             #region Guards
             if (annotationAxiom == null)
-                throw new OWLException("Cannot declare annotation axiom because given \"annotationAxiom\" parameter is null");
+                throw new OWLException($"Cannot declare annotation axiom because given '{nameof(annotationAxiom)}' parameter is null");
             #endregion
 
             if (!CheckHasAnnotationAxiom(ontology, annotationAxiom))
                 ontology?.AnnotationAxioms.Add(annotationAxiom);
         }
 
-        public static bool CheckIsSubAnnotationPropertyOf(this OWLOntology ontology, OWLAnnotationProperty subAnnotationProperty, OWLAnnotationProperty superAnnotationProperty)
-            => ontology != null && subAnnotationProperty != null && superAnnotationProperty != null && GetSubAnnotationPropertiesOf(ontology, superAnnotationProperty).Any(ap => ap.GetIRI().Equals(subAnnotationProperty.GetIRI()));
+        /// <summary>
+        /// Checks for the existence of an OWLSubAnnotationPropertyOf axiom directly or indirectly relating the given child->mother annotation properties in the T-BOX of the given ontology
+        /// </summary>
+        public static bool CheckIsSubAnnotationPropertyOf(this OWLOntology ontology, OWLAnnotationProperty childAnnProp, OWLAnnotationProperty motherAnnProp)
+            => ontology != null && childAnnProp != null && motherAnnProp != null && GetSubAnnotationPropertiesOf(ontology, motherAnnProp).Any(ap => ap.GetIRI().Equals(childAnnProp.GetIRI()));
 
+        /// <summary>
+        /// Enlists the annotation properties which are directly or indirectly related as children to the given mother annotation property in the T-BOX of the given ontology
+        /// </summary>
         public static List<OWLAnnotationProperty> GetSubAnnotationPropertiesOf(this OWLOntology ontology, OWLAnnotationProperty annotationProperty)
         {
             #region Utilities
+            //Facility for recursive traversal of the OWLSubAnnotationPropertyOf hierarchy
             List<OWLAnnotationProperty> FindSubAnnotationPropertiesOf(RDFResource annPropIRI, List<OWLSubAnnotationPropertyOf> axioms, HashSet<long> visitContext)
             {
                 List<OWLAnnotationProperty> foundSubAnnotationProperties = new List<OWLAnnotationProperty>();
@@ -77,12 +97,19 @@ namespace OWLSharp.Ontology
             return OWLExpressionHelper.RemoveDuplicates(subAnnotationProperties);
         }
 
-        public static bool CheckIsSuperAnnotationPropertyOf(this OWLOntology ontology, OWLAnnotationProperty superAnnotationProperty, OWLAnnotationProperty subAnnotationProperty)
-            => ontology != null && superAnnotationProperty != null && subAnnotationProperty != null && GetSuperAnnotationPropertiesOf(ontology, subAnnotationProperty).Any(ap => ap.GetIRI().Equals(superAnnotationProperty.GetIRI()));
+        /// <summary>
+        /// Checks for the existence of an OWLSubAnnotationPropertyOf axiom directly or indirectly relating the given mother->child annotation properties in the T-BOX of the given ontology
+        /// </summary>
+        public static bool CheckIsSuperAnnotationPropertyOf(this OWLOntology ontology, OWLAnnotationProperty motherAnnProp, OWLAnnotationProperty childAnnProp)
+            => ontology != null && motherAnnProp != null && childAnnProp != null && GetSuperAnnotationPropertiesOf(ontology, childAnnProp).Any(ap => ap.GetIRI().Equals(motherAnnProp.GetIRI()));
 
+        /// <summary>
+        /// Enlists the annotation properties which are directly or indirectly related as mother to the given child annotationProperty in the T-BOX of the given ontology
+        /// </summary>
         public static List<OWLAnnotationProperty> GetSuperAnnotationPropertiesOf(this OWLOntology ontology, OWLAnnotationProperty annotationProperty)
         {
             #region Utilities
+            //Facility for recursive traversal of the OWLSubAnnotationPropertyOf hierarchy
             List<OWLAnnotationProperty> FindSuperAnnotationPropertiesOf(RDFResource annPropIRI, List<OWLSubAnnotationPropertyOf> axioms, HashSet<long> visitContext)
             {
                 List<OWLAnnotationProperty> foundSuperAnnotationProperties = new List<OWLAnnotationProperty>();
@@ -116,6 +143,9 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Utilities
+        /// <summary>
+        /// Filters the given set of OWLAnnotationAssertion by searching those using the given annotation property
+        /// </summary>
         internal static List<OWLAnnotationAssertion> SelectAnnotationAssertionsByAPEX(List<OWLAnnotationAssertion> annAsnAxioms, OWLAnnotationProperty annProp)
             => annAsnAxioms.Where(ax => ax.AnnotationProperty.GetIRI().Equals(annProp.GetIRI())).ToList();
         #endregion
