@@ -21,32 +21,52 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLAssertionAxiomHelper simplifies assertion axiom modeling and analysis with a set of facilities
+    /// </summary>
     public static class OWLAssertionAxiomHelper
     {
         #region Methods
+        /// <summary>
+        /// Enlists the given type of assertion axiom from the A-BOX of the given ontology
+        /// </summary>
         public static List<T> GetAssertionAxiomsOfType<T>(this OWLOntology ontology) where T : OWLAssertionAxiom
             => ontology?.AssertionAxioms.OfType<T>().ToList() ?? new List<T>();
 
+        /// <summary>
+        /// Checks if the given ontology has the given assertion axiom in its A-BOX
+        /// </summary>
         public static bool CheckHasAssertionAxiom<T>(this OWLOntology ontology, T assertionAxiom) where T : OWLAssertionAxiom
             => GetAssertionAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), assertionAxiom?.GetXML()));
 
+        /// <summary>
+        /// Declares the given assertion axiom to the A-BOX of the given ontology
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static void DeclareAssertionAxiom<T>(this OWLOntology ontology, T assertionAxiom) where T : OWLAssertionAxiom
         {
             #region Guards
             if (assertionAxiom == null)
-                throw new OWLException("Cannot declare assertion axiom because given \"assertionAxiom\" parameter is null");
+                throw new OWLException($"Cannot declare assertion axiom because given '{nameof(assertionAxiom)}' parameter is null");
             #endregion
 
             if (!CheckHasAssertionAxiom(ontology, assertionAxiom))
                 ontology?.AssertionAxioms.Add(assertionAxiom);
         }
 
+        /// <summary>
+        /// Checks for the existence of an OWLSameIndividual axiom directly or indirectly relating the given individual expressions in the A-BOX of the given ontology
+        /// </summary>
         public static bool CheckIsSameIndividual(this OWLOntology ontology, OWLIndividualExpression leftIdvExpr, OWLIndividualExpression rightIdvExpr)
             => ontology != null && leftIdvExpr != null && rightIdvExpr != null && GetSameIndividuals(ontology, leftIdvExpr).Any(iex => iex.GetIRI().Equals(rightIdvExpr.GetIRI()));
 
+        /// <summary>
+        /// Enlists the individual expressions which are directly or indirectly related as same to the given individual expression in the A-BOX of the given ontology
+        /// </summary>
         public static List<OWLIndividualExpression> GetSameIndividuals(this OWLOntology ontology, OWLIndividualExpression idvExpr)
         {
             #region Utilities
+            //Facility for recursive traversal of the OWLSameIndividual releations
             List<OWLIndividualExpression> FindSameIndividuals(RDFResource idvExprIRI, List<OWLSameIndividual> axioms, HashSet<long> visitContext)
             {
                 List<OWLIndividualExpression> foundSameIndividuals = new List<OWLIndividualExpression>();
@@ -76,16 +96,23 @@ namespace OWLSharp.Ontology
             return sameIndividuals;
         }
 
+        /// <summary>
+        /// Checks for the existence of an OWLDifferentIndividuals axiom directly or indirectly relating the given individual expressions in the A-BOX of the given ontology
+        /// </summary>
         public static bool CheckAreDifferentIndividuals(this OWLOntology ontology, OWLIndividualExpression leftIdvExpr, OWLIndividualExpression rightIdvExpr)
             => ontology != null && leftIdvExpr != null && rightIdvExpr != null && GetDifferentIndividuals(ontology, leftIdvExpr).Any(iex => iex.GetIRI().Equals(rightIdvExpr.GetIRI()));
 
+        /// <summary>
+        /// Enlists the individual expressions which are directly or indirectly related as different to the given individual expression in the A-BOX of the given ontology
+        /// </summary>
         public static List<OWLIndividualExpression> GetDifferentIndividuals(this OWLOntology ontology, OWLIndividualExpression idvExpr)
         {
             List<OWLIndividualExpression> differentIndividuals = new List<OWLIndividualExpression>();
 
-            //There is no reasoning on individual difference (apart simmetry), being this totally under OWA domain
             if (ontology != null && idvExpr != null)
             {
+                //We can only enlist explicitly declared different individuals: no other kind
+                //of reasoning is possible, since this relation is protected under OWA behavior!
                 RDFResource idvExprIRI = idvExpr.GetIRI();
                 foreach (OWLDifferentIndividuals axiom in GetAssertionAxiomsOfType<OWLDifferentIndividuals>(ontology).Where(ax => ax.IndividualExpressions.Any(iex => iex.GetIRI().Equals(idvExprIRI))))
                     differentIndividuals.AddRange(axiom.IndividualExpressions);
@@ -95,9 +122,15 @@ namespace OWLSharp.Ontology
             return OWLExpressionHelper.RemoveDuplicates(differentIndividuals);
         }
 
+        /// <summary>
+        /// Checks for the existence of an OWLClassAssertion axiom directly or indirectly assigning the given individual expression to the given class expression in the A-BOX of the given ontology
+        /// </summary>
         public static bool CheckIsIndividualOf(this OWLOntology ontology, OWLClassExpression clsExpr, OWLIndividualExpression idvExpr, bool enableSameAsEntailment=true)
             => ontology != null && clsExpr != null && idvExpr != null && GetIndividualsOf(ontology, clsExpr, enableSameAsEntailment).Any(iex => iex.GetIRI().Equals(idvExpr.GetIRI()));
 
+        /// <summary>
+        /// Enlists the individual expressions which are directly or indirectly assigned to the given class expression in the A-BOX of the given ontology
+        /// </summary>
         public static List<OWLIndividualExpression> GetIndividualsOf(this OWLOntology ontology, OWLClassExpression clsExpr, bool enableSameAsEntailment=true)
             => GetIndividualsOf(ontology, clsExpr, GetAssertionAxiomsOfType<OWLClassAssertion>(ontology), enableSameAsEntailment);
         internal static List<OWLIndividualExpression> GetIndividualsOf(this OWLOntology ontology, OWLClassExpression clsExpr, List<OWLClassAssertion> clsAsns, bool enableSameAsEntailment=true)
@@ -404,17 +437,20 @@ namespace OWLSharp.Ontology
             {
                 classIndividuals.AddRange(FindIndividualsOf(clsExpr, new HashSet<long>()));
 
-                //This additional entailment can be quite expensive, so it is on-demand
                 if (enableSameAsEntailment)
                 {
                     //ClassAssertion(C,I1) ^ SameIndividual(I1,I2) -> ClassAssertion(C,I2)
                     foreach (OWLIndividualExpression classIndividual in classIndividuals.ToList())
                         classIndividuals.AddRange(ontology.GetSameIndividuals(classIndividual));
                 }
+                return OWLExpressionHelper.RemoveDuplicates(classIndividuals);
             }
-            return OWLExpressionHelper.RemoveDuplicates(classIndividuals);
+            return classIndividuals;
         }
 
+        /// <summary>
+        /// Checks for the existence of an OWLClassAssertion axiom directly or indirectly assigning the given individual expression to an OWLObjectComplementOf of the given class expression in the A-BOX of the given ontology
+        /// </summary>
         public static bool CheckIsNegativeIndividualOf(this OWLOntology ontology, OWLClassExpression clsExpr, OWLIndividualExpression idvExpr)
             => CheckIsNegativeIndividualOf(ontology, clsExpr, idvExpr, GetAssertionAxiomsOfType<OWLClassAssertion>(ontology));
         internal static bool CheckIsNegativeIndividualOf(this OWLOntology ontology, OWLClassExpression clsExpr, OWLIndividualExpression idvExpr, List<OWLClassAssertion> clsAsnAxioms)
@@ -430,7 +466,7 @@ namespace OWLSharp.Ontology
                 {
                     //Direct
                     if (idvExprClassAsn.ClassExpression is OWLObjectComplementOf directObjComplOf
-                        && directObjComplOf.ClassExpression.GetIRI().Equals(clsExprIRI))
+                         && directObjComplOf.ClassExpression.GetIRI().Equals(clsExprIRI))
                     {
                         answer = true;
                         break;
@@ -450,6 +486,9 @@ namespace OWLSharp.Ontology
             return answer;
         }
 
+        /// <summary>
+        /// Checks if the given literal is compatible with the given OWLDataRange expression in the T-BOX of the given ontology
+        /// </summary>
         public static bool CheckIsLiteralOf(this OWLOntology ontology, OWLDataRangeExpression drExpr, OWLLiteral literal)
         {
             if (ontology != null && drExpr != null && literal != null)
@@ -568,6 +607,9 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Utilities
+        /// <summary>
+        /// Filters the given set of OWLObjectPropertyAssertion by searching those using the given object property expression
+        /// </summary>
         internal static List<OWLObjectPropertyAssertion> SelectObjectAssertionsByOPEX(List<OWLObjectPropertyAssertion> objPropAsnAxioms, OWLObjectPropertyExpression objPropExpr)
         {
             RDFResource opexIRI = objPropExpr is OWLObjectInverseOf objPropExprInvOf ? objPropExprInvOf.ObjectProperty.GetIRI() : objPropExpr.GetIRI();
@@ -575,9 +617,15 @@ namespace OWLSharp.Ontology
                                                   || (ax.ObjectPropertyExpression is OWLObjectProperty asnObjProp && asnObjProp.GetIRI().Equals(opexIRI))).ToList();
         }
 
+        /// <summary>
+        /// Filters the given set of OWLDataPropertyAssertion by searching those using the given data property
+        /// </summary>
         internal static List<OWLDataPropertyAssertion> SelectDataAssertionsByDPEX(List<OWLDataPropertyAssertion> dtPropAsnAxioms, OWLDataProperty dtProp)
             => dtPropAsnAxioms.Where(ax => ax.DataProperty.GetIRI().Equals(dtProp.GetIRI())).ToList();
 
+        /// <summary>
+        /// Filters the given set of OWLNegativeObjectPropertyAssertion by searching those using the given object property expression
+        /// </summary>
         internal static List<OWLNegativeObjectPropertyAssertion> SelectNegativeObjectAssertionsByOPEX(List<OWLNegativeObjectPropertyAssertion> negObjPropAsnAxioms, OWLObjectPropertyExpression objPropExpr)
         {
             RDFResource opexIRI = objPropExpr is OWLObjectInverseOf objPropExprInvOf ? objPropExprInvOf.ObjectProperty.GetIRI() : objPropExpr.GetIRI();
@@ -585,30 +633,43 @@ namespace OWLSharp.Ontology
                                                        || (ax.ObjectPropertyExpression is OWLObjectProperty asnObjProp && asnObjProp.GetIRI().Equals(opexIRI))).ToList();
         }
 
+        /// <summary>
+        /// Filters the given set of OWLNegativeDataPropertyAssertion by searching those using the given data property
+        /// </summary>
         internal static List<OWLNegativeDataPropertyAssertion> SelectNegativeDataAssertionsByDPEX(List<OWLNegativeDataPropertyAssertion> negDtPropAsnAxioms, OWLDataProperty dtProp)
             => negDtPropAsnAxioms.Where(ax => ax.DataProperty.GetIRI().Equals(dtProp.GetIRI())).ToList();
 
+        /// <summary>
+        /// Scans the OWLObjectPropertyAssertion axioms of the given ontology and adjusts the verse of those using OWLObjectInverseOf semantic
+        /// </summary>
         internal static List<OWLObjectPropertyAssertion> CalibrateObjectAssertions(OWLOntology ontology)
         {
             List<OWLObjectPropertyAssertion> objPropAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
             foreach (OWLObjectPropertyAssertion objPropAsn in objPropAsns)
+            {
                 if (objPropAsn.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
                 {
                     (objPropAsn.SourceIndividualExpression, objPropAsn.TargetIndividualExpression) = (objPropAsn.TargetIndividualExpression, objPropAsn.SourceIndividualExpression);
                     objPropAsn.ObjectPropertyExpression = objInvOf.ObjectProperty;
                 }
+            }
             return OWLAxiomHelper.RemoveDuplicates(objPropAsns);
         }
 
+        /// <summary>
+        /// Scans the OWLNegativeObjectPropertyAssertion axioms of the given ontology and adjusts the verse of those using OWLObjectInverseOf semantic
+        /// </summary>
         internal static List<OWLNegativeObjectPropertyAssertion> CalibrateNegativeObjectAssertions(OWLOntology ontology)
         {
             List<OWLNegativeObjectPropertyAssertion> negObjPropAsns = ontology.GetAssertionAxiomsOfType<OWLNegativeObjectPropertyAssertion>();
             foreach (OWLNegativeObjectPropertyAssertion negObjPropAsn in negObjPropAsns)
+            {
                 if (negObjPropAsn.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
                 {
                     (negObjPropAsn.SourceIndividualExpression, negObjPropAsn.TargetIndividualExpression) = (negObjPropAsn.TargetIndividualExpression, negObjPropAsn.SourceIndividualExpression);
                     negObjPropAsn.ObjectPropertyExpression = objInvOf.ObjectProperty;
                 }
+            }
             return OWLAxiomHelper.RemoveDuplicates(negObjPropAsns);
         }
         #endregion
