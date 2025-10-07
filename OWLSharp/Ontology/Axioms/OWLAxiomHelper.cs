@@ -18,12 +18,22 @@ using System.Collections.Generic;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLAxiomHelper simplifies axiom modeling with a set of facilities
+    /// </summary>
     public static class OWLAxiomHelper
     {
         #region Methods
+        /// <summary>
+        /// Adds the given annotation to the set of this axiom's annotations
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public static void Annotate(this OWLAxiom axiom, OWLAnnotation annotation)
-            => axiom?.Annotations.Add(annotation ?? throw new OWLException("Cannot annotate axiom because given \"annotation\" parameter is null"));
+            => axiom?.Annotations.Add(annotation ?? throw new OWLException($"Cannot annotate axiom because given '{nameof(annotation)}' parameter is null"));
 
+        /// <summary>
+        /// Removes the duplicate axioms from the given list
+        /// </summary>
         internal static List<T> RemoveDuplicates<T>(List<T> axioms) where T : OWLAxiom
         {
             List<T> deduplicatedAxioms = new List<T>();

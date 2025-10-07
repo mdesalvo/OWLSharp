@@ -26,9 +26,9 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// SWRLAtom represents the foundational aspect for building SWRL antecedents and SWRL consequents.<br/><br/>
-    /// Atoms in SWRL are predicates applied on a single argument (the left argument, when semantic is unary)<br/>
-    /// or at most on a pair of arguments (the left and right arguments, when semantic is binary).
+    /// SWRLAtom represents the foundational aspect for building SWRL rules, contributing to the modeling of both antecedent and consequent.<br/><br/>
+    /// Atoms in SWRL are predicates applied on a single argument (left argument) when having unary semantic,
+    /// or at most on a pair of arguments (left and right arguments) when having binary semantic.
     /// </summary>
     [XmlInclude(typeof(SWRLAnnotationPropertyAtom))]
     [XmlInclude(typeof(SWRLClassAtom))]

@@ -18,9 +18,15 @@ using System.Collections.Generic;
 
 namespace OWLSharp.Ontology
 {
-    public static class OWLExpressionHelper
+    /// <summary>
+    /// OWLExpressionHelper simplifies expression modeling with a set of facilities
+    /// </summary>
+    internal static class OWLExpressionHelper
     {
         #region Methods
+        /// <summary>
+        /// Removes the duplicate expressions from the given list
+        /// </summary>
         internal static List<T> RemoveDuplicates<T>(List<T> expressions) where T : OWLExpression
         {
             List<T> deduplicatedExpressions = new List<T>();
