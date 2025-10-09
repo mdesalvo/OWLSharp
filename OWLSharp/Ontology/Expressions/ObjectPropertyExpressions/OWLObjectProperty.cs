@@ -22,39 +22,61 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLObjectProperty is an expression suitable for modeling properties relating individuals of the A-BOX
+    /// </summary>
     [XmlRoot("ObjectProperty")]
     public sealed class OWLObjectProperty : OWLObjectPropertyExpression, IOWLEntity
     {
         #region Properties
+        /// <summary>
+        /// The IRI of the object property (e.g: http://xmlns.com/foaf/0.1/knows)
+        /// </summary>
         [XmlAttribute("IRI", DataType="anyURI")]
         public string IRI { get; set; }
 
+        /// <summary>
+        /// The xsd:qualifiedName representation of the object property (e.g: foaf:knows)
+        /// </summary>
         [XmlAttribute("abbreviatedIRI", DataType="QName")]
         public XmlQualifiedName AbbreviatedIRI { get; set; }
         #endregion
 
         #region Ctors
         internal OWLObjectProperty() { }
+
+        /// <summary>
+        /// Builds an OWLObjectProperty with the given IRI (e.g: http://xmlns.com/foaf/0.1/knows)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLObjectProperty(RDFResource iri)
         {
             #region Guards
             if (iri == null)
-                throw new OWLException("Cannot create OWLObjectProperty because given \"iri\" parameter is null");
+                throw new OWLException($"Cannot create OWLObjectProperty because given '{nameof(iri)}' parameter is null");
             if (iri.IsBlank)
-                throw new OWLException("Cannot create OWLObjectProperty because given \"iri\" parameter is a blank resource");
+                throw new OWLException($"Cannot create OWLObjectProperty because given '{nameof(iri)}' parameter is a blank resource");
             #endregion
 
             IRI = iri.ToString();
             ExpressionIRI = iri;
         }
+        
+        /// <summary>
+        /// Builds an OWLObjectProperty with the given xsd:qualifiedName (e.g: foaf:knows)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLObjectProperty(XmlQualifiedName abbreviatedIri)
         {
-            AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLObjectProperty because given \"abbreviatedIri\" parameter is null");
+            AbbreviatedIRI = abbreviatedIri ?? throw new OWLException($"Cannot create OWLObjectProperty because given '{nameof(abbreviatedIri)}' parameter is null");
             ExpressionIRI = new RDFResource(string.Concat(abbreviatedIri.Namespace, abbreviatedIri.Name));
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the IRI representation of this object property
+        /// </summary>
         public override RDFResource GetIRI()
         {
             if (ExpressionIRI?.IsBlank != false)
@@ -67,6 +89,9 @@ namespace OWLSharp.Ontology
             return ExpressionIRI;
         }
 
+        /// <summary>
+        /// Exports this object property to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
@@ -78,11 +103,17 @@ namespace OWLSharp.Ontology
         #endregion
     }
 
+    /// <summary>
+    /// OWLObjectPropertyChain is an expression suitable for modeling chains of object property expressions relating individuals of the A-BOX.
+    /// It is found in SubObjectPropertyOf axioms as child expression: SubObjectPropertyOf(ObjectPropertyChain(Father,Brother), Uncle)
+    /// </summary>
     [XmlRoot("ObjectPropertyChain")]
     public class OWLObjectPropertyChain
     {
         #region Properties
-        //Register here all derived types of OWLObjectPropertyExpression
+        /// <summary>
+        /// The chain of object property expressions
+        /// </summary>
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty")]
         [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf")]
         public List<OWLObjectPropertyExpression> ObjectPropertyExpressions { get; set; }
@@ -90,15 +121,20 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         internal OWLObjectPropertyChain() { }
+
+        /// <summary>
+        /// Builds an OWLObjectPropertyChain with the given chain of object property expressions (must be at least 2)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLObjectPropertyChain(List<OWLObjectPropertyExpression> objectPropertyExpressions)
         {
             #region Guards
             if (objectPropertyExpressions == null)
-                throw new OWLException("Cannot create OWLObjectPropertyChain because given \"objectPropertyExpressions\" parameter is null");
+                throw new OWLException($"Cannot create OWLObjectPropertyChain because given '{nameof(objectPropertyExpressions)}' parameter is null");
             if (objectPropertyExpressions.Count < 2)
-                throw new OWLException("Cannot create OWLObjectPropertyChain because given \"objectPropertyExpressions\" parameter must contain at least 2 elements");
+                throw new OWLException($"Cannot create OWLObjectPropertyChain because given '{nameof(objectPropertyExpressions)}' parameter must contain at least 2 elements");
             if (objectPropertyExpressions.Any(ope => ope == null))
-                throw new OWLException("Cannot create OWLObjectPropertyChain because given \"objectPropertyExpressions\" parameter contains a null element");
+                throw new OWLException($"Cannot create OWLObjectPropertyChain because given '{nameof(objectPropertyExpressions)}' parameter contains a null element");
             #endregion
 
             ObjectPropertyExpressions = objectPropertyExpressions;

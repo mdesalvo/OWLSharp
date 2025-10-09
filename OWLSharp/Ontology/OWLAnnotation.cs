@@ -108,6 +108,9 @@ namespace OWLSharp.Ontology
         public void Annotate(OWLAnnotation annotation)
             => Annotation = annotation ?? throw new OWLException($"Cannot annotate annotation because given '{nameof(annotation)}' parameter is null");
 
+        /// <summary>
+        /// Exports this annotation to an equivalent RDFGraph object
+        /// </summary>
         internal RDFGraph ToRDFGraph(RDFTriple axiomTriple)
         {
             RDFGraph graph = new RDFGraph();
