@@ -20,21 +20,36 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLObjectInverseOf is an expression suitable for modeling an anonymous object property representing the inverse of the given object property.
+    /// It is useful for dealing with situations under which the ontology T-BOX cannot be tampered with an explicit OWLSubObjectPropertyOf axiom specification.
+    /// </summary>
     [XmlRoot("ObjectInverseOf")]
     public sealed class OWLObjectInverseOf : OWLObjectPropertyExpression
     {
         #region Properties
+        /// <summary>
+        /// The object property on which this OWLObjectInverseOf expression is acting as anonymous inverse (e.g: http://example.org/loves)
+        /// </summary>
         [XmlElement]
         public OWLObjectProperty ObjectProperty { get; set; }
         #endregion
 
         #region Ctors
         internal OWLObjectInverseOf() { }
+
+        /// <summary>
+        /// Builds an OWLObjectInverseOf on the given object property
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLObjectInverseOf(OWLObjectProperty objectProperty)
-            => ObjectProperty = objectProperty ?? throw new OWLException("Cannot create OWLObjectInverseOf because given \"objectProperty\" parameter is null");
+            => ObjectProperty = objectProperty ?? throw new OWLException($"Cannot create OWLObjectInverseOf because given '{nameof(objectProperty)}' parameter is null");
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the SWRL representation of this OWLObjectInverseOf expression
+        /// </summary>
         public override string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();
@@ -47,6 +62,9 @@ namespace OWLSharp.Ontology
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Exports this OWLObjectInverseOf expression to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
