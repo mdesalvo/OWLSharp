@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// OWLLiteral is an expression suitable for modeling literals of any kind
+    /// OWLLiteral is an entity suitable for modeling literals of any kind
     /// </summary>
     [XmlRoot("Literal")]
     public sealed class OWLLiteral : OWLLiteralExpression
@@ -50,7 +50,7 @@ namespace OWLSharp.Ontology
         internal OWLLiteral() { }
 
         /// <summary>
-        /// Builds an OWLLiteral from the given RDFLiteral
+        /// Builds a literal from the given RDFLiteral
         /// </summary>
         public OWLLiteral(RDFLiteral literal)
         {

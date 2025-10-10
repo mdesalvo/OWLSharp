@@ -20,17 +20,31 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLAnonymousIndividual is an expression suitabke for modeling an anonymous individual of the A-BOX
+    /// </summary>
     [XmlRoot("AnonymousIndividual")]
     public sealed class OWLAnonymousIndividual : OWLIndividualExpression
     {
         #region Properties
+        /// <summary>
+        /// The xsd:NCName of this anonymous individual (e.g: Anon2447)
+        /// </summary>
         [XmlAttribute("nodeID", DataType="NCName")]
         public string NodeID { get; set; }
         #endregion
 
         #region Ctors
+        /// <summary>
+        /// Builds an anonymous individual (e.g: ANONe8f9f06f6fb4451b84ff6c90540d9dee)
+        /// </summary>
         public OWLAnonymousIndividual()
             => NodeID = $"ANON{Guid.NewGuid():N}";
+
+        /// <summary>
+        /// Builds an anonymous individual with the given xsd:NCName (e.g: ANON2447)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLAnonymousIndividual(string xsdNCName)
         {
             try
@@ -38,11 +52,14 @@ namespace OWLSharp.Ontology
                 RDFTypedLiteral xsdNCNameLiteral = new RDFTypedLiteral(xsdNCName, RDFModelEnums.RDFDatatypes.XSD_NCNAME);
                 NodeID = xsdNCNameLiteral.Value;
             }
-            catch { throw new OWLException("Cannot create OWLAnonymousIndividual because given \"anonymousName\" parameter is null or is not a valid xsd:NCName"); }
+            catch { throw new OWLException($"Cannot create OWLAnonymousIndividual because given '{nameof(xsdNCName)}' parameter is null or is not a valid xsd:NCName"); }
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the IRI representation of this anonymous individual (e.g: bnode:ANON2447)
+        /// </summary>
         public override RDFResource GetIRI()
             => new RDFResource(string.Concat($"bnode:{NodeID}"));
         #endregion

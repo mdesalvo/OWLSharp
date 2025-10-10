@@ -23,7 +23,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// OWLObjectProperty is an expression suitable for modeling properties connecting individuals of the A-BOX
+    /// OWLObjectProperty is an entity suitable for modeling properties relating individuals of the A-BOX
     /// </summary>
     [XmlRoot("ObjectProperty")]
     public sealed class OWLObjectProperty : OWLObjectPropertyExpression, IOWLEntity
@@ -46,7 +46,7 @@ namespace OWLSharp.Ontology
         internal OWLObjectProperty() { }
 
         /// <summary>
-        /// Builds an OWLObjectProperty with the given IRI (e.g: http://xmlns.com/foaf/0.1/knows)
+        /// Builds an object property with the given IRI (e.g: http://xmlns.com/foaf/0.1/knows)
         /// </summary>
         /// <exception cref="OWLException"></exception>
         public OWLObjectProperty(RDFResource iri)
@@ -63,7 +63,7 @@ namespace OWLSharp.Ontology
         }
         
         /// <summary>
-        /// Builds an OWLObjectProperty with the given xsd:qualifiedName (e.g: foaf:knows)
+        /// Builds an object property with the given xsd:qualifiedName (e.g: foaf:knows)
         /// </summary>
         /// <exception cref="OWLException"></exception>
         public OWLObjectProperty(XmlQualifiedName abbreviatedIri)
@@ -123,7 +123,7 @@ namespace OWLSharp.Ontology
         internal OWLObjectPropertyChain() { }
 
         /// <summary>
-        /// Builds an OWLObjectPropertyChain with the given chain of object property expressions (must be at least 2)
+        /// Builds an object property chain with the given set of object property expressions (must be at least 2)
         /// </summary>
         /// <exception cref="OWLException"></exception>
         public OWLObjectPropertyChain(List<OWLObjectPropertyExpression> objectPropertyExpressions)

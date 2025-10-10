@@ -20,39 +20,61 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLNamedIndividual is an entity suitable for modeling individuals of the A-BOX
+    /// </summary>
     [XmlRoot("NamedIndividual")]
     public sealed class OWLNamedIndividual : OWLIndividualExpression, IOWLEntity
     {
         #region Properties
+        /// <summary>
+        /// The IRI of the individual (e.g: http://example.org/idvs/Bob)
+        /// </summary>
         [XmlAttribute("IRI", DataType="anyURI")]
         public string IRI { get; set; }
 
+        /// <summary>
+        /// The xsd:qualifiedName representation of the individual (e.g: ex:Bob)
+        /// </summary>
         [XmlAttribute("abbreviatedIRI", DataType="QName")]
         public XmlQualifiedName AbbreviatedIRI { get; set; }
         #endregion
 
         #region Ctors
         internal OWLNamedIndividual() { }
+
+        /// <summary>
+        /// Builds an individual with the given IRI (e.g: http://example.org/idvs/Bob)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLNamedIndividual(RDFResource iri)
         {
             #region Guards
             if (iri == null)
-                throw new OWLException("Cannot create OWLNamedIndividual because given \"iri\" parameter is null");
+                throw new OWLException($"Cannot create OWLNamedIndividual because given '{nameof(iri)}' parameter is null");
             if (iri.IsBlank)
-                throw new OWLException("Cannot create OWLNamedIndividual because given \"iri\" parameter is a blank resource");
+                throw new OWLException($"Cannot create OWLNamedIndividual because given '{nameof(iri)}' parameter is a blank resource");
             #endregion
 
             IRI = iri.ToString();
             ExpressionIRI = iri;
         }
+
+        /// <summary>
+        /// Builds an individual with the given xsd:qualifiedName (e.g: ex:Bob)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLNamedIndividual(XmlQualifiedName abbreviatedIri)
         {
-            AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLNamedIndividual because given \"abbreviatedIri\" parameter is null");
+            AbbreviatedIRI = abbreviatedIri ?? throw new OWLException($"Cannot create OWLNamedIndividual because given '{nameof(abbreviatedIri)}' parameter is null");
             ExpressionIRI = new RDFResource(string.Concat(abbreviatedIri.Namespace, abbreviatedIri.Name));
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the IRI representation of this individual
+        /// </summary>
         public override RDFResource GetIRI()
         {
             if (ExpressionIRI?.IsBlank != false)
@@ -65,6 +87,9 @@ namespace OWLSharp.Ontology
             return ExpressionIRI;
         }
 
+        /// <summary>
+        /// Exports this individual to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();

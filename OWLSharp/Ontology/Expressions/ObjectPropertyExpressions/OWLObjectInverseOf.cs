@@ -22,7 +22,7 @@ namespace OWLSharp.Ontology
 {
     /// <summary>
     /// OWLObjectInverseOf is an expression suitable for modeling an anonymous object property representing the inverse of the given object property.
-    /// It is useful for dealing with situations under which the ontology T-BOX cannot be tampered with an explicit OWLSubObjectPropertyOf axiom specification.
+    /// It is useful for dealing with situations in which the ontology T-BOX cannot be tampered with an OWLSubObjectPropertyOf axiom specification.
     /// </summary>
     [XmlRoot("ObjectInverseOf")]
     public sealed class OWLObjectInverseOf : OWLObjectPropertyExpression
