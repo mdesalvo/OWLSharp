@@ -23,7 +23,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// OWLObjectProperty is an expression suitable for modeling properties relating individuals of the A-BOX
+    /// OWLObjectProperty is an expression suitable for modeling properties connecting individuals of the A-BOX
     /// </summary>
     [XmlRoot("ObjectProperty")]
     public sealed class OWLObjectProperty : OWLObjectPropertyExpression, IOWLEntity

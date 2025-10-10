@@ -54,8 +54,7 @@ namespace OWLSharp.Ontology
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append("inverse");
-            sb.Append('(');
+            sb.Append("inverse(");
             sb.Append(ObjectProperty.ToSWRLString());
             sb.Append(')');
 

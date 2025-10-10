@@ -16,27 +16,42 @@
 
 using RDFSharp.Model;
 using RDFSharp.Query;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLLiteral is an expression suitable for modeling literals of any kind
+    /// </summary>
     [XmlRoot("Literal")]
     public sealed class OWLLiteral : OWLLiteralExpression
     {
         #region Properties
+        /// <summary>
+        /// The IRI of the literal's datatype, in case of typed literal (e.g: http://www.w3.org/2001/XMLSchema#integer)
+        /// </summary>
         [XmlAttribute("datatypeIRI", DataType="anyURI")]
         public string DatatypeIRI { get; set; }
 
+        /// <summary>
+        /// The language of the literal's value, in case of plain literal with language (e.g: en-US)
+        /// </summary>
         [XmlAttribute("xml:lang", Namespace="http://www.w3.org/XML/1998/namespace#")]
         public string Language { get; set; }
 
+        /// <summary>
+        /// The value of the literal (e.g: "42")
+        /// </summary>
         [XmlText(DataType="string")]
         public string Value { get; set; } = string.Empty;
         #endregion
 
         #region Ctors
         internal OWLLiteral() { }
+
+        /// <summary>
+        /// Builds an OWLLiteral from the given RDFLiteral
+        /// </summary>
         public OWLLiteral(RDFLiteral literal)
         {
             Value = literal?.Value ?? string.Empty;
@@ -46,15 +61,15 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the SWRL representation of this literal
+        /// </summary>
         public override string ToSWRLString()
-        {
-            StringBuilder sb = new StringBuilder();
+            => RDFQueryPrinter.PrintPatternMember(GetLiteral(), RDFNamespaceRegister.Instance.Register);
 
-            sb.Append(RDFQueryPrinter.PrintPatternMember(GetLiteral(), RDFNamespaceRegister.Instance.Register));
-
-            return sb.ToString();
-        }
-
+        /// <summary>
+        /// Gets the RDFLiteral representation of this literal
+        /// </summary>
         public RDFLiteral GetLiteral()
         {
             if (DatatypeIRI != null)
