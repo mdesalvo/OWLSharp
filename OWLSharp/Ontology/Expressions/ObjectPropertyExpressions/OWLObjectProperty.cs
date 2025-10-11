@@ -106,8 +106,12 @@ namespace OWLSharp.Ontology
     }
 
     /// <summary>
-    /// OWLObjectPropertyChain is an expression suitable for modeling chains of object property expressions relating individuals of the A-BOX.
-    /// It is found in SubObjectPropertyOf axioms as child expression: SubObjectPropertyOf(ObjectPropertyChain(Father,Brother), Uncle)
+    /// OWLObjectPropertyChain axiom (used within SubObjectPropertyOf) asserts that a sequence of object properties
+    /// implies another object property, establishing that chaining multiple properties together entails
+    /// a composite relationship. For example, SubObjectPropertyOf(ObjectPropertyChain(hasParent hasParent) hasGrandparent)
+    /// states that if individual A has parent B and B has parent C, then A has grandparent C, allowing reasoners to infer
+    /// complex relationships through property composition and express rules about transitive-like patterns
+    /// involving different properties.
     /// </summary>
     [XmlRoot("ObjectPropertyChain")]
     public class OWLObjectPropertyChain
