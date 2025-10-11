@@ -19,6 +19,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLObjectPropertyDomain axiom constrains an object property by stating that any individual
+    /// that has a value for that property (as subject) must belong to the specified class or class expression.
+    /// For example, ObjectPropertyDomain(hasChild Person) asserts that if an individual has a child,
+    /// then that individual must be a Person, allowing reasoners to infer class membership from property usage
+    /// and detect inconsistencies when the constraint is violated.
+    /// </summary>
     [XmlRoot("ObjectPropertyDomain")]
     public sealed class OWLObjectPropertyDomain : OWLObjectPropertyAxiom
     {

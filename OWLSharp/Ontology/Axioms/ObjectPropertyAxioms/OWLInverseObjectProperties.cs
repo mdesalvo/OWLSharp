@@ -19,6 +19,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLInverseObjectProperties axiom asserts that two object properties are inverses of each other,
+    /// meaning that if one property relates individual A to B, then the other property relates B to A.
+    /// For example, InverseObjectProperties(hasParent hasChild) states that whenever John hasParent Mary,
+    /// it follows that Mary hasChild John (and vice versa), allowing reasoners to bidirectionally infer
+    /// property assertions and enabling symmetric navigation of relationships in both directions.
+    /// </summary>
     [XmlRoot("InverseObjectProperties")]
     public sealed class OWLInverseObjectProperties : OWLObjectPropertyAxiom
     {

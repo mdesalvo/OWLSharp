@@ -19,6 +19,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLSubDataPropertyOf axiom asserts that one datatype property is a specialization of another, meaning that
+    /// whenever the subproperty relates an individual to a literal, the superproperty also relates them.
+    /// For example, SubDataPropertyOf(hasBirthDate hasDate) states that every birth date relationship implies
+    /// a more general date relationship, allowing reasoners to propagate property assertions up the property hierarchy
+    /// and infer additional datatype property connections.
+    /// </summary>
     [XmlRoot("SubDataPropertyOf")]
     public sealed class OWLSubDataPropertyOf : OWLDataPropertyAxiom
     {

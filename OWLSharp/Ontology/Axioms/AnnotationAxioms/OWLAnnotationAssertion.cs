@@ -19,6 +19,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLAnnotationAssertion axiom attaches metadata to an ontology element (entity, axiom, or another annotation)
+    /// by associating an annotation property with a value.
+    /// For example, AnnotationAssertion(rdfs:label :Person "Person"@en) adds the English label "Person" to the class :Person,
+    /// allowing enrichment of the ontology with human-readable documentation, provenance information, versioning details,
+    /// or other descriptive metadata without affecting logical reasoning.
+    /// </summary>
     [XmlRoot("AnnotationAssertion")]
     public sealed class OWLAnnotationAssertion : OWLAnnotationAxiom
     {

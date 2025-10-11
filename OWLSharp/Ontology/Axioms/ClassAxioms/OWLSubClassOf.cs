@@ -19,6 +19,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLSubClassOf axiom asserts that all individuals of one class (the subclass) are also members of another class (the superclass),
+    /// establishing a hierarchical subsumption relationship. For example, SubClassOf(Student Person) states that every Student
+    /// is also a Person, allowing reasoners to infer class memberships up the hierarchy and organize classes into taxonomic structures
+    /// where more specific concepts inherit characteristics from more general ones.
+    /// </summary>
     [XmlRoot("SubClassOf")]
     public sealed class OWLSubClassOf : OWLClassAxiom
     {

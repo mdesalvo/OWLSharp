@@ -21,6 +21,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLEquivalentDataProperties axiom asserts that two or more datatype properties have exactly
+    /// the same set of individual-literal pairs, meaning they are logically equivalent and interchangeable.
+    /// For example, EquivalentDataProperties(hasAge age) states that the properties hasAge and age
+    /// relate individuals to data values in exactly the same way, allowing reasoners to infer that
+    /// any assertion using one property implies the corresponding assertion with the other property.
+    /// </summary>
     [XmlRoot("EquivalentDataProperties")]
     public sealed class OWLEquivalentDataProperties : OWLDataPropertyAxiom
     {

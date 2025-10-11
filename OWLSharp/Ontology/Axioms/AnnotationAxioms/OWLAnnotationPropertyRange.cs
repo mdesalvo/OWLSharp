@@ -20,6 +20,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLAnnotationPropertyRange axiom suggests the intended type of values for an annotation property,
+    /// indicating whether the property typically takes IRIs, literals, or other specific value types.
+    /// For example, AnnotationPropertyRange(rdfs:label rdfs:Literal) suggests that rdfs:label should have
+    /// literal values, though this axiom has no formal semantic constraints and serves purely as documentation
+    /// to guide ontology developers in providing appropriate annotation values.
+    /// </summary>
     [XmlRoot("AnnotationPropertyRange")]
     public sealed class OWLAnnotationPropertyRange : OWLAnnotationAxiom
     {

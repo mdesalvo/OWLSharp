@@ -21,6 +21,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDisjointObjectProperties axiom asserts that two or more object properties cannot simultaneously
+    /// relate the same pair of individuals, meaning they have no overlapping individual pairs in their extensions.
+    /// For example, DisjointObjectProperties(hasParent hasChild) states that if individual A is related to B
+    /// through hasParent, then A cannot also be related to B through hasChild, allowing reasoners to detect
+    /// inconsistencies when the same relationship would be asserted through multiple disjoint properties.
+    /// </summary>
     [XmlRoot("DisjointObjectProperties")]
     public sealed class OWLDisjointObjectProperties : OWLObjectPropertyAxiom
     {

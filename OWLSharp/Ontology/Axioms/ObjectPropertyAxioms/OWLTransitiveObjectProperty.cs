@@ -19,6 +19,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLTransitiveObjectProperty axiom asserts that an object property chains through intermediate individuals,
+    /// meaning that if the property relates A to B and B to C, then it also relates A to C.
+    /// For example, TransitiveObjectProperty(hasAncestor) states that if John has ancestor Mary and Mary has ancestor Peter,
+    /// then John has ancestor Peter, allowing reasoners to infer indirect relationships through chains of direct assertions
+    /// and compute transitive closures.
+    /// </summary>
     [XmlRoot("TransitiveObjectProperty")]
     public sealed class OWLTransitiveObjectProperty : OWLObjectPropertyAxiom
     {

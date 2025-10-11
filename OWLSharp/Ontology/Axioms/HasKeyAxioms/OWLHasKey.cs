@@ -21,6 +21,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLHasKey axiom specifies that a class is uniquely identified by a set of properties (object and/or datatype properties),
+    /// meaning that individuals sharing the same values for all key properties must be the same individual.
+    /// For example, HasKey(Person hasSSN) states that two Person individuals with identical social security numbers
+    /// are actually the same person, allowing reasoners to infer SameIndividual assertions based on matching key property values
+    /// and enforce uniqueness constraints similar to database keys.
+    /// </summary>
     [XmlRoot("HasKey")]
     public sealed class OWLHasKey : OWLAxiom
     {

@@ -21,6 +21,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDisjointDataProperties axiom asserts that two or more datatype properties cannot share the same pair of individual and literal value,
+    /// meaning they cannot relate the same individual to the same data value simultaneously. For example, DisjointDataProperties(birthDate deathDate)
+    /// states that an individual cannot have the same value as both their birth date and death date, allowing reasoners to detect inconsistencies
+    /// when the same literal appears as a value for multiple disjoint datatype properties on the same individual.
+    /// </summary>
     [XmlRoot("DisjointDataProperties")]
     public sealed class OWLDisjointDataProperties : OWLDataPropertyAxiom
     {

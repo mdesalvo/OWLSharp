@@ -19,6 +19,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLReflexiveObjectProperty axiom asserts that an object property must relate every individual in its domain to itself,
+    /// enforcing self-referential relationships. For example, ReflexiveObjectProperty(knows) states that every individual
+    /// knows themselves, allowing reasoners to automatically infer self-loops for all relevant individuals and ensuring
+    /// the property always holds reflexively within its domain.
+    /// </summary>
     [XmlRoot("ReflexiveObjectProperty")]
     public sealed class OWLReflexiveObjectProperty : OWLObjectPropertyAxiom
     {

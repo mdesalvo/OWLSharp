@@ -19,6 +19,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLObjectPropertyAssertion axiom states that a specific individual is related to another individual
+    /// through an object property. For example, ObjectPropertyAssertion(hasParent :John :Mary) asserts that
+    /// the individual :John has :Mary as a parent, providing A-BOX knowledge about relationships between individuals
+    /// that can be used for reasoning, query answering, and inference of additional property assertions.
+    /// </summary>
     [XmlRoot("ObjectPropertyAssertion")]
     public sealed class OWLObjectPropertyAssertion : OWLAssertionAxiom
     {

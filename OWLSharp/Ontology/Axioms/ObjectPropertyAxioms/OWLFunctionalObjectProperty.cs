@@ -19,6 +19,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLFunctionalObjectProperty axiom asserts that an object property can relate each individual to at most one other individual,
+    /// enforcing a uniqueness constraint on property values. For example, FunctionalObjectProperty(hasBiologicalMother) states that
+    /// an individual can have at most one biological mother, allowing reasoners to detect inconsistencies when multiple distinct
+    /// individuals are asserted as values, or to infer that different individuals related through the functional property
+    /// must be the same (SameIndividual).
+    /// </summary>
     [XmlRoot("FunctionalObjectProperty")]
     public sealed class OWLFunctionalObjectProperty : OWLObjectPropertyAxiom
     {

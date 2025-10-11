@@ -19,6 +19,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLObjectPropertyRange axiom constrains an object property by specifying that all individuals appearing as values (objects)
+    /// of that property must belong to the specified class or class expression. For example, ObjectPropertyRange(hasChild Person)
+    /// asserts that all children in hasChild relationships must be Persons, allowing reasoners to infer class membership
+    /// for property values and detect inconsistencies when values fall outside the specified range.
+    /// </summary>
     [XmlRoot("ObjectPropertyRange")]
     public sealed class OWLObjectPropertyRange : OWLObjectPropertyAxiom
     {

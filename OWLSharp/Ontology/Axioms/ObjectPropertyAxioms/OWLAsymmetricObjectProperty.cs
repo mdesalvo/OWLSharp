@@ -19,6 +19,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLAsymmetricObjectProperty axiom asserts that an object property cannot hold in both directions
+    /// between the same pair of individuals, meaning if the property relates individual A to B,
+    /// it cannot also relate B to A. For example, AsymmetricObjectProperty(isChildOf) states that if
+    /// John is a child of Mary, then Mary cannot be a child of John, allowing reasoners to detect
+    /// inconsistencies when bidirectional assertions would violate asymmetry.
+    /// </summary>
     [XmlRoot("AsymmetricObjectProperty")]
     public sealed class OWLAsymmetricObjectProperty : OWLObjectPropertyAxiom
     {

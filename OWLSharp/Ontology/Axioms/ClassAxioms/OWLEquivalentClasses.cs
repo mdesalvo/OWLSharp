@@ -21,6 +21,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLEquivalentClasses axiom asserts that two or more classes have exactly the same set of individuals,
+    /// meaning they are logically equivalent and interchangeable. For example, EquivalentClasses(Human Person)
+    /// states that the classes Human and Person contain precisely the same instances, allowing reasoners to infer
+    /// that any individual belonging to one class also belongs to the other and enabling bidirectional subsumption reasoning.
+    /// </summary>
     [XmlRoot("EquivalentClasses")]
     public sealed class OWLEquivalentClasses : OWLClassAxiom
     {

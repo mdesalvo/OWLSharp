@@ -21,6 +21,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLEquivalentObjectProperties axiom asserts that two or more object properties have exactly the same set of individual pairs,
+    /// meaning they are logically equivalent and interchangeable. For example, EquivalentObjectProperties(hasMother hasFemaleParent)
+    /// states that the properties hasMother and hasFemaleParent relate individuals in exactly the same way, allowing reasoners to infer
+    /// that any assertion using one property implies the corresponding assertion with the other property.
+    /// </summary>
     [XmlRoot("EquivalentObjectProperties")]
     public sealed class OWLEquivalentObjectProperties : OWLObjectPropertyAxiom
     {

@@ -21,6 +21,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLSameIndividual axiom asserts that two or more individual identifiers refer to the same entity in the domain,
+    /// establishing their equivalence. For example, SameIndividual(:JohnSmith :John :J.Smith) states that all three IRIs
+    /// denote the same individual, allowing reasoners to merge information about these identifiers and infer that
+    /// any assertions about one apply equally to the others.
+    /// </summary>
     [XmlRoot("SameIndividual")]
     public sealed class OWLSameIndividual : OWLAssertionAxiom
     {

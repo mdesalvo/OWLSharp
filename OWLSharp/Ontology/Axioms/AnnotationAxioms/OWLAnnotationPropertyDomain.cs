@@ -20,6 +20,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLAnnotationPropertyDomain axiom suggests the intended type of subjects for an annotation property,
+    /// indicating which entities or element types the annotation property is typically applied to.
+    /// For example, AnnotationPropertyDomain(dc:creator owl:Ontology) suggests that the dc:creator annotation property
+    /// is intended for use on ontology elements, though this axiom has no formal semantic constraints
+    /// and serves purely as documentation to guide ontology developers in proper annotation usage.
+    /// </summary>
     [XmlRoot("AnnotationPropertyDomain")]
     public sealed class OWLAnnotationPropertyDomain : OWLAnnotationAxiom
     {

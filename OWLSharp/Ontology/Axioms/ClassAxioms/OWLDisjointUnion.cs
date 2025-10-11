@@ -21,6 +21,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDisjointUnion axiom defines a class as the complete, non-overlapping union of two or more subclasses,
+    /// asserting both that the subclasses are pairwise disjoint and that their union exactly covers the parent class.
+    /// For example, DisjointUnion(Person Male Female) states that every Person is either Male or Female (but not both),
+    /// providing both an exhaustive partition and mutual exclusivity, enabling reasoners to infer class membership
+    /// and detect inconsistencies in classification.
+    /// </summary>
     [XmlRoot("DisjointUnion")]
     public sealed class OWLDisjointUnion : OWLClassAxiom
     {

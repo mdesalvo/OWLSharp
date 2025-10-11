@@ -19,6 +19,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLNegativeObjectPropertyAssertion axiom explicitly states that a specific individual is NOT related to
+    /// another individual through a given object property. For example, NegativeObjectPropertyAssertion(knows :John :Mary)
+    /// asserts that :John does not know :Mary, allowing expression of negative knowledge about relationships and
+    /// enabling reasoners to detect inconsistencies when other axioms would entail the negated relationship.
+    /// </summary>
     [XmlRoot("NegativeObjectPropertyAssertion")]
     public sealed class OWLNegativeObjectPropertyAssertion : OWLAssertionAxiom
     {

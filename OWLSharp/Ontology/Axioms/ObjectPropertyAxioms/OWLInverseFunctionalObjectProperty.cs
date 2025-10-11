@@ -19,6 +19,14 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLInverseFunctionalObjectProperty axiom asserts that an object property's inverse can relate
+    /// each individual to at most one other individual, meaning that each value can have at most one
+    /// subject through that property. For example, InverseFunctionalObjectProperty(hasSSN) states that
+    /// at most one person can have any particular SSN value, allowing reasoners to infer that two
+    /// individuals sharing the same SSN value must be the same individual (SameIndividual),
+    /// effectively establishing a key-like constraint.
+    /// </summary>
     [XmlRoot("InverseFunctionalObjectProperty")]
     public sealed class OWLInverseFunctionalObjectProperty : OWLObjectPropertyAxiom
     {

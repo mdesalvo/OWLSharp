@@ -19,6 +19,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDataPropertyAssertion axiom states that a specific individual is related to a particular literal value
+    /// through a datatype property. For example, DataPropertyAssertion(hasAge :John "30"^^xsd:integer) asserts that
+    /// the individual :John has an age of 30, providing A-BOX knowledge about concrete data values associated with
+    /// individuals that can be used for reasoning and querying.
+    /// </summary>
     [XmlRoot("DataPropertyAssertion")]
     public sealed class OWLDataPropertyAssertion : OWLAssertionAxiom
     {

@@ -19,6 +19,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDatatypeDefinition axiom defines a new named datatype by equating it with a data range expression,
+    /// allowing creation of custom datatypes with specific constraints.
+    /// For example, DatatypeDefinition(AdultAge DataRangeRestriction(xsd:integer minInclusive "18")) defines
+    /// AdultAge as integers greater than or equal to 18, enabling reusable, semantically meaningful datatype names
+    /// that encapsulate complex value restrictions for use throughout the ontology.
+    /// </summary>
     [XmlRoot("DatatypeDefinition")]
     public sealed class OWLDatatypeDefinition : OWLAxiom
     {

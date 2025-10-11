@@ -19,6 +19,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLIrreflexiveObjectProperty axiom asserts that an object property cannot relate any individual to itself,
+    /// prohibiting reflexive relationships. For example, IrreflexiveObjectProperty(isParentOf) states that
+    /// no individual can be their own parent, allowing reasoners to detect inconsistencies when self-referential
+    /// assertions would violate irreflexivity, ensuring the property never holds between an individual and itself.
+    /// </summary>
     [XmlRoot("IrreflexiveObjectProperty")]
     public sealed class OWLIrreflexiveObjectProperty : OWLObjectPropertyAxiom
     {

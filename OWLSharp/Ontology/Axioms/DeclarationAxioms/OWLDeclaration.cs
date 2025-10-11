@@ -20,6 +20,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDeclaration axiom explicitly introduces an entity (class, property, individual, or datatype)
+    /// into the ontology's signature by stating its type and IRI. For example, Declaration(Class(:Person))
+    /// declares that :Person is a class in the ontology, ensuring the entity is recognized as part of the
+    /// ontology's vocabulary even before any additional axioms define its characteristics, and helping
+    /// to distinguish entities from unknown or mistyped references.
+    /// </summary>
     [XmlRoot("Declaration")]
     public sealed class OWLDeclaration : OWLAxiom
     {

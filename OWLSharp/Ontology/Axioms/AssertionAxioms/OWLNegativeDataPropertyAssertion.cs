@@ -19,6 +19,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLNegativeDataPropertyAssertion axiom explicitly states that a specific individual does NOT have a particular
+    /// literal value for a given datatype property. For example, NegativeDataPropertyAssertion(hasAge :John "25"^^xsd:integer)
+    /// asserts that :John's age is not 25, allowing expression of negative knowledge and enabling reasoners to detect
+    /// inconsistencies when other axioms would entail the negated relationship.
+    /// </summary>
     [XmlRoot("NegativeDataPropertyAssertion")]
     public sealed class OWLNegativeDataPropertyAssertion : OWLAssertionAxiom
     {

@@ -19,6 +19,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLSymmetricObjectProperty axiom asserts that an object property holds equally in both directions,
+    /// meaning that if the property relates individual A to B, it also relates B to A.
+    /// For example, SymmetricObjectProperty(isSiblingOf) states that if John is a sibling of Mary,
+    /// then Mary is also a sibling of John, allowing reasoners to automatically infer bidirectional assertions
+    /// and ensure symmetric relationships are consistently represented.
+    /// </summary>
     [XmlRoot("SymmetricObjectProperty")]
     public sealed class OWLSymmetricObjectProperty : OWLObjectPropertyAxiom
     {

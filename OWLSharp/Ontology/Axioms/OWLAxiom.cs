@@ -20,7 +20,14 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
-    //Register here all derived types of OWLAxiom
+    /// <summary>
+    /// OWLAxiom is a fundamental statement or assertion that expresses a piece of knowledge about the domain,
+    /// defining the properties, relationships, and constraints of entities within the ontology.
+    /// Axioms are the basic building blocks of ontological knowledge and include declarations, class axioms
+    /// (like subclass relationships or equivalences), property axioms (such as domain, range, or characteristics),
+    /// individual assertions (facts about specific instances), and annotations, collectively forming the logical
+    /// content from which reasoners derive inferences.
+    /// </summary>
     [XmlInclude(typeof(OWLAnnotationAssertion))]
     [XmlInclude(typeof(OWLAnnotationPropertyDomain))]
     [XmlInclude(typeof(OWLAnnotationPropertyRange))]

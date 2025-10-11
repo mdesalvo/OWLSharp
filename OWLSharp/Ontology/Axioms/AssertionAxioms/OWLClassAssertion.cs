@@ -19,6 +19,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLClassAssertion axiom states that a specific individual is an instance of a particular class,
+    /// asserting membership in the class's extension.
+    /// For example, ClassAssertion(Person :John) declares that the individual :John is a member of the Person class,
+    /// providing fundamental A-BOX knowledge about individual types that reasoners use to derive further inferences
+    /// and check consistency.
+    /// </summary>
     [XmlRoot("ClassAssertion")]
     public sealed class OWLClassAssertion : OWLAssertionAxiom
     {

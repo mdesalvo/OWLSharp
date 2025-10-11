@@ -19,6 +19,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLSubAnnotationPropertyOf axiom declares a hierarchical relationship between two annotation properties,
+    /// stating that one annotation property is a specialization of another.
+    /// For example, SubAnnotationPropertyOf(skos:prefLabel rdfs:label) indicates that skos:prefLabel is a more specific
+    /// kind of rdfs:label, suggesting that whenever skos:prefLabel is used, it implies a label relationship, though
+    /// this has no formal semantic impact on reasoning and primarily serves to organize annotation property vocabularies hierarchically.
+    /// </summary>
     [XmlRoot("SubAnnotationPropertyOf")]
     public sealed class OWLSubAnnotationPropertyOf : OWLAnnotationAxiom
     {

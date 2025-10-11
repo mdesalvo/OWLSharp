@@ -21,6 +21,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDisjointClasses axiom asserts that two or more classes have no individuals in common,
+    /// meaning their extensions are mutually exclusive. For example, DisjointClasses(Male Female)
+    /// states that no individual can be both Male and Female simultaneously, allowing reasoners
+    /// to detect inconsistencies when an individual is asserted or inferred to belong to multiple disjoint classes.
+    /// </summary>
     [XmlRoot("DisjointClasses")]
     public sealed class OWLDisjointClasses : OWLClassAxiom
     {

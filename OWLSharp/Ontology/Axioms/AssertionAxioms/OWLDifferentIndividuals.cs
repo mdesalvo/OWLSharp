@@ -21,6 +21,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDifferentIndividuals axiom asserts that two or more individuals are pairwise distinct,
+    /// meaning they refer to different entities in the domain. For example, DifferentIndividuals(:John :Mary :Peter)
+    /// states that John, Mary, and Peter are all different individuals, enforcing the unique name assumption
+    /// for the specified individuals and allowing reasoners to detect inconsistencies when axioms would imply that
+    /// distinct individuals are actually the same.
+    /// </summary>
     [XmlRoot("DifferentIndividuals")]
     public sealed class OWLDifferentIndividuals : OWLAssertionAxiom
     {

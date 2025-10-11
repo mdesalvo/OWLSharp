@@ -19,6 +19,11 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDataPropertyRange axiom constrains a datatype property by specifying the data range or datatype that its values must belong to.
+    /// For example, DataPropertyRange(hasAge xsd:nonNegativeInteger) asserts that all values of the hasAge property must be non-negative integers,
+    /// allowing reasoners to validate data values and detect inconsistencies when property values fall outside the specified range.
+    /// </summary>
     [XmlRoot("DataPropertyRange")]
     public sealed class OWLDataPropertyRange : OWLDataPropertyAxiom
     {

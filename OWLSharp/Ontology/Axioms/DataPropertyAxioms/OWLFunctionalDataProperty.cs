@@ -19,6 +19,14 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLFunctionalDataProperty axiom asserts that a datatype property can relate each individual
+    /// to at most one literal value, enforcing a uniqueness constraint on property values.
+    /// For example, FunctionalDataProperty(hasSSN) states that an individual can have at most one
+    /// social security number, allowing reasoners to detect inconsistencies when multiple distinct
+    /// values are asserted for the same individual and the same functional property, or to infer
+    /// that different literals must be equal.
+    /// </summary>
     [XmlRoot("FunctionalDataProperty")]
     public sealed class OWLFunctionalDataProperty : OWLDataPropertyAxiom
     {

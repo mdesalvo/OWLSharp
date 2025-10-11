@@ -19,6 +19,13 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLSubObjectPropertyOf axiom asserts that one object property is a specialization of another,
+    /// meaning that whenever the subproperty relates two individuals, the superproperty also relates them.
+    /// For example, SubObjectPropertyOf(hasMother hasParent) states that every mother relationship implies
+    /// a more general parent relationship, allowing reasoners to propagate property assertions up the property
+    /// hierarchy and infer additional object property connections between individuals.
+    /// </summary>
     [XmlRoot("SubObjectPropertyOf")]
     public sealed class OWLSubObjectPropertyOf : OWLObjectPropertyAxiom
     {
