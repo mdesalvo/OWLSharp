@@ -22,7 +22,14 @@ using System.Threading.Tasks;
 namespace OWLSharp.Reasoner
 {
     /// <summary>
-    /// OWLReasoner analyzes an ontology with the goal of inferring unstated knowledge from its T-BOX/A-BOX
+    /// OWLReasoner is an inference engine that processes an ontology by analyzing its
+    /// T-BOX (terminological/schema knowledge about classes and properties),
+    /// A-BOX (assertional knowledge about individuals and their relationships), and
+    /// R-BOX (rules for additional inference patterns).
+    /// The reasoner applies logical deduction to derive implicit knowledge that is entailed
+    /// but not explicitly stated, such as inferring class memberships, property relationships,
+    /// detecting inconsistencies, and computing class hierarchies, thereby materializing
+    /// the full logical consequences of the ontology's axioms and rules.
     /// </summary>
     public sealed class OWLReasoner
     {

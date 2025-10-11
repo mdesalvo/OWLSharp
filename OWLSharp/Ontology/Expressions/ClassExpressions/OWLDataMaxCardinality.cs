@@ -20,6 +20,11 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDataMaxCardinality is a class expression that restricts a class to individuals having at most a specified number of values for a given datatype property.
+    /// For example, DataMaxCardinality(1 hasSSN) defines the class of individuals that have one or zero social security numbers,
+    /// setting an upper bound on the number of data property assertions without requiring a minimum.
+    /// </summary>
     [XmlRoot("DataMaxCardinality")]
     public sealed class OWLDataMaxCardinality : OWLClassExpression
     {

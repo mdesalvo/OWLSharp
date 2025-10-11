@@ -20,7 +20,11 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// OWLPrefix represents a directive stating that the ontology shortcuts terms using the given namespace
+    /// OWLPrefix represents a shorthand notation that associates a short name with a namespace IRI,
+    /// allowing compact representation of full IRIs in ontology documents.
+    /// For example, defining the prefix "ex:" for "http://example.org/ontology#" enables writing "ex:Person"
+    /// instead of the full IRI "http://example.org/ontology#Person", improving readability and maintainability
+    /// of ontology files while maintaining unambiguous references to entities.
     /// </summary>
     [XmlRoot("Prefix")]
     public sealed class OWLPrefix

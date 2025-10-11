@@ -20,6 +20,12 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLObjectComplementOf is a class expression that represents the complement of a given class,
+    /// containing all individuals that are NOT members of the specified class.
+    /// For example, ObjectComplementOf(Vehicle) defines the class of all individuals in the domain that are not vehicles,
+    /// allowing you to define classes through negation and express exclusionary constraints.
+    /// </summary>
     [XmlRoot("ObjectComplementOf")]
     public sealed class OWLObjectComplementOf : OWLClassExpression
     {

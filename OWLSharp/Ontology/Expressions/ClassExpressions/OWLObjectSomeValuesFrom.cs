@@ -20,6 +20,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLObjectSomeValuesFrom is a class expression that restricts a class to individuals having
+    /// at least one related individual for a specified object property that belongs to a given class.
+    /// For example, ObjectSomeValuesFrom(hasChild, Doctor) defines the class of individuals that have
+    /// at least one child who is a Doctor, representing an existential quantification over object property values.
+    /// </summary>
     [XmlRoot("ObjectSomeValuesFrom")]
     public sealed class OWLObjectSomeValuesFrom : OWLClassExpression
     {

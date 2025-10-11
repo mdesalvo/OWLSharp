@@ -20,6 +20,11 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDataExactCardinality is a class expression that restricts a class to individuals having exactly a specified number of values for a given datatype property.
+    /// For example, DataExactCardinality(2 hasPhoneNumber) defines the class of individuals that have exactly two phone numbers,
+    /// allowing precise control over the number of data property assertions without permitting more or fewer values.
+    /// </summary>
     [XmlRoot("DataExactCardinality")]
     public sealed class OWLDataExactCardinality : OWLClassExpression
     {

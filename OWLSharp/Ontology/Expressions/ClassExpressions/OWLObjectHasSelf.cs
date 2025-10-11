@@ -20,6 +20,11 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLObjectHasSelf is a class expression that restricts a class to individuals that are related to themselves through a specified object property.
+    /// For example, ObjectHasSelf(knows) defines the class of individuals where the knows property relates them to themselves (i.e., they know themselves),
+    /// allowing you to express reflexive relationships and self-referential properties.
+    /// </summary>
     [XmlRoot("ObjectHasSelf")]
     public sealed class OWLObjectHasSelf : OWLClassExpression
     {

@@ -24,7 +24,9 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// SWRLAntecedent represents the part of a SWRL rule which analyzes and filters knowledge (it is also called "Body")
+    /// SWRLAntecedent is a conjunction of atoms that specifies the conditions that must be satisfied for the rule to fire.
+    /// When all atoms in the body are true for a particular variable binding, the rule is triggered and the consequent (head) is entailed,
+    /// allowing you to express conditional inference patterns like "IF conditions in body THEN conclusions in head".
     /// </summary>
     [XmlRoot("Body")]
     public sealed class SWRLAntecedent

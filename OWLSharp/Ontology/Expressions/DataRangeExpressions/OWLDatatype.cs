@@ -20,6 +20,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDatatype represents a set of data values (literals) with a specific structure and interpretation, identified by an IRI,
+    /// typically from XML Schema (like xsd:string, xsd:integer, xsd:dateTime).
+    /// Datatypes define the range of datatype properties and can be built-in (predefined) or custom-defined,
+    /// providing the foundation for representing concrete data values in the ontology.
+    /// </summary>
     [XmlRoot("Datatype")]
     public sealed class OWLDatatype : OWLDataRangeExpression, IOWLEntity
     {

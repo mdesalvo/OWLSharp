@@ -26,7 +26,11 @@ using System.Linq;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// SWRLBuiltIn represents an N-ary predicate which can be used by SWRL antecedents for filtering ontology knowledge
+    /// SWRLBuiltIn is a special type of atom that invokes a built-in predicate to perform operations like mathematical calculations,
+    /// string manipulations, comparisons, or other computational functions on data values.
+    /// Built-in atoms are identified by IRIs from predefined libraries (like swrlb:greaterThan, swrlb:add, or swrlb:contains)
+    /// and allow rules to include procedural computations beyond the declarative expressiveness of standard OWL,
+    /// enabling complex data processing and conditional logic within rule antecedents.
     /// </summary>
     [XmlRoot("BuiltInAtom")]
     public class SWRLBuiltIn

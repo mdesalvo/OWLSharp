@@ -21,8 +21,9 @@ using RDFSharp.Model;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// OWLObjectInverseOf is an expression suitable for modeling an anonymous object property representing the inverse of the given object property.
-    /// It is useful for dealing with situations in which the ontology T-BOX cannot be tampered with an OWLSubObjectPropertyOf axiom specification.
+    /// OWLObjectInverseOf represents an OWL2 construct that creates an anonymous inverse property without explicitly naming it,
+    /// reversing the direction of an existing object property. This allows you to reference the inverse relationship inline
+    /// (e.g., ObjectInverseOf(hasParent) means "hasChild") without having to formally declare a separate named inverse property in the ontology.
     /// </summary>
     [XmlRoot("ObjectInverseOf")]
     public sealed class OWLObjectInverseOf : OWLObjectPropertyExpression

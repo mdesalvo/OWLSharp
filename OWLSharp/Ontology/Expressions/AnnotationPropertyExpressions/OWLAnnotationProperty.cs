@@ -20,6 +20,11 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLAnnotationProperty represents a property used to attach metadata or descriptive information to ontology elements,
+    /// such as labels, comments, documentation, or versioning information. Unlike object and datatype properties,
+    /// annotation properties do not have formal semantic implications for reasoning and are primarily used for human-readable documentation (e.g., rdfs:label, rdfs:comment, dc:creator).
+    /// </summary>
     [XmlRoot("AnnotationProperty")]
     public sealed class OWLAnnotationProperty : OWLAnnotationPropertyExpression, IOWLEntity
     {

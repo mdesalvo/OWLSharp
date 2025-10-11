@@ -29,9 +29,13 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// OWLOntology represents an OWL2 ontology modeled according to OWL2/XML specification.<br/>
-    /// It formalizes the knowledge of an application domain in terms of structural (T-BOX) and assertional (A-BOX) axioms,
-    /// along with DL-safe reasoning rules modeled in SWRL (R-BOX).
+    /// OWLOntology represents a formal, structured representation of knowledge about a domain,
+    /// consisting of a set of axioms that define entities (classes, properties, individuals, datatypes)
+    /// and their relationships, constraints, and characteristics.
+    /// An ontology is identified by an IRI and may include metadata, imports of other ontologies, and declarations.
+    /// It can also contain an R-BOX (Rule Box) with SWRL inference rules that extend reasoning capabilities
+    /// beyond standard OWL2 semantics, serving as a comprehensive knowledge base that enables automated reasoning,
+    /// data integration, and semantic interoperability.
     /// </summary>
     [XmlRoot("Ontology")]
     public sealed class OWLOntology

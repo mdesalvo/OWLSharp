@@ -20,6 +20,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLObjectMaxCardinality is a class expression that restricts a class to individuals having at most a specified number
+    /// of related individuals for a given object property.
+    /// For example, ObjectMaxCardinality(1 hasSpouse) defines the class of individuals that have one or zero spouses,
+    /// setting an upper bound on the number of object property assertions without requiring a minimum.
+    /// </summary>
     [XmlRoot("ObjectMaxCardinality")]
     public sealed class OWLObjectMaxCardinality : OWLClassExpression
     {

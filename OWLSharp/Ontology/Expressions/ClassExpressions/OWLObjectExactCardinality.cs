@@ -20,6 +20,11 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLObjectExactCardinality is a class expression that restricts a class to individuals having exactly a specified number of related individuals for a given object property.
+    /// For example, ObjectExactCardinality(2 hasParent) defines the class of individuals that have exactly two parents,
+    /// allowing precise control over the number of object property assertions without permitting more or fewer relationships.
+    /// </summary>
     [XmlRoot("ObjectExactCardinality")]
     public sealed class OWLObjectExactCardinality : OWLClassExpression
     {

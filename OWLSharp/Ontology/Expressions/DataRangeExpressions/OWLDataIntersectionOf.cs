@@ -22,6 +22,12 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDataIntersectionOf is a datatype expression that represents the intersection of two or more datatypes,
+    /// containing only literals that simultaneously belong to ALL specified datatypes.
+    /// For example, DataIntersectionOf(xsd:integer, DataOneOf("1" "2" "3")) would represent integers that are also
+    /// in the enumerated set {1, 2, 3}, allowing you to create more restrictive data ranges through combination.
+    /// </summary>
     [XmlRoot("DataIntersectionOf")]
     public sealed class OWLDataIntersectionOf : OWLDataRangeExpression
     {

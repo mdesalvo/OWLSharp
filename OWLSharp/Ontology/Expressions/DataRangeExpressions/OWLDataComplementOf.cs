@@ -20,6 +20,12 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDataComplementOf is a datatype expression that represents the complement of a given datatype,
+    /// containing all literals that are NOT in the specified datatype.
+    /// For example, DataComplementOf(xsd:integer) includes all possible literal values except integers,
+    /// allowing you to define data ranges by exclusion rather than inclusion.
+    /// </summary>
     [XmlRoot("DataComplementOf")]
     public sealed class OWLDataComplementOf : OWLDataRangeExpression
     {

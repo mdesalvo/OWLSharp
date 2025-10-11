@@ -20,6 +20,11 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDataHasValue is a class expression that restricts a class to individuals having a specific literal value for a given datatype property.
+    /// For example, DataHasValue(hasCountryCode "IT") defines the class of all individuals whose hasCountryCode property has the exact value "IT",
+    /// allowing you to define classes based on the presence of particular data values.
+    /// </summary>
     [XmlRoot("DataHasValue")]
     public sealed class OWLDataHasValue : OWLClassExpression
     {

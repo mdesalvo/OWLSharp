@@ -22,6 +22,11 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLObjectOneOf is a class expression that defines an enumerated class containing exactly the specified set of named individuals.
+    /// For example, ObjectOneOf(Monday, Tuesday, Wednesday) represents a class restricted to only those three specific individuals,
+    /// allowing you to define classes extensionally by explicitly listing their members rather than describing them through properties or characteristics.
+    /// </summary>
     [XmlRoot("ObjectOneOf")]
     public sealed class OWLObjectOneOf : OWLClassExpression
     {

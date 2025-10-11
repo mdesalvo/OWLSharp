@@ -22,6 +22,12 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLObjectUnionOf is a class expression that represents the union of two or more classes,
+    /// containing all individuals that belong to AT LEAST ONE of the specified classes.
+    /// For example, ObjectUnionOf(Student, Teacher) defines the class of individuals that are either students or teachers (or both),
+    /// allowing you to create more inclusive classes through logical disjunction.
+    /// </summary>
     [XmlRoot("ObjectUnionOf")]
     public sealed class OWLObjectUnionOf : OWLClassExpression
     {

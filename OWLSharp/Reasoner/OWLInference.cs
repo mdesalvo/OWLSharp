@@ -17,7 +17,11 @@ using System;
 namespace OWLSharp.Reasoner
 {
     /// <summary>
-    /// OWLInference represents any kind of knowledge emitted by a reasoner when applied over an ontology
+    /// OWLInference is a piece of derived knowledge, such as a class assertion, property relationship, subsumption,
+    /// or equivalence, that is logically entailed by the ontology's axioms but not explicitly stated in it.
+    /// Inferences are the output of a reasoner's deductive process, representing implicit facts that follow necessarily
+    /// from the combination of T-BOX definitions, A-BOX assertions, and R-BOX rules, thereby materializing the ontology's
+    /// logical consequences and enriching the available knowledge.
     /// </summary>
     public sealed class OWLInference : IEquatable<OWLInference>
     {

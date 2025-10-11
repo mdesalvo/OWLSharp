@@ -22,6 +22,11 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDataOneOf is a datatype expression that defines an enumerated datatype containing exactly the specified set of literal values.
+    /// For example, DataOneOf("red" "green" "blue") represents a datatype restricted to only those three string literals,
+    /// allowing you to constrain datatype properties to a finite, explicit list of allowed values.
+    /// </summary>
     [XmlRoot("DataOneOf")]
     public sealed class OWLDataOneOf : OWLDataRangeExpression
     {

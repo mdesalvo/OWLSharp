@@ -20,7 +20,11 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// OWLImport represents a directive stating that the ontology uses term definitions from the given ontology IRI
+    /// OWLImport represents a mechanism that allows an ontology to incorporate all axioms and declarations
+    /// from another ontology identified by its IRI, creating a modular and reusable knowledge base structure.
+    /// When ontology A imports ontology B, all entities and axioms from B become available in A as if they were
+    /// directly defined there, enabling knowledge sharing, ontology composition, and the creation of layered
+    /// ontological frameworks without duplication.
     /// </summary>
     [XmlRoot("Import")]
     public sealed class OWLImport

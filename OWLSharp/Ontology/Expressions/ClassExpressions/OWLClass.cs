@@ -20,6 +20,11 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLClass represents a set of individuals that share common characteristics, serving as a category or type in the ontology's conceptual model.
+    /// Classes can be named (identified by an IRI like "Person" or "Vehicle") or defined through complex class expressions,
+    /// and they form the fundamental building blocks for organizing and classifying the entities in a knowledge base.
+    /// </summary>
     [XmlRoot("Class")]
     public sealed class OWLClass : OWLClassExpression, IOWLEntity
     {

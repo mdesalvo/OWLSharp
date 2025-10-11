@@ -19,7 +19,11 @@ using OWLSharp.Ontology;
 namespace OWLSharp.Validator
 {
     /// <summary>
-    /// OWLValidator analyzes an ontology with the goal of evidencing modeling pitfalls and inconsistencies affecting its T-BOX/A-BOX
+    /// OWLValidator is an analysis engine that examines an ontology's T-BOX, A-BOX, and R-BOX to identify modeling errors,
+    /// structural inconsistencies, and constraint violations without necessarily deriving new implicit knowledge.
+    /// Unlike reasoners focused on inference, validators detect issues such as unsatisfiable classes, violated cardinality
+    /// restrictions, improper axiom usage, syntactic errors, and logical contradictions, providing diagnostic feedback
+    /// to improve ontology quality, correctness, and adherence to best practices or design patterns.
     /// </summary>
     public sealed class OWLValidator
     {

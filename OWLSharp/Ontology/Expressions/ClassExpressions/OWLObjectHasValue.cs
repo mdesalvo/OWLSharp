@@ -20,6 +20,11 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLObjectHasValue is a class expression that restricts a class to individuals having a specific named individual as the value for a given object property.
+    /// For example, ObjectHasValue(bornIn, Italy) defines the class of all individuals whose bornIn property has the exact value Italy (a specific named individual),
+    /// allowing you to define classes based on the presence of particular object property values.
+    /// </summary>
     [XmlRoot("ObjectHasValue")]
     public sealed class OWLObjectHasValue : OWLClassExpression
     {

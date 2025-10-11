@@ -14,7 +14,11 @@
 namespace OWLSharp.Validator
 {
     /// <summary>
-    /// OWLIssue represents a modeling pitfall or inconsistency discovered by a validator when applied over an ontology
+    /// OWLIssue is a finding or diagnostic result produced by a validator that identifies a potential modeling error,
+    /// inconsistency, constraint violation, or quality issue within the ontology.
+    /// Evidence represents detected problems such as unsatisfiable classes, violated restrictions, syntactic errors,
+    /// or anti-pattern occurrences, providing concrete locations and explanations that guide ontology engineers in
+    /// identifying and correcting structural or logical flaws to improve the ontology's correctness and quality.
     /// </summary>
     public sealed class OWLIssue
     {

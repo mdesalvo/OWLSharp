@@ -23,7 +23,10 @@ using RDFSharp.Model;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// SWRLConsequent represents the part of a SWRL rule which emits logical derivations (it is also called "Head")
+    /// SWRLConsequent is a conjunction of atoms that specifies the conclusions or assertions that are entailed
+    /// when the rule's body conditions are satisfied. When the body evaluates to true for a particular variable binding,
+    /// all atoms in the head are inferred as true, allowing you to express what new knowledge should be derived
+    /// from the satisfied conditions.
     /// </summary>
     [XmlRoot("Head")]
     public sealed class SWRLConsequent

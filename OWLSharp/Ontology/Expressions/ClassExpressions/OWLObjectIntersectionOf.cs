@@ -22,6 +22,12 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLObjectIntersectionOf is a class expression that represents the intersection of two or more classes,
+    /// containing only individuals that simultaneously belong to ALL specified classes.
+    /// For example, ObjectIntersectionOf(Student, Employee) defines the class of individuals that are both students and employees,
+    /// allowing you to create more specific classes through logical conjunction.
+    /// </summary>
     [XmlRoot("ObjectIntersectionOf")]
     public sealed class OWLObjectIntersectionOf : OWLClassExpression
     {

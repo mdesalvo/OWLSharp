@@ -21,8 +21,11 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// OWLExpression represents the foundational aspect for building OWL ontologies, contributing to the modeling of both domain entities
-    /// (classes, individuals, datatypes, typed properties) and more expressive semantic aggregations (axioms)
+    /// OWLExpression represents a syntactic construct that denotes an entity, class, property, or data range within the ontology,
+    /// formed by combining basic elements (like classes, properties, individuals, literals) with constructors and operators.
+    /// Expressions can range from simple atomic entities (like a named class or property) to complex nested structures
+    /// (like class expressions combining restrictions and Boolean operators), providing the compositional building blocks
+    /// for defining ontological knowledge.
     /// </summary>
     [XmlInclude(typeof(OWLAnnotationProperty))]
     [XmlInclude(typeof(OWLAnonymousIndividual))]
@@ -97,12 +100,19 @@ namespace OWLSharp.Ontology
     //Derived
 
     /// <summary>
-    /// OWLAnnotationPropertyExpression is an expression suited for modeling annotation properties
+    /// OWLAnnotationPropertyExpression identifies an annotation property used to attach metadata to ontology elements.
+    /// Unlike class or property expressions which can be complex and nested, annotation property expressions are always
+    /// atomic references to annotation properties (like rdfs:label or rdfs:comment), as OWL2 does not support
+    /// complex constructors for annotation properties.
     /// </summary>
     public class OWLAnnotationPropertyExpression : OWLExpression { }
 
     /// <summary>
-    /// OWLClassExpression is an expression suited for modeling both domain classes and more expressive class aggregations
+    /// OWLClassExpression is a syntactic construct that denotes a set of individuals, either through a simple named class
+    /// (identified by an IRI) or through complex descriptions built using class constructors and restrictions.
+    /// Class expressions can range from atomic classes like "Person" to complex combinations using operators
+    /// like ObjectIntersectionOf, ObjectSomeValuesFrom, or cardinality restrictions, allowing flexible and expressive
+    /// definitions of classes based on properties, relationships, and logical combinations.
     /// </summary>
     public class OWLClassExpression : OWLExpression
     {
@@ -153,7 +163,11 @@ namespace OWLSharp.Ontology
     }
 
     /// <summary>
-    /// OWLDataRangeExpression is an expression suited for modeling both domain datatypes and more expressive data aggregations
+    /// OWLDataRangeExpression is a syntactic construct that denotes a set of literal values, either through a simple named datatype
+    /// (like xsd:integer) or through complex descriptions built using datatype constructors.
+    /// Data range expressions can range from atomic datatypes to complex combinations using operators like
+    /// DataIntersectionOf, DataUnionOf, DataComplementOf, DataOneOf, or DatatypeRestriction, allowing flexible and expressive
+    /// definitions of the allowed literal values for datatype properties.
     /// </summary>
     public class OWLDataRangeExpression : OWLExpression
     {
@@ -187,29 +201,44 @@ namespace OWLSharp.Ontology
     }
 
     /// <summary>
-    /// OWLDataPropertyExpression is an expression suited for modeling data properties
+    /// OWLDataPropertyExpression identifies a datatype property relating individuals to literal values.
+    /// Unlike object properties which support inverse constructs, datatype property expressions are always atomic references
+    /// to named datatype properties (like hasAge or hasName), as OWL2 does not provide complex constructors
+    /// or anonymous inverses for datatype properties.
     /// </summary>
     public class OWLDataPropertyExpression : OWLExpression { }
 
     /// <summary>
-    /// OWLObjectPropertyExpression is an expression suited for modeling object properties
+    /// OWLObjectPropertyExpression is a syntactic construct that denotes a binary relation between individuals, either through
+    /// a simple named object property (identified by an IRI) or through an anonymous inverse property using ObjectInverseOf.
+    /// For example, both hasParent and ObjectInverseOf(hasChild) are object property expressions, allowing you to reference
+    /// relationships in either direction without requiring explicit declaration of both the property and its inverse.
     /// </summary>
     public class OWLObjectPropertyExpression : OWLExpression { }
 
     /// <summary>
-    /// OWLIndividualExpression is an expression suited for modeling individuals
+    /// OWLIndividualExpression is a syntactic construct that denotes a specific instance in the ontology, either through
+    /// a named individual (identified by an IRI) or through an anonymous individual (a blank node without a global identifier).
+    /// Individual expressions serve as the subjects and objects of assertions, allowing you to reference concrete entities
+    /// in axioms and property assertions regardless of whether they have explicit names.
     /// </summary>
     public class OWLIndividualExpression : OWLExpression { }
 
     /// <summary>
-    /// OWLLiteralExpression is an expression suited for modeling literals
+    /// OWLLiteralExpression is a syntactic construct that denotes a concrete data value, consisting of a lexical form (the string representation),
+    /// a datatype IRI (like xsd:string or xsd:integer), and optionally a language tag for text values.
+    /// Literal expressions represent the actual data values that appear as objects of datatype property assertions,
+    /// providing the terminal values in the ontology's data layer (e.g., "42"^^xsd:integer or "hello"@en).
     /// </summary>
     public class OWLLiteralExpression : OWLExpression { }
 
     //Entity
 
     /// <summary>
-    /// IOWLEntity represents the basic domain entities (classes, datatypes, annotation/data/object properties, individuals)
+    /// IOWLEntity represents a named component of the ontology identified by an IRI, encompassing the fundamental building blocks:
+    /// classes, object properties, datatype properties, annotation properties, named individuals, and datatypes.
+    /// Entities form the vocabulary of the ontology and serve as the atomic, reusable elements that can be referenced, defined,
+    /// and related through axioms, providing the stable identifiers that give structure and meaning to the knowledge base.
     /// </summary>
     public interface IOWLEntity { }
 }

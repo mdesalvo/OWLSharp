@@ -21,7 +21,9 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// OWLNamedIndividual is an entity suitable for modeling individuals of the A-BOX
+    /// OWLNamedIndividual represents a specific, explicitly identified instance of a class in the ontology, distinguished by a unique IRI.
+    /// Named individuals are the concrete entities that populate the knowledge base and can be related through object properties
+    /// or associated with literal values through datatype properties.
     /// </summary>
     [XmlRoot("NamedIndividual")]
     public sealed class OWLNamedIndividual : OWLIndividualExpression, IOWLEntity

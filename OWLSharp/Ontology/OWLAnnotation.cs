@@ -21,7 +21,11 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// OWLAnnotation represents an ontology element suitable for annotating the ontology itself with a value
+    /// OWLAnnotation represents metadata attached to ontology elements (entities, axioms, or other annotations)
+    /// consisting of an annotation property and a value, used to provide human-readable documentation or additional
+    /// descriptive information. Annotations have no formal semantic impact on reasoning and include common properties
+    /// like rdfs:label for names, rdfs:comment for descriptions, or custom properties for versioning and provenance,
+    /// allowing enrichment of ontologies with explanatory and administrative information without affecting logical inferences.
     /// </summary>
     [XmlRoot("Annotation")]
     public sealed class OWLAnnotation

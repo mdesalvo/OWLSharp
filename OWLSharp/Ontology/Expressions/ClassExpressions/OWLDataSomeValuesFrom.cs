@@ -20,6 +20,11 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDataSomeValuesFrom is a class expression that restricts a class to individuals having at least one value for a specified datatype property that belongs to a given data range.
+    /// For example, DataSomeValuesFrom(hasAge, xsd:integer) defines the class of individuals that have at least one hasAge value that is an integer greater than or equal to 18,
+    /// representing an existential quantification over data property values.
+    /// </summary>
     [XmlRoot("DataSomeValuesFrom")]
     public sealed class OWLDataSomeValuesFrom : OWLClassExpression
     {

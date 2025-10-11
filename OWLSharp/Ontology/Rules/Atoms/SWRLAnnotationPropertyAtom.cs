@@ -25,7 +25,11 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// SWRLAnnotationPropertyAtom is a SWRL atom suitable for filtering and reasoning on annotation property assertions
+    /// SWRLAnnotationPropertyAtom is an atom that asserts or tests a relationship between an ontology element and an annotation value
+    /// using an annotation property, functioning similarly to a DataPropertyAtom but operating on metadata rather than semantic content.
+    /// For example, rdfs:label(?class, "Person"@en) would check whether ?class has the label "Person" in English,
+    /// allowing rules to reason about or derive annotations like labels, comments, or other descriptive metadata,
+    /// though this construct is not part of the standard SWRL specification and has no formal semantic impact on reasoning.
     /// </summary>
     [XmlRoot("AnnotationPropertyAtom")]
     public sealed class SWRLAnnotationPropertyAtom : SWRLAtom

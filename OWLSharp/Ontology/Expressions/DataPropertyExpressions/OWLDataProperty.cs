@@ -20,6 +20,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDataProperty represents a binary relation between an individual and a literal value,
+    /// connecting instances of classes to concrete data values.
+    /// For example, properties like "hasAge", "hasName", or "hasPrice" are datatype properties
+    /// that associate individuals with numbers, strings, dates, or other literal values rather than other individuals.
+    /// </summary>
     [XmlRoot("DataProperty")]
     public sealed class OWLDataProperty : OWLDataPropertyExpression, IOWLEntity
     {

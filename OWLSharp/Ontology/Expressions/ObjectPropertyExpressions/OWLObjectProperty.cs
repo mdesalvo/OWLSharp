@@ -23,7 +23,9 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// OWLObjectProperty is an entity suitable for modeling properties relating individuals of the A-BOX
+    /// OWLObjectProperty represents a binary relation between two individuals (instances of classes).
+    /// It connects an individual from the domain to an individual from the range, allowing the expression
+    /// of semantic associations such as "hasPart", "isLocatedIn", or "knows" between ontology individuals.
     /// </summary>
     [XmlRoot("ObjectProperty")]
     public sealed class OWLObjectProperty : OWLObjectPropertyExpression, IOWLEntity

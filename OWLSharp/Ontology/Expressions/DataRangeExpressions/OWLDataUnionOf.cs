@@ -22,6 +22,12 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDataUnionOf is a datatype expression that represents the union of two or more datatypes,
+    /// containing all literals that belong to AT LEAST ONE of the specified datatypes.
+    /// For example, DataUnionOf(xsd:integer, xsd:string) includes all integers and all strings,
+    /// allowing you to create more permissive data ranges by combining multiple datatypes.
+    /// </summary>
     [XmlRoot("DataUnionOf")]
     public sealed class OWLDataUnionOf : OWLDataRangeExpression
     {

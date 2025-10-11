@@ -24,7 +24,10 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// SWRLClassAtom is a SWRL atom suitable for filtering and reasoning on class assertions
+    /// SWRLClassAtom is an atom that asserts or tests whether an individual argument is an instance of a specified class from the ontology.
+    /// For example, Person(?x) in a rule body checks whether the individual bound to variable ?x is a member of the Person class,
+    /// while in the head it would entail that the individual belongs to that class, allowing rules to pattern-match based on class membership
+    /// and derive new class assertions.
     /// </summary>
     [XmlRoot("ClassAtom")]
     public sealed class SWRLClassAtom : SWRLAtom

@@ -25,7 +25,11 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// SWRLDataPropertyAtom is a SWRL atom suitable for filtering and reasoning on data property assertions
+    /// SWRLDataPropertyAtom is an atom that asserts or tests a binary relationship between an individual argument and a literal argument
+    /// using a datatype property from the ontology.
+    /// For example, hasAge(?person, ?age) in a rule body checks whether individual ?person has the data value ?age through the hasAge property,
+    /// while in the head it would entail that such a relationship exists, allowing rules to pattern-match and derive
+    /// datatype property assertions connecting individuals to concrete data values.
     /// </summary>
     [XmlRoot("DataPropertyAtom")]
     public sealed class SWRLDataPropertyAtom : SWRLAtom

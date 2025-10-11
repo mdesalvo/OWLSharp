@@ -26,9 +26,11 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// SWRLAtom represents the foundational aspect for building SWRL rules, contributing to the modeling of both antecedent and consequent.<br/><br/>
-    /// Atoms in SWRL are predicates applied on a single argument (left argument) when having unary semantic,
-    /// or at most on a pair of arguments (left and right arguments) when having binary semantic.
+    /// SWRLAtom is the basic building block of rules, representing an atomic formula that can be either true or false
+    /// for specific variable bindings or constant values. Atoms can take various forms including class assertions
+    /// (checking if an individual belongs to a class), property assertions (relating individuals or individuals to data values),
+    /// built-in predicates (performing comparisons or calculations), equality/inequality tests,
+    /// or same/different individual assertions, providing the elementary conditions and conclusions that compose rule bodies and heads.
     /// </summary>
     [XmlInclude(typeof(SWRLAnnotationPropertyAtom))]
     [XmlInclude(typeof(SWRLClassAtom))]

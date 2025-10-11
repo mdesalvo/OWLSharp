@@ -20,6 +20,11 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLObjectAllValuesFrom is a class expression that restricts a class to individuals whose object property values ALL belong to a specified class.
+    /// For example, ObjectAllValuesFrom(hasChild, Doctor) defines the class of individuals where every value of the hasChild property (if any exists)
+    /// is an instance of Doctor, representing a universal quantification over object property values.
+    /// </summary>
     [XmlRoot("ObjectAllValuesFrom")]
     public sealed class OWLObjectAllValuesFrom : OWLClassExpression
     {

@@ -25,7 +25,11 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// SWRLDifferentIndividualsAtom is a SWRL atom suitable for filtering and reasoning on different individuals assertions
+    /// SWRLDifferentIndividualsAtom is an atom that asserts or tests that two individual arguments refer to distinct individuals in the ontology,
+    /// expressing inequality between them.
+    /// For example, differentFrom(?x, ?y) in a rule body checks whether variables ?x and ?y are bound to different individuals,
+    /// while in the head it would entail that two individuals are not the same, allowing rules to reason about
+    /// and enforce individual distinctness relationships.
     /// </summary>
     [XmlRoot("DifferentIndividualsAtom")]
     public sealed class SWRLDifferentIndividualsAtom : SWRLAtom

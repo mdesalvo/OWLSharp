@@ -22,6 +22,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDatatypeRestriction is a datatype expression that constrains a base datatype by applying one or more facet restrictions
+    /// (such as minInclusive, maxExclusive, pattern, or length).
+    /// For example, DatatypeRestriction(xsd:integer minInclusive "0" maxInclusive "100") represents integers between 0 and 100 inclusive,
+    /// allowing you to define precise value ranges and format constraints on data values.
+    /// </summary>
     [XmlRoot("DatatypeRestriction")]
     public sealed class OWLDatatypeRestriction : OWLDataRangeExpression
     {
@@ -90,6 +96,12 @@ namespace OWLSharp.Ontology
         #endregion
     }
 
+    /// <summary>
+    /// OWLFacetRestriction is a constraint applied within a DatatypeRestriction that limits the value space of a datatype
+    /// using specific facets and their corresponding restriction values.
+    /// For example, a facet like xsd:minInclusive paired with the value "18" restricts the datatype to values greater than or equal to 18,
+    /// allowing fine-grained control over allowable literal values through standard XML Schema facets.
+    /// </summary>
     [XmlRoot("FacetRestriction")]
     public class OWLFacetRestriction
     {

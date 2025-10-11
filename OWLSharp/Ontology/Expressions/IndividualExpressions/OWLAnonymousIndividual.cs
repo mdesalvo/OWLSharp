@@ -21,7 +21,9 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// OWLAnonymousIndividual is an expression suitabke for modeling an anonymous individual of the A-BOX
+    /// OWLAnonymousIndividual represents an instance of a class that exists in the ontology but lacks an explicit IRI identifier,
+    /// similar to blank nodes in RDF. Anonymous individuals are useful for describing entities whose identity is not important or unknown,
+    /// allowing them to participate in relationships and assertions without requiring a globally unique name.
     /// </summary>
     [XmlRoot("AnonymousIndividual")]
     public sealed class OWLAnonymousIndividual : OWLIndividualExpression

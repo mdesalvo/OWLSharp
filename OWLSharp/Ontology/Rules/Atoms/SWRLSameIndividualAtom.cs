@@ -25,7 +25,11 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// SWRLSameIndividualAtom is a SWRL atom suitable for filtering and reasoning on same individual assertions
+    /// SWRLSameIndividualAtom is an atom that asserts or tests the identity between two individual arguments,
+    /// expressing that they refer to the same individual in the ontology.
+    /// For example, sameAs(?x, ?y) in a rule body checks whether variables ?x and ?y are bound to the same individual,
+    /// while in the head it would entail that two individuals are identical, allowing rules to reason about
+    /// and enforce individual equality relationships.
     /// </summary>
     [XmlRoot("SameIndividualAtom")]
     public sealed class SWRLSameIndividualAtom : SWRLAtom

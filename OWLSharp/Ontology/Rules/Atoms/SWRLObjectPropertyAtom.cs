@@ -25,7 +25,11 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// SWRLObjectPropertyAtom is a SWRL atom suitable for filtering and reasoning on object property assertions
+    /// SWRLObjectPropertyAtom is an atom that asserts or tests a binary relationship between two individual arguments
+    /// using an object property from the ontology.
+    /// For example, hasParent(?x, ?y) in a rule body checks whether individual ?x has ?y as a parent through the hasParent property,
+    /// while in the head it would entail that such a relationship exists, allowing rules to pattern-match
+    /// and derive object property assertions between individuals.
     /// </summary>
     [XmlRoot("ObjectPropertyAtom")]
     public sealed class SWRLObjectPropertyAtom : SWRLAtom

@@ -20,6 +20,12 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLObjectMinCardinality is a class expression that restricts a class to individuals having at least a specified number
+    /// of related individuals for a given object property.
+    /// For example, ObjectMinCardinality(2 hasChild) defines the class of individuals that have two or more children,
+    /// setting a lower bound on the number of object property assertions without limiting the maximum.
+    /// </summary>
     [XmlRoot("ObjectMinCardinality")]
     public sealed class OWLObjectMinCardinality : OWLClassExpression
     {

@@ -25,7 +25,11 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// SWRLDataRangeAtom is a SWRL atom suitable for filtering and reasoning on datarange expressions
+    /// SWRLDataRangeAtom is an atom that asserts or tests whether a literal argument (variable or constant)
+    /// belongs to a specified data range or datatype.
+    /// For example, xsd:integer(?x) in a rule body checks whether the data value bound to ?x is an integer,
+    /// while more complex data ranges can restrict values further (e.g., integers between certain bounds),
+    /// allowing rules to perform type checking and constrain data values based on their datatypes or value ranges.
     /// </summary>
     [XmlRoot("DataRangeAtom")]
     public sealed class SWRLDataRangeAtom : SWRLAtom

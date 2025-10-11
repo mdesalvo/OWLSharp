@@ -20,6 +20,11 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDataMinCardinality is a class expression that restricts a class to individuals having at least a specified number of values for a given datatype property.
+    /// For example, DataMinCardinality(1 hasEmail) defines the class of individuals that have one or more email addresses,
+    /// setting a lower bound on the number of data property assertions without limiting the maximum.
+    /// </summary>
     [XmlRoot("DataMinCardinality")]
     public sealed class OWLDataMinCardinality : OWLClassExpression
     {

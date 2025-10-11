@@ -21,7 +21,9 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// OWLLiteral is an entity suitable for modeling literals of any kind
+    /// OWLLiteral represents a concrete data value such as a string, number, date, or boolean.
+    /// Literals are the range of datatype properties and consist of a lexical form (the actual value),
+    /// a datatype (like xsd:string or xsd:integer), and optionally a language tag for text values.
     /// </summary>
     [XmlRoot("Literal")]
     public sealed class OWLLiteral : OWLLiteralExpression

@@ -20,6 +20,11 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLDataAllValuesFrom is a class expression that restricts a class to individuals whose datatype property values ALL belong to a specified data range.
+    /// For example, DataAllValuesFrom(hasAge, xsd:integer) defines the class of individuals where every value of the hasAge property (if any exists)
+    /// is an integer greater than or equal to 18, representing a universal quantification over data property values.
+    /// </summary>
     [XmlRoot("DataAllValuesFrom")]
     public sealed class OWLDataAllValuesFrom : OWLClassExpression
     {
