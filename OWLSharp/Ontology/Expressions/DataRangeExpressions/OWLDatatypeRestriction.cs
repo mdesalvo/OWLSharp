@@ -32,28 +32,42 @@ namespace OWLSharp.Ontology
     public sealed class OWLDatatypeRestriction : OWLDataRangeExpression
     {
         #region Properties
+        /// <summary>
+        /// The datatype on which this restriction is applied
+        /// </summary>
         [XmlElement(Order=1)]
         public OWLDatatype Datatype { get; set; }
 
+        /// <summary>
+        /// The set of constraining facets
+        /// </summary>
         [XmlElement("FacetRestriction", Order=2)]
         public List<OWLFacetRestriction> FacetRestrictions { get; set; }
         #endregion
 
         #region Ctors
         internal OWLDatatypeRestriction() { }
+
+        /// <summary>
+        /// Builds an OWLDatatypeRestriction constraining the given datatype with the given set of facets
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDatatypeRestriction(OWLDatatype datatypeIRI, List<OWLFacetRestriction> facetRestrictions)
         {
             #region Guards
             if (facetRestrictions?.Any(fr => fr == null) ?? false)
-                throw new OWLException("Cannot create OWLDatatypeRestriction because given \"facetRestrictions\" parameter contains a null element");
+                throw new OWLException($"Cannot create OWLDatatypeRestriction because given '{nameof(facetRestrictions)}' parameter contains a null element");
             #endregion
 
-            Datatype = datatypeIRI ?? throw new OWLException("Cannot create OWLDatatypeRestriction because given \"datatypeIRI\" parameter is null");
+            Datatype = datatypeIRI ?? throw new OWLException($"Cannot create OWLDatatypeRestriction because given '{nameof(datatypeIRI)}' parameter is null");
             FacetRestrictions = facetRestrictions;
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the SWRL representation of this datatype restriction
+        /// </summary>
         public override string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();
@@ -62,12 +76,14 @@ namespace OWLSharp.Ontology
             sb.Append(Datatype.ToSWRLString());
             sb.Append('[');
             sb.Append(string.Join(", ", FacetRestrictions.Select(fct => fct.ToSWRLString())));
-            sb.Append(']');
-            sb.Append(')');
+            sb.Append("])");
 
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Exports this datatype restriction to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
@@ -106,30 +122,44 @@ namespace OWLSharp.Ontology
     public class OWLFacetRestriction
     {
         #region Properties
+        /// <summary>
+        /// The literal value of this facet restriction (e.g: 8^^http://www.w3.org/2001/XMLSchema#integer)
+        /// </summary>
         [XmlElement]
         public OWLLiteral Literal { get; set; }
 
+        /// <summary>
+        /// The IRI of this facet restriction (e.g: http://www.w3.org/2001/XMLSchema#minLength)
+        /// </summary>
         [XmlAttribute("facet", DataType="anyURI")]
         public string FacetIRI { get; set; }
         #endregion
 
         #region Ctors
         internal OWLFacetRestriction() { }
+
+        /// <summary>
+        /// Builds a facet restiction with the given literal value and IRI
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLFacetRestriction(OWLLiteral literal, RDFResource facetIRI)
         {
             #region Guards
             if (facetIRI == null)
-                throw new OWLException("Cannot create OWLFacetRestriction because given \"facetIRI\" parameter is null");
+                throw new OWLException($"Cannot create OWLFacetRestriction because given '{nameof(facetIRI)}' parameter is null");
             if (facetIRI.IsBlank)
-                throw new OWLException("Cannot create OWLFacetRestriction because given \"facetIRI\" parameter is a blank resource");
+                throw new OWLException($"Cannot create OWLFacetRestriction because given '{nameof(facetIRI)}' parameter is a blank resource");
             #endregion
 
-            Literal = literal ?? throw new OWLException("Cannot create OWLFacetRestriction because given \"literal\" parameter is null");
+            Literal = literal ?? throw new OWLException($"Cannot create OWLFacetRestriction because given '{nameof(literal)}' parameter is null");
             FacetIRI = facetIRI.ToString();
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the SWRL representation of this datatype restriction
+        /// </summary>
         public string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();

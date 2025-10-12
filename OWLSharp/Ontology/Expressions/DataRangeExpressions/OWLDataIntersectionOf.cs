@@ -32,7 +32,9 @@ namespace OWLSharp.Ontology
     public sealed class OWLDataIntersectionOf : OWLDataRangeExpression
     {
         #region Properties
-        //Register here all derived types of OWLDataRangeExpression
+        /// <summary>
+        /// The set of datarange expressions on which this intersection is defined
+        /// </summary>
         [XmlElement(typeof(OWLDatatype), ElementName="Datatype")]
         [XmlElement(typeof(OWLDataIntersectionOf), ElementName="DataIntersectionOf")]
         [XmlElement(typeof(OWLDataUnionOf), ElementName="DataUnionOf")]
@@ -44,15 +46,20 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         internal OWLDataIntersectionOf() { }
+
+        /// <summary>
+        /// Builds an OWLDataIntersectionOf on the given set of datarange expressions (must be at least 2)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDataIntersectionOf(List<OWLDataRangeExpression> datarangeExpressions)
         {
             #region Guards
             if (datarangeExpressions == null)
-                throw new OWLException("Cannot create OWLDataIntersectionOf because given \"datarangeExpressions\" parameter is null");
+                throw new OWLException($"Cannot create OWLDataIntersectionOf because given '{nameof(datarangeExpressions)}' parameter is null");
             if (datarangeExpressions.Count < 2)
-                throw new OWLException("Cannot create OWLDataIntersectionOf because given \"datarangeExpressions\" parameter must contain at least 2 elements");
+                throw new OWLException($"Cannot create OWLDataIntersectionOf because given '{nameof(datarangeExpressions)}' parameter must contain at least 2 elements");
             if (datarangeExpressions.Any(dre => dre == null))
-                throw new OWLException("Cannot create OWLDataIntersectionOf because given \"datarangeExpressions\" parameter contains a null element");
+                throw new OWLException($"Cannot create OWLDataIntersectionOf because given '{nameof(datarangeExpressions)}' parameter contains a null element");
             #endregion
 
             DataRangeExpressions = datarangeExpressions;
@@ -60,6 +67,9 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the SWRL representation of this OWLDataIntersectionOf expression
+        /// </summary>
         public override string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();
@@ -71,6 +81,9 @@ namespace OWLSharp.Ontology
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Exports this OWLDataIntersectionOf expression to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();

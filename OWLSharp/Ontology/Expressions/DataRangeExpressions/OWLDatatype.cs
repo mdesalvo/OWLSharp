@@ -30,35 +30,54 @@ namespace OWLSharp.Ontology
     public sealed class OWLDatatype : OWLDataRangeExpression, IOWLEntity
     {
         #region Properties
+        /// <summary>
+        /// The IRI of the datatype (e.g: http://www.w3.org/2001/XMLSchema#integer)
+        /// </summary>
         [XmlAttribute("IRI", DataType="anyURI")]
         public string IRI { get; set; }
 
+        /// <summary>
+        /// The xsd:qualifiedName representation of the datatype (e.g: xsd:integer)
+        /// </summary>
         [XmlAttribute("abbreviatedIRI", DataType="QName")]
         public XmlQualifiedName AbbreviatedIRI { get; set; }
         #endregion
 
         #region Ctors
         internal OWLDatatype() { }
+
+        /// <summary>
+        /// Builds a datatype with the given IRI (e.g: http://www.w3.org/2001/XMLSchema#integer)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDatatype(RDFResource iri)
         {
             #region Guards
             if (iri == null)
-                throw new OWLException("Cannot create OWLDatatype because given \"iri\" parameter is null");
+                throw new OWLException($"Cannot create OWLDatatype because given '{nameof(iri)}' parameter is null");
             if (iri.IsBlank)
-                throw new OWLException("Cannot create OWLDatatype because given \"iri\" parameter is a blank resource");
+                throw new OWLException($"Cannot create OWLDatatype because given '{nameof(iri)}' parameter is a blank resource");
             #endregion
 
             IRI = iri.ToString();
             ExpressionIRI = iri;
         }
+
+        /// <summary>
+        /// Builds a datatype with the given xsd:qualifiedName (e.g: xsd:integer)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDatatype(XmlQualifiedName abbreviatedIri)
         {
-            AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLDatatype because given \"abbreviatedIri\" parameter is null");
+            AbbreviatedIRI = abbreviatedIri ?? throw new OWLException($"Cannot create OWLDatatype because given '{nameof(abbreviatedIri)}' parameter is null");
             ExpressionIRI = new RDFResource(string.Concat(abbreviatedIri.Namespace, abbreviatedIri.Name));
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the IRI representation of this datatype
+        /// </summary>
         public override RDFResource GetIRI()
         {
             if (ExpressionIRI?.IsBlank != false)
@@ -71,6 +90,9 @@ namespace OWLSharp.Ontology
             return ExpressionIRI;
         }
 
+        /// <summary>
+        /// Exports this datatype to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();

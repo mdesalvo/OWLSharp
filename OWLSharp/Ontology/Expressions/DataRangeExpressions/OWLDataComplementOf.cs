@@ -30,7 +30,9 @@ namespace OWLSharp.Ontology
     public sealed class OWLDataComplementOf : OWLDataRangeExpression
     {
         #region Properties
-        //Register here all derived types of OWLDataRangeExpression
+        /// <summary>
+        /// The datarange expression on which this complement is defined
+        /// </summary>
         [XmlElement(typeof(OWLDatatype), ElementName="Datatype")]
         [XmlElement(typeof(OWLDataIntersectionOf), ElementName="DataIntersectionOf")]
         [XmlElement(typeof(OWLDataUnionOf), ElementName="DataUnionOf")]
@@ -42,23 +44,34 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         internal OWLDataComplementOf() { }
+
+        /// <summary>
+        /// Builds an OWLDataComplementOf on the given datarange expression
+        /// </summary>
+        /// <param name="datarangeExpression"></param>
+        /// <exception cref="OWLException"></exception>
         public OWLDataComplementOf(OWLDataRangeExpression datarangeExpression)
-            => DataRangeExpression = datarangeExpression ?? throw new OWLException("Cannot create OWLDataComplementOf because given \"datarangeExpression\" parameter is null");
+            => DataRangeExpression = datarangeExpression ?? throw new OWLException($"Cannot create OWLDataComplementOf because given '{nameof(datarangeExpression)}' parameter is null");
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the SWRL representation of this OWLDataComplementOf expression
+        /// </summary>
         public override string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append('(');
-            sb.Append("not");
+            sb.Append("(not");
             sb.Append(DataRangeExpression.ToSWRLString());
             sb.Append(')');
 
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Exports this OWLDataComplementOf expression to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();

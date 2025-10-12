@@ -31,21 +31,29 @@ namespace OWLSharp.Ontology
     public sealed class OWLDataOneOf : OWLDataRangeExpression
     {
         #region Properties
+        /// <summary>
+        /// The set of literal values specified by this enumeration 
+        /// </summary>
         [XmlElement(ElementName="Literal")]
         public List<OWLLiteral> Literals { get; set; }
         #endregion
 
         #region Ctors
         internal OWLDataOneOf() { }
+
+        /// <summary>
+        /// Builds an OWLDataOneOf on the given set of literals (must be at least 1)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDataOneOf(List<OWLLiteral> literals)
         {
             #region Guards
             if (literals == null)
-                throw new OWLException("Cannot create OWLDataOneOf because given \"literals\" parameter is null");
+                throw new OWLException($"Cannot create OWLDataOneOf because given '{nameof(literals)}' parameter is null");
             if (literals.Count == 0)
-                throw new OWLException("Cannot create OWLDataOneOf because given \"literals\" parameter must contain at least 1 element");
+                throw new OWLException($"Cannot create OWLDataOneOf because given '{nameof(literals)}' parameter must contain at least 1 element");
             if (literals.Any(lit => lit == null))
-                throw new OWLException("Cannot create OWLDataOneOf because given \"literals\" parameter contains a null element");
+                throw new OWLException($"Cannot create OWLDataOneOf because given '{nameof(literals)}' parameter contains a null element");
             #endregion
 
             Literals = literals;
@@ -53,19 +61,23 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the SWRL representation of this OWLDataOneOf expression
+        /// </summary>
         public override string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append('(');
-            sb.Append('{');
+            sb.Append("({");
             sb.Append(string.Join(",", Literals.Select(lit => lit.ToSWRLString())));
-            sb.Append('}');
-            sb.Append(')');
+            sb.Append("})");
 
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Exports this OWLDataOneOf expression to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
