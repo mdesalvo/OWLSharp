@@ -16,6 +16,7 @@
 
 using RDFSharp.Model;
 using System;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
@@ -62,16 +63,13 @@ namespace OWLSharp.Ontology
     {
         #region Properties
         /// <summary>
-        /// The IRI of the expressions
+        /// The IRI of the expression
         /// </summary>
         [XmlIgnore]
         internal RDFResource ExpressionIRI { get; set; }
         #endregion
 
         #region Ctors
-        /// <summary>
-        /// Builds a blank expression
-        /// </summary>
         internal OWLExpression()
             => ExpressionIRI = new RDFResource($"bnode:ex{Guid.NewGuid():N}");
         #endregion
@@ -240,5 +238,18 @@ namespace OWLSharp.Ontology
     /// Entities form the vocabulary of the ontology and serve as the atomic, reusable elements that can be referenced, defined,
     /// and related through axioms, providing the stable identifiers that give structure and meaning to the knowledge base.
     /// </summary>
-    public interface IOWLEntity { }
+    public interface IOWLEntity
+    {
+        #region Properties
+        /// <summary>
+        /// The IRI of the entity
+        /// </summary>
+        string IRI { get; set; }
+
+        /// <summary>
+        /// The xsd:qualifiedName representation of the entity
+        /// </summary>
+        XmlQualifiedName AbbreviatedIRI { get; set; }
+        #endregion
+    }
 }
