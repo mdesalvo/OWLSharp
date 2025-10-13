@@ -31,13 +31,13 @@ namespace OWLSharp.Ontology
     {
         #region Properties
         /// <summary>
-        /// The IRI of the object property (e.g: http://xmlns.com/foaf/0.1/age)
+        /// The IRI of the data property (e.g: http://xmlns.com/foaf/0.1/age)
         /// </summary>
         [XmlAttribute("IRI", DataType="anyURI")]
         public string IRI { get; set; }
 
         /// <summary>
-        /// The xsd:qualifiedName representation of the object property (e.g: foaf:age)
+        /// The xsd:qualifiedName representation of the data property (e.g: foaf:age)
         /// </summary>
         [XmlAttribute("abbreviatedIRI", DataType="QName")]
         public XmlQualifiedName AbbreviatedIRI { get; set; }
