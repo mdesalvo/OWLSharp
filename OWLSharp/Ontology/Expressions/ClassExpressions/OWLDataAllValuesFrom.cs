@@ -29,10 +29,15 @@ namespace OWLSharp.Ontology
     public sealed class OWLDataAllValuesFrom : OWLClassExpression
     {
         #region Properties
+        /// <summary>
+        /// The data property on which this class expression is defined
+        /// </summary>
         [XmlElement(Order=1)]
         public OWLDataProperty DataProperty { get; set; }
 
-        //Register here all derived types of OWLDataRangeExpression
+        /// <summary>
+        /// The datarange expression required on the literal values assumed by the data property
+        /// </summary>
         [XmlElement(typeof(OWLDatatype), ElementName="Datatype", Order=2)]
         [XmlElement(typeof(OWLDataIntersectionOf), ElementName="DataIntersectionOf", Order=2)]
         [XmlElement(typeof(OWLDataUnionOf), ElementName="DataUnionOf", Order=2)]
@@ -43,14 +48,22 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         internal OWLDataAllValuesFrom() { }
+
+        /// <summary>
+        /// Builds an OWLDataAllValuesFrom with the given data property and datarange expression
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDataAllValuesFrom(OWLDataProperty dataProperty, OWLDataRangeExpression datarangeExpression)
         {
-            DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataAllValuesFrom because given \"dataProperty\" parameter is null");
-            DataRangeExpression = datarangeExpression ?? throw new OWLException("Cannot create OWLDataAllValuesFrom because given \"datarangeExpression\" parameter is null");
+            DataProperty = dataProperty ?? throw new OWLException($"Cannot create OWLDataAllValuesFrom because given'{nameof(dataProperty)}' parameter is null");
+            DataRangeExpression = datarangeExpression ?? throw new OWLException($"Cannot create OWLDataAllValuesFrom because given '{nameof(datarangeExpression)}' parameter is null");
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the SWRL representation of this OWLDataAllValuesFrom expression
+        /// </summary>
         public override string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();
@@ -64,6 +77,9 @@ namespace OWLSharp.Ontology
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Exports this OWLDataAllValuesFrom expression to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();

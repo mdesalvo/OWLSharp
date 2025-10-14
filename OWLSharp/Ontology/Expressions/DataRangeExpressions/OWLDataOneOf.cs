@@ -32,7 +32,7 @@ namespace OWLSharp.Ontology
     {
         #region Properties
         /// <summary>
-        /// The set of literal values specified by this enumeration 
+        /// The set of literal values defined by this enumeration
         /// </summary>
         [XmlElement(ElementName="Literal")]
         public List<OWLLiteral> Literals { get; set; }
