@@ -29,23 +29,37 @@ namespace OWLSharp.Ontology
     public sealed class OWLDataHasValue : OWLClassExpression
     {
         #region Properties
+        /// <summary>
+        /// The data property on which this class expression is defined
+        /// </summary>
         [XmlElement(Order=1)]
         public OWLDataProperty DataProperty { get; set; }
 
+        /// <summary>
+        /// The literal value required to be assumed by the data property
+        /// </summary>
         [XmlElement(Order=2)]
         public OWLLiteral Literal { get; set; }
         #endregion
 
         #region Ctors
         internal OWLDataHasValue() { }
+
+        /// <summary>
+        /// Builds an OWLDataHasValue expression with the given data property and required literal value
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDataHasValue(OWLDataProperty dataProperty, OWLLiteral literal)
         {
-            DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataHasValue because given \"dataProperty\" parameter is null");
-            Literal = literal ?? throw new OWLException("Cannot create OWLDataHasValue because given \"literal\" parameter is null");
+            DataProperty = dataProperty ?? throw new OWLException($"Cannot create OWLDataHasValue because given '{nameof(dataProperty)}' parameter is null");
+            Literal = literal ?? throw new OWLException($"Cannot create OWLDataHasValue because given '{nameof(literal)}' parameter is null");
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the SWRL representation of this OWLDataHasValue expression
+        /// </summary>
         public override string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();
@@ -59,6 +73,9 @@ namespace OWLSharp.Ontology
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Exports this OWLDataHasValue expression to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();

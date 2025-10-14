@@ -29,10 +29,15 @@ namespace OWLSharp.Ontology
     public sealed class OWLDataMaxCardinality : OWLClassExpression
     {
         #region Properties
+        /// <summary>
+        /// The data property on which this class expression is defined
+        /// </summary>
         [XmlElement(ElementName="DataProperty", Order=1)]
         public OWLDataProperty DataProperty { get; set; }
 
-        //Register here all derived types of OWLDataRangeExpression
+        /// <summary>
+        /// The qualifying datarange expression required on the literal values assumed by the data property
+        /// </summary>
         [XmlElement(typeof(OWLDatatype), ElementName="Datatype", Order=2)]
         [XmlElement(typeof(OWLDataIntersectionOf), ElementName="DataIntersectionOf", Order=2)]
         [XmlElement(typeof(OWLDataUnionOf), ElementName="DataUnionOf", Order=2)]
@@ -41,22 +46,38 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLDatatypeRestriction), ElementName="DatatypeRestriction", Order=2)]
         public OWLDataRangeExpression DataRangeExpression { get; set; }
 
+        /// <summary>
+        /// The maximum cardinality required on the literal values assumed by the data property
+        /// </summary>
         [XmlAttribute("cardinality", DataType="nonNegativeInteger")]
         public string Cardinality { get; set; } = "0";
         #endregion
 
         #region Ctors
         internal OWLDataMaxCardinality() { }
+
+        /// <summary>
+        /// Builds an OWLDataMaxCardinality with the given data property and cardinality
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDataMaxCardinality(OWLDataProperty dataProperty, uint cardinality)
         {
-            DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataMaxCardinality because given \"dataProperty\" parameter is null");
+            DataProperty = dataProperty ?? throw new OWLException($"Cannot create OWLDataMaxCardinality because given '{nameof(dataProperty)}' parameter is null");
             Cardinality = cardinality.ToString();
         }
+
+        /// <summary>
+        /// Builds an OWLDataMaxCardinality with the given data property, cardinality and qualifying datarange expression
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDataMaxCardinality(OWLDataProperty dataProperty, uint cardinality, OWLDataRangeExpression datarangeExpression) : this(dataProperty, cardinality)
-            => DataRangeExpression = datarangeExpression ?? throw new OWLException("Cannot create OWLDataMaxCardinality because given \"datarangeExpression\" parameter is null");
+            => DataRangeExpression = datarangeExpression ?? throw new OWLException($"Cannot create OWLDataMaxCardinality because given '{nameof(datarangeExpression)}' parameter is null");
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the SWRL representation of this OWLDataMaxCardinality expression
+        /// </summary>
         public override string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();
@@ -75,6 +96,9 @@ namespace OWLSharp.Ontology
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Exports this OWLDataMaxCardinality expression to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
@@ -84,7 +108,9 @@ namespace OWLSharp.Ontology
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, DataProperty.GetIRI()));
             graph = graph.UnionWith(DataProperty.ToRDFGraph());
             if (DataRangeExpression == null)
+            {
                 graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.MAX_CARDINALITY, new RDFTypedLiteral(Cardinality, RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
+            }
             else
             {
                 RDFResource drExpressionIRI = DataRangeExpression.GetIRI();
