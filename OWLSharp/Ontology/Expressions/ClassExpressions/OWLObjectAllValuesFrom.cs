@@ -29,12 +29,16 @@ namespace OWLSharp.Ontology
     public sealed class OWLObjectAllValuesFrom : OWLClassExpression
     {
         #region Properties
-        //Register here all derived types of OWLObjectPropertyExpression
+        /// <summary>
+        /// The object property expression on which this class expression is defined
+        /// </summary>
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=1)]
         [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=1)]
         public OWLObjectPropertyExpression ObjectPropertyExpression { get; set; }
 
-        //Register here all derived types of OWLClassExpression
+        /// <summary>
+        /// The class expression required on the individuals targeted by the object property expression
+        /// </summary>
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=2)]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=2)]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=2)]
@@ -58,14 +62,22 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         internal OWLObjectAllValuesFrom() { }
+
+        /// <summary>
+        /// Builds an OWLObjectAllValuesFrom with the given object property expression and class expression
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLObjectAllValuesFrom(OWLObjectPropertyExpression objectPropertyExpression, OWLClassExpression classExpression)
         {
-            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLObjectAllValuesFrom because given \"objectPropertyExpression\" parameter is null");
-            ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectAllValuesFrom because given \"classExpression\" parameter is null");
+            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException($"Cannot create OWLObjectAllValuesFrom because given '{nameof(objectPropertyExpression)}' parameter is null");
+            ClassExpression = classExpression ?? throw new OWLException($"Cannot create OWLObjectAllValuesFrom because given '{nameof(classExpression)}' parameter is null");
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the SWRL representation of this OWLObjectAllValuesFrom expression
+        /// </summary>
         public override string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();
@@ -79,6 +91,9 @@ namespace OWLSharp.Ontology
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Exports this OWLObjectAllValuesFrom expression to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
@@ -90,7 +105,7 @@ namespace OWLSharp.Ontology
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, objPropExpressionIRI));
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ALL_VALUES_FROM, clsExpressionIRI));
             return graph.UnionWith(ObjectPropertyExpression.ToRDFGraph(objPropExpressionIRI))
-                         .UnionWith(ClassExpression.ToRDFGraph(clsExpressionIRI));
+                        .UnionWith(ClassExpression.ToRDFGraph(clsExpressionIRI));
         }
         #endregion
     }

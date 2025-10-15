@@ -31,7 +31,9 @@ namespace OWLSharp.Ontology
     public sealed class OWLObjectOneOf : OWLClassExpression
     {
         #region Properties
-        //Register here all derived types of OWLIndividualExpression
+        /// <summary>
+        /// The set of individuals defined by this enumeration
+        /// </summary>
         [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual")]
         [XmlElement(typeof(OWLAnonymousIndividual), ElementName="AnonymousIndividual")]
         public List<OWLIndividualExpression> IndividualExpressions { get; set; }
@@ -39,15 +41,20 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         internal OWLObjectOneOf() { }
+
+        /// <summary>
+        /// Builds an OWLObjectOneOf on the given set of individuals (must be at least 1)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLObjectOneOf(List<OWLIndividualExpression> individualExpressions)
         {
             #region Guards
             if (individualExpressions == null)
-                throw new OWLException("Cannot create OWLObjectOneOf because given \"individualExpressions\" parameter is null");
+                throw new OWLException($"Cannot create OWLObjectOneOf because given '{nameof(individualExpressions)}' parameter is null");
             if (individualExpressions.Count == 0)
-                throw new OWLException("Cannot create OWLObjectOneOf because given \"individualExpressions\" parameter must contain at least 1 element");
+                throw new OWLException($"Cannot create OWLObjectOneOf because given '{nameof(individualExpressions)}' parameter must contain at least 1 element");
             if (individualExpressions.Any(iex => iex == null))
-                throw new OWLException("Cannot create OWLObjectOneOf because given \"individualExpressions\" parameter contains a null element");
+                throw new OWLException($"Cannot create OWLObjectOneOf because given '{nameof(individualExpressions)}' parameter contains a null element");
             #endregion
 
             IndividualExpressions = individualExpressions;
@@ -55,19 +62,23 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the SWRL representation of this OWLObjectOneOf expression
+        /// </summary>
         public override string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append('(');
-            sb.Append('{');
+            sb.Append("({");
             sb.Append(string.Join(",", IndividualExpressions.Select(idvExpr => idvExpr.ToSWRLString())));
-            sb.Append('}');
-            sb.Append(')');
+            sb.Append("})");
 
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Exports this OWLObjectOneOf expression to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();

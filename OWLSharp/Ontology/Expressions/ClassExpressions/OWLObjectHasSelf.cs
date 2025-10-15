@@ -29,7 +29,9 @@ namespace OWLSharp.Ontology
     public sealed class OWLObjectHasSelf : OWLClassExpression
     {
         #region Properties
-        //Register here all derived types of OWLObjectPropertyExpression
+        /// <summary>
+        /// The object property expression on which this class expression is defined
+        /// </summary>
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty")]
         [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf")]
         public OWLObjectPropertyExpression ObjectPropertyExpression { get; set; }
@@ -37,23 +39,33 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         internal OWLObjectHasSelf() { }
+
+        /// <summary>
+        /// Builds an OWLObjectHasSelf expression with the given object property expression
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLObjectHasSelf(OWLObjectPropertyExpression objectPropertyExpression)
-            => ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLObjectHasSelf because given \"objectPropertyExpression\" parameter is null");
+            => ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException($"Cannot create OWLObjectHasSelf because given '{nameof(objectPropertyExpression)}' parameter is null");
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the SWRL representation of this OWLObjectHasSelf expression
+        /// </summary>
         public override string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();
 
             sb.Append('(');
             sb.Append(ObjectPropertyExpression.ToSWRLString());
-            sb.Append(" Self");
-            sb.Append(')');
+            sb.Append(" Self)");
 
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Exports this OWLObjectHasSelf expression to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();

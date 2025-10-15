@@ -32,7 +32,9 @@ namespace OWLSharp.Ontology
     public sealed class OWLObjectIntersectionOf : OWLClassExpression
     {
         #region Properties
-        //Register here all derived types of OWLClassExpression
+        /// <summary>
+        /// The set of class expressions on which this intersection is defined
+        /// </summary>
         [XmlElement(typeof(OWLClass), ElementName="Class")]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf")]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf")]
@@ -56,15 +58,20 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         internal OWLObjectIntersectionOf() { }
+
+        /// <summary>
+        /// Builds an OWLObjectIntersectionOf on the given set of class expressions (must be at least 2)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLObjectIntersectionOf(List<OWLClassExpression> classExpressions)
         {
             #region Guards
             if (classExpressions == null)
-                throw new OWLException("Cannot create OWLObjectIntersectionOf because given \"classExpressions\" parameter is null");
+                throw new OWLException($"Cannot create OWLObjectIntersectionOf because given '{nameof(classExpressions)}' parameter is null");
             if (classExpressions.Count < 2)
-                throw new OWLException("Cannot create OWLObjectIntersectionOf because given \"classExpressions\" parameter must contain at least 2 elements");
+                throw new OWLException($"Cannot create OWLObjectIntersectionOf because given '{nameof(classExpressions)}' parameter must contain at least 2 elements");
             if (classExpressions.Any(cex => cex == null))
-                throw new OWLException("Cannot create OWLObjectIntersectionOf because given \"classExpressions\" parameter contains a null element");
+                throw new OWLException($"Cannot create OWLObjectIntersectionOf because given '{nameof(classExpressions)}' parameter contains a null element");
             #endregion
 
             ClassExpressions = classExpressions;
@@ -72,6 +79,9 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the SWRL representation of this OWLObjectIntersectionOf expression
+        /// </summary>
         public override string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();
@@ -83,6 +93,9 @@ namespace OWLSharp.Ontology
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Exports this OWLObjectIntersectionOf expression to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();

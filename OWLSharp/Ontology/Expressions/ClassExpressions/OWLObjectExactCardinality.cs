@@ -29,12 +29,16 @@ namespace OWLSharp.Ontology
     public sealed class OWLObjectExactCardinality : OWLClassExpression
     {
         #region Properties
-        //Register here all derived types of OWLObjectPropertyExpression
+        /// <summary>
+        /// The object property expression on which this class expression is defined
+        /// </summary>
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=1)]
         [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=1)]
         public OWLObjectPropertyExpression ObjectPropertyExpression { get; set; }
 
-        //Register here all derived types of OWLClassExpression
+        /// <summary>
+        /// The qualifying class expression required on the individuals targeted by the object property expression
+        /// </summary>
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=2)]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=2)]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=2)]
@@ -55,22 +59,38 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLDataExactCardinality), ElementName="DataExactCardinality", Order=2)]
         public OWLClassExpression ClassExpression { get; set; }
 
+        /// <summary>
+        /// The cardinality required on the individuals targeted by the object property expressions
+        /// </summary>
         [XmlAttribute("cardinality", DataType="nonNegativeInteger")]
         public string Cardinality { get; set; } = "0";
         #endregion
 
         #region Ctors
         internal OWLObjectExactCardinality() { }
+
+        /// <summary>
+        /// Builds an OWLObjectExactCardinality with the given object property expression and cardinality
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLObjectExactCardinality(OWLObjectPropertyExpression objectPropertyExpression, uint cardinality)
         {
-            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLObjectExactCardinality because given \"objectPropertyExpression\" parameter is null");
+            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException($"Cannot create OWLObjectExactCardinality because given '{nameof(objectPropertyExpression)}' parameter is null");
             Cardinality = cardinality.ToString();
         }
+
+        /// <summary>
+        /// Builds an OWLObjectExactCardinality with the given object property expression, cardinality and qualifying class expression
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLObjectExactCardinality(OWLObjectPropertyExpression objectPropertyExpression, uint cardinality, OWLClassExpression classExpression) : this(objectPropertyExpression, cardinality)
-            => ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectExactCardinality because given \"classExpression\" parameter is null");
+            => ClassExpression = classExpression ?? throw new OWLException($"Cannot create OWLObjectExactCardinality because given '{nameof(classExpression)}' parameter is null");
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the SWRL representation of this OWLObjectExactCardinality expression
+        /// </summary>
         public override string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();
@@ -89,6 +109,9 @@ namespace OWLSharp.Ontology
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Exports this OWLObjectExactCardinality expression to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
@@ -99,7 +122,9 @@ namespace OWLSharp.Ontology
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, objPropExpressionIRI));
             graph = graph.UnionWith(ObjectPropertyExpression.ToRDFGraph(objPropExpressionIRI));
             if (ClassExpression == null)
+            {
                 graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.CARDINALITY, new RDFTypedLiteral(Cardinality, RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
+            }
             else
             {
                 RDFResource clsExpressionIRI = ClassExpression.GetIRI();

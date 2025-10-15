@@ -29,12 +29,16 @@ namespace OWLSharp.Ontology
     public sealed class OWLObjectHasValue : OWLClassExpression
     {
         #region Properties
-        //Register here all derived types of OWLObjectPropertyExpression
+        /// <summary>
+        /// The object property expression on which this class expression is defined
+        /// </summary>
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=1)]
         [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=1)]
         public OWLObjectPropertyExpression ObjectPropertyExpression { get; set; }
 
-        //Register here all derived types of OWLIndividualExpression
+        /// <summary>
+        /// The individual required to be targeted by the object property expression
+        /// </summary>
         [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual", Order=2)]
         [XmlElement(typeof(OWLAnonymousIndividual), ElementName= "AnonymousIndividual", Order=2)]
         public OWLIndividualExpression IndividualExpression { get; set; }
@@ -42,14 +46,22 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         internal OWLObjectHasValue() { }
+
+        /// <summary>
+        /// Builds an OWLObjectHasValue expression with the given object property expression and required individual
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLObjectHasValue(OWLObjectPropertyExpression objectPropertyExpression, OWLIndividualExpression individualExpression)
         {
-            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLObjectHasValue because given \"objectPropertyExpression\" parameter is null");
-            IndividualExpression = individualExpression ?? throw new OWLException("Cannot create OWLObjectHasValue because given \"individualExpression\" parameter is null");
+            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException($"Cannot create OWLObjectHasValue because given '{nameof(objectPropertyExpression)}' parameter is null");
+            IndividualExpression = individualExpression ?? throw new OWLException($"Cannot create OWLObjectHasValue because given '{nameof(individualExpression)}' parameter is null");
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the SWRL representation of this OWLObjectHasValue expression
+        /// </summary>
         public override string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();
@@ -63,6 +75,9 @@ namespace OWLSharp.Ontology
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Exports this OWLObjectHasValue expression to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
@@ -74,7 +89,7 @@ namespace OWLSharp.Ontology
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, objPropExpressionIRI));
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.HAS_VALUE, idvExpressionIRI));
             return graph.UnionWith(ObjectPropertyExpression.ToRDFGraph(objPropExpressionIRI))
-                         .UnionWith(IndividualExpression.ToRDFGraph(idvExpressionIRI));
+                        .UnionWith(IndividualExpression.ToRDFGraph(idvExpressionIRI));
         }
         #endregion
     }

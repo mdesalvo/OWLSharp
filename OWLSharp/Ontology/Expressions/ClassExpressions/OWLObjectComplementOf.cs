@@ -30,7 +30,9 @@ namespace OWLSharp.Ontology
     public sealed class OWLObjectComplementOf : OWLClassExpression
     {
         #region Properties
-        //Register here all derived types of OWLClassExpression
+        /// <summary>
+        /// The class expression on which this complement is defined
+        /// </summary>
         [XmlElement(typeof(OWLClass), ElementName="Class")]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf")]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf")]
@@ -54,23 +56,33 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         internal OWLObjectComplementOf() { }
+
+        /// <summary>
+        /// Builds an OWLObjectComplementOf on the given class expression
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLObjectComplementOf(OWLClassExpression classExpression)
-            => ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectComplementOf because given \"classExpression\" parameter is null");
+            => ClassExpression = classExpression ?? throw new OWLException($"Cannot create OWLObjectComplementOf because given '{nameof(classExpression)}' parameter is null");
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the SWRL representation of this OWLObjectComplementOf expression
+        /// </summary>
         public override string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append('(');
-            sb.Append("not");
+            sb.Append("(not");
             sb.Append(ClassExpression.ToSWRLString());
             sb.Append(')');
 
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Exports this OWLObjectComplementOf expression to an equivalent RDFGraph object
+        /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();

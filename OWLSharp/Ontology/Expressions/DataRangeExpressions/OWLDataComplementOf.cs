@@ -48,7 +48,6 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds an OWLDataComplementOf on the given datarange expression
         /// </summary>
-        /// <param name="datarangeExpression"></param>
         /// <exception cref="OWLException"></exception>
         public OWLDataComplementOf(OWLDataRangeExpression datarangeExpression)
             => DataRangeExpression = datarangeExpression ?? throw new OWLException($"Cannot create OWLDataComplementOf because given '{nameof(datarangeExpression)}' parameter is null");
