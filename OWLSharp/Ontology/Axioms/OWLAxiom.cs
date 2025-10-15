@@ -68,15 +68,27 @@ namespace OWLSharp.Ontology
     public class OWLAxiom
     {
         #region Properties
+        /// <summary>
+        /// The set of annotations about this axiom (e.g: comment, label, author)
+        /// </summary>
         [XmlElement("Annotation", Order=1)]
         public List<OWLAnnotation> Annotations { get; set; }
 
+        /// <summary>
+        /// Indicates that this axiom has been emitted by a reasoner (so that it represents inferred knowledge)
+        /// </summary>
         [XmlIgnore]
         public bool IsInference { get; set; }
 
+        /// <summary>
+        /// Indicates that this axiom has been imported from another ontology (so that it represents imported knowledge)
+        /// </summary>
         [XmlIgnore]
         public bool IsImport { get; set; }
 
+        /// <summary>
+        /// The OWL2/XML representation of this axiom
+        /// </summary>
         [XmlIgnore]
         internal string AxiomXML { get; set; }
         #endregion
@@ -87,9 +99,15 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the OWL2/XML representation of this axiom
+        /// </summary>
         public string GetXML()
             => AxiomXML ?? (AxiomXML = OWLSerializer.SerializeObject(this));
 
+        /// <summary>
+        /// Exports this axiom to an equivalent RDFGraph object
+        /// </summary>
         public virtual RDFGraph ToRDFGraph()
             => new RDFGraph();
         #endregion
@@ -107,32 +125,28 @@ namespace OWLSharp.Ontology
     public class OWLObjectPropertyAxiom : OWLAxiom
     {
         #region Ctors
-        internal OWLObjectPropertyAxiom()
-        { }
+        internal OWLObjectPropertyAxiom() { }
         #endregion
     }
 
     public class OWLDataPropertyAxiom : OWLAxiom
     {
         #region Ctors
-        internal OWLDataPropertyAxiom()
-        { }
+        internal OWLDataPropertyAxiom() { }
         #endregion
     }
 
     public class OWLAssertionAxiom : OWLAxiom
     {
         #region Ctors
-        internal OWLAssertionAxiom()
-        { }
+        internal OWLAssertionAxiom() { }
         #endregion
     }
 
     public class OWLAnnotationAxiom : OWLAxiom
     {
         #region Ctors
-        internal OWLAnnotationAxiom()
-        { }
+        internal OWLAnnotationAxiom() { }
         #endregion
     }
 }
