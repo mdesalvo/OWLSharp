@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System.Linq;
 using RDFSharp.Model;
 using System.Xml.Serialization;
 
@@ -30,39 +31,68 @@ namespace OWLSharp.Ontology
     public sealed class OWLAnnotationAssertion : OWLAnnotationAxiom
     {
         #region Properties
+        /// <summary>
+        /// Represents the property used for this annotation assertion (e.g: http://www.w3.org/2000/01/rdf-schema#comment)
+        /// </summary>
         [XmlElement(Order=2)]
         public OWLAnnotationProperty AnnotationProperty { get; set; }
 
+        /// <summary>
+        /// Represents the IRI of the entity owning this annotation assertion
+        /// </summary>
         [XmlElement("IRI", DataType="anyURI", Order=3)]
         public string SubjectIRI { get; set; }
 
         //AnnotationValue (cannot be a self-object, since this would introduce an additional XmlElement)
 
+        /// <summary>
+        /// Represents the annotation value to be used in case of IRI (e.g: http://example.org/value)
+        /// </summary>
         [XmlElement("IRI", DataType="anyURI", Order=4)]
         public string ValueIRI { get; set; }
+
+        /// <summary>
+        /// Represents the annotation value to be used in case of literal (e.g: "value")
+        /// </summary>
         [XmlElement("Literal", Order=5)]
         public OWLLiteral ValueLiteral { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLAnnotationAssertion()
-        { }
+        internal OWLAnnotationAssertion() { }
+
+        /// <summary>
+        /// Builds an annotation assertion with the given property and owner entity
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         internal OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri) : this()
         {
-            AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"annotationProperty\" parameter is null");
-            SubjectIRI = subjectIri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"subjectIri\" parameter is null");
+            AnnotationProperty = annotationProperty ?? throw new OWLException($"Cannot create OWLAnnotationAssertion because given '{nameof(annotationProperty)}' parameter is null");
+            SubjectIRI = subjectIri?.ToString() ?? throw new OWLException($"Cannot create OWLAnnotationAssertion because given '{nameof(subjectIri)}' parameter is null");
         }
+
+        /// <summary>
+        /// Builds an annotation assertion with the given property, owner entity and target entity
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri, RDFResource valueIri) : this(annotationProperty, subjectIri)
-            => ValueIRI = valueIri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"valueIri\" parameter is null");
+            => ValueIRI = valueIri?.ToString() ?? throw new OWLException($"Cannot create OWLAnnotationAssertion because given '{nameof(valueIri)}' parameter is null");
+
+        /// <summary>
+        /// Builds an annotation assertion with the given property, owner entity and literal value
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri, OWLLiteral valueLiteral) : this(annotationProperty, subjectIri)
-            => ValueLiteral = valueLiteral ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"valueLiteral\" parameter is null");
+            => ValueLiteral = valueLiteral ?? throw new OWLException($"Cannot create OWLAnnotationAssertion because given '{nameof(valueLiteral)}' parameter is null");
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this annotation assertion to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
-            RDFGraph graph = new RDFGraph();
-            graph = graph.UnionWith(AnnotationProperty.ToRDFGraph());
+            RDFGraph graph = AnnotationProperty.ToRDFGraph();
 
             //Axiom Triple
             RDFTriple axiomTriple = !string.IsNullOrEmpty(ValueIRI)
@@ -71,10 +101,8 @@ namespace OWLSharp.Ontology
             graph.AddTriple(axiomTriple);
 
             //Annotations
-            foreach (OWLAnnotation annotation in Annotations)
-                graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
-
-            return graph;
+            return Annotations.Aggregate(graph,
+                (current, annotation) => current.UnionWith(annotation.ToRDFGraph(axiomTriple)));
         }
         #endregion
     }
