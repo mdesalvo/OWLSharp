@@ -113,8 +113,12 @@ namespace OWLSharp.Ontology
         #endregion
     }
 
-    //Derived
-
+    /// <summary>
+    /// OWLClassAxiom represents a statement that defines or constrains the characteristics of a class.
+    /// It establishes logical relationships such as subclass hierarchies, class equivalences,
+    /// or disjointness constraints, thereby shaping the semantic definition and reasoning rules applicable
+    /// to that class within an ontology.
+    /// </summary>
     public class OWLClassAxiom : OWLAxiom
     {
         #region Ctors
@@ -122,6 +126,12 @@ namespace OWLSharp.Ontology
         #endregion
     }
 
+    /// <summary>
+    /// OWLObjectPropertyAxiom represents a statement that defines or constrains the characteristics of an object property
+    /// (a relationship between individuals). It establishes logical relationships such as property hierarchies, inverses,
+    /// domains, ranges, or functional/transitive constraints, thereby governing how that property can be used and reasoned
+    /// about within an ontology.
+    /// </summary>
     public class OWLObjectPropertyAxiom : OWLAxiom
     {
         #region Ctors
@@ -129,6 +139,12 @@ namespace OWLSharp.Ontology
         #endregion
     }
 
+    /// <summary>
+    /// OWLDataPropertyAxiom represents a statement that defines or constrains the characteristics of a data property
+    /// (a relationship between an individual and a literal value). It establishes logical relationships such as property hierarchies,
+    /// domains, ranges, or functional constraints, thereby governing how that property associates individuals with
+    /// typed data values within an ontology.
+    /// </summary>
     public class OWLDataPropertyAxiom : OWLAxiom
     {
         #region Ctors
@@ -136,6 +152,12 @@ namespace OWLSharp.Ontology
         #endregion
     }
 
+    /// <summary>
+    /// OWLAssertionAxiom represents a statement that asserts facts about individuals in the ontology.
+    /// It includes positive assertions (like class membership or property relationships between specific individuals)
+    /// and negative assertions (like disjointness between individuals), thereby populating the ontology with
+    /// concrete instance-level data that can be reasoned over.
+    /// </summary>
     public class OWLAssertionAxiom : OWLAxiom
     {
         #region Ctors
@@ -143,6 +165,12 @@ namespace OWLSharp.Ontology
         #endregion
     }
 
+    /// <summary>
+    /// OWLAnnotationAxiom represents a statement that attaches metadata or descriptive information to ontology elements
+    /// (classes, properties, individuals, or other axioms). It includes annotations like labels, comments, documentation,
+    /// or custom metadata, thereby providing human-readable and machine-processable auxiliary information without affecting
+    /// the logical semantics of the ontology.
+    /// </summary>
     public class OWLAnnotationAxiom : OWLAxiom
     {
         #region Ctors
