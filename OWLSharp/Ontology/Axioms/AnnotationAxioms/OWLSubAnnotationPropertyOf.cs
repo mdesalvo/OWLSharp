@@ -15,6 +15,7 @@
 */
 
 using RDFSharp.Model;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
@@ -30,39 +31,49 @@ namespace OWLSharp.Ontology
     public sealed class OWLSubAnnotationPropertyOf : OWLAnnotationAxiom
     {
         #region Properties
+        /// <summary>
+        /// The annotation property representing the "child" in the hierarchy (e.g: http://www.w3.org/2004/02/skos/core#prefLabel)
+        /// </summary>
         [XmlElement(ElementName="AnnotationProperty", Order=2)]
         public OWLAnnotationProperty SubAnnotationProperty { get; set; }
 
+        /// <summary>
+        /// The annotation property representing the "mother" in the hierarchy (e.g: http://www.w3.org/2000/01/rdf-schema#label)
+        /// </summary>
         [XmlElement(ElementName="AnnotationProperty", Order=3)]
         public OWLAnnotationProperty SuperAnnotationProperty { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLSubAnnotationPropertyOf()
-        { }
+        internal OWLSubAnnotationPropertyOf() { }
+
+        /// <summary>
+        /// Builds an OWLSubAnnotationPropertyOf with the given child and mother annotation properties
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLSubAnnotationPropertyOf(OWLAnnotationProperty subAnnotationProperty, OWLAnnotationProperty superAnnotationProperty) : this()
         {
-            SubAnnotationProperty = subAnnotationProperty ?? throw new OWLException("Cannot create OWLSubAnnotationPropertyOf because given \"subAnnotationProperty\" parameter is null");
-            SuperAnnotationProperty = superAnnotationProperty ?? throw new OWLException("Cannot create OWLSubAnnotationPropertyOf because given \"superAnnotationProperty\" parameter is null");
+            SubAnnotationProperty = subAnnotationProperty ?? throw new OWLException($"Cannot create OWLSubAnnotationPropertyOf because given '{nameof(subAnnotationProperty)}' parameter is null");
+            SuperAnnotationProperty = superAnnotationProperty ?? throw new OWLException($"Cannot create OWLSubAnnotationPropertyOf because given '{nameof(superAnnotationProperty)}' parameter is null");
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLSubAnnotationPropertyOf to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
-            RDFGraph graph = new RDFGraph();
-            graph = graph.UnionWith(SubAnnotationProperty.ToRDFGraph())
-                         .UnionWith(SuperAnnotationProperty.ToRDFGraph());
+            RDFGraph graph = SubAnnotationProperty.ToRDFGraph()
+                              .UnionWith(SuperAnnotationProperty.ToRDFGraph());
 
             //Axiom Triple
             RDFTriple axiomTriple = new RDFTriple(SubAnnotationProperty.GetIRI(), RDFVocabulary.RDFS.SUB_PROPERTY_OF, SuperAnnotationProperty.GetIRI());
             graph.AddTriple(axiomTriple);
 
             //Annotations
-            foreach (OWLAnnotation annotation in Annotations)
-                graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
-
-            return graph;
+            return Annotations.Aggregate(graph,
+                (current, annotation) => current.UnionWith(annotation.ToRDFGraph(axiomTriple)));
         }
         #endregion
     }

@@ -15,6 +15,7 @@
 */
 
 using RDFSharp.Model;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -31,46 +32,68 @@ namespace OWLSharp.Ontology
     public sealed class OWLAnnotationPropertyDomain : OWLAnnotationAxiom
     {
         #region Properties
+        /// <summary>
+        /// Represents the property used for this annotation axiom (e.g: http://purl.org/dc/elements/1.1/creator)
+        /// </summary>
         [XmlElement(Order=2)]
         public OWLAnnotationProperty AnnotationProperty { get; set; }
 
+        /// <summary>
+        /// Represents the IRI of the class expression being domain of the annotation property (e.g: http://www.w3.org/2002/07/owl#Ontology)
+        /// </summary>
         [XmlElement("IRI", DataType="anyURI", Order=3)]
         public string IRI { get; set; }
 
+        /// <summary>
+        /// Represents the xsd:qualifiedName of the class expression being domain of the annotation property (e.g: owl:Ontology)
+        /// </summary>
         [XmlElement("AbbreviatedIRI", DataType="QName", Order=4)]
         public XmlQualifiedName AbbreviatedIRI { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLAnnotationPropertyDomain()
-        { }
+        internal OWLAnnotationPropertyDomain() { }
+
+        /// <summary>
+        /// Builds an OWLAnnotationPropertyDomain with the given annotation property
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         internal OWLAnnotationPropertyDomain(OWLAnnotationProperty annotationProperty) : this()
-            => AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomain because given \"annotationProperty\" parameter is null");
+            => AnnotationProperty = annotationProperty ?? throw new OWLException($"Cannot create OWLAnnotationPropertyDomain because given '{nameof(annotationProperty)}' parameter is null");
+
+        /// <summary>
+        /// Builds an OWLAnnotationPropertyDomain with the given annotation property and class/datarange expression
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLAnnotationPropertyDomain(OWLAnnotationProperty annotationProperty, RDFResource iri) : this(annotationProperty)
-            => IRI = iri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomain because given \"iri\" parameter is null");
+            => IRI = iri?.ToString() ?? throw new OWLException($"Cannot create OWLAnnotationPropertyDomain because given '{nameof(iri)}' parameter is null");
+
+        /// <summary>
+        /// Builds an OWLAnnotationPropertyDomain with the given annotation property and class/datarange expression
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLAnnotationPropertyDomain(OWLAnnotationProperty annotationProperty, XmlQualifiedName abbreviatedIRI) : this(annotationProperty)
-            => AbbreviatedIRI = abbreviatedIRI ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomain because given \"abbreviatedIRI\" parameter is null");
+            => AbbreviatedIRI = abbreviatedIRI ?? throw new OWLException($"Cannot create OWLAnnotationPropertyDomain because given '{nameof(abbreviatedIRI)}' parameter is null");
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLAnnotationPropertyDomain to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
-            RDFGraph graph = new RDFGraph();
+            RDFGraph graph = AnnotationProperty.ToRDFGraph();
 
+            //Axiom Triple
             string domainIRI = IRI;
             if (string.IsNullOrEmpty(domainIRI))
                 domainIRI = string.Concat(AbbreviatedIRI.Namespace, AbbreviatedIRI.Name);
-            graph = graph.UnionWith(AnnotationProperty.ToRDFGraph());
-
-            //Axiom Triple
             RDFTriple axiomTriple = new RDFTriple(AnnotationProperty.GetIRI(), RDFVocabulary.RDFS.DOMAIN, new RDFResource(domainIRI));
             graph.AddTriple(axiomTriple);
 
             //Annotations
-            foreach (OWLAnnotation annotation in Annotations)
-                graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
-
-            return graph;
+            return Annotations.Aggregate(graph,
+                (current, annotation) => current.UnionWith(annotation.ToRDFGraph(axiomTriple)));
         }
         #endregion
     }

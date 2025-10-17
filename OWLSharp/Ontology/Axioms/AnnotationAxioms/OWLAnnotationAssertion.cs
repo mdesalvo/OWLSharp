@@ -32,13 +32,13 @@ namespace OWLSharp.Ontology
     {
         #region Properties
         /// <summary>
-        /// Represents the property used for this annotation assertion (e.g: http://www.w3.org/2000/01/rdf-schema#comment)
+        /// Represents the property used for this annotation axiom (e.g: http://www.w3.org/2000/01/rdf-schema#label)
         /// </summary>
         [XmlElement(Order=2)]
         public OWLAnnotationProperty AnnotationProperty { get; set; }
 
         /// <summary>
-        /// Represents the IRI of the entity owning this annotation assertion
+        /// Represents the IRI of the entity to which this annotation axiom is referred (e.g: http://xmlns.com/foaf/0.1/Person)
         /// </summary>
         [XmlElement("IRI", DataType="anyURI", Order=3)]
         public string SubjectIRI { get; set; }
@@ -46,13 +46,13 @@ namespace OWLSharp.Ontology
         //AnnotationValue (cannot be a self-object, since this would introduce an additional XmlElement)
 
         /// <summary>
-        /// Represents the annotation value to be used in case of IRI (e.g: http://example.org/value)
+        /// Represents the annotation value to be used in case of IRI (e.g: http://xmlns.com/foaf/0.1/Person)
         /// </summary>
         [XmlElement("IRI", DataType="anyURI", Order=4)]
         public string ValueIRI { get; set; }
 
         /// <summary>
-        /// Represents the annotation value to be used in case of literal (e.g: "value")
+        /// Represents the annotation value to be used in case of literal (e.g: "Person")
         /// </summary>
         [XmlElement("Literal", Order=5)]
         public OWLLiteral ValueLiteral { get; set; }
@@ -62,7 +62,7 @@ namespace OWLSharp.Ontology
         internal OWLAnnotationAssertion() { }
 
         /// <summary>
-        /// Builds an annotation assertion with the given property and owner entity
+        /// Builds an OWLAnnotationAssertion with the given annotation property and owner entity
         /// </summary>
         /// <exception cref="OWLException"></exception>
         internal OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri) : this()
@@ -72,14 +72,14 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
-        /// Builds an annotation assertion with the given property, owner entity and target entity
+        /// Builds an OWLAnnotationAssertion with the given annotation property, owner entity and target entity
         /// </summary>
         /// <exception cref="OWLException"></exception>
         public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri, RDFResource valueIri) : this(annotationProperty, subjectIri)
             => ValueIRI = valueIri?.ToString() ?? throw new OWLException($"Cannot create OWLAnnotationAssertion because given '{nameof(valueIri)}' parameter is null");
 
         /// <summary>
-        /// Builds an annotation assertion with the given property, owner entity and literal value
+        /// Builds an OWLAnnotationAssertion with the given annotation property, owner entity and literal value
         /// </summary>
         /// <exception cref="OWLException"></exception>
         public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri, OWLLiteral valueLiteral) : this(annotationProperty, subjectIri)
@@ -88,7 +88,7 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
-        /// Exports this annotation assertion to an equivalent RDFGraph object
+        /// Exports this OWLAnnotationAssertion to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()
         {
