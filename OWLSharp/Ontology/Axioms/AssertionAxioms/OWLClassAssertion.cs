@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System.Linq;
 using RDFSharp.Model;
 using System.Xml.Serialization;
 
@@ -30,7 +31,9 @@ namespace OWLSharp.Ontology
     public sealed class OWLClassAssertion : OWLAssertionAxiom
     {
         #region Properties
-        //Register here all derived types of OWLClassExpression
+        /// <summary>
+        /// Represents the class expression which the individual is instance of (e.g: http://xmlns.com/foaf/0.1/Person)
+        /// </summary>
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=2)]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=2)]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=2)]
@@ -51,42 +54,56 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLDataExactCardinality), ElementName="DataExactCardinality", Order=2)]
         public OWLClassExpression ClassExpression { get; set; }
 
-        //Register here all derived types of OWLIndividualExpression
+        /// <summary>
+        /// Represents the individual instance of the class expression (e.g: http://example.org/John)
+        /// </summary>
         [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual", Order=3)]
         [XmlElement(typeof(OWLAnonymousIndividual), ElementName="AnonymousIndividual", Order=3)]
         public OWLIndividualExpression IndividualExpression { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLClassAssertion()
-        { }
+        internal OWLClassAssertion() { }
+
+        /// <summary>
+        /// Builds an OWLClassAssertion with the given class expression
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         internal OWLClassAssertion(OWLClassExpression classExpression) : this()
-            => ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLClassAssertion because given \"classExpression\" parameter is null");
+            => ClassExpression = classExpression ?? throw new OWLException($"Cannot create OWLClassAssertion because given '{nameof(classExpression)}' parameter is null");
+
+        /// <summary>
+        /// Builds an OWLClassAssertion with the given class expression and named individual
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLClassAssertion(OWLClassExpression classExpression, OWLNamedIndividual namedIndividual) : this(classExpression)
-            => IndividualExpression = namedIndividual ?? throw new OWLException("Cannot create OWLClassAssertion because given \"namedIndividual\" parameter is null");
+            => IndividualExpression = namedIndividual ?? throw new OWLException($"Cannot create OWLClassAssertion because given '{nameof(namedIndividual)}' parameter is null");
+
+        /// <summary>
+        /// Builds an OWLClassAssertion with the given class expression and anonymous individual
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLClassAssertion(OWLClassExpression classExpression, OWLAnonymousIndividual anonymousIndividual) : this(classExpression)
-            => IndividualExpression = anonymousIndividual ?? throw new OWLException("Cannot create OWLClassAssertion because given \"anonymousIndividual\" parameter is null");
+            => IndividualExpression = anonymousIndividual ?? throw new OWLException($"Cannot create OWLClassAssertion because given '{nameof(anonymousIndividual)}' parameter is null");
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLClassAssertion to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
-            RDFGraph graph = new RDFGraph();
-
+            //Axiom Triple
             RDFResource clsExpressionIRI = ClassExpression.GetIRI();
             RDFResource idvExpressionIRI = IndividualExpression.GetIRI();
-            graph = graph.UnionWith(ClassExpression.ToRDFGraph(clsExpressionIRI))
-                         .UnionWith(IndividualExpression.ToRDFGraph(idvExpressionIRI));
-
-            //Axiom Triple
+            RDFGraph graph = ClassExpression.ToRDFGraph(clsExpressionIRI)
+                                .UnionWith(IndividualExpression.ToRDFGraph(idvExpressionIRI));
             RDFTriple axiomTriple = new RDFTriple(idvExpressionIRI, RDFVocabulary.RDF.TYPE, clsExpressionIRI);
             graph.AddTriple(axiomTriple);
 
             //Annotations
-            foreach (OWLAnnotation annotation in Annotations)
-                graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
-
-            return graph;
+            return Annotations.Aggregate(graph,
+                (current, annotation) => current.UnionWith(annotation.ToRDFGraph(axiomTriple)));
         }
         #endregion
     }
