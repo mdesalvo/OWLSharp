@@ -29,10 +29,15 @@ namespace OWLSharp.Ontology
     public sealed class OWLDataPropertyDomain : OWLDataPropertyAxiom
     {
         #region Properties
+        /// <summary>
+        /// Represents the property used for this data axiom (e.g: http://example.org/hasAge)
+        /// </summary>
         [XmlElement(Order=2)]
         public OWLDataProperty DataProperty { get; set; }
 
-        //Register here all derived types of OWLClassExpression
+        /// <summary>
+        /// Represents the class expression asserted to be domain of the data property (e.g: http://example.org/Person)
+        /// </summary>
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=3)]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=3)]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=3)]
@@ -55,22 +60,29 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLDataPropertyDomain()
-        { }
+        internal OWLDataPropertyDomain() { }
+
+        /// <summary>
+        /// Builds an OWLDataPropertyDomain with the given data property and given class expression as domain
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDataPropertyDomain(OWLDataProperty dataProperty, OWLClassExpression classExpression) : this()
         {
-            DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataPropertyDomain because given \"dataProperty\" parameter is null");
-            ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLDataPropertyDomain because given \"classExpression\" parameter is null");
+            DataProperty = dataProperty ?? throw new OWLException($"Cannot create OWLDataPropertyDomain because given '{nameof(dataProperty)}' parameter is null");
+            ClassExpression = classExpression ?? throw new OWLException($"Cannot create OWLDataPropertyDomain because given '{nameof(classExpression)}' parameter is null");
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLDataPropertyDomain to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
-            RDFGraph graph = new RDFGraph();
+            RDFGraph graph = DataProperty.ToRDFGraph();
+
             RDFResource clsExpressionIRI = ClassExpression.GetIRI();
-            graph = graph.UnionWith(DataProperty.ToRDFGraph())
-                         .UnionWith(ClassExpression.ToRDFGraph(clsExpressionIRI));
+            graph = graph.UnionWith(ClassExpression.ToRDFGraph(clsExpressionIRI));
 
             //Axiom Triple
             RDFTriple axiomTriple = new RDFTriple(DataProperty.GetIRI(), RDFVocabulary.RDFS.DOMAIN, clsExpressionIRI);
