@@ -29,34 +29,47 @@ namespace OWLSharp.Ontology
     public sealed class OWLObjectPropertyAssertion : OWLAssertionAxiom
     {
         #region Properties
-        //Register here all derived types of OWLObjectPropertyExpression
+        /// <summary>
+        /// Represents the object property expression used by this assertion (e.g: http://example.org/hasParent)
+        /// </summary>
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=2)]
         [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=2)]
         public OWLObjectPropertyExpression ObjectPropertyExpression { get; set; }
 
-        //Register here all derived types of OWLIndividualExpression
+        /// <summary>
+        /// Represents the individual owner of this assertion (e.g: http://example.org/John)
+        /// </summary>
         [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual", Order=3)]
         [XmlElement(typeof(OWLAnonymousIndividual), ElementName="AnonymousIndividual", Order=3)]
         public OWLIndividualExpression SourceIndividualExpression { get; set; }
 
-        //Register here all derived types of OWLIndividualExpression
+        /// <summary>
+        /// Represents the individual target of this assertion (e.g: http://example.org/Mary)
+        /// </summary>
         [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual", Order=4)]
         [XmlElement(typeof(OWLAnonymousIndividual), ElementName="AnonymousIndividual", Order=4)]
         public OWLIndividualExpression TargetIndividualExpression { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLObjectPropertyAssertion()
-        { }
+        internal OWLObjectPropertyAssertion() { }
+
+        /// <summary>
+        /// Builds an OWLObjectPropertyAssertion with the given object property expression and given source/target individuals
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLObjectPropertyAssertion(OWLObjectPropertyExpression objectPropertyExpression, OWLIndividualExpression sourceIndividualExpression, OWLIndividualExpression targetIndividualExpression) : this()
         {
-            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLObjectPropertyAssertion because given \"objectPropertyExpression\" parameter is null");
-            SourceIndividualExpression = sourceIndividualExpression ?? throw new OWLException("Cannot create OWLObjectPropertyAssertion because given \"sourceIndividualExpression\" parameter is null");
-            TargetIndividualExpression = targetIndividualExpression ?? throw new OWLException("Cannot create OWLObjectPropertyAssertion because given \"targetIndividualExpression\" parameter is null");
+            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException($"Cannot create OWLObjectPropertyAssertion because given '{nameof(objectPropertyExpression)}' parameter is null");
+            SourceIndividualExpression = sourceIndividualExpression ?? throw new OWLException($"Cannot create OWLObjectPropertyAssertion because given '{nameof(sourceIndividualExpression)}' parameter is null");
+            TargetIndividualExpression = targetIndividualExpression ?? throw new OWLException($"Cannot create OWLObjectPropertyAssertion because given '{nameof(targetIndividualExpression)}' parameter is null");
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLObjectPropertyAssertion to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();

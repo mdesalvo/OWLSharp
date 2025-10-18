@@ -44,7 +44,7 @@ namespace OWLSharp.Ontology
         public OWLIndividualExpression IndividualExpression { get; set; }
 
         /// <summary>
-        /// Represents the literal value assumed by the data property of this assertion (e.g: 42)
+        /// Represents the literal value assumed by the data property of this assertion (e.g: 30)
         /// </summary>
         [XmlElement(Order=4)]
         public OWLLiteral Literal { get; set; }
@@ -93,8 +93,10 @@ namespace OWLSharp.Ontology
             graph.AddTriple(axiomTriple);
 
             //Annotations
-            return Annotations.Aggregate(graph,
-                (current, annotation) => current.UnionWith(annotation.ToRDFGraph(axiomTriple)));
+            foreach (OWLAnnotation annotation in Annotations)
+                graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
+
+            return graph;
         }
         #endregion
     }

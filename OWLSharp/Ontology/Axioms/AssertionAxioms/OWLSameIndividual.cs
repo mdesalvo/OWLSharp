@@ -31,24 +31,30 @@ namespace OWLSharp.Ontology
     public sealed class OWLSameIndividual : OWLAssertionAxiom
     {
         #region Properties
-        //Register here all derived types of OWLIndividualExpression
+        /// <summary>
+        /// The set of individuals asserted to be pairwise equivalent
+        /// </summary>
         [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual", Order=2)]
         [XmlElement(typeof(OWLAnonymousIndividual), ElementName="AnonymousIndividual", Order=2)]
         public List<OWLIndividualExpression> IndividualExpressions { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLSameIndividual()
-        { }
+        internal OWLSameIndividual() { }
+
+        /// <summary>
+        /// Builds an OWLSameIndividual with the given set of individuals (must be at least 2)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLSameIndividual(List<OWLIndividualExpression> individualExpressions) : this()
         {
             #region Guards
             if (individualExpressions == null)
-                throw new OWLException("Cannot create OWLSameIndividual because given \"individualExpressions\" parameter is null");
+                throw new OWLException($"Cannot create OWLSameIndividual because given '{nameof(individualExpressions)}' parameter is null");
             if (individualExpressions.Count < 2)
-                throw new OWLException("Cannot create OWLSameIndividual because given \"individualExpressions\" parameter must contain at least 2 elements");
+                throw new OWLException($"Cannot create OWLSameIndividual because given '{nameof(individualExpressions)}' parameter must contain at least 2 elements");
             if (individualExpressions.Any(iex => iex == null))
-                throw new OWLException("Cannot create OWLSameIndividual because given \"individualExpressions\" parameter contains a null element");
+                throw new OWLException($"Cannot create OWLSameIndividual because given '{nameof(individualExpressions)}' parameter contains a null element");
             #endregion
 
             IndividualExpressions = individualExpressions;
@@ -56,6 +62,9 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLSameIndividual to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
@@ -71,7 +80,7 @@ namespace OWLSharp.Ontology
             //Axiom Triple(s)
             List<RDFTriple> axiomTriples = new List<RDFTriple>();
             for (int i = 0; i < IndividualExpressions.Count - 1; i++)
-                for (int j = i + 1; j < IndividualExpressions.Count; j++)
+                for (int j = i+1; j < IndividualExpressions.Count; j++)
                 {
                     RDFTriple axiomTriple = new RDFTriple(idvExpressionIRIs[i], RDFVocabulary.OWL.SAME_AS, idvExpressionIRIs[j]);
                     axiomTriples.Add(axiomTriple);

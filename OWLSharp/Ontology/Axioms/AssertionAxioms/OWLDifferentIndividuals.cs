@@ -32,24 +32,30 @@ namespace OWLSharp.Ontology
     public sealed class OWLDifferentIndividuals : OWLAssertionAxiom
     {
         #region Properties
-        //Register here all derived types of OWLIndividualExpression
+        /// <summary>
+        /// The set of individuals asserted to be pairwise distinct
+        /// </summary>
         [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual", Order=2)]
         [XmlElement(typeof(OWLAnonymousIndividual), ElementName="AnonymousIndividual", Order=2)]
         public List<OWLIndividualExpression> IndividualExpressions { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLDifferentIndividuals()
-        { }
+        internal OWLDifferentIndividuals() { }
+
+        /// <summary>
+        /// Builds an OWLDifferentIndividuals with the given set of individuals (must be at least 2)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDifferentIndividuals(List<OWLIndividualExpression> individualExpressions) : this()
         {
             #region Guards
             if (individualExpressions == null)
-                throw new OWLException("Cannot create OWLDifferentIndividuals because given \"individualExpressions\" parameter is null");
+                throw new OWLException($"Cannot create OWLDifferentIndividuals because given '{nameof(individualExpressions)}' parameter is null");
             if (individualExpressions.Count < 2)
-                throw new OWLException("Cannot create OWLDifferentIndividuals because given \"individualExpressions\" parameter must contain at least 2 elements");
+                throw new OWLException($"Cannot create OWLDifferentIndividuals because given '{nameof(individualExpressions)}' parameter must contain at least 2 elements");
             if (individualExpressions.Any(iex => iex == null))
-                throw new OWLException("Cannot create OWLDifferentIndividuals because given \"individualExpressions\" parameter contains a null element");
+                throw new OWLException($"Cannot create OWLDifferentIndividuals because given '{nameof(individualExpressions)}' parameter contains a null element");
             #endregion
 
             IndividualExpressions = individualExpressions;
@@ -57,11 +63,14 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLDifferentIndividuals to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
 
-            //differentFrom
+            //owl:DifferentFrom
             if (IndividualExpressions.Count == 2)
             {
                 RDFResource leftIdvExpressionIRI = IndividualExpressions[0].GetIRI();
@@ -78,7 +87,7 @@ namespace OWLSharp.Ontology
                     graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
             }
 
-            //AllDifferent
+            //owl:AllDifferent
             else
             {
                 RDFResource allDifferentIRI = new RDFResource();

@@ -101,8 +101,10 @@ namespace OWLSharp.Ontology
             graph.AddTriple(axiomTriple);
 
             //Annotations
-            return Annotations.Aggregate(graph,
-                (current, annotation) => current.UnionWith(annotation.ToRDFGraph(axiomTriple)));
+            foreach (OWLAnnotation annotation in Annotations)
+                graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
+
+            return graph;
         }
         #endregion
     }
