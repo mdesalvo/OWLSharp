@@ -31,22 +31,31 @@ namespace OWLSharp.Ontology
     public sealed class OWLFunctionalDataProperty : OWLDataPropertyAxiom
     {
         #region Properties
+        /// <summary>
+        /// The data property asserted to have functional behavior (e.g: http://example.org/hasSSN)
+        /// </summary>
         [XmlElement(Order=2)]
         public OWLDataProperty DataProperty { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLFunctionalDataProperty()
-        { }
+        internal OWLFunctionalDataProperty() { }
+
+        /// <summary>
+        /// Builds an OWLFunctionalDataProperty with the given data property
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLFunctionalDataProperty(OWLDataProperty dataProperty) : this()
-            => DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLFunctionalDataProperty because given \"dataProperty\" parameter is null");
+            => DataProperty = dataProperty ?? throw new OWLException($"Cannot create OWLFunctionalDataProperty because given '{nameof(dataProperty)}' parameter is null");
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLFunctionalDataProperty to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
-            RDFGraph graph = new RDFGraph();
-            graph = graph.UnionWith(DataProperty.ToRDFGraph());
+            RDFGraph graph = DataProperty.ToRDFGraph();
 
             //Axiom Triple
             RDFTriple axiomTriple = new RDFTriple(DataProperty.GetIRI(), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY);

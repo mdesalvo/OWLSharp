@@ -32,22 +32,29 @@ namespace OWLSharp.Ontology
     public sealed class OWLEquivalentDataProperties : OWLDataPropertyAxiom
     {
         #region Properties
+        /// <summary>
+        /// The set of data properties asserted to be equivalent (e.g: http://example.org/hasAge, http://example.org/age)
+        /// </summary>
         [XmlElement(ElementName="DataProperty", Order=2)]
         public List<OWLDataProperty> DataProperties { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLEquivalentDataProperties()
-        { }
+        internal OWLEquivalentDataProperties() { }
+
+        /// <summary>
+        /// Builds an OWLEquivalentDataProperties with the given set of data properties (must be at least 2)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLEquivalentDataProperties(List<OWLDataProperty> dataProperties) : this()
         {
             #region Guards
             if (dataProperties == null)
-                throw new OWLException("Cannot create OWLEquivalentDataProperties because given \"dataProperties\" parameter is null");
+                throw new OWLException($"Cannot create OWLEquivalentDataProperties because given '{nameof(dataProperties)}' parameter is null");
             if (dataProperties.Count < 2)
-                throw new OWLException("Cannot create OWLEquivalentDataProperties because given \"dataProperties\" parameter must contain at least 2 elements");
+                throw new OWLException($"Cannot create OWLEquivalentDataProperties because given '{nameof(dataProperties)}' parameter must contain at least 2 elements");
             if (dataProperties.Any(dp => dp == null))
-                throw new OWLException("Cannot create OWLEquivalentObjectProperties because given \"dataProperties\" parameter contains a null element");
+                throw new OWLException($"Cannot create OWLEquivalentDataProperties because given '{nameof(dataProperties)}' parameter contains a null element");
             #endregion
 
             DataProperties = dataProperties;
@@ -55,6 +62,9 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLEquivalentDataProperties to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
@@ -69,7 +79,7 @@ namespace OWLSharp.Ontology
             //Axiom Triple(s)
             List<RDFTriple> axiomTriples = new List<RDFTriple>();
             for (int i = 0; i < DataProperties.Count - 1; i++)
-                for (int j = i + 1; j < DataProperties.Count; j++)
+                for (int j = i+1; j < DataProperties.Count; j++)
                 {
                     RDFTriple axiomTriple = new RDFTriple(dtPropIRIs[i], RDFVocabulary.OWL.EQUIVALENT_PROPERTY, dtPropIRIs[j]);
                     axiomTriples.Add(axiomTriple);

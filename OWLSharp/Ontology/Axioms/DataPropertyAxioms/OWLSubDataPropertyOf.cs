@@ -30,29 +30,41 @@ namespace OWLSharp.Ontology
     public sealed class OWLSubDataPropertyOf : OWLDataPropertyAxiom
     {
         #region Properties
+        /// <summary>
+        /// The data property representing the "child" in the hierarchy (e.g: http://example.org/hasBirthDate)
+        /// </summary>
         [XmlElement(ElementName="DataProperty", Order=2)]
         public OWLDataProperty SubDataProperty { get; set; }
 
+        /// <summary>
+        /// The data property representing the "mother" in the hierarchy (e.g: http://example.org/hasDate)
+        /// </summary>
         [XmlElement(ElementName="DataProperty", Order=3)]
         public OWLDataProperty SuperDataProperty { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLSubDataPropertyOf()
-        { }
+        internal OWLSubDataPropertyOf() { }
+
+        /// <summary>
+        /// Builds an OWLSubDataPropertyOf with the given child and mother data properties
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLSubDataPropertyOf(OWLDataProperty subDataProperty, OWLDataProperty superDataProperty) : this()
         {
-            SubDataProperty = subDataProperty ?? throw new OWLException("Cannot create OWLSubDataPropertyOf because given \"subDataProperty\" parameter is null");
-            SuperDataProperty = superDataProperty ?? throw new OWLException("Cannot create OWLSubDataPropertyOf because given \"superDataProperty\" parameter is null");
+            SubDataProperty = subDataProperty ?? throw new OWLException($"Cannot create OWLSubDataPropertyOf because given '{nameof(subDataProperty)}' parameter is null");
+            SuperDataProperty = superDataProperty ?? throw new OWLException($"Cannot create OWLSubDataPropertyOf because given '{nameof(superDataProperty)}' parameter is null");
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLSubDataPropertyOf to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
-            RDFGraph graph = new RDFGraph();
-            graph = graph.UnionWith(SubDataProperty.ToRDFGraph())
-                         .UnionWith(SuperDataProperty.ToRDFGraph());
+            RDFGraph graph = SubDataProperty.ToRDFGraph()
+                              .UnionWith(SuperDataProperty.ToRDFGraph());
 
             //Axiom Triple
             RDFTriple axiomTriple = new RDFTriple(SubDataProperty.GetIRI(), RDFVocabulary.RDFS.SUB_PROPERTY_OF, SuperDataProperty.GetIRI());

@@ -28,10 +28,15 @@ namespace OWLSharp.Ontology
     public sealed class OWLDataPropertyRange : OWLDataPropertyAxiom
     {
         #region Properties
+        /// <summary>
+        /// Represents the property used for this data axiom (e.g: http://example.org/hasAge)
+        /// </summary>
         [XmlElement(Order=2)]
         public OWLDataProperty DataProperty { get; set; }
 
-        //Register here all derived types of OWLDataRangeExpression
+        /// <summary>
+        /// Represents the datarange expression asserted to be range of the data property (e.g: http://www.w3.org/2001/XMLSchema#nonNegativeInteger)
+        /// </summary>
         [XmlElement(typeof(OWLDatatype), ElementName="Datatype", Order=3)]
         [XmlElement(typeof(OWLDataIntersectionOf), ElementName="DataIntersectionOf", Order=3)]
         [XmlElement(typeof(OWLDataUnionOf), ElementName="DataUnionOf", Order=3)]
@@ -42,22 +47,29 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLDataPropertyRange()
-        { }
+        internal OWLDataPropertyRange() { }
+
+        /// <summary>
+        /// Builds an OWLDataPropertyRange with the given data property and datarange expression as range
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDataPropertyRange(OWLDataProperty dataProperty, OWLDataRangeExpression datarangeExpression) : this()
         {
-            DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataPropertyRange because given \"dataProperty\" parameter is null");
-            DataRangeExpression = datarangeExpression ?? throw new OWLException("Cannot create OWLDataPropertyRange because given \"datarangeExpression\" parameter is null");
+            DataProperty = dataProperty ?? throw new OWLException($"Cannot create OWLDataPropertyRange because given '{nameof(dataProperty)}' parameter is null");
+            DataRangeExpression = datarangeExpression ?? throw new OWLException($"Cannot create OWLDataPropertyRange because given '{nameof(datarangeExpression)}' parameter is null");
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLDataPropertyRange to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
-            RDFGraph graph = new RDFGraph();
+            RDFGraph graph = DataProperty.ToRDFGraph();
+
             RDFResource drExpressionIRI = DataRangeExpression.GetIRI();
-            graph = graph.UnionWith(DataProperty.ToRDFGraph())
-                         .UnionWith(DataRangeExpression.ToRDFGraph(drExpressionIRI));
+            graph = graph.UnionWith(DataRangeExpression.ToRDFGraph(drExpressionIRI));
 
             //Axiom Triple
             RDFTriple axiomTriple = new RDFTriple(DataProperty.GetIRI(), RDFVocabulary.RDFS.RANGE, drExpressionIRI);

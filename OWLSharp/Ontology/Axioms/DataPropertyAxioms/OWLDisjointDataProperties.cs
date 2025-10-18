@@ -31,22 +31,29 @@ namespace OWLSharp.Ontology
     public sealed class OWLDisjointDataProperties : OWLDataPropertyAxiom
     {
         #region Properties
+        /// <summary>
+        /// The set of data properties asserted to be pairwise disjoint (e.g: http://example.org/birthDate, http://example.org/deathDate)
+        /// </summary>
         [XmlElement(ElementName="DataProperty", Order=2)]
         public List<OWLDataProperty> DataProperties { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLDisjointDataProperties()
-        { }
+        internal OWLDisjointDataProperties() { }
+
+        /// <summary>
+        /// Builds an OWLDisjointDataProperties with the given set of data properties (must be at least 2)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDisjointDataProperties(List<OWLDataProperty> dataProperties) : this()
         {
             #region Guards
             if (dataProperties == null)
-                throw new OWLException("Cannot create OWLDisjointDataProperties because given \"dataProperties\" parameter is null");
+                throw new OWLException($"Cannot create OWLDisjointDataProperties because given '{nameof(dataProperties)}' parameter is null");
             if (dataProperties.Count < 2)
-                throw new OWLException("Cannot create OWLDisjointDataProperties because given \"dataProperties\" parameter must contain at least 2 elements");
+                throw new OWLException($"Cannot create OWLDisjointDataProperties because given '{nameof(dataProperties)}' parameter must contain at least 2 elements");
             if (dataProperties.Any(dp => dp == null))
-                throw new OWLException("Cannot create OWLDisjointDataProperties because given \"dataProperties\" parameter contains a null element");
+                throw new OWLException($"Cannot create OWLDisjointDataProperties because given '{nameof(dataProperties)}' parameter contains a null element");
             #endregion
 
             DataProperties = dataProperties;
@@ -54,11 +61,14 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLDisjointDataProperties to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
 
-            //propertyDisjointWith
+            //owl:propertyDisjointWith
             if (DataProperties.Count == 2)
             {
                 graph = graph.UnionWith(DataProperties[0].ToRDFGraph())
@@ -73,7 +83,7 @@ namespace OWLSharp.Ontology
                     graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
             }
 
-            //AllDisjointProperties
+            //owl:AllDisjointProperties
             else
             {
                 RDFResource allDisjointPropertiesIRI = new RDFResource();
