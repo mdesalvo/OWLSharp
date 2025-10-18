@@ -32,10 +32,15 @@ namespace OWLSharp.Ontology
     public sealed class OWLDisjointUnion : OWLClassAxiom
     {
         #region Properties
+        /// <summary>
+        /// The class representing the union of the pairwise disjoint class expressions (e.g: http://example.org/Person)
+        /// </summary>
         [XmlElement("Class", Order=2)]
         public OWLClass ClassIRI { get; set; }
 
-        //Register here all derived types of OWLClassExpression
+        /// <summary>
+        /// The set of class expressions asserted to be pairwise disjoint (e.g: http://example.org/Male, http://example.org/Female)
+        /// </summary>
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=3)]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=3)]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=3)]
@@ -58,25 +63,32 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLDisjointUnion()
-        { }
+        internal OWLDisjointUnion() { }
+
+        /// <summary>
+        /// Builds an OWLDisjointUnion with the given class and set of pairwise disjoint class expressions (must be at least 2)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDisjointUnion(OWLClass classIRI, List<OWLClassExpression> classExpressions) : this()
         {
             #region Guards
             if (classExpressions == null)
-                throw new OWLException("Cannot create OWLDisjointUnion because given \"classExpressions\" parameter is null");
+                throw new OWLException($"Cannot create OWLDisjointUnion because given '{nameof(classExpressions)}' parameter is null");
             if (classExpressions.Count < 2)
-                throw new OWLException("Cannot create OWLDisjointUnion because given \"classExpressions\" parameter must contain at least 2 elements");
+                throw new OWLException($"Cannot create OWLDisjointUnion because given '{nameof(classExpressions)}' parameter must contain at least 2 elements");
             if (classExpressions.Any(cex => cex == null))
-                throw new OWLException("Cannot create OWLDisjointUnion because given \"classExpressions\" parameter contains a null element");
+                throw new OWLException($"Cannot create OWLDisjointUnion because given '{nameof(classExpressions)}' parameter contains a null element");
             #endregion
 
-            ClassIRI = classIRI ?? throw new OWLException("Cannot create OWLDisjointUnion because given \"classIRI\" parameter is null");
+            ClassIRI = classIRI ?? throw new OWLException($"Cannot create OWLDisjointUnion because given '{nameof(classIRI)}' parameter is null");
             ClassExpressions = classExpressions;
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLDisjointUnion to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();

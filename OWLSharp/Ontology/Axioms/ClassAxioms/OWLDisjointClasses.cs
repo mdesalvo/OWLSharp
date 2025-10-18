@@ -32,7 +32,7 @@ namespace OWLSharp.Ontology
     {
         #region Properties
         /// <summary>
-        /// The set of class expressions asserted to be pairwise disjoint
+        /// The set of class expressions asserted to be pairwise disjoint (e.g: http://example.org/Male, http://example.org/Female)
         /// </summary>
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=2)]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=2)]
@@ -59,7 +59,7 @@ namespace OWLSharp.Ontology
         internal OWLDisjointClasses() { }
 
         /// <summary>
-        /// Builds an OWLDisjointClasses with the given set of class expressions (must be at least 2)
+        /// Builds an OWLDisjointClasses with the given set of pairwise disjoint class expressions (must be at least 2)
         /// </summary>
         /// <exception cref="OWLException"></exception>
         public OWLDisjointClasses(List<OWLClassExpression> classExpressions) : this()

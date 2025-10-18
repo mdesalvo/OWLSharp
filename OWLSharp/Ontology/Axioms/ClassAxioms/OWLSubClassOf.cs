@@ -29,7 +29,9 @@ namespace OWLSharp.Ontology
     public sealed class OWLSubClassOf : OWLClassAxiom
     {
         #region Properties
-        //Register here all derived types of OWLClassExpression
+        /// <summary>
+        /// The class expression representing the "child" in the hierarchy (e.g: http://example.org/Student)
+        /// </summary>
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=2)]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=2)]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=2)]
@@ -50,7 +52,9 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLDataExactCardinality), ElementName="DataExactCardinality", Order=2)]
         public OWLClassExpression SubClassExpression { get; set; }
 
-        //Register here all derived types of OWLClassExpression
+        /// <summary>
+        /// The class expression representing the "mother" in the hierarchy (e.g: http://example.org/Person)
+        /// </summary>
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=3)]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=3)]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=3)]
@@ -73,16 +77,23 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLSubClassOf()
-        { }
+        internal OWLSubClassOf() { }
+
+        /// <summary>
+        /// Builds an OWLSubClassOf with the given child and mother class expressions
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLSubClassOf(OWLClassExpression subClassExpression, OWLClassExpression superClassExpression) : this()
         {
-            SubClassExpression = subClassExpression ?? throw new OWLException("Cannot create OWLSubClassOf because given \"subClassExpression\" parameter is null");
-            SuperClassExpression = superClassExpression ?? throw new OWLException("Cannot create OWLSubClassOf because given \"superClassExpression\" parameter is null");
+            SubClassExpression = subClassExpression ?? throw new OWLException($"Cannot create OWLSubClassOf because given '{nameof(subClassExpression)}' parameter is null");
+            SuperClassExpression = superClassExpression ?? throw new OWLException($"Cannot create OWLSubClassOf because given '{nameof(superClassExpression)}' parameter is null");
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLSubClassOf to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();

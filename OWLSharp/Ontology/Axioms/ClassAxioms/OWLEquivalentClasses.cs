@@ -31,7 +31,9 @@ namespace OWLSharp.Ontology
     public sealed class OWLEquivalentClasses : OWLClassAxiom
     {
         #region Properties
-        //Register here all derived types of OWLClassExpression
+        /// <summary>
+        /// The set of class expressions asserted to be equivalent (e.g: http://example.org/Human, http://example.org/Person)
+        /// </summary>
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=2)]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=2)]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=2)]
@@ -54,17 +56,21 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLEquivalentClasses()
-        { }
+        internal OWLEquivalentClasses() { }
+
+        /// <summary>
+        /// Builds an OWLEquivalentClasses with the given set of equivalent class expressions (must be at least 2)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLEquivalentClasses(List<OWLClassExpression> classExpressions) : this()
         {
             #region Guards
             if (classExpressions == null)
-                throw new OWLException("Cannot create OWLEquivalentClasses because given \"classExpressions\" parameter is null");
+                throw new OWLException($"Cannot create OWLEquivalentClasses because given '{nameof(classExpressions)}' parameter is null");
             if (classExpressions.Count < 2)
-                throw new OWLException("Cannot create OWLEquivalentClasses because given \"classExpressions\" parameter must contain at least 2 elements");
+                throw new OWLException($"Cannot create OWLEquivalentClasses because given '{nameof(classExpressions)}' parameter must contain at least 2 elements");
             if (classExpressions.Any(cex => cex == null))
-                throw new OWLException("Cannot create OWLEquivalentClasses because given \"classExpressions\" parameter contains a null element");
+                throw new OWLException($"Cannot create OWLEquivalentClasses because given '{nameof(classExpressions)}' parameter contains a null element");
             #endregion
 
             ClassExpressions = classExpressions;
@@ -72,6 +78,9 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLEquivalentClasses to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
@@ -87,7 +96,7 @@ namespace OWLSharp.Ontology
             //Axiom Triple(s)
             List<RDFTriple> axiomTriples = new List<RDFTriple>();
             for (int i = 0; i < ClassExpressions.Count - 1; i++)
-                for (int j = i + 1; j < ClassExpressions.Count; j++)
+                for (int j = i+1; j < ClassExpressions.Count; j++)
                 {
                     RDFTriple axiomTriple = new RDFTriple(clsExpressionIRIs[i], RDFVocabulary.OWL.EQUIVALENT_CLASS, clsExpressionIRIs[j]);
                     axiomTriples.Add(axiomTriple);
