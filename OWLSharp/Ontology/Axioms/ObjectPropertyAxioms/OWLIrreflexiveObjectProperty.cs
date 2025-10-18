@@ -29,22 +29,36 @@ namespace OWLSharp.Ontology
     public sealed class OWLIrreflexiveObjectProperty : OWLObjectPropertyAxiom
     {
         #region Properties
-        //Register here all derived types of OWLObjectPropertyExpression
+        /// <summary>
+        /// The object property expression asserted to have irreflexive behavior (e.g: http://example.org/isParentOf)
+        /// </summary>
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=2)]
         [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=2)]
         public OWLObjectPropertyExpression ObjectPropertyExpression { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLIrreflexiveObjectProperty()
-        { }
+        internal OWLIrreflexiveObjectProperty() { }
+
+        /// <summary>
+        /// Builds an OWLIrreflexiveObjectProperty with the given object property
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLIrreflexiveObjectProperty(OWLObjectProperty objectProperty) : this()
-            => ObjectPropertyExpression = objectProperty ?? throw new OWLException("Cannot create OWLIrreflexiveObjectProperty because given \"objectProperty\" parameter is null");
+            => ObjectPropertyExpression = objectProperty ?? throw new OWLException($"Cannot create OWLIrreflexiveObjectProperty because given '{nameof(objectProperty)}' parameter is null");
+
+        /// <summary>
+        /// Builds an OWLIrreflexiveObjectProperty with the given anonymous inverse property
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLIrreflexiveObjectProperty(OWLObjectInverseOf objectInverseOf) : this()
-            => ObjectPropertyExpression = objectInverseOf ?? throw new OWLException("Cannot create OWLIrreflexiveObjectProperty because given \"objectInverseOf\" parameter is null");
+            => ObjectPropertyExpression = objectInverseOf ?? throw new OWLException($"Cannot create OWLIrreflexiveObjectProperty because given '{nameof(objectInverseOf)}' parameter is null");
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLIrreflexiveObjectProperty to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();

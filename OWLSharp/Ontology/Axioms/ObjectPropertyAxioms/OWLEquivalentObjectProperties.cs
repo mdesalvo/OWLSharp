@@ -31,24 +31,30 @@ namespace OWLSharp.Ontology
     public sealed class OWLEquivalentObjectProperties : OWLObjectPropertyAxiom
     {
         #region Properties
-        //Register here all derived types of OWLObjectPropertyExpression
+        /// <summary>
+        /// The set of object property expressions asserted to be equivalent (e.g: http://example.org/hasMother, http://example.org/hasFemaleParent)
+        /// </summary>
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=2)]
         [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=2)]
         public List<OWLObjectPropertyExpression> ObjectPropertyExpressions { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLEquivalentObjectProperties()
-        { }
+        internal OWLEquivalentObjectProperties() { }
+
+        /// <summary>
+        /// Builds an OWLEquivalentObjectProperties with the given set of equivalent object property expressions (must be at least 2)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLEquivalentObjectProperties(List<OWLObjectPropertyExpression> objectPropertyExpressions) : this()
         {
             #region Guards
             if (objectPropertyExpressions == null)
-                throw new OWLException("Cannot create OWLEquivalentObjectProperties because given \"objectPropertyExpressions\" parameter is null");
+                throw new OWLException($"Cannot create OWLEquivalentObjectProperties because given '{nameof(objectPropertyExpressions)}' parameter is null");
             if (objectPropertyExpressions.Count < 2)
-                throw new OWLException("Cannot create OWLEquivalentObjectProperties because given \"objectPropertyExpressions\" parameter must contain at least 2 elements");
+                throw new OWLException($"Cannot create OWLEquivalentObjectProperties because given '{nameof(objectPropertyExpressions)}' parameter must contain at least 2 elements");
             if (objectPropertyExpressions.Any(ope => ope == null))
-                throw new OWLException("Cannot create OWLEquivalentObjectProperties because given \"objectPropertyExpressions\" parameter contains a null element");
+                throw new OWLException($"Cannot create OWLEquivalentObjectProperties because given '{nameof(objectPropertyExpressions)}' parameter contains a null element");
             #endregion
 
             ObjectPropertyExpressions = objectPropertyExpressions;
@@ -56,6 +62,9 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLEquivalentObjectProperties to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
@@ -71,7 +80,7 @@ namespace OWLSharp.Ontology
             //Axiom Triple(s)
             List<RDFTriple> axiomTriples = new List<RDFTriple>();
             for (int i = 0; i < ObjectPropertyExpressions.Count - 1; i++)
-                for (int j = i + 1; j < ObjectPropertyExpressions.Count; j++)
+                for (int j = i+1; j < ObjectPropertyExpressions.Count; j++)
                 {
                     RDFTriple axiomTriple = new RDFTriple(objPropIRIs[i], RDFVocabulary.OWL.EQUIVALENT_PROPERTY, objPropIRIs[j]);
                     axiomTriples.Add(axiomTriple);

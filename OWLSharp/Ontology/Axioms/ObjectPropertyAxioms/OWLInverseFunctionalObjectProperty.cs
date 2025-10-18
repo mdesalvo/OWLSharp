@@ -31,22 +31,36 @@ namespace OWLSharp.Ontology
     public sealed class OWLInverseFunctionalObjectProperty : OWLObjectPropertyAxiom
     {
         #region Properties
-        //Register here all derived types of OWLObjectPropertyExpression
+        /// <summary>
+        /// The object property expression asserted to have inverse functional behavior (e.g: http://example.org/hasSSN)
+        /// </summary>
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=2)]
         [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=2)]
         public OWLObjectPropertyExpression ObjectPropertyExpression { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLInverseFunctionalObjectProperty()
-        { }
+        internal OWLInverseFunctionalObjectProperty() { }
+ 
+        /// <summary>
+        /// Builds an OWLInverseFunctionalObjectProperty with the given object property
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLInverseFunctionalObjectProperty(OWLObjectProperty objectProperty) : this()
-            => ObjectPropertyExpression = objectProperty ?? throw new OWLException("Cannot create OWLInverseFunctionalObjectProperty because given \"objectProperty\" parameter is null");
+            => ObjectPropertyExpression = objectProperty ?? throw new OWLException($"Cannot create OWLInverseFunctionalObjectProperty because given '{nameof(objectProperty)}' parameter is null");
+
+        /// <summary>
+        /// Builds an OWLInverseFunctionalObjectProperty with the given anonymous inverse property
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLInverseFunctionalObjectProperty(OWLObjectInverseOf objectInverseOf) : this()
-            => ObjectPropertyExpression = objectInverseOf ?? throw new OWLException("Cannot create OWLInverseFunctionalObjectProperty because given \"objectInverseOf\" parameter is null");
+            => ObjectPropertyExpression = objectInverseOf ?? throw new OWLException($"Cannot create OWLInverseFunctionalObjectProperty because given '{nameof(objectInverseOf)}' parameter is null");
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLInverseFunctionalObjectProperty to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();

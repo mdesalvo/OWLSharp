@@ -30,22 +30,36 @@ namespace OWLSharp.Ontology
     public sealed class OWLSymmetricObjectProperty : OWLObjectPropertyAxiom
     {
         #region Properties
-        //Register here all derived types of OWLObjectPropertyExpression
+        /// <summary>
+        /// The object property expression asserted to have symmetric behavior (e.g: http://example.org/isSiblingOf)
+        /// </summary>
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=2)]
         [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=2)]
         public OWLObjectPropertyExpression ObjectPropertyExpression { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLSymmetricObjectProperty()
-        { }
+        internal OWLSymmetricObjectProperty() { }
+
+        /// <summary>
+        /// Builds an OWLSymmetricObjectProperty with the given object property
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLSymmetricObjectProperty(OWLObjectProperty objectProperty) : this()
-            => ObjectPropertyExpression = objectProperty ?? throw new OWLException("Cannot create OWLSymmetricObjectProperty because given \"objectProperty\" parameter is null");
+            => ObjectPropertyExpression = objectProperty ?? throw new OWLException($"Cannot create OWLSymmetricObjectProperty because given '{nameof(objectProperty)}' parameter is null");
+
+        /// <summary>
+        /// Builds an OWLSymmetricObjectProperty with the given anonymous inverse property
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLSymmetricObjectProperty(OWLObjectInverseOf objectInverseOf) : this()
-            => ObjectPropertyExpression = objectInverseOf ?? throw new OWLException("Cannot create OWLSymmetricObjectProperty because given \"objectInverseOf\" parameter is null");
+            => ObjectPropertyExpression = objectInverseOf ?? throw new OWLException($"Cannot create OWLSymmetricObjectProperty because given '{nameof(objectInverseOf)}' parameter is null");
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLSymmetricObjectProperty to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();

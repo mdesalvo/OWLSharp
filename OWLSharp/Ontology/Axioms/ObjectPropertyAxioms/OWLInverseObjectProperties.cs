@@ -30,28 +30,39 @@ namespace OWLSharp.Ontology
     public sealed class OWLInverseObjectProperties : OWLObjectPropertyAxiom
     {
         #region Properties
-        //Register here all derived types of OWLObjectPropertyExpression
+        /// <summary>
+        /// Represents the object property expression involved at "left" side of the relation (e.g: http://example.org/hasParent)
+        /// </summary>
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=2)]
         [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=2)]
         public OWLObjectPropertyExpression LeftObjectPropertyExpression { get; set; }
 
-        //Register here all derived types of OWLObjectPropertyExpression
+        /// <summary>
+        /// Represents the object property expression involved at "right" side of the relation (e.g: http://example.org/hasChild)
+        /// </summary>
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=3)]
         [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=3)]
         public OWLObjectPropertyExpression RightObjectPropertyExpression { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLInverseObjectProperties()
-        { }
+        internal OWLInverseObjectProperties() { }
+
+        /// <summary>
+        /// Builds an OWLInverseObjectProperties with the given "left" and "right" object property expressions
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLInverseObjectProperties(OWLObjectPropertyExpression leftObjectPropertyExpression, OWLObjectPropertyExpression rightObjectPropertyExpression) : this()
         {
-            LeftObjectPropertyExpression = leftObjectPropertyExpression ?? throw new OWLException("Cannot create OWLInverseObjectProperties because given \"leftObjectPropertyExpression\" parameter is null");
-            RightObjectPropertyExpression = rightObjectPropertyExpression ?? throw new OWLException("Cannot create OWLInverseObjectProperties because given \"rightObjectPropertyExpression\" parameter is null");
+            LeftObjectPropertyExpression = leftObjectPropertyExpression ?? throw new OWLException($"Cannot create OWLInverseObjectProperties because given '{nameof(leftObjectPropertyExpression)}' parameter is null");
+            RightObjectPropertyExpression = rightObjectPropertyExpression ?? throw new OWLException($"Cannot create OWLInverseObjectProperties because given '{nameof(rightObjectPropertyExpression)}' parameter is null");
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLInverseObjectProperties to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();

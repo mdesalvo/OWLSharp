@@ -30,22 +30,36 @@ namespace OWLSharp.Ontology
     public sealed class OWLTransitiveObjectProperty : OWLObjectPropertyAxiom
     {
         #region Properties
-        //Register here all derived types of OWLObjectPropertyExpression
+        /// <summary>
+        /// The object property expression asserted to have transitive behavior (e.g: http://example.org/hasAncestor)
+        /// </summary>
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=2)]
         [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=2)]
         public OWLObjectPropertyExpression ObjectPropertyExpression { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLTransitiveObjectProperty()
-        { }
+        internal OWLTransitiveObjectProperty() { }
+
+        /// <summary>
+        /// Builds an OWLTransitiveObjectProperty with the given object property
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLTransitiveObjectProperty(OWLObjectProperty objectProperty) : this()
-           => ObjectPropertyExpression = objectProperty ?? throw new OWLException("Cannot create OWLTransitiveObjectProperty because given \"objectProperty\" parameter is null");
+           => ObjectPropertyExpression = objectProperty ?? throw new OWLException($"Cannot create OWLTransitiveObjectProperty because given '{nameof(objectProperty)}' parameter is null");
+
+        /// <summary>
+        /// Builds an OWLTransitiveObjectProperty with the given anonymous inverse property
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLTransitiveObjectProperty(OWLObjectInverseOf objectInverseOf) : this()
-            => ObjectPropertyExpression = objectInverseOf ?? throw new OWLException("Cannot create OWLTransitiveObjectProperty because given \"objectInverseOf\" parameter is null");
+            => ObjectPropertyExpression = objectInverseOf ?? throw new OWLException($"Cannot create OWLTransitiveObjectProperty because given '{nameof(objectInverseOf)}' parameter is null");
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLTransitiveObjectProperty to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();

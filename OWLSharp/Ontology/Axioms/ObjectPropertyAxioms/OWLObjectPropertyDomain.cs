@@ -30,12 +30,16 @@ namespace OWLSharp.Ontology
     public sealed class OWLObjectPropertyDomain : OWLObjectPropertyAxiom
     {
         #region Properties
-        //Register here all derived types of OWLObjectPropertyExpression
+        /// <summary>
+        /// Represents the property used for this object axiom (e.g: http://example.org/hasChild)
+        /// </summary>
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=2)]
         [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=2)]
         public OWLObjectPropertyExpression ObjectPropertyExpression { get; set; }
 
-        //Register here all derived types of OWLClassExpression
+        /// <summary>
+        /// Represents the class expression asserted to be domain of the object property expression (e.g: http://example.org/Person)
+        /// </summary>
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=3)]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=3)]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=3)]
@@ -58,17 +62,23 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLObjectPropertyDomain()
-        { }
-        internal OWLObjectPropertyDomain(OWLClassExpression classExpression) : this()
-            => ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectPropertyDomain because given \"classExpression\" parameter is null");
-        public OWLObjectPropertyDomain(OWLObjectProperty objectProperty, OWLClassExpression classExpression) : this(classExpression)
-            => ObjectPropertyExpression = objectProperty ?? throw new OWLException("Cannot create OWLObjectPropertyDomain because given \"objectProperty\" parameter is null");
-        public OWLObjectPropertyDomain(OWLObjectInverseOf objectInverseOf, OWLClassExpression classExpression) : this(classExpression)
-            => ObjectPropertyExpression = objectInverseOf ?? throw new OWLException("Cannot create OWLObjectPropertyDomain because given \"objectInverseOf\" parameter is null");
+        internal OWLObjectPropertyDomain() { }
+
+        /// <summary>
+        /// Builds an OWLObjectPropertyDomain with the given object property expression and class expression as domain
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
+        public OWLObjectPropertyDomain(OWLObjectPropertyExpression objectPropertyExpression, OWLClassExpression classExpression) : this()
+        {
+            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException($"Cannot create OWLObjectPropertyDomain because given '{nameof(objectPropertyExpression)}' parameter is null");
+            ClassExpression = classExpression ?? throw new OWLException($"Cannot create OWLObjectPropertyDomain because given '{nameof(classExpression)}' parameter is null");
+        }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLObjectPropertyDomain to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();

@@ -32,24 +32,30 @@ namespace OWLSharp.Ontology
     public sealed class OWLDisjointObjectProperties : OWLObjectPropertyAxiom
     {
         #region Properties
-        //Register here all derived types of OWLObjectPropertyExpression
+        /// <summary>
+        /// The set of object property expressions asserted to be pairwise disjoint (e.g: http://example.org/hasParent, http://example.org/hasChild)
+        /// </summary>
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=2)]
         [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=2)]
         public List<OWLObjectPropertyExpression> ObjectPropertyExpressions { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLDisjointObjectProperties()
-        { }
+        internal OWLDisjointObjectProperties() { }
+
+        /// <summary>
+        /// Builds an OWLDisjointObjectProperties with the given set of pairwise disjoint object property expressions (must be at least 2)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDisjointObjectProperties(List<OWLObjectPropertyExpression> objectPropertyExpressions) : this()
         {
             #region Guards
             if (objectPropertyExpressions == null)
-                throw new OWLException("Cannot create OWLDisjointObjectProperties because given \"objectPropertyExpressions\" parameter is null");
+                throw new OWLException($"Cannot create OWLDisjointObjectProperties because given '{nameof(objectPropertyExpressions)}' parameter is null");
             if (objectPropertyExpressions.Count < 2)
-                throw new OWLException("Cannot create OWLDisjointObjectProperties because given \"objectPropertyExpressions\" parameter must contain at least 2 elements");
+                throw new OWLException($"Cannot create OWLDisjointObjectProperties because given '{nameof(objectPropertyExpressions)}' parameter must contain at least 2 elements");
             if (objectPropertyExpressions.Any(ope => ope == null))
-                throw new OWLException("Cannot create OWLDisjointObjectProperties because given \"objectPropertyExpressions\" parameter contains a null element");
+                throw new OWLException($"Cannot create OWLDisjointObjectProperties because given '{nameof(objectPropertyExpressions)}' parameter contains a null element");
             #endregion
 
             ObjectPropertyExpressions = objectPropertyExpressions;
@@ -57,11 +63,14 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLDisjointObjectProperties to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
 
-            //propertyDisjointWith
+            //owl:propertyDisjointWith
             if (ObjectPropertyExpressions.Count == 2)
             {
                 RDFResource leftObjPropExpressionIRI = ObjectPropertyExpressions[0].GetIRI();
@@ -78,7 +87,7 @@ namespace OWLSharp.Ontology
                     graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
             }
 
-            //AllDisjointProperties
+            //owl:AllDisjointProperties
             else
             {
                 RDFResource allDisjointPropertiesIRI = new RDFResource();
