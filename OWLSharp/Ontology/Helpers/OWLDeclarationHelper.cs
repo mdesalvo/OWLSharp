@@ -29,19 +29,19 @@ namespace OWLSharp.Ontology
         /// Enlists the given type of declaration axiom from the T-BOX/A-BOX of the given ontology
         /// </summary>
         public static List<OWLDeclaration> GetDeclarationAxiomsOfType<T>(this OWLOntology ontology) where T : OWLExpression, IOWLEntity
-            => ontology?.DeclarationAxioms.Where(ax => ax.Expression is T).ToList() ?? new List<OWLDeclaration>();
+            => ontology?.DeclarationAxioms.Where(ax => ax.Entity is T).ToList() ?? new List<OWLDeclaration>();
 
         /// <summary>
         /// Enlists the given type of entity declaration from the T-BOX/A-BOX of the given ontology
         /// </summary>
         public static List<T> GetDeclaredEntitiesOfType<T>(this OWLOntology ontology) where T : OWLExpression, IOWLEntity
-            => ontology?.GetDeclarationAxiomsOfType<T>().ConvertAll(ax => (T)ax.Expression) ?? new List<T>();
+            => ontology?.GetDeclarationAxiomsOfType<T>().ConvertAll(ax => (T)ax.Entity) ?? new List<T>();
 
         /// <summary>
         /// Checks if the given ontology has the given entity declaration in its T-BOX/A-BOX
         /// </summary>
         public static bool CheckHasEntity<T>(this OWLOntology ontology, T entity) where T : OWLExpression, IOWLEntity
-            => GetDeclarationAxiomsOfType<T>(ontology).Any(ax => ax.Expression.GetIRI().Equals(entity?.GetIRI()));
+            => GetDeclarationAxiomsOfType<T>(ontology).Any(ax => ax.Entity.GetIRI().Equals(entity?.GetIRI()));
 
         /// <summary>
         /// Declares the given entity to the T-BOX/A-BOX of the given ontology
@@ -55,7 +55,7 @@ namespace OWLSharp.Ontology
             #endregion
 
             if (!CheckHasEntity(ontology, entityIRI))
-                ontology?.DeclarationAxioms.Add(new OWLDeclaration { Expression = entityIRI });
+                ontology?.DeclarationAxioms.Add(new OWLDeclaration { Entity = entityIRI });
         }
         #endregion
     }

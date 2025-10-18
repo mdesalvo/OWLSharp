@@ -30,7 +30,7 @@ public class OWLDeclarationTest
         OWLDeclaration declaration = new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT));
 
         Assert.IsNotNull(declaration);
-        Assert.IsTrue(declaration.Expression is OWLClass cls && string.Equals(cls.IRI, "http://xmlns.com/foaf/0.1/Agent"));
+        Assert.IsTrue(declaration.Entity is OWLClass cls && string.Equals(cls.IRI, "http://xmlns.com/foaf/0.1/Agent"));
     }
 
     [TestMethod]
@@ -50,7 +50,7 @@ public class OWLDeclarationTest
             """<Declaration><Class IRI="http://xmlns.com/foaf/0.1/Agent" /></Declaration>""");
 
         Assert.IsNotNull(declaration);
-        Assert.IsTrue(declaration.Expression is OWLClass cls && string.Equals(cls.IRI, "http://xmlns.com/foaf/0.1/Agent"));
+        Assert.IsTrue(declaration.Entity is OWLClass cls && string.Equals(cls.IRI, "http://xmlns.com/foaf/0.1/Agent"));
     }
 
     [TestMethod]
@@ -63,7 +63,7 @@ public class OWLDeclarationTest
         OWLDeclaration declaration = new OWLDeclaration(new OWLDatatype(RDFVocabulary.XSD.INT));
 
         Assert.IsNotNull(declaration);
-        Assert.IsTrue(declaration.Expression is OWLDatatype dt && string.Equals(dt.IRI, "http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(declaration.Entity is OWLDatatype dt && string.Equals(dt.IRI, "http://www.w3.org/2001/XMLSchema#int"));
     }
 
     [TestMethod]
@@ -83,7 +83,7 @@ public class OWLDeclarationTest
             """<Declaration><Datatype IRI="http://www.w3.org/2001/XMLSchema#int" /></Declaration>""");
 
         Assert.IsNotNull(declaration);
-        Assert.IsTrue(declaration.Expression is OWLDatatype dt && string.Equals(dt.IRI, "http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(declaration.Entity is OWLDatatype dt && string.Equals(dt.IRI, "http://www.w3.org/2001/XMLSchema#int"));
     }
 
     [TestMethod]
@@ -96,7 +96,7 @@ public class OWLDeclarationTest
         OWLDeclaration declaration = new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
 
         Assert.IsNotNull(declaration);
-        Assert.IsTrue(declaration.Expression is OWLObjectProperty objProp && string.Equals(objProp.IRI, "http://xmlns.com/foaf/0.1/knows"));
+        Assert.IsTrue(declaration.Entity is OWLObjectProperty objProp && string.Equals(objProp.IRI, "http://xmlns.com/foaf/0.1/knows"));
     }
 
     [TestMethod]
@@ -116,7 +116,7 @@ public class OWLDeclarationTest
             """<Declaration><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></Declaration>""");
 
         Assert.IsNotNull(declaration);
-        Assert.IsTrue(declaration.Expression is OWLObjectProperty objProp && string.Equals(objProp.IRI, "http://xmlns.com/foaf/0.1/knows"));
+        Assert.IsTrue(declaration.Entity is OWLObjectProperty objProp && string.Equals(objProp.IRI, "http://xmlns.com/foaf/0.1/knows"));
     }
 
     [TestMethod]
@@ -129,7 +129,7 @@ public class OWLDeclarationTest
         OWLDeclaration declaration = new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE));
 
         Assert.IsNotNull(declaration);
-        Assert.IsTrue(declaration.Expression is OWLDataProperty dtProp && string.Equals(dtProp.IRI, "http://xmlns.com/foaf/0.1/age"));
+        Assert.IsTrue(declaration.Entity is OWLDataProperty dtProp && string.Equals(dtProp.IRI, "http://xmlns.com/foaf/0.1/age"));
     }
 
     [TestMethod]
@@ -149,7 +149,7 @@ public class OWLDeclarationTest
             """<Declaration><DataProperty IRI="http://xmlns.com/foaf/0.1/age" /></Declaration>""");
 
         Assert.IsNotNull(declaration);
-        Assert.IsTrue(declaration.Expression is OWLDataProperty dtProp && string.Equals(dtProp.IRI, "http://xmlns.com/foaf/0.1/age"));
+        Assert.IsTrue(declaration.Entity is OWLDataProperty dtProp && string.Equals(dtProp.IRI, "http://xmlns.com/foaf/0.1/age"));
     }
 
     [TestMethod]
@@ -162,7 +162,7 @@ public class OWLDeclarationTest
         OWLDeclaration declaration = new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.CREATOR));
 
         Assert.IsNotNull(declaration);
-        Assert.IsTrue(declaration.Expression is OWLAnnotationProperty annProp && string.Equals(annProp.IRI, "http://purl.org/dc/elements/1.1/creator"));
+        Assert.IsTrue(declaration.Entity is OWLAnnotationProperty annProp && string.Equals(annProp.IRI, "http://purl.org/dc/elements/1.1/creator"));
     }
 
     [TestMethod]
@@ -182,7 +182,7 @@ public class OWLDeclarationTest
             """<Declaration><AnnotationProperty IRI="http://purl.org/dc/elements/1.1/creator" /></Declaration>""");
 
         Assert.IsNotNull(declaration);
-        Assert.IsTrue(declaration.Expression is OWLAnnotationProperty annProp && string.Equals(annProp.IRI, "http://purl.org/dc/elements/1.1/creator"));
+        Assert.IsTrue(declaration.Entity is OWLAnnotationProperty annProp && string.Equals(annProp.IRI, "http://purl.org/dc/elements/1.1/creator"));
     }
 
     [TestMethod]
@@ -195,7 +195,7 @@ public class OWLDeclarationTest
         OWLDeclaration declaration = new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark")));
 
         Assert.IsNotNull(declaration);
-        Assert.IsTrue(declaration.Expression is OWLNamedIndividual nIdv && string.Equals(nIdv.IRI, "ex:Mark"));
+        Assert.IsTrue(declaration.Entity is OWLNamedIndividual nIdv && string.Equals(nIdv.IRI, "ex:Mark"));
     }
 
     [TestMethod]
@@ -215,7 +215,7 @@ public class OWLDeclarationTest
             """<Declaration><NamedIndividual IRI="ex:Mark" /></Declaration>""");
 
         Assert.IsNotNull(declaration);
-        Assert.IsTrue(declaration.Expression is OWLNamedIndividual nIdv && string.Equals(nIdv.IRI, "ex:Mark"));
+        Assert.IsTrue(declaration.Entity is OWLNamedIndividual nIdv && string.Equals(nIdv.IRI, "ex:Mark"));
     }
 
     [TestMethod]

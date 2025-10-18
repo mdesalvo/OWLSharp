@@ -28,7 +28,7 @@ namespace OWLSharp.Reasoner
             if (ontology.GetAssertionAxiomsOfType<OWLDifferentIndividuals>().Count > 0)
             {
                 foreach (OWLNamedIndividual declaredNamedIndividual in ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>()
-                                                                               .Select(ax => (OWLNamedIndividual)ax.Expression))
+                                                                               .Select(ax => (OWLNamedIndividual)ax.Entity))
                   foreach (OWLIndividualExpression differentIdvExpr in ontology.GetDifferentIndividuals(declaredNamedIndividual))
                   {
                       OWLDifferentIndividuals inference = new OWLDifferentIndividuals(new List<OWLIndividualExpression> { declaredNamedIndividual, differentIdvExpr }) { IsInference=true };

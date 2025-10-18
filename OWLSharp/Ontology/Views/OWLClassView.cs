@@ -87,7 +87,7 @@ namespace OWLSharp.Ontology
         /// </summary>
         public Task<List<OWLNamedIndividual>> NegativeIndividualsAsync()
             => Task.Run(() => Ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>()
-                                      .Select(dax => (OWLNamedIndividual)dax.Expression)
+                                      .Select(dax => (OWLNamedIndividual)dax.Entity)
                                       .Where(idv => Ontology.CheckIsNegativeIndividualOf(Class, idv))
                                       .ToList());
 

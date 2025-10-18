@@ -30,10 +30,15 @@ namespace OWLSharp.Ontology
     public sealed class OWLDatatypeDefinition : OWLAxiom
     {
         #region Properties
+        /// <summary>
+        /// Represents the datatype defined with this axiom (e.g: http://example.org/AdultAge)
+        /// </summary>
         [XmlElement(Order=2)]
         public OWLDatatype Datatype { get; set; }
 
-        //Register here all derived types of OWLDataRangeExpression
+        /// <summary>
+        /// Represents the datarange expression constraining the datatype to a specific behavior (e.g: DataRangeRestriction(xsd:integer minInclusive "18"))
+        /// </summary>
         [XmlElement(typeof(OWLDatatype), ElementName="Datatype", Order=3)]
         [XmlElement(typeof(OWLDataIntersectionOf), ElementName="DataIntersectionOf", Order=3)]
         [XmlElement(typeof(OWLDataUnionOf), ElementName="DataUnionOf", Order=3)]
@@ -44,16 +49,23 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLDatatypeDefinition()
-        { }
-        public OWLDatatypeDefinition(OWLDatatype datatypeIRI, OWLDataRangeExpression dataRangeExpression) : this()
+        internal OWLDatatypeDefinition() { }
+
+        /// <summary>
+        /// Builds an OWLDatatypeDefinition with the given datatype and constraining datarange expression
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
+        public OWLDatatypeDefinition(OWLDatatype datatype, OWLDataRangeExpression dataRangeExpression) : this()
         {
-            Datatype = datatypeIRI ?? throw new OWLException("Cannot create OWLDatatypeDefinition because given \"datatypeIRI\" parameter is null");
-            DataRangeExpression = dataRangeExpression ?? throw new OWLException("Cannot create OWLDatatypeDefinition because given \"dataRangeExpression\" parameter is null");
+            Datatype = datatype ?? throw new OWLException($"Cannot create OWLDatatypeDefinition because given {nameof(datatype)} parameter is null");
+            DataRangeExpression = dataRangeExpression ?? throw new OWLException($"Cannot create OWLDatatypeDefinition because given '{nameof(dataRangeExpression)}' parameter is null");
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLDatatypeDefinition to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();

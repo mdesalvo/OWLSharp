@@ -26,7 +26,7 @@ namespace OWLSharp.Reasoner
             List<OWLInference> inferences = new List<OWLInference>();
 
             foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
-                                                                         .Select(ax => (OWLObjectProperty)ax.Expression))
+                                                                         .Select(ax => (OWLObjectProperty)ax.Entity))
             {
                 List<OWLObjectPropertyExpression> disjointObjectPropertyExpressions = ontology.GetDisjointObjectProperties(declaredObjectProperty);
                 foreach (OWLObjectProperty disjointObjectProperty in disjointObjectPropertyExpressions.OfType<OWLObjectProperty>())

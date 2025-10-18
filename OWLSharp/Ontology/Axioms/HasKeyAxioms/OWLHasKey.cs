@@ -32,7 +32,9 @@ namespace OWLSharp.Ontology
     public sealed class OWLHasKey : OWLAxiom
     {
         #region Properties
-        //Register here all derived types of OWLClassExpression
+        /// <summary>
+        /// Represents the class expression on which the key property is defines (e.g: http://example.org/Person)
+        /// </summary>
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=2)]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=2)]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=2)]
@@ -53,34 +55,65 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLDataExactCardinality), ElementName="DataExactCardinality", Order=2)]
         public OWLClassExpression ClassExpression { get; set; }
 
-        //Register here all derived types of OWLObjectPropertyExpression
+        /// <summary>
+        /// Represents the set of object property expressions whose target individuals uniquely identify the class (e.g: http://example.org/HasIRI)
+        /// </summary>
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=3)]
         [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=3)]
         public List<OWLObjectPropertyExpression> ObjectPropertyExpressions { get; set; }
 
+        /// <summary>
+        /// Represents the set of data properties whose target literal values uniquely identify the class (e.g: http://example.org/hasSSN)
+        /// </summary>
         [XmlElement(ElementName="DataProperty", Order=4)]
         public List<OWLDataProperty> DataProperties { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLHasKey()
-        { }
-        public OWLHasKey(OWLClassExpression classExpression, List<OWLObjectPropertyExpression> objectPropertyExpressions, List<OWLDataProperty> dataProperties) : this()
+        internal OWLHasKey() { }
+
+        /// <summary>
+        /// Builds an OWLHasKey with the given class expression
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
+        internal OWLHasKey(OWLClassExpression classExpression) : this()
+            => ClassExpression = classExpression ?? throw new OWLException($"Cannot create OWLHasKey because given '{nameof(classExpression)}' parameter is null");
+
+        /// <summary>
+        /// Builds an OWLHasKey with the given class expression and given set of identifying object property expressions
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
+        public OWLHasKey(OWLClassExpression classExpression, List<OWLObjectPropertyExpression> objectPropertyExpressions) : this(classExpression)
         {
             #region Guards
             if (objectPropertyExpressions?.Any(ope => ope == null) ?? false)
-                throw new OWLException("Cannot create OWLHasKey because given \"objectPropertyExpressions\" parameter contains a null element");
-            if (dataProperties?.Any(dp => dp == null) ?? false)
-                throw new OWLException("Cannot create OWLHasKey because given \"dataProperties\" parameter contains a null element");
+                throw new OWLException($"Cannot create OWLHasKey because given '{nameof(objectPropertyExpressions)}' parameter contains a null element");
             #endregion
 
-            ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLHasKey because given \"classExpression\" parameter is null");
             ObjectPropertyExpressions = objectPropertyExpressions ?? new List<OWLObjectPropertyExpression>();
+            DataProperties = new List<OWLDataProperty>();
+        }
+        
+        /// <summary>
+        /// Builds an OWLHasKey with the given class expression and given set of identifying data properties
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
+        public OWLHasKey(OWLClassExpression classExpression, List<OWLDataProperty> dataProperties) : this(classExpression)
+        {
+            #region Guards
+            if (dataProperties?.Any(dp => dp == null) ?? false)
+                throw new OWLException($"Cannot create OWLHasKey because given '{nameof(dataProperties)}' parameter contains a null element");
+            #endregion
+
+            ObjectPropertyExpressions = new List<OWLObjectPropertyExpression>();
             DataProperties = dataProperties ?? new List<OWLDataProperty>();
         }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLHasKey to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();

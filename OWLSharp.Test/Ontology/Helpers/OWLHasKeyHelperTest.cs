@@ -30,21 +30,27 @@ public class OWLHasKeyHelperTest
         OWLOntology ontology = new OWLOntology();
         ontology.DeclareHasKey(new OWLHasKey(
             new OWLClass(RDFVocabulary.FOAF.AGENT),
-            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
+            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)]));
+        ontology.DeclareHasKey(new OWLHasKey(
+            new OWLClass(RDFVocabulary.FOAF.AGENT),
             [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]));
 
-        Assert.HasCount(1, ontology.KeyAxioms);
+        Assert.HasCount(2, ontology.KeyAxioms);
         Assert.IsTrue(ontology.CheckHasKey(new OWLHasKey(
             new OWLClass(RDFVocabulary.FOAF.AGENT),
-            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
+            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)])));
+        Assert.IsTrue(ontology.CheckHasKey(new OWLHasKey(
+            new OWLClass(RDFVocabulary.FOAF.AGENT),
             [new OWLDataProperty(RDFVocabulary.FOAF.AGE)])));
         Assert.ThrowsExactly<OWLException>(() => ontology.DeclareHasKey(null));
 
         ontology.DeclareHasKey(new OWLHasKey(
             new OWLClass(RDFVocabulary.FOAF.AGENT),
-            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
+            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)])); //will be discarded, since duplicates are not allowed
+        ontology.DeclareHasKey(new OWLHasKey(
+            new OWLClass(RDFVocabulary.FOAF.AGENT),
             [new OWLDataProperty(RDFVocabulary.FOAF.AGE)])); //will be discarded, since duplicates are not allowed
-        Assert.HasCount(1, ontology.KeyAxioms);
+        Assert.HasCount(2, ontology.KeyAxioms);
     }
     #endregion
 }

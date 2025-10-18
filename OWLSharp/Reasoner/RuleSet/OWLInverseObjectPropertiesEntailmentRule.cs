@@ -32,7 +32,7 @@ namespace OWLSharp.Reasoner
             //InverseObjectProperties(OP,IOP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ObjectPropertyAssertion(IOP,IDV2,IDV1)
             //InverseObjectProperties(OP,IOP) ^ EquivalentObjectProperties(IOP,IOP2) -> InverseObjectProperties(OP,IOP2)
             foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
-                                                                         .Select(ax => (OWLObjectProperty)ax.Expression))
+                                                                         .Select(ax => (OWLObjectProperty)ax.Entity))
             {
                 //Extract inverse object properties of the current object property
                 List<(bool,OWLObjectPropertyExpression)> invsOfDeclaredObjectProperty = GetInverseObjectProperties(ontology, declaredObjectProperty, invObjProps);

@@ -40,8 +40,7 @@ public class OWLHasKeyAnalysisRuleTest
             KeyAxioms = [
                 new OWLHasKey(
                     new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
-                    [ new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")) ],
-                    null
+                    [ new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")) ]
                 )
             ],
             AssertionAxioms = [
@@ -112,7 +111,6 @@ public class OWLHasKeyAnalysisRuleTest
             KeyAxioms = [
                 new OWLHasKey(
                     new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
-                    null,
                     [ new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")) ]
                 )
             ],

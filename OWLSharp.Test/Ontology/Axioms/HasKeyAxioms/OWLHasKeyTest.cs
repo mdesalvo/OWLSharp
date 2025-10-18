@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
@@ -26,33 +27,55 @@ public class OWLHasKeyTest
 {
     #region Tests
     [TestMethod]
-    public void ShouldCreateHasKey()
+    public void ShouldCreateHasKeyWithObjectProperty()
     {
         OWLHasKey hasKey = new OWLHasKey(
             new OWLClass(RDFVocabulary.FOAF.AGENT),
-            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
-            [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]);
+            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)]);
 
         Assert.IsNotNull(hasKey);
         Assert.IsTrue(hasKey.ClassExpression is OWLClass cls
                       && string.Equals(cls.IRI, "http://xmlns.com/foaf/0.1/Agent"));
         Assert.IsTrue(hasKey.ObjectPropertyExpressions.Single() is OWLObjectProperty objProp
                       && string.Equals(objProp.IRI, "http://xmlns.com/foaf/0.1/knows"));
+    }
+    
+    [TestMethod]
+    public void ShouldCreateHasKeyWithDataProperty()
+    {
+        OWLHasKey hasKey = new OWLHasKey(
+            new OWLClass(RDFVocabulary.FOAF.AGENT),
+            [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]);
+
+        Assert.IsNotNull(hasKey);
+        Assert.IsTrue(hasKey.ClassExpression is OWLClass cls
+                      && string.Equals(cls.IRI, "http://xmlns.com/foaf/0.1/Agent"));
         Assert.IsTrue(hasKey.DataProperties.Single() is { } dtProp
                       && string.Equals(dtProp.IRI, "http://xmlns.com/foaf/0.1/age"));
     }
 
     [TestMethod]
-    public void ShouldSerializeHasKey()
+    public void ShouldSerializeHasKeyWithObjectProperty()
     {
         OWLHasKey hasKey = new OWLHasKey(
             new OWLClass(RDFVocabulary.FOAF.AGENT),
-            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLObjectProperty(RDFVocabulary.FOAF.FOCUS)],
+            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLObjectProperty(RDFVocabulary.FOAF.FOCUS)]);
+        string serializedXML = OWLSerializer.SerializeObject(hasKey);
+
+        Assert.IsTrue(string.Equals(serializedXML,
+            """<HasKey><Class IRI="http://xmlns.com/foaf/0.1/Agent" /><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><ObjectProperty IRI="http://xmlns.com/foaf/0.1/focus" /></HasKey>"""));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeHasKeyWithDataProperty()
+    {
+        OWLHasKey hasKey = new OWLHasKey(
+            new OWLClass(RDFVocabulary.FOAF.AGENT),
             [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]);
         string serializedXML = OWLSerializer.SerializeObject(hasKey);
 
         Assert.IsTrue(string.Equals(serializedXML,
-            """<HasKey><Class IRI="http://xmlns.com/foaf/0.1/Agent" /><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><ObjectProperty IRI="http://xmlns.com/foaf/0.1/focus" /><DataProperty IRI="http://xmlns.com/foaf/0.1/age" /></HasKey>"""));
+            """<HasKey><Class IRI="http://xmlns.com/foaf/0.1/Agent" /><DataProperty IRI="http://xmlns.com/foaf/0.1/age" /></HasKey>"""));
     }
 
     [TestMethod]
@@ -76,41 +99,51 @@ public class OWLHasKeyTest
     public void ShouldThrowExceptionOnCreatingHasKeyBecauseNullClassExpression()
         => Assert.ThrowsExactly<OWLException>(() => _ = new OWLHasKey(
             null,
-            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
-            [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]));
+            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)]));
 
     [TestMethod]
     public void ShouldThrowExceptionOnCreatingHasKeyBecauseFoundNullObjectPropertyExpression()
         => Assert.ThrowsExactly<OWLException>(() => _ = new OWLHasKey(
-            new OWLClass(RDFVocabulary.FOAF.AGENT),
-            [null],
-            [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]));
+            new OWLClass(RDFVocabulary.FOAF.AGENT), new List<OWLObjectPropertyExpression> { null }));
 
     [TestMethod]
     public void ShouldThrowExceptionOnCreatingHasKeyBecauseFoundNullDataPropertyExpression()
         => Assert.ThrowsExactly<OWLException>(() => _ = new OWLHasKey(
-            new OWLClass(RDFVocabulary.FOAF.AGENT),
-            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
-            [null]));
+            new OWLClass(RDFVocabulary.FOAF.AGENT), new List<OWLDataProperty> { null}));
 
     [TestMethod]
-    public void ShouldConvertHasKeyToGraph()
+    public void ShouldConvertHasKeyWithObjectPropertyToGraph()
     {
         OWLHasKey hasKey = new OWLHasKey(
             new OWLClass(RDFVocabulary.FOAF.AGENT),
-            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
+            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)]);
+        RDFGraph graph = hasKey.ToRDFGraph();
+
+        Assert.IsNotNull(graph);
+        Assert.AreEqual(6, graph.TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.HAS_KEY, null, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.KNOWS, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount);
+        Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount);
+    }
+
+    [TestMethod]
+    public void ShouldConvertHasKeyWithDataPropertyToGraph()
+    {
+        OWLHasKey hasKey = new OWLHasKey(
+            new OWLClass(RDFVocabulary.FOAF.AGENT),
             [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]);
         RDFGraph graph = hasKey.ToRDFGraph();
 
         Assert.IsNotNull(graph);
-        Assert.AreEqual(10, graph.TriplesCount);
+        Assert.AreEqual(6, graph.TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.HAS_KEY, null, null].TriplesCount);
-        Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount);
-        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.KNOWS, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.AGE, null].TriplesCount);
-        Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount);
-        Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount);
         Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount);
     }
 
@@ -119,8 +152,7 @@ public class OWLHasKeyTest
     {
         OWLHasKey hasKey = new OWLHasKey(
             new OWLClass(RDFVocabulary.FOAF.AGENT),
-            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
-            [new OWLDataProperty(RDFVocabulary.FOAF.AGE)])
+            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)])
         {
             Annotations = [
                 new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
@@ -129,15 +161,13 @@ public class OWLHasKeyTest
         RDFGraph graph = hasKey.ToRDFGraph();
 
         Assert.IsNotNull(graph);
-        Assert.AreEqual(16, graph.TriplesCount);
-        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
-        Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.HAS_KEY, null, null].TriplesCount);
-        Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount);
+        Assert.AreEqual(12, graph.TriplesCount);
+        Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
+        Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.HAS_KEY, null, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.KNOWS, null].TriplesCount);
-        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.AGE, null].TriplesCount);
-        Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount);
         Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount);
-        Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount);
         //Annotations
         Assert.AreEqual(1, graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount);
@@ -152,7 +182,6 @@ public class OWLHasKeyTest
     {
         OWLHasKey hasKey = new OWLHasKey(
             new OWLClass(RDFVocabulary.FOAF.AGENT),
-            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
             [new OWLDataProperty(RDFVocabulary.FOAF.AGE)])
         {
             Annotations = [
@@ -165,14 +194,12 @@ public class OWLHasKeyTest
         RDFGraph graph = hasKey.ToRDFGraph();
 
         Assert.IsNotNull(graph);
-        Assert.AreEqual(22, graph.TriplesCount);
-        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
-        Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.HAS_KEY, null, null].TriplesCount);
-        Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount);
-        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.KNOWS, null].TriplesCount);
+        Assert.AreEqual(18, graph.TriplesCount);
+        Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
+        Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.HAS_KEY, null, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.AGE, null].TriplesCount);
-        Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount);
-        Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount);
         Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount);
         //Annotations+SubAnnotations
         Assert.AreEqual(1, graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);

@@ -28,7 +28,7 @@ namespace OWLSharp.Reasoner
             //EquivalentClasses(C1,C2) ^ DisjointClasses(C2,C3) -> DisjointClasses(C1,C3)
             //SubClassOf(C1,C2) ^ DisjointClasses(C2,C3) -> DisjointClasses(C1,C3)
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
-                                                       .Select(ax => (OWLClass)ax.Expression))
+                                                       .Select(ax => (OWLClass)ax.Entity))
             {
                 foreach (OWLClassExpression disjointClass in ontology.GetDisjointClasses(declaredClass))
                 {

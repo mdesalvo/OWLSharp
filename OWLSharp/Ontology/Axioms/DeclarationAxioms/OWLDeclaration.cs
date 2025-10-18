@@ -31,40 +31,74 @@ namespace OWLSharp.Ontology
     public sealed class OWLDeclaration : OWLAxiom
     {
         #region Properties
-        //Register here all derived types of OWLExpression allowed for declaration
+        /// <summary>
+        /// Represents the ontology entity to be declared (can be a class, a property, a named individual or a datatype)
+        /// </summary>
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=2)]
         [XmlElement(typeof(OWLDatatype), ElementName="Datatype", Order=2)]
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=2)]
         [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=2)]
         [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=2)]
         [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual", Order=2)]
-        public OWLExpression Expression { get; set; }
+        public OWLExpression Entity { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLDeclaration()
-        { }
+        internal OWLDeclaration() { }
+
+        /// <summary>
+        /// Builds an OWLDeclaration with the given class entity
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDeclaration(OWLClass classIRI) : this()
-            => Expression = classIRI ?? throw new OWLException("Cannot create OWLDeclaration because given \"classIRI\" parameter is null");
+            => Entity = classIRI ?? throw new OWLException($"Cannot create OWLDeclaration because given '{nameof(classIRI)}' parameter is null");
+
+        /// <summary>
+        /// Builds an OWLDeclaration with the given datatype entity
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDeclaration(OWLDatatype datatypeIRI) : this()
-            => Expression = datatypeIRI ?? throw new OWLException("Cannot create OWLDeclaration because given \"datatypeIRI\" parameter is null");
+            => Entity = datatypeIRI ?? throw new OWLException($"Cannot create OWLDeclaration because given '{nameof(datatypeIRI)}' parameter is null");
+
+        /// <summary>
+        /// Builds an OWLDeclaration with the given object property entity
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDeclaration(OWLObjectProperty objectPropertyIRI) : this()
-            => Expression = objectPropertyIRI ?? throw new OWLException("Cannot create OWLDeclaration because given \"objectPropertyIRI\" parameter is null");
+            => Entity = objectPropertyIRI ?? throw new OWLException($"Cannot create OWLDeclaration because given '{nameof(objectPropertyIRI)}' parameter is null");
+
+        /// <summary>
+        /// Builds an OWLDeclaration with the given data property entity
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDeclaration(OWLDataProperty dataPropertyIRI) : this()
-            => Expression = dataPropertyIRI ?? throw new OWLException("Cannot create OWLDeclaration because given \"dataPropertyIRI\" parameter is null");
+            => Entity = dataPropertyIRI ?? throw new OWLException($"Cannot create OWLDeclaration because given '{nameof(dataPropertyIRI)}' parameter is null");
+
+        /// <summary>
+        /// Builds an OWLDeclaration with the given annotation property entity
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDeclaration(OWLAnnotationProperty annotationPropertyIRI) : this()
-            => Expression = annotationPropertyIRI ?? throw new OWLException("Cannot create OWLDeclaration because given \"annotationPropertyIRI\" parameter is null");
+            => Entity = annotationPropertyIRI ?? throw new OWLException($"Cannot create OWLDeclaration because given '{nameof(annotationPropertyIRI)}' parameter is null");
+
+        /// <summary>
+        /// Builds an OWLDeclaration with the given named individual entity
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDeclaration(OWLNamedIndividual namedIndividualIRI) : this()
-            => Expression = namedIndividualIRI ?? throw new OWLException("Cannot create OWLDeclaration because given \"namedIndividualIRI\" parameter is null");
+            => Entity = namedIndividualIRI ?? throw new OWLException($"Cannot create OWLDeclaration because given '{nameof(namedIndividualIRI)}' parameter is null");
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLDeclaration to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
-            RDFGraph graph = Expression.ToRDFGraph();
+            RDFGraph graph = Entity.ToRDFGraph();
 
             //Axiom Triple
-            RDFTriple axiomTriple = graph[null, RDFVocabulary.RDF.TYPE, null, null].FirstOrDefault();
+            RDFTriple axiomTriple = graph.SelectTriples(p: RDFVocabulary.RDF.TYPE).FirstOrDefault();
 
             //Annotations
             foreach (OWLAnnotation annotation in Annotations)

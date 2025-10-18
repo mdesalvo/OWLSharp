@@ -29,7 +29,7 @@ namespace OWLSharp.Reasoner
                 return inferences;
 
             foreach (OWLNamedIndividual declaredIdv in ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>()
-                                                               .Select(ax => (OWLNamedIndividual)ax.Expression))
+                                                               .Select(ax => (OWLNamedIndividual)ax.Entity))
             {
                 List<OWLIndividualExpression> sameIdvs = ontology.GetSameIndividuals(declaredIdv);
                 if (sameIdvs.Count == 0)

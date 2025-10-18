@@ -98,7 +98,6 @@ public class OWLClassViewTest
             KeyAxioms = [
                 new OWLHasKey(
                     new OWLClass(new RDFResource("ex:LivingEntity")),
-                    [],
                     [new OWLDataProperty(new RDFResource("ex:hasName"))])
             ]
         };

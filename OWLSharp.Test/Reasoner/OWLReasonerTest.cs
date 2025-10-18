@@ -449,7 +449,6 @@ public class OWLReasonerTest
             KeyAxioms = [
                 new OWLHasKey(
                     new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
-                    null,
                     [ new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")) ]
                 )
             ],

@@ -27,7 +27,7 @@ namespace OWLSharp.Reasoner
 
             //EquivalentClasses(C1,C2) ^ EquivalentClasses(C2,C3) -> EquivalentClasses(C1,C3)
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
-                                                       .Select(ax => (OWLClass)ax.Expression))
+                                                       .Select(ax => (OWLClass)ax.Entity))
             {
                 foreach (OWLClassExpression equivalentClass in ontology.GetEquivalentClasses(declaredClass))
                 {

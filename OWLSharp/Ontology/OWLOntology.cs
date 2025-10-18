@@ -1446,23 +1446,23 @@ namespace OWLSharp.Ontology
                     void LoadAnnotationAssertions(OWLOntology ont, RDFGraph annAxiomsGraph)
                     {
                         #region Fetch Declarations
-                        List<OWLClass> declaredClasses = ont.DeclarationAxioms.Where(dax => dax.Expression is OWLClass)
-                                                                              .Select(dax => (OWLClass)dax.Expression)
+                        List<OWLClass> declaredClasses = ont.DeclarationAxioms.Where(dax => dax.Entity is OWLClass)
+                                                                              .Select(dax => (OWLClass)dax.Entity)
                                                                               .ToList();
-                        List<OWLDatatype> declaredDatatypes = ont.DeclarationAxioms.Where(dax => dax.Expression is OWLDatatype)
-                                                                                   .Select(dax => (OWLDatatype)dax.Expression)
+                        List<OWLDatatype> declaredDatatypes = ont.DeclarationAxioms.Where(dax => dax.Entity is OWLDatatype)
+                                                                                   .Select(dax => (OWLDatatype)dax.Entity)
                                                                                    .ToList();
-                        List<OWLObjectProperty> declaredObjectProperties = ont.DeclarationAxioms.Where(dax => dax.Expression is OWLObjectProperty)
-                                                                                                .Select(dax => (OWLObjectProperty)dax.Expression)
+                        List<OWLObjectProperty> declaredObjectProperties = ont.DeclarationAxioms.Where(dax => dax.Entity is OWLObjectProperty)
+                                                                                                .Select(dax => (OWLObjectProperty)dax.Entity)
                                                                                                 .ToList();
-                        List<OWLDataProperty> declaredDataProperties = ont.DeclarationAxioms.Where(dax => dax.Expression is OWLDataProperty)
-                                                                                            .Select(dax => (OWLDataProperty)dax.Expression)
+                        List<OWLDataProperty> declaredDataProperties = ont.DeclarationAxioms.Where(dax => dax.Entity is OWLDataProperty)
+                                                                                            .Select(dax => (OWLDataProperty)dax.Entity)
                                                                                             .ToList();
-                        List<OWLAnnotationProperty> declaredAnnotationProperties = ont.DeclarationAxioms.Where(dax => dax.Expression is OWLAnnotationProperty)
-                                                                                                        .Select(dax => (OWLAnnotationProperty)dax.Expression)
+                        List<OWLAnnotationProperty> declaredAnnotationProperties = ont.DeclarationAxioms.Where(dax => dax.Entity is OWLAnnotationProperty)
+                                                                                                        .Select(dax => (OWLAnnotationProperty)dax.Entity)
                                                                                                         .ToList();
-                        List<OWLNamedIndividual> declaredIndividuals = ont.DeclarationAxioms.Where(dax => dax.Expression is OWLNamedIndividual)
-                                                                                            .Select(dax => (OWLNamedIndividual)dax.Expression)
+                        List<OWLNamedIndividual> declaredIndividuals = ont.DeclarationAxioms.Where(dax => dax.Entity is OWLNamedIndividual)
+                                                                                            .Select(dax => (OWLNamedIndividual)dax.Entity)
                                                                                             .ToList();
                         #endregion
 
@@ -1750,8 +1750,8 @@ namespace OWLSharp.Ontology
                                         break;
                                 }
                             }
-                            foreach (OWLAnnotationProperty annProp in ont.DeclarationAxioms.Where(dax => dax.Expression is OWLAnnotationProperty)
-                                                                                           .Select(dax => (OWLAnnotationProperty)dax.Expression))
+                            foreach (OWLAnnotationProperty annProp in ont.DeclarationAxioms.Where(dax => dax.Entity is OWLAnnotationProperty)
+                                                                                           .Select(dax => (OWLAnnotationProperty)dax.Entity))
                             {
                                 RDFResource annPropIRI = annProp.GetIRI();
                                 if (!annPropIRI.Equals(RDFVocabulary.RDFS.COMMENT) && !annPropIRI.Equals(RDFVocabulary.RDFS.LABEL))

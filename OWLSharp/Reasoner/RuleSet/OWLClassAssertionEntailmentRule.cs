@@ -30,7 +30,7 @@ namespace OWLSharp.Reasoner
             List<OWLDisjointClasses> disjointClassesAxioms = ontology.GetClassAxiomsOfType<OWLDisjointClasses>();
             List<OWLDisjointUnion> disjointUnionAxioms = ontology.GetClassAxiomsOfType<OWLDisjointUnion>();
             List<OWLClassExpression> inScopeClsExprs = new List<OWLClassExpression>(ontology.GetDeclarationAxiomsOfType<OWLClass>()
-                                                                                            .Select(ax => (OWLClass)ax.Expression));
+                                                                                            .Select(ax => (OWLClass)ax.Entity));
             inScopeClsExprs.AddRange(reasonerContext.ClassAssertions.Select(ax => ax.ClassExpression));
             inScopeClsExprs.AddRange(equivalentClassesAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)));
             inScopeClsExprs.AddRange(disjointClassesAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)));

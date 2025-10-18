@@ -102,8 +102,7 @@ public class OWLOntologyTest
         ontology.KeyAxioms.Add(
             new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
-                [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
-                [ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
+                [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ]));
         ontology.AssertionAxioms.Add(
             new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
         ontology.AnnotationAxioms.Add(
@@ -231,7 +230,6 @@ public class OWLOntologyTest
         ontology.KeyAxioms.Add(
             new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
-                [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
                 [ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
         ontology.AssertionAxioms.Add(
             new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
@@ -328,7 +326,6 @@ public class OWLOntologyTest
               </DatatypeDefinition>
               <HasKey>
                 <Class IRI="http://xmlns.com/foaf/0.1/Agent" />
-                <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
                 <DataProperty IRI="http://xmlns.com/foaf/0.1/age" />
               </HasKey>
               <ObjectPropertyAssertion>
@@ -873,8 +870,7 @@ public class OWLOntologyTest
         ontology.KeyAxioms.Add(
             new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
-                [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
-                [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]));
+                [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)]));
         ontology.AssertionAxioms.Add(
             new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
         ontology.AnnotationAxioms.Add(
@@ -969,7 +965,6 @@ public class OWLOntologyTest
               <HasKey>
                 <Class IRI="http://xmlns.com/foaf/0.1/Agent" />
                 <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
-                <DataProperty IRI="http://xmlns.com/foaf/0.1/age" />
               </HasKey>
               <ObjectPropertyAssertion>
                 <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
@@ -1047,7 +1042,6 @@ public class OWLOntologyTest
         ontology.KeyAxioms.Add(
             new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
-                [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
                 [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]));
         ontology.AssertionAxioms.Add(
             new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
@@ -1142,7 +1136,6 @@ public class OWLOntologyTest
               </DatatypeDefinition>
               <HasKey>
                 <Class IRI="http://xmlns.com/foaf/0.1/Agent" />
-                <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
                 <DataProperty IRI="http://xmlns.com/foaf/0.1/age" />
               </HasKey>
               <ObjectPropertyAssertion>
@@ -1219,8 +1212,7 @@ public class OWLOntologyTest
         ontology.KeyAxioms.Add(
             new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
-                [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
-                [ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
+                [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ]));
         ontology.AssertionAxioms.Add(
             new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
         ontology.AnnotationAxioms.Add(
@@ -1299,7 +1291,10 @@ public class OWLOntologyTest
         ontology.KeyAxioms.Add(
             new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
-                [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
+                [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)]));
+        ontology.KeyAxioms.Add(
+            new OWLHasKey(
+                new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]));
         ontology.AssertionAxioms.Add(
             new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
@@ -1334,7 +1329,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2.DatatypeDefinitionAxioms);
         Assert.HasCount(1, ontology2.DatatypeDefinitionAxioms);
         Assert.IsNotNull(ontology2.KeyAxioms);
-        Assert.HasCount(1, ontology2.KeyAxioms);
+        Assert.HasCount(2, ontology2.KeyAxioms);
         Assert.IsNotNull(ontology2.AssertionAxioms);
         Assert.HasCount(1, ontology2.AssertionAxioms);
         Assert.IsNotNull(ontology2.AnnotationAxioms);
@@ -1379,7 +1374,6 @@ public class OWLOntologyTest
         ontology.KeyAxioms.Add(
             new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
-                [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
                 [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]));
         ontology.AssertionAxioms.Add(
             new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
@@ -1463,8 +1457,7 @@ public class OWLOntologyTest
         ontology.KeyAxioms.Add(
             new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
-                [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
-                [ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
+                [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ]));
         ontology.AssertionAxioms.Add(
             new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
         ontology.AnnotationAxioms.Add(
@@ -1549,7 +1542,6 @@ public class OWLOntologyTest
         ontology.KeyAxioms.Add(
             new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
-                [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
                 [ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
         ontology.AssertionAxioms.Add(
             new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
@@ -1635,8 +1627,7 @@ public class OWLOntologyTest
         ontology.KeyAxioms.Add(
             new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
-                [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
-                [ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
+                [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ]));
         ontology.AssertionAxioms.Add(
             new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
         ontology.AnnotationAxioms.Add(
@@ -1770,19 +1761,19 @@ public class OWLOntologyTest
         Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsNull(ontology.VersionIRI);
         Assert.HasCount(7, ontology.DeclarationAxioms);
-        Assert.AreEqual(1, ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLClass daxCls
+        Assert.AreEqual(1, ontology.DeclarationAxioms.Count(dax => dax.Entity is OWLClass daxCls
                                                                    && daxCls.GetIRI().Equals(RDFVocabulary.FOAF.PERSON)));
-        Assert.AreEqual(1, ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLClass daxCls
+        Assert.AreEqual(1, ontology.DeclarationAxioms.Count(dax => dax.Entity is OWLClass daxCls
                                                                    && daxCls.GetIRI().Equals(RDFVocabulary.FOAF.ORGANIZATION)));
-        Assert.AreEqual(1, ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLDatatype daxDtt
+        Assert.AreEqual(1, ontology.DeclarationAxioms.Count(dax => dax.Entity is OWLDatatype daxDtt
                                                                    && daxDtt.GetIRI().Equals(RDFVocabulary.XSD.INTEGER)));
-        Assert.AreEqual(1, ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLObjectProperty daxObp
+        Assert.AreEqual(1, ontology.DeclarationAxioms.Count(dax => dax.Entity is OWLObjectProperty daxObp
                                                                    && daxObp.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)));
-        Assert.AreEqual(1, ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLDataProperty daxDtp
+        Assert.AreEqual(1, ontology.DeclarationAxioms.Count(dax => dax.Entity is OWLDataProperty daxDtp
                                                                    && daxDtp.GetIRI().Equals(RDFVocabulary.FOAF.NAME)));
-        Assert.AreEqual(1, ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLAnnotationProperty daxAnp
+        Assert.AreEqual(1, ontology.DeclarationAxioms.Count(dax => dax.Entity is OWLAnnotationProperty daxAnp
                                                                    && daxAnp.GetIRI().Equals(RDFVocabulary.FOAF.MAKER)));
-        Assert.AreEqual(1, ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLNamedIndividual daxIdv
+        Assert.AreEqual(1, ontology.DeclarationAxioms.Count(dax => dax.Entity is OWLNamedIndividual daxIdv
                                                                    && daxIdv.GetIRI().Equals(new RDFResource("ex:Alice"))));
     }
 
@@ -3611,8 +3602,19 @@ public class OWLOntologyTest
         ontology.KeyAxioms.Add(
             new OWLHasKey(
                 new OWLClass(new RDFResource("ex:clsA")),
-                [new OWLObjectProperty(new RDFResource("ex:op1")), new OWLObjectProperty(new RDFResource("ex:op2"))],
                 [new OWLDataProperty(new RDFResource("ex:dp1")), new OWLDataProperty(new RDFResource("ex:dp2"))])
+            {
+                Annotations = [
+                    new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                    {
+                        Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
+                    }
+                ]
+            });
+        ontology.KeyAxioms.Add(
+            new OWLHasKey(
+                new OWLClass(new RDFResource("ex:clsA")),
+                [new OWLObjectProperty(new RDFResource("ex:op1"))])
             {
                 Annotations = [
                     new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
@@ -3627,11 +3629,9 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.HasCount(1, ontology2.KeyAxioms);
-        Assert.IsTrue(ontology2.KeyAxioms[0].ClassExpression is OWLClass clsA && clsA.GetIRI().Equals(new RDFResource("ex:clsA"))
-                                                                              && ontology2.KeyAxioms[0].ObjectPropertyExpressions.Count == 2
-                                                                              && ontology2.KeyAxioms[0].ObjectPropertyExpressions[0] is OWLObjectProperty op1 && op1.GetIRI().Equals(new RDFResource("ex:op1"))
-                                                                              && ontology2.KeyAxioms[0].ObjectPropertyExpressions[1] is OWLObjectProperty op2 && op2.GetIRI().Equals(new RDFResource("ex:op2"))
+        Assert.HasCount(2, ontology2.KeyAxioms);
+        Assert.IsTrue(ontology2.KeyAxioms[0].ClassExpression is OWLClass clsA1 && clsA1.GetIRI().Equals(new RDFResource("ex:clsA"))
+                                                                              && ontology2.KeyAxioms[0].ObjectPropertyExpressions.Count == 0
                                                                               && ontology2.KeyAxioms[0].DataProperties.Count == 2
                                                                               && ontology2.KeyAxioms[0].DataProperties[0] is { } dp1 && dp1.GetIRI().Equals(new RDFResource("ex:dp1"))
                                                                               && ontology2.KeyAxioms[0].DataProperties[1] is { } dp2 && dp2.GetIRI().Equals(new RDFResource("ex:dp2"))
@@ -3640,6 +3640,15 @@ public class OWLOntologyTest
                                                                               && string.Equals(ontology2.KeyAxioms[0].Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                                                                               && ontology2.KeyAxioms[0].Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                                                                               && ontology2.KeyAxioms[0].Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
+        Assert.IsTrue(ontology2.KeyAxioms[1].ClassExpression is OWLClass clsA2 && clsA2.GetIRI().Equals(new RDFResource("ex:clsA"))
+                                                                              && ontology2.KeyAxioms[1].ObjectPropertyExpressions.Count == 1
+                                                                              && ontology2.KeyAxioms[1].ObjectPropertyExpressions[0] is OWLObjectProperty op1 && op1.GetIRI().Equals(new RDFResource("ex:op1"))
+                                                                              && ontology2.KeyAxioms[1].DataProperties.Count == 0
+                                                                              && ontology2.KeyAxioms[1].Annotations.Count == 1
+                                                                              && ontology2.KeyAxioms[1].Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                                                                              && string.Equals(ontology2.KeyAxioms[1].Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
+                                                                              && ontology2.KeyAxioms[1].Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                                                                              && ontology2.KeyAxioms[1].Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
     }
 
     [TestMethod]

@@ -111,7 +111,7 @@ namespace OWLSharp.Ontology
             else
             {
                 foreach (OWLNamedIndividual declaredIdv in ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>()
-                                                                   .Select(ax => (OWLNamedIndividual)ax.Expression))
+                                                                   .Select(ax => (OWLNamedIndividual)ax.Entity))
                 {
                     //Calculate same individuals of the current
                     List<OWLIndividualExpression> sameIndividuals = ontology.GetSameIndividuals(declaredIdv);
