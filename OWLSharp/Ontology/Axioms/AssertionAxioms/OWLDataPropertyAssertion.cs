@@ -86,9 +86,10 @@ namespace OWLSharp.Ontology
         {
             RDFGraph graph = DataProperty.ToRDFGraph();
 
-            //Axiom Triple
             RDFResource idvExpressionIRI = IndividualExpression.GetIRI();
             graph = graph.UnionWith(IndividualExpression.ToRDFGraph(idvExpressionIRI));
+
+            //Axiom Triple
             RDFTriple axiomTriple = new RDFTriple(idvExpressionIRI, DataProperty.GetIRI(), Literal.GetLiteral());
             graph.AddTriple(axiomTriple);
 
