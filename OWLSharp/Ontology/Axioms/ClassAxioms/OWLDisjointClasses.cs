@@ -31,7 +31,9 @@ namespace OWLSharp.Ontology
     public sealed class OWLDisjointClasses : OWLClassAxiom
     {
         #region Properties
-        //Register here all derived types of OWLClassExpression
+        /// <summary>
+        /// The set of class expressions asserted to be pairwise disjoint
+        /// </summary>
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=2)]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=2)]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=2)]
@@ -54,17 +56,21 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLDisjointClasses()
-        { }
+        internal OWLDisjointClasses() { }
+
+        /// <summary>
+        /// Builds an OWLDisjointClasses with the given set of class expressions (must be at least 2)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
         public OWLDisjointClasses(List<OWLClassExpression> classExpressions) : this()
         {
             #region Guards
             if (classExpressions == null)
-                throw new OWLException("Cannot create OWLDisjointClasses because given \"classExpressions\" parameter is null");
+                throw new OWLException($"Cannot create OWLDisjointClasses because given '{nameof(classExpressions)}' parameter is null");
             if (classExpressions.Count < 2)
-                throw new OWLException("Cannot create OWLDisjointClasses because given \"classExpressions\" parameter must contain at least 2 elements");
+                throw new OWLException($"Cannot create OWLDisjointClasses because given '{nameof(classExpressions)}' parameter must contain at least 2 elements");
             if (classExpressions.Any(cex => cex == null))
-                throw new OWLException("Cannot create OWLDisjointClasses because given \"classExpressions\" parameter contains a null element");
+                throw new OWLException($"Cannot create OWLDisjointClasses because given '{nameof(classExpressions)}' parameter contains a null element");
             #endregion
 
             ClassExpressions = classExpressions;
@@ -72,11 +78,14 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Exports this OWLDisjointClasses to an equivalent RDFGraph object
+        /// </summary>
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
 
-            //disjointWith
+            //owl:disjointWith
             if (ClassExpressions.Count == 2)
             {
                 RDFResource leftClsExpressionIRI = ClassExpressions[0].GetIRI();
@@ -93,7 +102,7 @@ namespace OWLSharp.Ontology
                     graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
             }
 
-            //AllDisjointClasses
+            //owl:AllDisjointClasses
             else
             {
                 RDFResource allDisjointClassesIRI = new RDFResource();
