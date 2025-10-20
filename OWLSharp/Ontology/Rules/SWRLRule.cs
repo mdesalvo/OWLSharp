@@ -25,10 +25,12 @@ using RDFSharp.Query;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// SWRLRule is a rule that satisfies specific syntactic restrictions ensuring decidability and compatibility with OWL DL reasoning,
-    /// primarily requiring that all variables appearing in the rule's consequent (head) must also appear in the antecedent (body).
-    /// This "DL-safety" condition prevents the generation of new anonymous individuals during reasoning, guaranteeing that rule evaluation
-    /// remains decidable and that the combination of SWRL rules with OWL DL ontologies preserves desirable computational properties.
+    /// SWRLRule is a rule that satisfies specific syntactic restrictions ensuring decidability and
+    /// compatibility with OWL DL reasoning, primarily requiring that all variables appearing in the
+    /// rule's consequent (head) must also appear in the antecedent (body). This "DL-safety" condition
+    /// prevents the generation of new anonymous individuals during reasoning, guaranteeing that rule
+    /// evaluation remains decidable and that the combination of SWRL rules with OWL DL ontologies
+    /// preserves desirable computational properties.
     /// </summary>
     [XmlRoot("DLSafeRule")]
     public sealed class SWRLRule
