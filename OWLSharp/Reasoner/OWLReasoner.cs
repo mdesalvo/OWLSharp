@@ -82,7 +82,6 @@ namespace OWLSharp.Reasoner
                 Task<HashSet<string>> clsAsnAxiomsTask = Task.Run(() => new HashSet<string>(reasonerContext.ClassAssertions.Select(asn => asn.GetXML())));
                 Task<HashSet<string>> dtPropAsnAxiomsTask = Task.Run(() => new HashSet<string>(reasonerContext.DataPropertyAssertions.Select(asn => asn.GetXML())));
                 Task<HashSet<string>> opPropAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Select(asn => asn.GetXML())));
-                Task<HashSet<string>> diffIdvsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLDifferentIndividuals>().Select(asn => asn.GetXML())));
                 Task<HashSet<string>> sameIdvsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLSameIndividual>().Select(asn => asn.GetXML())));
                 Task<HashSet<string>> dsjClsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetClassAxiomsOfType<OWLDisjointClasses>().Select(asn => asn.GetXML())));
                 Task<HashSet<string>> eqvClsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetClassAxiomsOfType<OWLEquivalentClasses>().Select(asn => asn.GetXML())));
@@ -200,7 +199,7 @@ namespace OWLSharp.Reasoner
 
                 #region Deduplicate & finalize inferences
                 //Deduplicate inferences (in order to not state already known knowledge)
-                await Task.WhenAll(clsAsnAxiomsTask, dtPropAsnAxiomsTask, opPropAsnAxiomsTask, diffIdvsAxiomsTask, sameIdvsAxiomsTask, dsjClsAxiomsTask, eqvClsAxiomsTask, subClsAxiomsTask,
+                await Task.WhenAll(clsAsnAxiomsTask, dtPropAsnAxiomsTask, opPropAsnAxiomsTask, sameIdvsAxiomsTask, dsjClsAxiomsTask, eqvClsAxiomsTask, subClsAxiomsTask,
                     dsjDtPropAxiomsTask, eqvDtPropAxiomsTask, subDtPropAxiomsTask, dsjOpPropAxiomsTask, eqvOpPropAxiomsTask, subOpPropAxiomsTask, invOpPropAxiomsTask);
                 foreach (KeyValuePair<string, List<OWLInference>> inferenceRegistryEntry in inferenceRegistry.Where(ir => ir.Value?.Count > 0))
                     inferenceRegistryEntry.Value.RemoveAll(inf =>
@@ -213,8 +212,6 @@ namespace OWLSharp.Reasoner
                                 return dtPropAsnAxiomsTask.Result.Contains(inf.Axiom.GetXML());
                             case nameof(OWLObjectPropertyAssertion):
                                 return opPropAsnAxiomsTask.Result.Contains(inf.Axiom.GetXML());
-                            case nameof(OWLDifferentIndividuals):
-                                return diffIdvsAxiomsTask.Result.Contains(inf.Axiom.GetXML());
                             case nameof(OWLSameIndividual):
                                 return sameIdvsAxiomsTask.Result.Contains(inf.Axiom.GetXML());
                             case nameof(OWLDisjointClasses):
