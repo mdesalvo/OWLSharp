@@ -15,8 +15,8 @@ OWLSharp is a .NET library built atop <a href="https://github.com/mdesalvo/RDFSh
 
 <b>Ontology Reasoning</b>
 <ul>
-    <li>Apply logical deduction to derive knowledge that is entailed, but not explicitly stated, with <b>24 OWL2 inference rules</b></li>
-    <li>Create, exchange and execute <b>SWRL rules</b> targeting ontology A-BOX through a complete <b>SWRL engine</b></li>
+    <li>Apply logical deduction to derive knowledge that is entailed, but not stated, with <b>24 OWL2 inference rules</b></li>
+    <li>Create, exchange and execute <b>SWRL rules</b> encoding custom busines logic deductions targeting ontology A-BOX</li>
 </ul>
 <hr />
 
