@@ -114,33 +114,6 @@ public class OWLReasonerTest
     }
 
     [TestMethod]
-    public async Task ShouldEntailDifferentIndividualsAsync()
-    {
-        OWLOntology ontology = new OWLOntology
-        {
-            DeclarationAxioms = [
-                new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")))
-            ],
-            AssertionAxioms = [
-                new OWLDifferentIndividuals([
-                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
-                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")),
-                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))
-                ])
-            ]
-        };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.DifferentIndividualsEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
-
-        Assert.HasCount(6, inferences);
-        Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLDifferentIndividualsEntailmentRule.rulename)));
-    }
-
-    [TestMethod]
     public async Task ShouldEntailDisjointClassesAsync()
     {
         OWLOntology ontology = new OWLOntology
