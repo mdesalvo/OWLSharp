@@ -26,11 +26,9 @@ namespace OWLSharp.Reasoner
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-            //Temporary working variables
-            List<OWLSubClassOf> subClassOfAxioms = ontology.GetClassAxiomsOfType<OWLSubClassOf>();
-
             //SubClassOf(C,ObjectHasSelf(OP)) ^ ClassAssertion(C,I) -> ObjectPropertyAssertion(OP,I,I)
-            foreach (OWLSubClassOf subClassOfObjectHasSelf in subClassOfAxioms.Where(ax => ax.SuperClassExpression is OWLObjectHasSelf))
+            foreach (OWLSubClassOf subClassOfObjectHasSelf in ontology.GetClassAxiomsOfType<OWLSubClassOf>()
+                                                                      .Where(ax => ax.SuperClassExpression is OWLObjectHasSelf))
             {
                 OWLObjectHasSelf objHasSelf = (OWLObjectHasSelf)subClassOfObjectHasSelf.SuperClassExpression;
                 RDFResource subClassExpressionIRI = subClassOfObjectHasSelf.SubClassExpression.GetIRI();

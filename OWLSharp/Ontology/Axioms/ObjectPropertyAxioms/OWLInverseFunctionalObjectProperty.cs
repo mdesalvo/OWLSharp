@@ -41,7 +41,7 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         internal OWLInverseFunctionalObjectProperty() { }
- 
+
         /// <summary>
         /// Builds an OWLInverseFunctionalObjectProperty with the given object property
         /// </summary>

@@ -39,7 +39,7 @@ public class OWLHasKeyTest
         Assert.IsTrue(hasKey.ObjectPropertyExpressions.Single() is OWLObjectProperty objProp
                       && string.Equals(objProp.IRI, "http://xmlns.com/foaf/0.1/knows"));
     }
-    
+
     [TestMethod]
     public void ShouldCreateHasKeyWithDataProperty()
     {

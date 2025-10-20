@@ -87,17 +87,17 @@ namespace OWLSharp.Ontology
                         });
 
                         //Axioms
-                        importedOntology.DeclarationAxioms.ForEach(ax => { ax.IsImport = true; ontology.DeclarationAxioms.Add(ax); });
-                        importedOntology.ClassAxioms.ForEach(ax => { ax.IsImport = true; ontology.ClassAxioms.Add(ax); });
-                        importedOntology.ObjectPropertyAxioms.ForEach(ax => { ax.IsImport = true; ontology.ObjectPropertyAxioms.Add(ax); });
-                        importedOntology.DataPropertyAxioms.ForEach(ax => { ax.IsImport = true; ontology.DataPropertyAxioms.Add(ax); });
-                        importedOntology.DatatypeDefinitionAxioms.ForEach(ax => { ax.IsImport = true; ontology.DatatypeDefinitionAxioms.Add(ax); });
-                        importedOntology.KeyAxioms.ForEach(ax => { ax.IsImport = true; ontology.KeyAxioms.Add(ax); });
-                        importedOntology.AssertionAxioms.ForEach(ax => { ax.IsImport = true; ontology.AssertionAxioms.Add(ax); });
-                        importedOntology.AnnotationAxioms.ForEach(ax => { ax.IsImport = true; ontology.AnnotationAxioms.Add(ax); });
+                        importedOntology.DeclarationAxioms.ForEach(ax => { ax.IsImport=true; ontology.DeclarationAxioms.Add(ax); });
+                        importedOntology.ClassAxioms.ForEach(ax => { ax.IsImport=true; ontology.ClassAxioms.Add(ax); });
+                        importedOntology.ObjectPropertyAxioms.ForEach(ax => { ax.IsImport=true; ontology.ObjectPropertyAxioms.Add(ax); });
+                        importedOntology.DataPropertyAxioms.ForEach(ax => { ax.IsImport=true; ontology.DataPropertyAxioms.Add(ax); });
+                        importedOntology.DatatypeDefinitionAxioms.ForEach(ax => { ax.IsImport=true; ontology.DatatypeDefinitionAxioms.Add(ax); });
+                        importedOntology.KeyAxioms.ForEach(ax => { ax.IsImport=true; ontology.KeyAxioms.Add(ax); });
+                        importedOntology.AssertionAxioms.ForEach(ax => { ax.IsImport=true; ontology.AssertionAxioms.Add(ax); });
+                        importedOntology.AnnotationAxioms.ForEach(ax => { ax.IsImport=true; ontology.AnnotationAxioms.Add(ax); });
 
                         //Rules
-                        importedOntology.Rules.ForEach(rl => { rl.IsImport = true; ontology.Rules.Add(rl); });
+                        importedOntology.Rules.ForEach(rl => { rl.IsImport=true; ontology.Rules.Add(rl); });
                     }
                     catch (Exception ex)
                     {

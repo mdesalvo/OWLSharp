@@ -63,7 +63,7 @@ namespace OWLSharp.Ontology
             IRI = iri.ToString();
             ExpressionIRI = iri;
         }
-        
+
         /// <summary>
         /// Builds an object property with the given xsd:qualifiedName (e.g: foaf:knows)
         /// </summary>

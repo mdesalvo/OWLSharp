@@ -93,7 +93,7 @@ namespace OWLSharp.Ontology
             ObjectPropertyExpressions = objectPropertyExpressions ?? new List<OWLObjectPropertyExpression>();
             DataProperties = new List<OWLDataProperty>();
         }
-        
+
         /// <summary>
         /// Builds an OWLHasKey with the given class expression and given set of identifying data properties
         /// </summary>
