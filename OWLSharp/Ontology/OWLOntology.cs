@@ -3010,7 +3010,7 @@ namespace OWLSharp.Ontology
                 webRequest.Timeout = timeoutMilliseconds;
                 webRequest.Accept = "application/owl+xml,application/rdf+xml,text/turtle,application/turtle,application/x-turtle,application/n-triples";
 
-                HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
+                WebResponse webResponse = await webRequest.GetResponseAsync();
                 if (webRequest.HaveResponse)
                 {
                     //Cascade detection of ContentType from response
