@@ -10,7 +10,7 @@ OWLSharp is a .NET library built atop <a href="https://github.com/mdesalvo/RDFSh
 
 <b>Ontology Validation</b>
 <ul>
-    <li>Detect modeling pitfalls, structural inconsistencies and constraint violations through a set of <b>29 OWL2 analysis rules</b></li>
+    <li>Detect pitfalls, structural inconsistencies and constraint violations through a set of <b>29 OWL2 analysis rules</b></li>
 </ul>
 
 <b>Ontology Reasoning</b>
