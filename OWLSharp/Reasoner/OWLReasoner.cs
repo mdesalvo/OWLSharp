@@ -110,6 +110,9 @@ namespace OWLSharp.Reasoner
                         case OWLEnums.OWLReasonerRules.DataPropertyDomainEntailment:
                             inferenceRegistry[OWLDataPropertyDomainEntailmentRule.rulename] = OWLDataPropertyDomainEntailmentRule.ExecuteRule(ontology, reasonerContext);
                             break;
+                        case OWLEnums.OWLReasonerRules.DifferentIndividualsEntailment:
+                            inferenceRegistry[OWLDifferentIndividualsEntailmentRule.rulename] = OWLDifferentIndividualsEntailmentRule.ExecuteRule(ontology, reasonerContext);
+                            break;
                         case OWLEnums.OWLReasonerRules.DisjointClassesEntailment:
                             inferenceRegistry[OWLDisjointClassesEntailmentRule.rulename] = OWLDisjointClassesEntailmentRule.ExecuteRule(ontology, reasonerContext);
                             break;
