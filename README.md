@@ -5,13 +5,13 @@ OWLSharp is a .NET library built atop <a href="https://github.com/mdesalvo/RDFSh
 <b>Ontology Modeling</b>
 <ul>
     <li>Create and manage <b>OWL2 ontologies</b> (classes, properties, individuals, expressions, axioms, rules, ...)</li>
-    <li>Exchange them using standard <b>OWL2 formats</b> (OWL2/Xml)</li>
+    <li>Exchange them using standard <b>OWL2 formats</b> (OWL2/XML)</li>
 </ul>
 
 <b>Ontology Reasoning</b>
 <ul>
-    <li>Apply logical deduction to derive knowledge that is entailed, but not stated, with <b>24 inference rules</b></li>
-    <li>Create, exchange and execute <b>SWRL rules</b> encoding business logic deductions targeting A-BOX</li>
+    <li>Apply logical deduction to derive knowledge that is entailed, but not stated, with <b>25 inference rules</b></li>
+    <li>Create, exchange and execute <b>SWRL rules</b> encoding custom business logic deductions</li>
 </ul>
 
 <b>Ontology Validation</b>
