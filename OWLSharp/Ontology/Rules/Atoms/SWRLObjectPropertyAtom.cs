@@ -150,14 +150,14 @@ namespace OWLSharp.Ontology
                     if (leftArgumentValueResource.IsBlank)
                         opAsnSrcIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString().Substring(6));
                     else
-                        opAsnSrcIdvExpr = new OWLNamedIndividual(leftArgumentValueResource);
+                        opAsnSrcIdvExpr = leftArgumentValueResource.ToEntity<OWLNamedIndividual>();
 
                     //Build the inference individual (target)
                     OWLIndividualExpression opAsnTgtIdvExpr;
                     if (rightArgumentValueResource.IsBlank)
                         opAsnTgtIdvExpr = new OWLAnonymousIndividual(rightArgumentValueResource.ToString().Substring(6));
                     else
-                        opAsnTgtIdvExpr = new OWLNamedIndividual(rightArgumentValueResource);
+                        opAsnTgtIdvExpr = rightArgumentValueResource.ToEntity<OWLNamedIndividual>();
 
                     //Create the inference
                     OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion((OWLObjectProperty)Predicate, opAsnSrcIdvExpr, opAsnTgtIdvExpr) { IsInference = true };

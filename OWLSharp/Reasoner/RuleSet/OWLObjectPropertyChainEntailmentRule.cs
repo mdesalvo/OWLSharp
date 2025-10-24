@@ -71,16 +71,16 @@ namespace OWLSharp.Reasoner
                     if (((RDFResource)materializedChainTriple.Subject).IsBlank)
                         infSrcIdvExpr = new OWLAnonymousIndividual(materializedChainTriple.Subject.ToString().Replace("bnode:", string.Empty));
                     else
-                        infSrcIdvExpr = new OWLNamedIndividual((RDFResource)materializedChainTriple.Subject);
+                        infSrcIdvExpr = ((RDFResource)materializedChainTriple.Subject).ToEntity<OWLNamedIndividual>();
 
                     //Rebuild target individual (preserve support for anonymous individuals)
                     OWLIndividualExpression infTgtIdvExpr;
                     if (((RDFResource)materializedChainTriple.Object).IsBlank)
                         infTgtIdvExpr = new OWLAnonymousIndividual(materializedChainTriple.Object.ToString().Replace("bnode:", string.Empty));
                     else
-                        infTgtIdvExpr = new OWLNamedIndividual((RDFResource)materializedChainTriple.Object);
+                        infTgtIdvExpr = ((RDFResource)materializedChainTriple.Object).ToEntity<OWLNamedIndividual>();
 
-                    OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(new OWLObjectProperty((RDFResource)materializedChainTriple.Predicate), infSrcIdvExpr, infTgtIdvExpr) { IsInference=true };
+                    OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(((RDFResource)materializedChainTriple.Predicate).ToEntity<OWLObjectProperty>(), infSrcIdvExpr, infTgtIdvExpr) { IsInference=true };
                     inference.GetXML();
                     inferences.Add(new OWLInference(rulename, inference));
                 }

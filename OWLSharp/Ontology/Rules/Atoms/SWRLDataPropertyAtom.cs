@@ -150,7 +150,7 @@ namespace OWLSharp.Ontology
                     if (leftArgumentValueResource.IsBlank)
                         dpAsnIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString().Substring(6));
                     else
-                        dpAsnIdvExpr = new OWLNamedIndividual(leftArgumentValueResource);
+                        dpAsnIdvExpr = leftArgumentValueResource.ToEntity<OWLNamedIndividual>();
 
                     //Create the inference
                     OWLDataPropertyAssertion inference = new OWLDataPropertyAssertion(

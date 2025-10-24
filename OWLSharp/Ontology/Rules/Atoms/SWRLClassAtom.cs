@@ -105,7 +105,7 @@ namespace OWLSharp.Ontology
                     if (leftArgumentValueResource.IsBlank)
                         clsAsnIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString().Substring(6));
                     else
-                        clsAsnIdvExpr = new OWLNamedIndividual(leftArgumentValueResource);
+                        clsAsnIdvExpr = leftArgumentValueResource.ToEntity<OWLNamedIndividual>();
 
                     //Create the inference
                     OWLClassAssertion inference = new OWLClassAssertion(

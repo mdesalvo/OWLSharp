@@ -28,20 +28,20 @@ namespace OWLSharp.Validator
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            if (ontology.GetSuperClassesOf(new OWLClass(RDFVocabulary.OWL.THING)).Count > 0)
+            if (ontology.GetSuperClassesOf(RDFVocabulary.OWL.THING.ToEntity<OWLClass>()).Count > 0)
                 issues.Add(new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Warning,
                     rulename,
                     "Detected class axioms causing reserved owl:Thing class to not be the root entity of the ontology",
                     rulesuggT1));
 
-            if (ontology.GetSubClassesOf(new OWLClass(RDFVocabulary.OWL.NOTHING)).Count > 0)
+            if (ontology.GetSubClassesOf(RDFVocabulary.OWL.NOTHING.ToEntity<OWLClass>()).Count > 0)
                 issues.Add(new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Warning,
                     rulename,
                     "Detected class axioms causing reserved owl:Nothing class to not be the bottom entity of the ontology",
                     rulesuggN1));
-            if (ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.OWL.NOTHING)).Count > 0)
+            if (ontology.GetIndividualsOf(RDFVocabulary.OWL.NOTHING.ToEntity<OWLClass>()).Count > 0)
                 issues.Add(new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,

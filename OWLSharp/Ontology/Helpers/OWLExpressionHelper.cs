@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using RDFSharp.Model;
 using System.Collections.Generic;
 
 namespace OWLSharp.Ontology
@@ -21,9 +22,39 @@ namespace OWLSharp.Ontology
     /// <summary>
     /// OWLExpressionHelper simplifies expression modeling with a set of facilities
     /// </summary>
-    internal static class OWLExpressionHelper
+    public static class OWLExpressionHelper
     {
         #region Methods
+        /// <summary>
+        /// Gets an entity of the given type from the given RDF resource
+        /// </summary>
+        public static T ToEntity<T>(this RDFResource iri) where T : IOWLEntity
+        {
+            object entity = null;
+            switch (typeof(T).Name)
+            {
+                case nameof(OWLClass):
+                    entity = new OWLClass(iri);
+                    break;
+                case nameof(OWLDatatype):
+                    entity = new OWLDatatype(iri);
+                    break;
+                case nameof(OWLNamedIndividual):
+                    entity = new OWLNamedIndividual(iri);
+                    break;
+                case nameof(OWLAnnotationProperty):
+                    entity = new OWLAnnotationProperty(iri);
+                    break;
+                case nameof(OWLDataProperty):
+                    entity = new OWLDataProperty(iri);
+                    break;
+                case nameof(OWLObjectProperty):
+                    entity = new OWLObjectProperty(iri);
+                    break;
+            }
+            return (T)entity;
+        }
+
         /// <summary>
         /// Removes the duplicate expressions from the given list
         /// </summary>
