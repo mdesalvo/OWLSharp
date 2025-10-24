@@ -226,7 +226,7 @@ namespace OWLSharp.Ontology
                 RDFResource dtPropIRI = dataProperty.GetIRI();
 
                 //We can only enlist explicitly declared disjoint data properties: no other kind
-                //of reasoning is possible, since this relation is protected under OWA behavior!
+                //of reasoning is possible, since this relation is technically a constraint.
                 foreach (OWLDisjointDataProperties axiom in GetDataPropertyAxiomsOfType<OWLDisjointDataProperties>(ontology).Where(ax => ax.DataProperties.Any(dp => dp.GetIRI().Equals(dtPropIRI))))
                     disjointDataProperties.AddRange(axiom.DataProperties);
 

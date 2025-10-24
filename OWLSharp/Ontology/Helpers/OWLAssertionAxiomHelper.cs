@@ -112,7 +112,7 @@ namespace OWLSharp.Ontology
             if (ontology != null && idvExpr != null)
             {
                 //We can only enlist explicitly declared different individuals: no other kind
-                //of reasoning is possible, since this relation is protected under OWA behavior!
+                //of reasoning is possible, since this relation is technically a constraint.
                 RDFResource idvExprIRI = idvExpr.GetIRI();
                 foreach (OWLDifferentIndividuals axiom in GetAssertionAxiomsOfType<OWLDifferentIndividuals>(ontology).Where(ax => ax.IndividualExpressions.Any(iex => iex.GetIRI().Equals(idvExprIRI))))
                     differentIndividuals.AddRange(axiom.IndividualExpressions);
