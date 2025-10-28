@@ -1,4 +1,0 @@
-[*.cs]
-
-# CS1591
-dotnet_diagnostic.CS1591.severity = silent
