@@ -24,7 +24,7 @@ namespace OWLSharp.Reasoner
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-            //ReflexiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDVX) -> ObjectPropertyAssertion(OP,IDV1,IDV1)
+            //ReflexiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ObjectPropertyAssertion(OP,IDV1,IDV1)
             foreach (OWLReflexiveObjectProperty refObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLReflexiveObjectProperty>())
             {
                 //Extract object assertions of the current reflexive property

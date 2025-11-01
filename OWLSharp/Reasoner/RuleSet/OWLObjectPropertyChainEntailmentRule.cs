@@ -40,7 +40,7 @@ namespace OWLSharp.Reasoner
                 return opAsnsGraph;
             });
 
-            //SubObjectPropertyOf(PC,OP) ^ ObjectPropertyChain(PC,(OP1..OPN)) -> ObjectPropertyAssertion(OP,OP1,OPN)
+            //ObjectPropertyChain(PC,(OP1..OPN)) ^ SubObjectPropertyOf(PC,OP) -> ObjectPropertyAssertion(OP,OP1,OPN)
             foreach (OWLSubObjectPropertyOf subObjectPropertyOf in ontology.GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>()
                                                                            .Where(ax => ax.SubObjectPropertyChain != null))
             {

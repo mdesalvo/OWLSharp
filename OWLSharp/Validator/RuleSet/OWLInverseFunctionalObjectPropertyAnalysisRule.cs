@@ -43,7 +43,7 @@ namespace OWLSharp.Validator
                 ifopAsns = OWLAxiomHelper.RemoveDuplicates(ifopAsns);
                 #endregion
 
-                //InverseFunctionalObjectProperty(IFOP) ^ ObjectPropertyAssertion(FOP,IDV1,IDV2) ^ ObjectPropertyAssertion(FOP,IDV3,IDV2) ^ DifferentIndividuals(IDV1,IDV3) -> ERROR
+                //InverseFunctionalObjectProperty(IFOP) ^ ObjectPropertyAssertion(IFOP,IDV1,IDV2) ^ ObjectPropertyAssertion(IFOP,IDV3,IDV2) ^ DifferentIndividuals(IDV1,IDV3) -> ERROR
                 ifopAsns.GroupBy(opex => opex.TargetIndividualExpression.GetIRI().ToString())
                         .Select(grp => new
                         {

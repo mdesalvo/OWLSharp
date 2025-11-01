@@ -29,6 +29,8 @@ namespace OWLSharp.Reasoner
                                                                          .Select(ax => (OWLObjectProperty)ax.Entity))
             {
                 List<OWLObjectPropertyExpression> disjointObjectPropertyExpressions = ontology.GetDisjointObjectProperties(declaredObjectProperty);
+
+                //AllDisjointProperties(OP1,OP2,...OPN) -> DisjointObjectProperties(OP1,OP2) ^ DisjointObjectProperties(OP1,OPN) ^ ...
                 foreach (OWLObjectProperty disjointObjectProperty in disjointObjectPropertyExpressions.OfType<OWLObjectProperty>())
                 {
                     OWLDisjointObjectProperties inferenceA = new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression> { declaredObjectProperty, disjointObjectProperty }) { IsInference=true };

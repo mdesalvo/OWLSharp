@@ -110,6 +110,13 @@ namespace OWLSharp.Ontology
         /// </summary>
         public virtual RDFGraph ToRDFGraph()
             => new RDFGraph();
+        
+        /// <summary>
+        /// Adds the given annotation to the set of this axiom's annotations
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
+        public void Annotate(OWLAnnotation annotation)
+            => Annotations.Add(annotation ?? throw new OWLException($"Cannot annotate axiom because given '{nameof(annotation)}' parameter is null"));
         #endregion
     }
 

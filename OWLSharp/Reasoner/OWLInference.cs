@@ -50,15 +50,27 @@ namespace OWLSharp.Reasoner
         #endregion
 
         #region Interfaces
+        /// <summary>
+        /// Checks if this inference is the same as the given one
+        /// </summary>
         public bool Equals(OWLInference other)
             => string.Equals(ToString(), other?.ToString());
 
+        /// <summary>
+        /// Checks if this inference is the same as the given object
+        /// </summary>
         public override bool Equals(object other)
             => other is OWLInference otherInference && Equals(otherInference);
 
+        /// <summary>
+        /// Gets the XML representation of this inference
+        /// </summary>
         public override string ToString()
             => Axiom.GetXML();
 
+        /// <summary>
+        /// Gets the hashcode of the string representation of this inference
+        /// </summary>
         public override int GetHashCode()
             => ToString().GetHashCode();
         #endregion

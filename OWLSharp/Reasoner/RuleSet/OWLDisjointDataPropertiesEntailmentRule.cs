@@ -25,6 +25,7 @@ namespace OWLSharp.Reasoner
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
+            //AllDisjointProperties(DP1,DP2,...DPN) -> DisjointDataProperties(DP1,DP2) ^ DisjointDataProperties(DP1,DPN) ^ ...
             foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
                                                                      .Select(ax => (OWLDataProperty)ax.Entity))
             {

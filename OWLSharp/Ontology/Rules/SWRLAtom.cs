@@ -74,6 +74,9 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=1)]
         [XmlElement(typeof(OWLExpression), Order=1)]
         public OWLExpression Predicate { get; set; }
+        /// <summary>
+        /// Indicates to the XML serializer if this atoms predicate should be serialized or not
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool ShouldSerializePredicate() => Predicate.GetType() != typeof(OWLExpression);
 

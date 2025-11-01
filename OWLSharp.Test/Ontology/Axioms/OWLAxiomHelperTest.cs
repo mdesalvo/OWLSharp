@@ -34,9 +34,6 @@ public class OWLAxiomHelperTest
         axiom.Annotate(new OWLAnnotation(
             new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
             new OWLLiteral(new RDFPlainLiteral("foaf:Person isA foaf:Agent"))));
-        (null as OWLAxiom).Annotate(new OWLAnnotation(
-            new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
-            new OWLLiteral(new RDFPlainLiteral("Since the axiom is null, this annotation will be discarded"))));
 
         Assert.HasCount(1, axiom.Annotations);
         Assert.ThrowsExactly<OWLException>(() => axiom.Annotate(null));

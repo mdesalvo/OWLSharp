@@ -28,7 +28,7 @@ namespace OWLSharp.Reasoner
             //Temporary working variables
             Dictionary<string, List<OWLIndividualExpression>> idvxLookup = new Dictionary<string, List<OWLIndividualExpression>>();
 
-            //FunctionalObjectProperty(FOP) ^ ObjectPropertyAssertion(FOP,IDVX,IDV1) ^ ObjectPropertyAssertion(FOP,IDVX,IDV2) -> SameIndividual(IDV1,IDV2)
+            //FunctionalObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDVX,IDV1) ^ ObjectPropertyAssertion(OP,IDVX,IDV2) -> SameIndividual(IDV1,IDV2)
             foreach (OWLFunctionalObjectProperty fop in ontology.GetObjectPropertyAxiomsOfType<OWLFunctionalObjectProperty>())
             {
                 idvxLookup.Clear();

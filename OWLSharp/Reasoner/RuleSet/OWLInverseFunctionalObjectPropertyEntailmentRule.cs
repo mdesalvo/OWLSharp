@@ -28,7 +28,7 @@ namespace OWLSharp.Reasoner
             //Temporary working variables
             Dictionary<string, List<OWLIndividualExpression>> idvxLookup = new Dictionary<string, List<OWLIndividualExpression>>();
 
-            //InverseFunctionalObjectProperty(IFOP) ^ ObjectPropertyAssertion(IFOP,IDV1,IDVX) ^ ObjectPropertyAssertion(FOP,IDV2,IDVX) -> SameIndividual(IDV1,IDV2)
+            //InverseFunctionalObjectProperty(IFOP) ^ ObjectPropertyAssertion(IFOP,IDV1,IDVX) ^ ObjectPropertyAssertion(IFOP,IDV2,IDVX) -> SameIndividual(IDV1,IDV2)
             foreach (OWLInverseFunctionalObjectProperty ifop in ontology.GetObjectPropertyAxiomsOfType<OWLInverseFunctionalObjectProperty>())
             {
                 idvxLookup.Clear();
