@@ -11,6 +11,7 @@
    limitations under the License.
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,6 +29,13 @@ namespace OWLSharp.Validator
     public sealed class OWLValidator
     {
         #region Properties
+        /// <summary>
+        /// A predefined validator including all available OWL2 validator rules
+        /// </summary>
+
+        public static readonly OWLValidator Default = new OWLValidator {
+            Rules = Enum.GetValues(typeof(OWLEnums.OWLValidatorRules)).Cast<OWLEnums.OWLValidatorRules>().ToList() };
+
         /// <summary>
         /// The set of rules to be applied by the validator
         /// </summary>

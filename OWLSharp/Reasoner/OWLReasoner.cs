@@ -14,6 +14,7 @@
 #if !NET8_0_OR_GREATER
 using Dasync.Collections;
 #endif
+using System;
 using OWLSharp.Ontology;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,13 @@ namespace OWLSharp.Reasoner
     public sealed class OWLReasoner
     {
         #region Properties
+        /// <summary>
+        /// A predefined reasoner including all available OWL2 reasoner rules
+        /// </summary>
+
+        public static readonly OWLReasoner Default = new OWLReasoner {
+            Rules = Enum.GetValues(typeof(OWLEnums.OWLReasonerRules)).Cast<OWLEnums.OWLReasonerRules>().ToList() };
+
         /// <summary>
         /// The set of rules to be applied by the reasoner
         /// </summary>
