@@ -266,7 +266,7 @@ namespace OWLSharp.Reasoner
     }
 
     /// <summary>
-    /// OWLReasonerContext helps the reasoner at prefetching the most commonly required axiom types
+    /// OWLReasonerContext helps the reasoner at prefetching the most commonly required expression/axiom types
     /// </summary>
     internal sealed class OWLReasonerContext
     {

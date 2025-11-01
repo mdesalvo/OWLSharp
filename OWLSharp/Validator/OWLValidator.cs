@@ -196,7 +196,7 @@ namespace OWLSharp.Validator
     }
 
     /// <summary>
-    /// OWLValidatorContext helps the validator at prefetching the most commonly required axiom types
+    /// OWLValidatorContext helps the validator at prefetching the most commonly required expression/axiom types
     /// </summary>
     internal sealed class OWLValidatorContext
     {
