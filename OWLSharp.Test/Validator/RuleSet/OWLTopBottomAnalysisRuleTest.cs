@@ -38,13 +38,7 @@ public class OWLTopBottomAnalysisRuleTest
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorContext);
+        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -69,13 +63,7 @@ public class OWLTopBottomAnalysisRuleTest
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorContext);
+        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -100,13 +88,7 @@ public class OWLTopBottomAnalysisRuleTest
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorContext);
+        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -131,13 +113,7 @@ public class OWLTopBottomAnalysisRuleTest
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorContext);
+        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -164,13 +140,7 @@ public class OWLTopBottomAnalysisRuleTest
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.OWL.BOTTOM_OBJECT_PROPERTY))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorContext);
+        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -196,13 +166,7 @@ public class OWLTopBottomAnalysisRuleTest
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.OWL.BOTTOM_DATA_PROPERTY))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorContext);
+        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);

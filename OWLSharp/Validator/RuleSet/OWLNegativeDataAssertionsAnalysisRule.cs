@@ -23,27 +23,34 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.NegativeDataAssertionsAnalysis);
         internal const string rulesugg = "There should not be data assertions conflicting with negative data assertions!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //NegativeDataPropertyAssertion(DP,IDV,LIT) ^ DataPropertyAssertion(DP,IDV,LIT) -> ERROR
-            foreach (OWLNegativeDataPropertyAssertion ndpAsn in ontology.GetAssertionAxiomsOfType<OWLNegativeDataPropertyAssertion>())
+            List<OWLNegativeDataPropertyAssertion> ndpAxms = ontology.GetAssertionAxiomsOfType<OWLNegativeDataPropertyAssertion>();
+            if (ndpAxms.Count > 0)
             {
-                RDFResource ndpAsnIndividualIRI = ndpAsn.IndividualExpression.GetIRI();
-                RDFLiteral ndpAsnLiteral = ndpAsn.Literal.GetLiteral();
-                OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(validatorContext.DataPropertyAssertions, ndpAsn.DataProperty)
-                                       .Where(dpAsn => dpAsn.IndividualExpression.GetIRI().Equals(ndpAsnIndividualIRI)
-                                                         && dpAsn.Literal.GetLiteral().Equals(ndpAsnLiteral))
-                                       .ToList()
-                                       .ForEach(dpAsn =>
-                                       {
-                                           issues.Add(new OWLIssue(
-                                               OWLEnums.OWLIssueSeverity.Error,
-                                               rulename,
-                                               $"Violated NegativeDataPropertyAssertion axiom with signature: '{ndpAsn.GetXML()}'",
-                                               rulesugg));
-                                       });
+                //Temporary working variables
+                List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
+            
+                //NegativeDataPropertyAssertion(DP,IDV,LIT) ^ DataPropertyAssertion(DP,IDV,LIT) -> ERROR
+                foreach (OWLNegativeDataPropertyAssertion ndpAsn in ndpAxms)
+                {
+                    RDFResource ndpAsnIndividualIRI = ndpAsn.IndividualExpression.GetIRI();
+                    RDFLiteral ndpAsnLiteral = ndpAsn.Literal.GetLiteral();
+                    OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, ndpAsn.DataProperty)
+                        .Where(dpAsn => dpAsn.IndividualExpression.GetIRI().Equals(ndpAsnIndividualIRI)
+                                         && dpAsn.Literal.GetLiteral().Equals(ndpAsnLiteral))
+                        .ToList()
+                        .ForEach(dpAsn =>
+                        {
+                            issues.Add(new OWLIssue(
+                                OWLEnums.OWLIssueSeverity.Error,
+                                rulename,
+                                $"Violated NegativeDataPropertyAssertion axiom with signature: '{ndpAsn.GetXML()}'",
+                                rulesugg));
+                        });
+                }
             }
 
             return issues;

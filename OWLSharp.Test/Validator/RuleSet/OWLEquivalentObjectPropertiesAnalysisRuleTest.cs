@@ -41,13 +41,7 @@ public class OWLEquivalentObjectPropertiesAnalysisRuleTest
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLIssue> issues = OWLEquivalentObjectPropertiesAnalysisRule.ExecuteRule(ontology, validatorContext);
+        List<OWLIssue> issues = OWLEquivalentObjectPropertiesAnalysisRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -76,13 +70,7 @@ public class OWLEquivalentObjectPropertiesAnalysisRuleTest
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows2")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLIssue> issues = OWLEquivalentObjectPropertiesAnalysisRule.ExecuteRule(ontology, validatorContext);
+        List<OWLIssue> issues = OWLEquivalentObjectPropertiesAnalysisRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);

@@ -22,7 +22,7 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.EquivalentObjectPropertiesAnalysis);
         internal const string rulesugg = "There should not be object properties belonging at the same time to EquivalentObjectProperties and SubObjectPropertyOf/DisjointObjectProperties axioms!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
@@ -35,11 +35,13 @@ namespace OWLSharp.Validator
                                                                                     && (ontology.CheckIsSubObjectPropertyOf(outerOPEX, innerOPEX)
                                                                                         || ontology.CheckIsSubObjectPropertyOf(innerOPEX, outerOPEX)
                                                                                         || ontology.CheckAreDisjointObjectProperties(outerOPEX, innerOPEX)))))
+                {
                     issues.Add(new OWLIssue(
                         OWLEnums.OWLIssueSeverity.Error,
                         rulename,
                         $"Violated EquivalentObjectProperties axiom with signature: '{equivObjectProps.GetXML()}'",
                         rulesugg));
+                }
 
             return issues;
         }

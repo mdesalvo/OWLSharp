@@ -23,7 +23,7 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.TermsDeprecationAnalysis);
         internal const string rulesugg = "There should not be presence of deprecated classes, datatypes and properties: it is recommended to migrate ontology to newer term definitions if available";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 

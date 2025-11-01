@@ -28,7 +28,7 @@ namespace OWLSharp.Validator
         internal const string rulesuggB3 = "There should not be any individuals stating object assertions with owl:bottomObjectProperty!";
         internal const string rulesuggB4 = "There should not be any individuals stating data assertions with owl:bottomDataProperty!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
@@ -61,7 +61,7 @@ namespace OWLSharp.Validator
                     rulesuggB2));
 
             issues.AddRange(from opAsn
-                            in validatorContext.ObjectPropertyAssertions
+                            in OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
                             where opAsn.ObjectPropertyExpression.GetIRI().Equals(RDFVocabulary.OWL.BOTTOM_OBJECT_PROPERTY)
                             select new OWLIssue(
                                 OWLEnums.OWLIssueSeverity.Error,
@@ -69,7 +69,7 @@ namespace OWLSharp.Validator
                                 "Detected object property assertion having owl:bottomObjectProperty as predicate: this is not allowed",
                                 rulesuggB3));
             issues.AddRange(from dpAsn
-                            in validatorContext.DataPropertyAssertions
+                            in ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
                             where dpAsn.DataProperty.GetIRI().Equals(RDFVocabulary.OWL.BOTTOM_DATA_PROPERTY)
                             select new OWLIssue(
                                 OWLEnums.OWLIssueSeverity.Error,

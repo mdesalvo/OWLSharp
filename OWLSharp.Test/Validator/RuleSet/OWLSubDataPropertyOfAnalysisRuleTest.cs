@@ -41,13 +41,7 @@ public class OWLSubDataPropertyOfAnalysisRuleTest
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLIssue> issues = OWLSubDataPropertyOfAnalysisRule.ExecuteRule(ontology, validatorContext);
+        List<OWLIssue> issues = OWLSubDataPropertyOfAnalysisRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(issues);
         Assert.HasCount(2, issues);
@@ -74,13 +68,7 @@ public class OWLSubDataPropertyOfAnalysisRuleTest
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLIssue> issues = OWLSubDataPropertyOfAnalysisRule.ExecuteRule(ontology, validatorContext);
+        List<OWLIssue> issues = OWLSubDataPropertyOfAnalysisRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -107,13 +95,7 @@ public class OWLSubDataPropertyOfAnalysisRuleTest
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLIssue> issues = OWLSubDataPropertyOfAnalysisRule.ExecuteRule(ontology, validatorContext);
+        List<OWLIssue> issues = OWLSubDataPropertyOfAnalysisRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);

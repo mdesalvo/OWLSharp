@@ -22,7 +22,7 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.EquivalentClassesAnalysis);
         internal const string rulesugg = "There should not be class expressions belonging at the same time to EquivalentClasses and SubClassOf/DisjointClasses axioms!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
@@ -35,11 +35,13 @@ namespace OWLSharp.Validator
                                                                           && (ontology.CheckIsSubClassOf(outerClass, innerClass)
                                                                              || ontology.CheckIsSubClassOf(innerClass, outerClass)
                                                                              || ontology.CheckAreDisjointClasses(outerClass, innerClass)))))
+                {
                     issues.Add(new OWLIssue(
                         OWLEnums.OWLIssueSeverity.Error,
                         rulename,
                         $"Violated EquivalentClasses axiom with signature: '{equivClasses.GetXML()}'",
                         rulesugg));
+                }
 
             return issues;
         }

@@ -21,21 +21,31 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.ObjectPropertyRangeAnalysis);
         internal const string rulesugg = "There should not be individuals explicitly incompatible with range class of object properties within ObjectPropertyAssertion axioms!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyRange(OP,C) ^ ClassAssertion(ObjectComplementOf(C),IDV2) -> ERROR
-            foreach (OWLObjectPropertyRange opRange in ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyRange>())
+            List<OWLObjectPropertyRange> opRanges = ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyRange>();
+            if (opRanges.Count > 0)
             {
-                bool isObjectInverseOf = opRange.ObjectPropertyExpression is OWLObjectInverseOf;
-                foreach (OWLObjectPropertyAssertion opRangeAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(validatorContext.ObjectPropertyAssertions, opRange.ObjectPropertyExpression))
-                    if (ontology.CheckIsNegativeIndividualOf(opRange.ClassExpression, isObjectInverseOf ? opRangeAsn.SourceIndividualExpression : opRangeAsn.TargetIndividualExpression, validatorContext.ClassAssertions))
-                        issues.Add(new OWLIssue(
-                            OWLEnums.OWLIssueSeverity.Error,
-                            rulename,
-                            $"Violated ObjectPropertyRange axiom with signature: {opRange.GetXML()}",
-                            rulesugg));
+                //Temporary working variables
+                List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
+                List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
+
+                //ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyRange(OP,C) ^ ClassAssertion(ObjectComplementOf(C),IDV2) -> ERROR
+                foreach (OWLObjectPropertyRange opRange in opRanges)
+                {
+                    bool isObjectInverseOf = opRange.ObjectPropertyExpression is OWLObjectInverseOf;
+                    foreach (OWLObjectPropertyAssertion opRangeAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, opRange.ObjectPropertyExpression))
+                        if (ontology.CheckIsNegativeIndividualOf(opRange.ClassExpression, isObjectInverseOf ? opRangeAsn.SourceIndividualExpression : opRangeAsn.TargetIndividualExpression, clsAsns))
+                        {
+                            issues.Add(new OWLIssue(
+                                OWLEnums.OWLIssueSeverity.Error,
+                                rulename,
+                                $"Violated ObjectPropertyRange axiom with signature: {opRange.GetXML()}",
+                                rulesugg));
+                        }
+                }
             }
 
             return issues;

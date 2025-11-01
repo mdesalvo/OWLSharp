@@ -24,11 +24,12 @@ namespace OWLSharp.Validator
         internal const string rulesugg1 = "There should not be object properties at the same time asymmetric and symmetric!";
         internal const string rulesugg2 = "There should not be object assertions switching source/target individuals under the same asymmetric object property!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
+            List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
             List<OWLAsymmetricObjectProperty> asymObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLAsymmetricObjectProperty>();
             List<OWLSymmetricObjectProperty> symObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLSymmetricObjectProperty>();
 
@@ -54,7 +55,7 @@ namespace OWLSharp.Validator
                 OWLObjectProperty asymObjPropInvOfValue = (asymObjProp.ObjectPropertyExpression as OWLObjectInverseOf)?.ObjectProperty;
 
                 #region Recalibration
-                List<OWLObjectPropertyAssertion> asymObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(validatorContext.ObjectPropertyAssertions, asymObjProp.ObjectPropertyExpression);
+                List<OWLObjectPropertyAssertion> asymObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, asymObjProp.ObjectPropertyExpression);
                 foreach (OWLObjectPropertyAssertion asymObjPropAsn in asymObjPropAsns)
                 {
                     //In case the asymmetric object property works under inverse logic, we must swap source/target of the object assertion

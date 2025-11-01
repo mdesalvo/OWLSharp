@@ -23,36 +23,43 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.DisjointUnionAnalysis);
         internal const string rulesugg = "There should not be class expressions belonging to a DisjointUnion axiom and having a class assertion on the same individual!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //Temporary working variables
-            Dictionary<long, HashSet<long>> idvsCache = new Dictionary<long, HashSet<long>>();
-
-            //DisjointUnion(CLS,(CLS1,CLS2)) ^ ClassAssertion(CLS1,IDV) ^ ClassAssertion(CLS2,IDV) -> ERROR
-            foreach (OWLDisjointUnion disjUnion in ontology.GetClassAxiomsOfType<OWLDisjointUnion>())
+            List<OWLDisjointUnion> disjUnionAxms = ontology.GetClassAxiomsOfType<OWLDisjointUnion>();
+            if (disjUnionAxms.Count > 0)
             {
-                //Materialize individuals of each class expression member of the DisjointUnion
-                foreach (OWLClassExpression disjUnionMember in disjUnion.ClassExpressions)
-                    foreach (OWLIndividualExpression disjUnionMemberIdv in ontology.GetIndividualsOf(disjUnionMember, validatorContext.ClassAssertions))
+                //Temporary working variables
+                List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
+                Dictionary<long, HashSet<long>> idvsCache = new Dictionary<long, HashSet<long>>();
+
+                //DisjointUnion(CLS,(CLS1,CLS2)) ^ ClassAssertion(CLS1,IDV) ^ ClassAssertion(CLS2,IDV) -> ERROR
+                foreach (OWLDisjointUnion disjUnion in disjUnionAxms)
+                {
+                    //Materialize individuals of each class expression member of the DisjointUnion
+                    foreach (OWLClassExpression disjUnionMember in disjUnion.ClassExpressions)
+                        foreach (OWLIndividualExpression disjUnionMemberIdv in ontology.GetIndividualsOf(disjUnionMember, clsAsns))
+                        {
+                            RDFResource disjUnionMemberIdvIRI = disjUnionMemberIdv.GetIRI();
+                            if (!idvsCache.ContainsKey(disjUnionMemberIdvIRI.PatternMemberID))
+                                idvsCache.Add(disjUnionMemberIdvIRI.PatternMemberID, new HashSet<long>());
+                            idvsCache[disjUnionMemberIdvIRI.PatternMemberID].Add(disjUnionMember.GetIRI().PatternMemberID);
+                        }
+
+                    //Analyze individuals cache to detect if there are individuals shared between the class expression members
+                    if (idvsCache.Any(idvc => idvc.Value.Count > 1))
                     {
-                        RDFResource disjUnionMemberIdvIRI = disjUnionMemberIdv.GetIRI();
-                        if (!idvsCache.ContainsKey(disjUnionMemberIdvIRI.PatternMemberID))
-                            idvsCache.Add(disjUnionMemberIdvIRI.PatternMemberID, new HashSet<long>());
-                        idvsCache[disjUnionMemberIdvIRI.PatternMemberID].Add(disjUnionMember.GetIRI().PatternMemberID);
+                        issues.Add(new OWLIssue(
+                            OWLEnums.OWLIssueSeverity.Error,
+                            rulename,
+                            $"Violated DisjointUnion axiom with signature: '{disjUnion.GetXML()}'",
+                            rulesugg));
                     }
 
-                //Analyze individuals cache to detect if there are individuals shared between the class expression members
-                if (idvsCache.Any(idvc => idvc.Value.Count > 1))
-                    issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error,
-                        rulename,
-                        $"Violated DisjointUnion axiom with signature: '{disjUnion.GetXML()}'",
-                        rulesugg));
-
-                //Reset register for next DisjointUnion axiom
-                idvsCache.Clear();
+                    //Reset register for next DisjointUnion axiom
+                    idvsCache.Clear();
+                }
             }
 
             return issues;

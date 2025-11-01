@@ -22,14 +22,16 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.ClassAssertionAnalysis);
         internal const string rulesugg = "There should not be named individuals belonging at the same time to a class expression and its object complement!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
+            //Temporary working variables
+            List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
+            
             //ClassAssertion(CLS,IDV) ^ ClassAssertion(ObjectComplementOf(CLS),IDV) -> ERROR
-            foreach (var classAsnMap in validatorContext.ClassAssertions
-                                                        .GroupBy(clax => clax.IndividualExpression.GetIRI().ToString())
-                                                        .ToDictionary(grp => grp.Key, grp => grp.Select(g => g.ClassExpression)))
+            foreach (var classAsnMap in clsAsns.GroupBy(clax => clax.IndividualExpression.GetIRI().ToString())
+                                               .ToDictionary(grp => grp.Key, grp => grp.Select(g => g.ClassExpression)))
             {
                 if (classAsnMap.Value.Any(outerClassExpr =>
                      classAsnMap.Value.Any(innerClassExpr => !outerClassExpr.GetIRI().Equals(innerClassExpr.GetIRI())

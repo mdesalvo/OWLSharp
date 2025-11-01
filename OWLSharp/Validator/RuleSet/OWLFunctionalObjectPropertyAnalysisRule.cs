@@ -23,56 +23,65 @@ namespace OWLSharp.Validator
         internal const string rulesugg = "There should not be functional object properties linking the same source individual to more than one target individuals within ObjectPropertyAssertion axioms if these target individuals are explicitly different!";
         internal const string rulesugg2 = "There should not be functional object properties also defined as transitive, or having super properties defined as transitive!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            foreach (OWLFunctionalObjectProperty fop in ontology.GetObjectPropertyAxiomsOfType<OWLFunctionalObjectProperty>())
+            List<OWLFunctionalObjectProperty> fopAxms = ontology.GetObjectPropertyAxiomsOfType<OWLFunctionalObjectProperty>();
+            if (fopAxms.Count > 0)
             {
-                #region Recalibration
-                List<OWLObjectPropertyAssertion> fopAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(validatorContext.ObjectPropertyAssertions, fop.ObjectPropertyExpression);
-                foreach (OWLObjectPropertyAssertion fopAsn in fopAsns)
+                //Temporary working variables
+                List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
+
+                foreach (OWLFunctionalObjectProperty fop in fopAxms)
                 {
-                    //In case the functional object property works under inverse logic, we must swap source/target of the object assertion
-                    if (fop.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
+                    #region Recalibration
+                    List<OWLObjectPropertyAssertion> fopAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, fop.ObjectPropertyExpression);
+                    foreach (OWLObjectPropertyAssertion fopAsn in fopAsns)
                     {
-                        (fopAsn.SourceIndividualExpression, fopAsn.TargetIndividualExpression) = (fopAsn.TargetIndividualExpression, fopAsn.SourceIndividualExpression);
-                        fopAsn.ObjectPropertyExpression = objInvOf.ObjectProperty;
+                        //In case the functional object property works under inverse logic, we must swap source/target of the object assertion
+                        if (fop.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
+                        {
+                            (fopAsn.SourceIndividualExpression, fopAsn.TargetIndividualExpression) = (fopAsn.TargetIndividualExpression, fopAsn.SourceIndividualExpression);
+                            fopAsn.ObjectPropertyExpression = objInvOf.ObjectProperty;
+                        }
+                    }
+                    fopAsns = OWLAxiomHelper.RemoveDuplicates(fopAsns);
+                    #endregion
+
+                    //FunctionalObjectProperty(FOP) ^ ObjectPropertyAssertion(FOP,IDV1,IDV2) ^ ObjectPropertyAssertion(FOP,IDV1,IDV3) ^ DifferentIndividuals(IDV2,IDV3) -> ERROR
+                    fopAsns.GroupBy(opex => opex.SourceIndividualExpression.GetIRI().ToString())
+                           .Select(grp => new
+                           {
+                                FopAsnTargets = grp.Select(g => g.TargetIndividualExpression),
+                                FoundDiffFromTargets = grp.Select(g => g.TargetIndividualExpression)
+                                                          .Any(outerTgtIdv => grp.Select(g => g.TargetIndividualExpression)
+                                                                                 .Any(innerTgtIdv => !outerTgtIdv.GetIRI().Equals(innerTgtIdv.GetIRI())
+                                                                                                       && ontology.CheckAreDifferentIndividuals(outerTgtIdv, innerTgtIdv)))
+                           })
+                           .Where(grp => grp.FoundDiffFromTargets && grp.FopAsnTargets.Count() > 1)
+                           .ToList()
+                           .ForEach(fopAsn =>
+                           {
+                               issues.Add(new OWLIssue(
+                                   OWLEnums.OWLIssueSeverity.Error,
+                                   rulename,
+                                   $"Violated FunctionalObjectProperty axiom with signature: {fop.GetXML()}",
+                                   rulesugg));
+                           });
+
+                    //FunctionalObjectProperty(FOP) ^ TransitiveObjectProperty(FOP) -> ERROR
+                    //FunctionalObjectProperty(FOP) ^ SubObjectPropertyOf(FOP, SOP) ^ TransitiveObjectProperty(SOP) -> ERROR
+                    if (ontology.CheckHasTransitiveObjectProperty(fop.ObjectPropertyExpression)
+                         || ontology.GetSuperObjectPropertiesOf(fop.ObjectPropertyExpression).Any(ontology.CheckHasTransitiveObjectProperty))
+                    {
+                        issues.Add(new OWLIssue(
+                            OWLEnums.OWLIssueSeverity.Error,
+                            rulename,
+                            $"Violated FunctionalObjectProperty axiom with signature: {fop.GetXML()}",
+                            rulesugg2));
                     }
                 }
-                fopAsns = OWLAxiomHelper.RemoveDuplicates(fopAsns);
-                #endregion
-
-                //FunctionalObjectProperty(FOP) ^ ObjectPropertyAssertion(FOP,IDV1,IDV2) ^ ObjectPropertyAssertion(FOP,IDV1,IDV3) ^ DifferentIndividuals(IDV2,IDV3) -> ERROR
-                fopAsns.GroupBy(opex => opex.SourceIndividualExpression.GetIRI().ToString())
-                       .Select(grp => new
-                       {
-                            FopAsnTargets = grp.Select(g => g.TargetIndividualExpression),
-                            FoundDiffFromTargets = grp.Select(g => g.TargetIndividualExpression)
-                                                      .Any(outerTgtIdv => grp.Select(g => g.TargetIndividualExpression)
-                                                                             .Any(innerTgtIdv => !outerTgtIdv.GetIRI().Equals(innerTgtIdv.GetIRI())
-                                                                                                   && ontology.CheckAreDifferentIndividuals(outerTgtIdv, innerTgtIdv)))
-                       })
-                       .Where(grp => grp.FoundDiffFromTargets && grp.FopAsnTargets.Count() > 1)
-                       .ToList()
-                       .ForEach(fopAsn =>
-                       {
-                           issues.Add(new OWLIssue(
-                               OWLEnums.OWLIssueSeverity.Error,
-                               rulename,
-                               $"Violated FunctionalObjectProperty axiom with signature: {fop.GetXML()}",
-                               rulesugg));
-                       });
-
-                //FunctionalObjectProperty(FOP) ^ TransitiveObjectProperty(FOP) -> ERROR
-                //FunctionalObjectProperty(FOP) ^ SubObjectPropertyOf(FOP, SOP) ^ TransitiveObjectProperty(SOP) -> ERROR
-                if (ontology.CheckHasTransitiveObjectProperty(fop.ObjectPropertyExpression)
-                     || ontology.GetSuperObjectPropertiesOf(fop.ObjectPropertyExpression).Any(ontology.CheckHasTransitiveObjectProperty))
-                    issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error,
-                        rulename,
-                        $"Violated FunctionalObjectProperty axiom with signature: {fop.GetXML()}",
-                        rulesugg2));
             }
 
             return issues;

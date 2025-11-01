@@ -21,22 +21,32 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.ObjectPropertyDomainAnalysis);
         internal const string rulesugg = "There should not be individuals explicitly incompatible with domain class of object properties within ObjectPropertyAssertion axioms!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyDomain(OP,C) ^ ClassAssertion(ObjectComplementOf(C),IDV1) -> ERROR
-            foreach (OWLObjectPropertyDomain opDomain in ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyDomain>())
+            List<OWLObjectPropertyDomain> opDomains = ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyDomain>();
+            if (opDomains.Count > 0)
             {
-                bool isObjectInverseOf = opDomain.ObjectPropertyExpression is OWLObjectInverseOf;
-                foreach (OWLObjectPropertyAssertion opDomainAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(validatorContext.ObjectPropertyAssertions, opDomain.ObjectPropertyExpression))
-                    if (ontology.CheckIsNegativeIndividualOf(opDomain.ClassExpression,
-                            isObjectInverseOf ? opDomainAsn.TargetIndividualExpression : opDomainAsn.SourceIndividualExpression, validatorContext.ClassAssertions))
-                        issues.Add(new OWLIssue(
-                            OWLEnums.OWLIssueSeverity.Error,
-                            rulename,
-                            $"Violated ObjectPropertyDomain axiom with signature: {opDomain.GetXML()}",
-                            rulesugg));
+                //Temporary working variables
+                List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
+                List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
+
+                //ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyDomain(OP,C) ^ ClassAssertion(ObjectComplementOf(C),IDV1) -> ERROR
+                foreach (OWLObjectPropertyDomain opDomain in opDomains)
+                {
+                    bool isObjectInverseOf = opDomain.ObjectPropertyExpression is OWLObjectInverseOf;
+                    foreach (OWLObjectPropertyAssertion opDomainAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, opDomain.ObjectPropertyExpression))
+                        if (ontology.CheckIsNegativeIndividualOf(opDomain.ClassExpression,
+                                isObjectInverseOf ? opDomainAsn.TargetIndividualExpression : opDomainAsn.SourceIndividualExpression, clsAsns))
+                        {
+                            issues.Add(new OWLIssue(
+                                OWLEnums.OWLIssueSeverity.Error,
+                                rulename,
+                                $"Violated ObjectPropertyDomain axiom with signature: {opDomain.GetXML()}",
+                                rulesugg));
+                        }
+                }
             }
 
             return issues;

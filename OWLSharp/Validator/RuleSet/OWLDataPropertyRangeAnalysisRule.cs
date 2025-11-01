@@ -21,20 +21,27 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.DataPropertyRangeAnalysis);
         internal const string rulesugg = "There should not be literals incompatible with range expression of data properties within DataPropertyAssertion axioms!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            foreach (OWLDataPropertyRange dpRange in ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyRange>())
-                foreach (OWLDataPropertyAssertion dpAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(validatorContext.DataPropertyAssertions, dpRange.DataProperty))
-                {
-                    if (!ontology.CheckIsLiteralOf(dpRange.DataRangeExpression, dpAsn.Literal))
-                        issues.Add(new OWLIssue(
-                            OWLEnums.OWLIssueSeverity.Error,
-                            rulename,
-                            $"Violated DataPropertyRange axiom with signature: {dpRange.GetXML()}",
-                            rulesugg));
-                }
+            List<OWLDataPropertyRange> dpRanges = ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyRange>();
+            if (dpRanges.Count > 0)
+            {
+                //Temporary working variables
+                List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
+
+                foreach (OWLDataPropertyRange dpRange in dpRanges)
+                    foreach (OWLDataPropertyAssertion dpAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, dpRange.DataProperty))
+                    {
+                        if (!ontology.CheckIsLiteralOf(dpRange.DataRangeExpression, dpAsn.Literal))
+                            issues.Add(new OWLIssue(
+                                OWLEnums.OWLIssueSeverity.Error,
+                                rulename,
+                                $"Violated DataPropertyRange axiom with signature: {dpRange.GetXML()}",
+                                rulesugg));
+                    }
+            }
 
             return issues;
         }

@@ -23,47 +23,54 @@ namespace OWLSharp.Validator
         internal const string rulesugg = "There should not be disjoint data properties linking the same individual to the same literal within DataPropertyAssertion axioms!";
         internal const string rulesugg2 = "There should not be data properties belonging at the same time to DisjointDataProperties and SubDataPropertyOf/EquivalentDataProperties axioms!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //Temporary working variables
-            List<OWLDataPropertyAssertion> disjDtPropAsns = new List<OWLDataPropertyAssertion>();
-
-            //DisjointDataProperties(DP1,DP2) ^ DataPropertyAssertion(DP1,IDV,LIT) ^ DataPropertyAssertion(DP2,IDV,LIT) -> ERROR
-            foreach (OWLDisjointDataProperties disjDtProps in ontology.GetDataPropertyAxiomsOfType<OWLDisjointDataProperties>())
+            List<OWLDisjointDataProperties> disjDtPropsAxms = ontology.GetDataPropertyAxiomsOfType<OWLDisjointDataProperties>();
+            if (disjDtPropsAxms.Count > 0)
             {
-                disjDtPropAsns.Clear();
-                foreach (OWLDataProperty disjDtProp in disjDtProps.DataProperties)
-                    disjDtPropAsns.AddRange(OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(validatorContext.DataPropertyAssertions, disjDtProp));
+                //Temporary working variables
+                List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
+                List<OWLDataPropertyAssertion> disjDtPropAsns = new List<OWLDataPropertyAssertion>();
 
-                disjDtPropAsns.GroupBy(dtAsn => new {
-                                    Idv = dtAsn.IndividualExpression.GetIRI().ToString(),
-                                    Lit = dtAsn.Literal.GetLiteral().ToString() })
-                              .Where(g => g.Count() > 1)
-                              .ToList()
-                              .ForEach(dtAsn =>
-                              {
-                                  issues.Add(new OWLIssue(
-                                      OWLEnums.OWLIssueSeverity.Error,
-                                      rulename,
-                                      $"Violated DisjointDataProperties axiom with signature: '{disjDtProps.GetXML()}'",
-                                      rulesugg));
-                              });
+                //DisjointDataProperties(DP1,DP2) ^ DataPropertyAssertion(DP1,IDV,LIT) ^ DataPropertyAssertion(DP2,IDV,LIT) -> ERROR
+                foreach (OWLDisjointDataProperties disjDtProps in disjDtPropsAxms)
+                {
+                    disjDtPropAsns.Clear();
+                    foreach (OWLDataProperty disjDtProp in disjDtProps.DataProperties)
+                        disjDtPropAsns.AddRange(OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, disjDtProp));
 
-                //DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP1,DP2) -> ERROR
-                //DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP2,DP1) -> ERROR
-                //DisjointDataProperties(DP1,DP2) ^ EquivalentDataProperties(DP1,DP2) -> ERROR
-                if (disjDtProps.DataProperties.Any(outerDP =>
-                      disjDtProps.DataProperties.Any(innerDP => !outerDP.GetIRI().Equals(innerDP.GetIRI())
-                                                                  && (ontology.CheckIsSubDataPropertyOf(outerDP, innerDP)
-                                                                       || ontology.CheckIsSubDataPropertyOf(innerDP, outerDP)
-                                                                       || ontology.CheckAreEquivalentDataProperties(outerDP, innerDP)))))
-                    issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error,
-                        rulename,
-                        $"Violated DisjointDataProperties axiom with signature: '{disjDtProps.GetXML()}'",
-                        rulesugg2));
+                    disjDtPropAsns.GroupBy(dtAsn => new {
+                                        Idv = dtAsn.IndividualExpression.GetIRI().ToString(),
+                                        Lit = dtAsn.Literal.GetLiteral().ToString() })
+                                  .Where(g => g.Count() > 1)
+                                  .ToList()
+                                  .ForEach(dtAsn =>
+                                  {
+                                      issues.Add(new OWLIssue(
+                                          OWLEnums.OWLIssueSeverity.Error,
+                                          rulename,
+                                          $"Violated DisjointDataProperties axiom with signature: '{disjDtProps.GetXML()}'",
+                                          rulesugg));
+                                  });
+
+                    //DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP1,DP2) -> ERROR
+                    //DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP2,DP1) -> ERROR
+                    //DisjointDataProperties(DP1,DP2) ^ EquivalentDataProperties(DP1,DP2) -> ERROR
+                    if (disjDtProps.DataProperties.Any(outerDP =>
+                          disjDtProps.DataProperties.Any(innerDP => !outerDP.GetIRI().Equals(innerDP.GetIRI())
+                                                                      && (ontology.CheckIsSubDataPropertyOf(outerDP, innerDP)
+                                                                           || ontology.CheckIsSubDataPropertyOf(innerDP, outerDP)
+                                                                           || ontology.CheckAreEquivalentDataProperties(outerDP, innerDP)))))
+                    {
+                        issues.Add(new OWLIssue(
+                            OWLEnums.OWLIssueSeverity.Error,
+                            rulename,
+                            $"Violated DisjointDataProperties axiom with signature: '{disjDtProps.GetXML()}'",
+                            rulesugg2));
+                    }
+                }
             }
 
             return issues;

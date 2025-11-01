@@ -23,27 +23,34 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.NegativeObjectAssertionsAnalysis);
         internal const string rulesugg = "There should not be object assertions conflicting with negative object assertions!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //NegativeObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ERROR
-            foreach (OWLNegativeObjectPropertyAssertion nopAsn in OWLAssertionAxiomHelper.CalibrateNegativeObjectAssertions(ontology))
+            List<OWLNegativeObjectPropertyAssertion> nopAxms = OWLAssertionAxiomHelper.CalibrateNegativeObjectAssertions(ontology);
+            if (nopAxms.Count > 0)
             {
-                RDFResource ndpAsnSourceIndividualIRI = nopAsn.SourceIndividualExpression.GetIRI();
-                RDFResource ndpAsnTargetIndividualIRI = nopAsn.TargetIndividualExpression.GetIRI();
-                OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(validatorContext.ObjectPropertyAssertions, nopAsn.ObjectPropertyExpression)
-                                       .Where(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(ndpAsnSourceIndividualIRI)
-                                                        && opAsn.TargetIndividualExpression.GetIRI().Equals(ndpAsnTargetIndividualIRI))
-                                       .ToList()
-                                       .ForEach(opAsn =>
-                                       {
-                                           issues.Add(new OWLIssue(
-                                               OWLEnums.OWLIssueSeverity.Error,
-                                               rulename,
-                                               $"Violated NegativeObjectPropertyAssertion axiom with signature: '{nopAsn.GetXML()}'",
-                                               rulesugg));
-                                       });
+                //Temporary working variables
+                List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
+
+                //NegativeObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ERROR
+                foreach (OWLNegativeObjectPropertyAssertion nopAsn in nopAxms)
+                {
+                    RDFResource ndpAsnSourceIndividualIRI = nopAsn.SourceIndividualExpression.GetIRI();
+                    RDFResource ndpAsnTargetIndividualIRI = nopAsn.TargetIndividualExpression.GetIRI();
+                    OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, nopAsn.ObjectPropertyExpression)
+                        .Where(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(ndpAsnSourceIndividualIRI)
+                                         && opAsn.TargetIndividualExpression.GetIRI().Equals(ndpAsnTargetIndividualIRI))
+                        .ToList()
+                        .ForEach(opAsn =>
+                        {
+                            issues.Add(new OWLIssue(
+                                OWLEnums.OWLIssueSeverity.Error,
+                                rulename,
+                                $"Violated NegativeObjectPropertyAssertion axiom with signature: '{nopAsn.GetXML()}'",
+                                rulesugg));
+                        });
+                }
             }
 
             return issues;

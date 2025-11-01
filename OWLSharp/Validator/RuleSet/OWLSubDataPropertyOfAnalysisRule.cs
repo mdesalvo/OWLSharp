@@ -21,7 +21,7 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.SubDataPropertyOfAnalysis);
         internal const string rulesugg = "There should not be data properties belonging at the same time to SubDataPropertyOf and EquivalentDataProperties/DisjointDataProperties axioms!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
@@ -32,11 +32,13 @@ namespace OWLSharp.Validator
                 if (ontology.CheckIsSubDataPropertyOf(subDataPropertyOf.SuperDataProperty, subDataPropertyOf.SubDataProperty)
                      || ontology.CheckAreEquivalentDataProperties(subDataPropertyOf.SubDataProperty, subDataPropertyOf.SuperDataProperty)
                      || ontology.CheckAreDisjointDataProperties(subDataPropertyOf.SubDataProperty, subDataPropertyOf.SuperDataProperty))
+                {
                     issues.Add(new OWLIssue(
                         OWLEnums.OWLIssueSeverity.Error,
                         rulename,
                         $"Violated SubDataPropertyOf axiom with signature: '{subDataPropertyOf.GetXML()}'",
                         rulesugg));
+                }
 
             return issues;
         }

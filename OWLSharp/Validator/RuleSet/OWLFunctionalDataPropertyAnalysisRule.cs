@@ -22,25 +22,32 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.FunctionalDataPropertyAnalysis);
         internal const string rulesugg = "There should not be functional data properties linking the same individual to more than one literal within DataPropertyAssertion axioms!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //FunctionalDataProperty(FDP) ^ DataPropertyAssertion(FDP,IDV,LIT1) ^ DataPropertyAssertion(FDP,IDV,LIT2) -> ERROR
-            foreach (OWLFunctionalDataProperty fdp in ontology.GetDataPropertyAxiomsOfType<OWLFunctionalDataProperty>())
-                OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(validatorContext.DataPropertyAssertions, fdp.DataProperty)
-                                       .GroupBy(dpax => dpax.IndividualExpression.GetIRI().ToString())
-                                       .ToDictionary(grp => grp.Key, grp => grp.Select(g => g.Literal))
-                                       .Where(dict => OWLExpressionHelper.RemoveDuplicates(dict.Value.ToList()).Count > 1)
-                                       .ToList()
-                                       .ForEach(fdpAsn =>
-                                       {
-                                           issues.Add(new OWLIssue(
-                                               OWLEnums.OWLIssueSeverity.Error,
-                                               rulename,
-                                               $"Violated FunctionalDataProperty axiom with signature: {fdp.GetXML()}",
-                                               rulesugg));
-                                       });
+            List<OWLFunctionalDataProperty> fdpAxms = ontology.GetDataPropertyAxiomsOfType<OWLFunctionalDataProperty>();
+            if (fdpAxms.Count > 0)
+            {
+                //Temporary working variables
+                List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
+
+                //FunctionalDataProperty(FDP) ^ DataPropertyAssertion(FDP,IDV,LIT1) ^ DataPropertyAssertion(FDP,IDV,LIT2) -> ERROR
+                foreach (OWLFunctionalDataProperty fdp in fdpAxms)
+                    OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, fdp.DataProperty)
+                        .GroupBy(dpax => dpax.IndividualExpression.GetIRI().ToString())
+                        .ToDictionary(grp => grp.Key, grp => grp.Select(g => g.Literal))
+                        .Where(dict => OWLExpressionHelper.RemoveDuplicates(dict.Value.ToList()).Count > 1)
+                        .ToList()
+                        .ForEach(fdpAsn =>
+                        {
+                            issues.Add(new OWLIssue(
+                                OWLEnums.OWLIssueSeverity.Error,
+                                rulename,
+                                $"Violated FunctionalDataProperty axiom with signature: {fdp.GetXML()}",
+                                rulesugg));
+                        });
+            }
 
             return issues;
         }

@@ -21,21 +21,29 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.DataPropertyDomainAnalysis);
         internal const string rulesugg = "There should not be individuals explicitly incompatible with domain class of data properties within DataPropertyAssertion axioms!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //DataPropertyAssertion(DP,IDV,LIT) ^ DataPropertyDomain(DP,C) ^ ClassAssertion(ObjectComplementOf(C),IDV) -> ERROR
-            foreach (OWLDataPropertyDomain dpDomain in ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyDomain>())
-                foreach (OWLDataPropertyAssertion dpAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(validatorContext.DataPropertyAssertions, dpDomain.DataProperty))
-                {
-                    if (ontology.CheckIsNegativeIndividualOf(dpDomain.ClassExpression, dpAsn.IndividualExpression, validatorContext.ClassAssertions))
-                        issues.Add(new OWLIssue(
-                            OWLEnums.OWLIssueSeverity.Error,
-                            rulename,
-                            $"Violated DataPropertyDomain axiom with signature: {dpDomain.GetXML()}",
-                            rulesugg));
-                }
+            List<OWLDataPropertyDomain> dpDomains = ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyDomain>();
+            if (dpDomains.Count > 0)
+            {
+                //Temporary working variables
+                List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
+                List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
+
+                //DataPropertyAssertion(DP,IDV,LIT) ^ DataPropertyDomain(DP,C) ^ ClassAssertion(ObjectComplementOf(C),IDV) -> ERROR
+                foreach (OWLDataPropertyDomain dpDomain in dpDomains)
+                    foreach (OWLDataPropertyAssertion dpAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, dpDomain.DataProperty))
+                    {
+                        if (ontology.CheckIsNegativeIndividualOf(dpDomain.ClassExpression, dpAsn.IndividualExpression, clsAsns))
+                            issues.Add(new OWLIssue(
+                                OWLEnums.OWLIssueSeverity.Error,
+                                rulename,
+                                $"Violated DataPropertyDomain axiom with signature: {dpDomain.GetXML()}",
+                                rulesugg));
+                    }
+            }
 
             return issues;
         }

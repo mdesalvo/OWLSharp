@@ -24,13 +24,14 @@ namespace OWLSharp.Validator
         internal const string rulesugg1 = "There should not be object properties at the same time irreflexive and reflexive!";
         internal const string rulesugg2 = "There should not be object assertions having the same source/target individual under an irreflexive object property!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
             List<OWLIrreflexiveObjectProperty> irrefObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLIrreflexiveObjectProperty>();
             List<OWLReflexiveObjectProperty> refObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLReflexiveObjectProperty>();
+            List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 
             //IrreflexiveObjectProperty(OP) ^ ReflexiveObjectProperty(OP) -> ERROR
             foreach (OWLIrreflexiveObjectProperty irrefObjProp in irrefObjProps)
@@ -51,7 +52,7 @@ namespace OWLSharp.Validator
             //IrreflexiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV1) -> ERROR
             foreach (OWLIrreflexiveObjectProperty irrefObjProp in irrefObjProps)
             {
-                List <OWLObjectPropertyAssertion> irrefObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(validatorContext.ObjectPropertyAssertions, irrefObjProp.ObjectPropertyExpression);
+                List <OWLObjectPropertyAssertion> irrefObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, irrefObjProp.ObjectPropertyExpression);
                 if (irrefObjPropAsns.Any(asn => asn.SourceIndividualExpression.GetIRI().Equals(asn.TargetIndividualExpression.GetIRI())))
                 {
                     issues.Add(new OWLIssue(
