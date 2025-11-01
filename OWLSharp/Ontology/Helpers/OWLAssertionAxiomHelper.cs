@@ -640,7 +640,7 @@ namespace OWLSharp.Ontology
             => negDtPropAsnAxioms.Where(ax => ax.DataProperty.GetIRI().Equals(dtProp.GetIRI())).ToList();
 
         /// <summary>
-        /// Scans the OWLObjectPropertyAssertion axioms of the given ontology and adjusts the verse of those using OWLObjectInverseOf semantic
+        /// Scans the OWLObjectPropertyAssertion axioms of the given ontology and "adjusts" the verse of ones using OWLObjectInverseOf semantic
         /// </summary>
         internal static List<OWLObjectPropertyAssertion> CalibrateObjectAssertions(OWLOntology ontology)
         {
@@ -657,7 +657,7 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
-        /// Scans the OWLNegativeObjectPropertyAssertion axioms of the given ontology and adjusts the verse of those using OWLObjectInverseOf semantic
+        /// Scans the OWLNegativeObjectPropertyAssertion axioms of the given ontology and "adjusts" the verse of ones using OWLObjectInverseOf semantic
         /// </summary>
         internal static List<OWLNegativeObjectPropertyAssertion> CalibrateNegativeObjectAssertions(OWLOntology ontology)
         {

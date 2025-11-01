@@ -32,7 +32,7 @@ namespace OWLSharp.Reasoner
             Lazy<RDFGraph> lazyOPAsnsGraph = new Lazy<RDFGraph>(() =>
             {
                 RDFGraph opAsnsGraph = new RDFGraph();
-                foreach (OWLObjectPropertyAssertion opAsn in ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>())
+                foreach (OWLObjectPropertyAssertion opAsn in OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology))
                 {
                     foreach (RDFTriple opAsnTriple in opAsn.ToRDFGraph())
                         opAsnsGraph.AddTriple(opAsnTriple);
