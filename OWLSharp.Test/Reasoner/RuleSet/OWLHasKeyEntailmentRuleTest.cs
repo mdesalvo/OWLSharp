@@ -79,13 +79,7 @@ public class OWLHasKeyEntailmentRuleTest
                 )
             ]
         };
-        OWLReasonerContext reasonerContext = new OWLReasonerContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLInference> inferences = OWLHasKeyEntailmentRule.ExecuteRule(ontology, reasonerContext);
+        List<OWLInference> inferences = OWLHasKeyEntailmentRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
@@ -143,13 +137,7 @@ public class OWLHasKeyEntailmentRuleTest
                 )
             ]
         };
-        OWLReasonerContext reasonerContext = new OWLReasonerContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLInference> inferences = OWLHasKeyEntailmentRule.ExecuteRule(ontology, reasonerContext);
+        List<OWLInference> inferences = OWLHasKeyEntailmentRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));

@@ -21,35 +21,38 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.DisjointObjectPropertiesEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-            foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
-                                                                         .Select(ax => (OWLObjectProperty)ax.Entity))
+            if (ontology.ObjectPropertyAxioms.Any(opAxm => opAxm is OWLDisjointObjectProperties))
             {
-                List<OWLObjectPropertyExpression> disjointObjectPropertyExpressions = ontology.GetDisjointObjectProperties(declaredObjectProperty);
-
-                //AllDisjointProperties(OP1,OP2,...OPN) -> DisjointObjectProperties(OP1,OP2) ^ DisjointObjectProperties(OP1,OPN) ^ ...
-                foreach (OWLObjectProperty disjointObjectProperty in disjointObjectPropertyExpressions.OfType<OWLObjectProperty>())
+                foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
+                                                                             .Select(ax => (OWLObjectProperty)ax.Entity))
                 {
-                    OWLDisjointObjectProperties inferenceA = new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression> { declaredObjectProperty, disjointObjectProperty }) { IsInference=true };
-                    inferenceA.GetXML();
-                    inferences.Add(new OWLInference(rulename, inferenceA));
+                    List<OWLObjectPropertyExpression> disjointObjectPropertyExpressions = ontology.GetDisjointObjectProperties(declaredObjectProperty);
 
-                    OWLDisjointObjectProperties inferenceB = new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression> { disjointObjectProperty, declaredObjectProperty }) { IsInference=true };
-                    inferenceB.GetXML();
-                    inferences.Add(new OWLInference(rulename, inferenceB));
-                }
-                foreach (OWLObjectInverseOf disjointObjectInverseOf in disjointObjectPropertyExpressions.OfType<OWLObjectInverseOf>())
-                {
-                    OWLDisjointObjectProperties inferenceA = new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression> { declaredObjectProperty, disjointObjectInverseOf }) { IsInference=true };
-                    inferenceA.GetXML();
-                    inferences.Add(new OWLInference(rulename, inferenceA));
+                    //AllDisjointProperties(OP1,OP2,...OPN) -> DisjointObjectProperties(OP1,OP2) ^ DisjointObjectProperties(OP1,OPN) ^ ...
+                    foreach (OWLObjectProperty disjointObjectProperty in disjointObjectPropertyExpressions.OfType<OWLObjectProperty>())
+                    {
+                        OWLDisjointObjectProperties inferenceA = new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression> { declaredObjectProperty, disjointObjectProperty }) { IsInference=true };
+                        inferenceA.GetXML();
+                        inferences.Add(new OWLInference(rulename, inferenceA));
 
-                    OWLDisjointObjectProperties inferenceB = new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression> { disjointObjectInverseOf, declaredObjectProperty }) { IsInference=true };
-                    inferenceB.GetXML();
-                    inferences.Add(new OWLInference(rulename, inferenceB));
+                        OWLDisjointObjectProperties inferenceB = new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression> { disjointObjectProperty, declaredObjectProperty }) { IsInference=true };
+                        inferenceB.GetXML();
+                        inferences.Add(new OWLInference(rulename, inferenceB));
+                    }
+                    foreach (OWLObjectInverseOf disjointObjectInverseOf in disjointObjectPropertyExpressions.OfType<OWLObjectInverseOf>())
+                    {
+                        OWLDisjointObjectProperties inferenceA = new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression> { declaredObjectProperty, disjointObjectInverseOf }) { IsInference=true };
+                        inferenceA.GetXML();
+                        inferences.Add(new OWLInference(rulename, inferenceA));
+
+                        OWLDisjointObjectProperties inferenceB = new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression> { disjointObjectInverseOf, declaredObjectProperty }) { IsInference=true };
+                        inferenceB.GetXML();
+                        inferences.Add(new OWLInference(rulename, inferenceB));
+                    }
                 }
             }
 

@@ -22,9 +22,12 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.HasSelfEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
+
+            //Temporary working variables
+            List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
 
             //SubClassOf(C,ObjectHasSelf(OP)) ^ ClassAssertion(C,I) -> ObjectPropertyAssertion(OP,I,I)
             foreach (OWLSubClassOf subClassOfObjectHasSelf in ontology.GetClassAxiomsOfType<OWLSubClassOf>()
@@ -32,7 +35,7 @@ namespace OWLSharp.Reasoner
             {
                 OWLObjectHasSelf objHasSelf = (OWLObjectHasSelf)subClassOfObjectHasSelf.SuperClassExpression;
                 RDFResource subClassExpressionIRI = subClassOfObjectHasSelf.SubClassExpression.GetIRI();
-                foreach (OWLClassAssertion classAssertion in reasonerContext.ClassAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(subClassExpressionIRI)))
+                foreach (OWLClassAssertion classAssertion in clsAsns.Where(ax => ax.ClassExpression.GetIRI().Equals(subClassExpressionIRI)))
                 {
                     if (objHasSelf.ObjectPropertyExpression is OWLObjectInverseOf objInvOfHasSelf)
                     {

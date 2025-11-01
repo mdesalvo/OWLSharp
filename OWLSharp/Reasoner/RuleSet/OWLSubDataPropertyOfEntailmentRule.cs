@@ -21,31 +21,38 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.SubDataPropertyOfEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-            foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
-                                                                     .Select(ax => (OWLDataProperty)ax.Entity))
+            List<OWLSubDataPropertyOf> sdpofAxms = ontology.GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>();
+            if (sdpofAxms.Count > 0)
             {
-                //SubDataPropertyOf(P1,P2) ^ SubDataPropertyOf(P2,P3) -> SubDataPropertyOf(P1,P3)
-                //SubDataPropertyOf(P1,P2) ^ EquivalentDataProperties(P2,P3) -> SubDataPropertyOf(P1,P3)
-                List<OWLDataProperty> superDataProperties = ontology.GetSuperDataPropertiesOf(declaredDataProperty);
-                foreach (OWLDataProperty superDataProperty in superDataProperties)
-                {
-                    OWLSubDataPropertyOf inference = new OWLSubDataPropertyOf(declaredDataProperty, superDataProperty) { IsInference=true };
-                    inference.GetXML();
-                    inferences.Add(new OWLInference(rulename, inference));
-                }
+                //Temporary working variables
+                List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
 
-                //SubDataPropertyOf(P1,P2) ^ DataPropertyAssertion(P1,I,LIT) -> DataPropertyAssertion(P2,I,LIT)
-                foreach (OWLDataPropertyAssertion declaredDataPropertyAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(reasonerContext.DataPropertyAssertions, declaredDataProperty))
+                foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
+                                                                         .Select(ax => (OWLDataProperty)ax.Entity))
+                {
+                    //SubDataPropertyOf(P1,P2) ^ SubDataPropertyOf(P2,P3) -> SubDataPropertyOf(P1,P3)
+                    //SubDataPropertyOf(P1,P2) ^ EquivalentDataProperties(P2,P3) -> SubDataPropertyOf(P1,P3)
+                    List<OWLDataProperty> superDataProperties = ontology.GetSuperDataPropertiesOf(declaredDataProperty);
                     foreach (OWLDataProperty superDataProperty in superDataProperties)
                     {
-                        OWLDataPropertyAssertion inference = new OWLDataPropertyAssertion(superDataProperty, declaredDataPropertyAsn.Literal) { IndividualExpression = declaredDataPropertyAsn.IndividualExpression, IsInference=true };
+                        OWLSubDataPropertyOf inference = new OWLSubDataPropertyOf(declaredDataProperty, superDataProperty) { IsInference=true };
                         inference.GetXML();
                         inferences.Add(new OWLInference(rulename, inference));
                     }
+
+                    //SubDataPropertyOf(P1,P2) ^ DataPropertyAssertion(P1,I,LIT) -> DataPropertyAssertion(P2,I,LIT)
+                    foreach (OWLDataPropertyAssertion declaredDataPropertyAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, declaredDataProperty))
+                        foreach (OWLDataProperty superDataProperty in superDataProperties)
+                        {
+                            OWLDataPropertyAssertion inference = new OWLDataPropertyAssertion(superDataProperty, declaredDataPropertyAsn.Literal) { IndividualExpression = declaredDataPropertyAsn.IndividualExpression, IsInference=true };
+                            inference.GetXML();
+                            inferences.Add(new OWLInference(rulename, inference));
+                        }
+                }
             }
 
             return inferences;

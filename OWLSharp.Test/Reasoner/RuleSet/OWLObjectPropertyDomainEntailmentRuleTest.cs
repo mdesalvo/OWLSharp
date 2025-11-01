@@ -48,13 +48,7 @@ public class OWLObjectPropertyDomainEntailmentRuleTest
                 )
             ]
         };
-        OWLReasonerContext reasonerContext = new OWLReasonerContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLInference> inferences = OWLObjectPropertyDomainEntailmentRule.ExecuteRule(ontology, reasonerContext);
+        List<OWLInference> inferences = OWLObjectPropertyDomainEntailmentRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
@@ -87,13 +81,7 @@ public class OWLObjectPropertyDomainEntailmentRuleTest
                 )
             ]
         };
-        OWLReasonerContext reasonerContext = new OWLReasonerContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLInference> inferences = OWLObjectPropertyDomainEntailmentRule.ExecuteRule(ontology, reasonerContext);
+        List<OWLInference> inferences = OWLObjectPropertyDomainEntailmentRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
@@ -126,13 +114,7 @@ public class OWLObjectPropertyDomainEntailmentRuleTest
                 )
             ]
         };
-        OWLReasonerContext reasonerContext = new OWLReasonerContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLInference> inferences = OWLObjectPropertyDomainEntailmentRule.ExecuteRule(ontology, reasonerContext);
+        List<OWLInference> inferences = OWLObjectPropertyDomainEntailmentRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
@@ -165,13 +147,7 @@ public class OWLObjectPropertyDomainEntailmentRuleTest
                 )
             ]
         };
-        OWLReasonerContext reasonerContext = new OWLReasonerContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLInference> inferences = OWLObjectPropertyDomainEntailmentRule.ExecuteRule(ontology, reasonerContext);
+        List<OWLInference> inferences = OWLObjectPropertyDomainEntailmentRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));

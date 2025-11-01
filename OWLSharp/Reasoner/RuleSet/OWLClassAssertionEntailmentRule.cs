@@ -21,14 +21,15 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.ClassAssertionEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables
+            List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
             List<OWLClassExpression> inScopeClsExprs =
                 ontology.GetDeclarationAxiomsOfType<OWLClass>().Select(ax => (OWLClass)ax.Entity)
-                        .Union(reasonerContext.ClassAssertions.Select(ax => ax.ClassExpression))
+                        .Union(clsAsns.Select(ax => ax.ClassExpression))
                         .Union(ontology.GetClassAxiomsOfType<OWLEquivalentClasses>().SelectMany(ax => ax.ClassExpressions.Select(cls => cls)))
                         .Union(ontology.GetClassAxiomsOfType<OWLDisjointClasses>().SelectMany(ax => ax.ClassExpressions.Select(cls => cls)))
                         .Union(ontology.GetClassAxiomsOfType<OWLDisjointUnion>().Select(ax => ax.ClassIRI))
@@ -42,7 +43,7 @@ namespace OWLSharp.Reasoner
             //ClassAssertion(C1,I) ^ SubClassOf(C1,C2) -> ClassAssertion(C2,I)
             //ClassAssertion(C1,I) ^ EquivalentClasses(C1,C2) -> ClassAssertion(C2,I)
             foreach (OWLClassExpression inScopeClsExpr in OWLExpressionHelper.RemoveDuplicates(inScopeClsExprs))
-                foreach (OWLIndividualExpression idvExprOfInScopeClsExpr in ontology.GetIndividualsOf(inScopeClsExpr, reasonerContext.ClassAssertions, false))
+                foreach (OWLIndividualExpression idvExprOfInScopeClsExpr in ontology.GetIndividualsOf(inScopeClsExpr, clsAsns, false))
                 {
                     OWLClassAssertion inference = new OWLClassAssertion(inScopeClsExpr) { IndividualExpression=idvExprOfInScopeClsExpr, IsInference=true };
                     inference.GetXML();

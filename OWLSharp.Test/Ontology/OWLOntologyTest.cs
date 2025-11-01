@@ -1679,8 +1679,8 @@ public class OWLOntologyTest
     public async Task ShouldReadOntologyHeaderFromGraphAsync()
     {
         RDFGraph graph = new RDFGraph();
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.VERSION_IRI, new RDFResource("ex:ont/v1")));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.VERSION_IRI, new RDFResource("ex:ont/v1")));
         OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
 
         Assert.IsNotNull(ontology);
@@ -1692,8 +1692,8 @@ public class OWLOntologyTest
     public async Task ShouldReadOntologyHeaderWithInvalidVersionIRIFromGraphAsync()
     {
         RDFGraph graph = new RDFGraph();
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.VERSION_IRI, new RDFPlainLiteral("ex:ont/v1")));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.VERSION_IRI, new RDFPlainLiteral("ex:ont/v1")));
         OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
 
         Assert.IsNotNull(ontology);
@@ -1705,7 +1705,7 @@ public class OWLOntologyTest
     public async Task ShouldCrashOnReadingOntologyHeaderFromGraphBecauseNoOntologyDeclarationAsync()
     {
         RDFGraph graph = new RDFGraph();
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.VERSION_IRI, new RDFResource("ex:ont/v1")));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.VERSION_IRI, new RDFResource("ex:ont/v1")));
         await Assert.ThrowsExactlyAsync<OWLException>(async() => await OWLOntology.FromRDFGraphAsync(graph));
     }
 
@@ -1713,8 +1713,8 @@ public class OWLOntologyTest
     public async Task ShouldReadImportsFromGraphAsync()
     {
         RDFGraph graph = new RDFGraph();
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.IMPORTS, new RDFResource("ex:ont2")));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.IMPORTS, new RDFResource("ex:ont2")));
         OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
 
         Assert.IsNotNull(ontology);
@@ -1728,8 +1728,8 @@ public class OWLOntologyTest
     public async Task ShouldReadPrefixesFromGraphAsync()
     {
         RDFGraph graph = new RDFGraph();
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.FOAF.MAKER, new RDFResource("ex:Mark")));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.FOAF.MAKER, new RDFResource("ex:Mark")));
         OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
 
         Assert.IsNotNull(ontology);
@@ -1747,14 +1747,14 @@ public class OWLOntologyTest
     public async Task ShouldReadDeclarationsFromGraphAsync()
     {
         RDFGraph graph = new RDFGraph();
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
-        graph.AddTriple(new RDFTriple(RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
-        graph.AddTriple(new RDFTriple(RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.CLASS));
-        graph.AddTriple(new RDFTriple(RDFVocabulary.XSD.INTEGER, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE));
-        graph.AddTriple(new RDFTriple(RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY));
-        graph.AddTriple(new RDFTriple(RDFVocabulary.FOAF.NAME, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY));
-        graph.AddTriple(new RDFTriple(RDFVocabulary.FOAF.MAKER, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY));
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:Alice"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+        await graph.AddTripleAsync(new RDFTriple(RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
+        await graph.AddTripleAsync(new RDFTriple(RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.CLASS));
+        await graph.AddTripleAsync(new RDFTriple(RDFVocabulary.XSD.INTEGER, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE));
+        await graph.AddTripleAsync(new RDFTriple(RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY));
+        await graph.AddTripleAsync(new RDFTriple(RDFVocabulary.FOAF.NAME, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY));
+        await graph.AddTripleAsync(new RDFTriple(RDFVocabulary.FOAF.MAKER, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:Alice"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL));
         OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
 
         Assert.IsNotNull(ontology);
@@ -1781,19 +1781,19 @@ public class OWLOntologyTest
     public async Task ShouldReadOntologyAnnotationsFromGraphAsync()
     {
         RDFGraph graph = new RDFGraph();
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.VERSION_IRI, new RDFResource("ex:ont/v2")));
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH, new RDFResource("ex:ont1")));
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.INCOMPATIBLE_WITH, new RDFResource("ex:ont0")));
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.PRIOR_VERSION, new RDFResource("ex:ont1")));
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.VERSION_INFO, new RDFPlainLiteral("v2")));
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.DEPRECATED, RDFTypedLiteral.True));
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("comment")));
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.RDFS.LABEL, new RDFPlainLiteral("label", "en-US")));
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:ont2/seeAlso")));
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.RDFS.IS_DEFINED_BY, new RDFResource("ex:ont2")));
-        graph.AddTriple(new RDFTriple(RDFVocabulary.DC.CREATOR, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY));
-        graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.DC.CREATOR, new RDFResource("ex:Test")));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.VERSION_IRI, new RDFResource("ex:ont/v2")));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH, new RDFResource("ex:ont1")));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.INCOMPATIBLE_WITH, new RDFResource("ex:ont0")));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.PRIOR_VERSION, new RDFResource("ex:ont1")));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.VERSION_INFO, new RDFPlainLiteral("v2")));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.DEPRECATED, RDFTypedLiteral.True));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("comment")));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.RDFS.LABEL, new RDFPlainLiteral("label", "en-US")));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:ont2/seeAlso")));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.RDFS.IS_DEFINED_BY, new RDFResource("ex:ont2")));
+        await graph.AddTripleAsync(new RDFTriple(RDFVocabulary.DC.CREATOR, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.DC.CREATOR, new RDFResource("ex:Test")));
         OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
 
         Assert.IsNotNull(ontology);

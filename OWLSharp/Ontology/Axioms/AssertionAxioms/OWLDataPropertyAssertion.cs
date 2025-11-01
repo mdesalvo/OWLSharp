@@ -14,7 +14,6 @@
    limitations under the License.
 */
 
-using System.Linq;
 using RDFSharp.Model;
 using System.Xml.Serialization;
 

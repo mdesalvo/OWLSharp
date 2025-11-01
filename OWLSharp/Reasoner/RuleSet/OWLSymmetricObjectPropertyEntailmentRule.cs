@@ -20,38 +20,45 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.SymmetricObjectPropertyEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-            //SymmetricObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ObjectPropertyAssertion(OP,IDV2,IDV1)
-            foreach (OWLSymmetricObjectProperty symObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLSymmetricObjectProperty>())
+            List<OWLSymmetricObjectProperty> symmetricObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLSymmetricObjectProperty>();
+            if (symmetricObjProps.Count > 0)
             {
-                //Extract object assertions of the current symmetric property
-                foreach (OWLObjectPropertyAssertion opAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(reasonerContext.ObjectPropertyAssertions, symObjProp.ObjectPropertyExpression))
+                //Temporary working variables
+                List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
+
+                //SymmetricObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ObjectPropertyAssertion(OP,IDV2,IDV1)
+                foreach (OWLSymmetricObjectProperty symObjProp in symmetricObjProps)
                 {
-                    OWLIndividualExpression opAsnSourceIdvExpr = opAsn.SourceIndividualExpression;
-                    OWLIndividualExpression opAsnTargetIdvExpr = opAsn.TargetIndividualExpression;
+                    //Extract object assertions of the current symmetric property
+                    foreach (OWLObjectPropertyAssertion opAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, symObjProp.ObjectPropertyExpression))
+                    {
+                        OWLIndividualExpression opAsnSourceIdvExpr = opAsn.SourceIndividualExpression;
+                        OWLIndividualExpression opAsnTargetIdvExpr = opAsn.TargetIndividualExpression;
 
-                    //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
-                    if (opAsn.ObjectPropertyExpression is OWLObjectInverseOf)
-                    {
-                        opAsnSourceIdvExpr = opAsn.TargetIndividualExpression;
-                        opAsnTargetIdvExpr = opAsn.SourceIndividualExpression;
-                    }
+                        //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
+                        if (opAsn.ObjectPropertyExpression is OWLObjectInverseOf)
+                        {
+                            opAsnSourceIdvExpr = opAsn.TargetIndividualExpression;
+                            opAsnTargetIdvExpr = opAsn.SourceIndividualExpression;
+                        }
 
-                    //Exploit the symmetric object property to emit the "swapped-assertion" inference
-                    if (symObjProp.ObjectPropertyExpression is OWLObjectInverseOf symObjInvOf)
-                    {
-                        OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(symObjInvOf.ObjectProperty, opAsnTargetIdvExpr, opAsnSourceIdvExpr) { IsInference=true };
-                        inference.GetXML();
-                        inferences.Add(new OWLInference(rulename, inference));
-                    }
-                    else
-                    {
-                        OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(symObjProp.ObjectPropertyExpression, opAsnTargetIdvExpr, opAsnSourceIdvExpr) { IsInference=true };
-                        inference.GetXML();
-                        inferences.Add(new OWLInference(rulename, inference));
+                        //Exploit the symmetric object property to emit the "swapped-assertion" inference
+                        if (symObjProp.ObjectPropertyExpression is OWLObjectInverseOf symObjInvOf)
+                        {
+                            OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(symObjInvOf.ObjectProperty, opAsnTargetIdvExpr, opAsnSourceIdvExpr) { IsInference=true };
+                            inference.GetXML();
+                            inferences.Add(new OWLInference(rulename, inference));
+                        }
+                        else
+                        {
+                            OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(symObjProp.ObjectPropertyExpression, opAsnTargetIdvExpr, opAsnSourceIdvExpr) { IsInference=true };
+                            inference.GetXML();
+                            inferences.Add(new OWLInference(rulename, inference));
+                        }
                     }
                 }
             }

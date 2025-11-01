@@ -21,19 +21,22 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.DisjointDataPropertiesEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-            //AllDisjointProperties(DP1,DP2,...DPN) -> DisjointDataProperties(DP1,DP2) ^ DisjointDataProperties(DP1,DPN) ^ ...
-            foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
-                                                                     .Select(ax => (OWLDataProperty)ax.Entity))
+            if (ontology.DataPropertyAxioms.Any(clsAxm => clsAxm is OWLDisjointDataProperties))
             {
-                foreach (OWLDataProperty disjointDataProperty in ontology.GetDisjointDataProperties(declaredDataProperty))
+                //AllDisjointProperties(DP1,DP2,...DPN) -> DisjointDataProperties(DP1,DP2) ^ DisjointDataProperties(DP1,DPN) ^ ...
+                foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
+                                                                         .Select(ax => (OWLDataProperty)ax.Entity))
                 {
-                    OWLDisjointDataProperties inference = new OWLDisjointDataProperties(new List<OWLDataProperty> { declaredDataProperty, disjointDataProperty }) { IsInference=true };
-                    inference.GetXML();
-                    inferences.Add(new OWLInference(rulename, inference));
+                    foreach (OWLDataProperty disjointDataProperty in ontology.GetDisjointDataProperties(declaredDataProperty))
+                    {
+                        OWLDisjointDataProperties inference = new OWLDisjointDataProperties(new List<OWLDataProperty> { declaredDataProperty, disjointDataProperty }) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    }
                 }
             }
 

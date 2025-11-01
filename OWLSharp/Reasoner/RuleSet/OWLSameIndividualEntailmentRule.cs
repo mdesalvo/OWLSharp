@@ -22,11 +22,15 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.SameIndividualEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
             if (ontology.GetAssertionAxiomsOfType<OWLSameIndividual>().Count == 0)
                 return inferences;
+
+            //Temporary working variables
+            List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
+            List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
 
             foreach (OWLNamedIndividual declaredIdv in ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>()
                                                                .Select(ax => (OWLNamedIndividual)ax.Entity))
@@ -37,17 +41,17 @@ namespace OWLSharp.Reasoner
 
                 //Temporary working variables (declared individual)
                 RDFResource declaredIdvIRI = declaredIdv.GetIRI();
-                List<OWLObjectPropertyAssertion> declaredIdvSrcOpAsns = reasonerContext.ObjectPropertyAssertions.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList();
-                List<OWLObjectPropertyAssertion> declaredIdvTgtOpAsns = reasonerContext.ObjectPropertyAssertions.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList();
-                List<OWLDataPropertyAssertion> declaredIdvDpAsns = reasonerContext.DataPropertyAssertions.Where(asn => asn.IndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList();
+                List<OWLObjectPropertyAssertion> declaredIdvSrcOpAsns = opAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList();
+                List<OWLObjectPropertyAssertion> declaredIdvTgtOpAsns = opAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList();
+                List<OWLDataPropertyAssertion> declaredIdvDpAsns = dpAsns.Where(asn => asn.IndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList();
 
                 foreach (OWLIndividualExpression sameIdv in sameIdvs)
                 {
                     //Temporary working variables (same individual)
                     RDFResource sameIdvIRI = sameIdv.GetIRI();
-                    List<OWLObjectPropertyAssertion> sameIdvSrcOpAsns = reasonerContext.ObjectPropertyAssertions.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(sameIdvIRI)).ToList();
-                    List<OWLObjectPropertyAssertion> sameIdvTgtOpAsns = reasonerContext.ObjectPropertyAssertions.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(sameIdvIRI)).ToList();
-                    List<OWLDataPropertyAssertion> sameIdvDpAsns = reasonerContext.DataPropertyAssertions.Where(asn => asn.IndividualExpression.GetIRI().Equals(sameIdvIRI)).ToList();
+                    List<OWLObjectPropertyAssertion> sameIdvSrcOpAsns = opAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(sameIdvIRI)).ToList();
+                    List<OWLObjectPropertyAssertion> sameIdvTgtOpAsns = opAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(sameIdvIRI)).ToList();
+                    List<OWLDataPropertyAssertion> sameIdvDpAsns = dpAsns.Where(asn => asn.IndividualExpression.GetIRI().Equals(sameIdvIRI)).ToList();
 
                     /* SAMEAS TRANSITIVITY */
                     //SameIndividual(I1,I2) ^ SameIndividual(I2,I3) -> SameIndividual(I1,I3)

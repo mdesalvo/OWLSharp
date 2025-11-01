@@ -48,13 +48,7 @@ public class OWLHasValueEntailmentRuleTest
                     new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
             ]
         };
-        OWLReasonerContext reasonerContext = new OWLReasonerContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLInference> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology, reasonerContext);
+        List<OWLInference> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
@@ -89,13 +83,7 @@ public class OWLHasValueEntailmentRuleTest
                     new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
             ]
         };
-        OWLReasonerContext reasonerContext = new OWLReasonerContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLInference> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology, reasonerContext);
+        List<OWLInference> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
@@ -129,13 +117,7 @@ public class OWLHasValueEntailmentRuleTest
                     new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
             ]
         };
-        OWLReasonerContext reasonerContext = new OWLReasonerContext
-        {
-            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
-        };
-        List<OWLInference> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology, reasonerContext);
+        List<OWLInference> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology);
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));

@@ -50,6 +50,7 @@ public class SWRLBuiltInRegisterTest
         IEnumerator<SWRLBuiltIn> builtins = SWRLBuiltInRegister.BuiltInsEnumerator;
         while(builtins.MoveNext()) i++;
         Assert.IsGreaterThanOrEqualTo(1, i);
+        return;
 
         static bool Evaluator(DataRow datarow) => string.Equals(datarow["?VAR"].ToString(), "value");
     }

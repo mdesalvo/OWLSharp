@@ -21,11 +21,11 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.DifferentIndividualsEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-            if (ontology.GetAssertionAxiomsOfType<OWLDifferentIndividuals>().Count > 0)
+            if (ontology.AssertionAxioms.Any(asnAxm => asnAxm is OWLDifferentIndividuals))
             {
                 //AllDifferent(I1,I2,...IN) -> DifferentIndividuals(I1,I2) ^ DifferentIndividuals(I1,IN) ^ ...
                 foreach (OWLNamedIndividual declaredNamedIndividual in ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>()

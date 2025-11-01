@@ -23,15 +23,24 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.HasKeyEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-            foreach (OWLHasKey hasKeyAxiom in ontology.KeyAxioms)
+            if (ontology.KeyAxioms.Count > 0)
             {
-                //HasKey(C, OP) ^ ClassAssertion(C, I1) ^ ObjectPropertyAssertion(OP, I1, IX) ^ ClassAssertion(C, I2) ^  ObjectPropertyAssertion(OP, I2, IX) -> SameIndividual(I1,I2)
-                //HasKey(C, DP) ^ ClassAssertion(C, I1) ^ DataPropertyAssertion(DP, I1, LIT)  ^ ClassAssertion(C, I2) ^  DataPropertyAssertion(DP, I2, LIT)  -> SameIndividual(I1,I2)
-                inferences.AddRange(AnalyzeKeyValues(hasKeyAxiom, ontology.GetIndividualsOf(hasKeyAxiom.ClassExpression, reasonerContext.ClassAssertions), reasonerContext.ObjectPropertyAssertions, reasonerContext.DataPropertyAssertions));
+                //Temporary working variables
+                List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
+                List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
+                List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
+
+                foreach (OWLHasKey hasKeyAxiom in ontology.KeyAxioms)
+                {
+                    //HasKey(C, OP) ^ ClassAssertion(C, I1) ^ ObjectPropertyAssertion(OP, I1, IX) ^ ClassAssertion(C, I2) ^  ObjectPropertyAssertion(OP, I2, IX) -> SameIndividual(I1,I2)
+                    //HasKey(C, DP) ^ ClassAssertion(C, I1) ^ DataPropertyAssertion(DP, I1, LIT)  ^ ClassAssertion(C, I2) ^  DataPropertyAssertion(DP, I2, LIT)  -> SameIndividual(I1,I2)
+                    inferences.AddRange(
+                        AnalyzeKeyValues(hasKeyAxiom, ontology.GetIndividualsOf(hasKeyAxiom.ClassExpression, clsAsns), opAsns, dpAsns));
+                }
             }
 
             return inferences;

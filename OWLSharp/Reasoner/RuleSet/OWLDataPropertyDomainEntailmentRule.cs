@@ -20,18 +20,25 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.DataPropertyDomainEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-            //DataPropertyDomain(DP,C) ^ DataPropertyAssertion(DP, I, LIT) -> ClassAssertion(C,I)
-            foreach (OWLDataPropertyDomain dataPropertyDomain in ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyDomain>())
-                foreach (OWLDataPropertyAssertion dataPropertyAssertion in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(reasonerContext.DataPropertyAssertions, dataPropertyDomain.DataProperty))
-                {
-                    OWLClassAssertion inference = new OWLClassAssertion(dataPropertyDomain.ClassExpression) { IndividualExpression=dataPropertyAssertion.IndividualExpression, IsInference=true };
-                    inference.GetXML();
-                    inferences.Add(new OWLInference(rulename, inference));
-                }
+            List<OWLDataPropertyDomain> dataPropertyDomains = ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyDomain>();
+            if (dataPropertyDomains.Count > 0)
+            {
+                //Temporary working variables
+                List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
+
+                //DataPropertyDomain(DP,C) ^ DataPropertyAssertion(DP, I, LIT) -> ClassAssertion(C,I)
+                foreach (OWLDataPropertyDomain dataPropertyDomain in dataPropertyDomains)
+                    foreach (OWLDataPropertyAssertion dataPropertyAssertion in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, dataPropertyDomain.DataProperty))
+                    {
+                        OWLClassAssertion inference = new OWLClassAssertion(dataPropertyDomain.ClassExpression) { IndividualExpression=dataPropertyAssertion.IndividualExpression, IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    }
+            }
 
             return inferences;
         }

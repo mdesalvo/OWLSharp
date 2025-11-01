@@ -21,19 +21,22 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.EquivalentClassesEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-            //EquivalentClasses(C1,C2) ^ EquivalentClasses(C2,C3) -> EquivalentClasses(C1,C3)
-            foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
-                                                       .Select(ax => (OWLClass)ax.Entity))
+            if (ontology.ClassAxioms.Any(clsAxm => clsAxm is OWLEquivalentClasses))
             {
-                foreach (OWLClassExpression equivalentClass in ontology.GetEquivalentClasses(declaredClass))
+                //EquivalentClasses(C1,C2) ^ EquivalentClasses(C2,C3) -> EquivalentClasses(C1,C3)
+                foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
+                                                           .Select(ax => (OWLClass)ax.Entity))
                 {
-                    OWLEquivalentClasses inference = new OWLEquivalentClasses(new List<OWLClassExpression> { declaredClass, equivalentClass }) { IsInference=true };
-                    inference.GetXML();
-                    inferences.Add(new OWLInference(rulename, inference));
+                    foreach (OWLClassExpression equivalentClass in ontology.GetEquivalentClasses(declaredClass))
+                    {
+                        OWLEquivalentClasses inference = new OWLEquivalentClasses(new List<OWLClassExpression> { declaredClass, equivalentClass }) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    }
                 }
             }
 

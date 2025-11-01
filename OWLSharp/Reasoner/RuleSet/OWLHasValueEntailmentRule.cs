@@ -22,19 +22,20 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.HasValueEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables
-            List<OWLSubClassOf> subClassOfAxioms = ontology.GetClassAxiomsOfType<OWLSubClassOf>();
+            List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
+            List<OWLSubClassOf> scofAxms = ontology.GetClassAxiomsOfType<OWLSubClassOf>();
 
             //SubClassOf(C,ObjectHasValue(OP,I2)) ^ ClassAssertion(C,I1) -> ObjectPropertyAssertion(OP,I1,I2)
-            foreach (OWLSubClassOf subClassOfObjectHasValue in subClassOfAxioms.Where(ax => ax.SuperClassExpression is OWLObjectHasValue))
+            foreach (OWLSubClassOf subClassOfObjectHasValue in scofAxms.Where(ax => ax.SuperClassExpression is OWLObjectHasValue))
             {
                 OWLObjectHasValue objHasValue = (OWLObjectHasValue)subClassOfObjectHasValue.SuperClassExpression;
                 RDFResource subClassExpressionIRI = subClassOfObjectHasValue.SubClassExpression.GetIRI();
-                foreach (OWLClassAssertion classAssertion in reasonerContext.ClassAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(subClassExpressionIRI)))
+                foreach (OWLClassAssertion classAssertion in clsAsns.Where(ax => ax.ClassExpression.GetIRI().Equals(subClassExpressionIRI)))
                 {
                     if (objHasValue.ObjectPropertyExpression is OWLObjectInverseOf objInvOfHasValue)
                     {
@@ -52,11 +53,11 @@ namespace OWLSharp.Reasoner
             }
 
             //SubClassOf(C,DataHasValue(DP,LIT)) ^ ClassAssertion(C,I) -> DataPropertyAssertion(DP,I,LIT)
-            foreach (OWLSubClassOf subClassOfDataHasValue in subClassOfAxioms.Where(ax => ax.SuperClassExpression is OWLDataHasValue))
+            foreach (OWLSubClassOf subClassOfDataHasValue in scofAxms.Where(ax => ax.SuperClassExpression is OWLDataHasValue))
             {
                 OWLDataHasValue dtHasValue = (OWLDataHasValue)subClassOfDataHasValue.SuperClassExpression;
                 RDFResource subClassExpressionIRI = subClassOfDataHasValue.SubClassExpression.GetIRI();
-                foreach (OWLClassAssertion classAssertion in reasonerContext.ClassAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(subClassExpressionIRI)))
+                foreach (OWLClassAssertion classAssertion in clsAsns.Where(ax => ax.ClassExpression.GetIRI().Equals(subClassExpressionIRI)))
                 {
                     OWLDataPropertyAssertion inference = new OWLDataPropertyAssertion(dtHasValue.DataProperty, dtHasValue.Literal) { IndividualExpression = classAssertion.IndividualExpression, IsInference=true };
                     inference.GetXML();

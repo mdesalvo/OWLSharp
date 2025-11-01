@@ -21,43 +21,48 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.InverseFunctionalObjectPropertyEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-            //Temporary working variables
-            Dictionary<string, List<OWLIndividualExpression>> idvxLookup = new Dictionary<string, List<OWLIndividualExpression>>();
-
-            //InverseFunctionalObjectProperty(IFOP) ^ ObjectPropertyAssertion(IFOP,IDV1,IDVX) ^ ObjectPropertyAssertion(IFOP,IDV2,IDVX) -> SameIndividual(IDV1,IDV2)
-            foreach (OWLInverseFunctionalObjectProperty ifop in ontology.GetObjectPropertyAxiomsOfType<OWLInverseFunctionalObjectProperty>())
+            List<OWLInverseFunctionalObjectProperty> ifopAxms = ontology.GetObjectPropertyAxiomsOfType<OWLInverseFunctionalObjectProperty>();
+            if (ifopAxms.Count > 0)
             {
-                idvxLookup.Clear();
-                foreach (OWLObjectPropertyAssertion ifopAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(reasonerContext.ObjectPropertyAssertions, ifop.ObjectPropertyExpression))
-                {
-                    OWLIndividualExpression fopAsnSourceIdvExpr = ifopAsn.SourceIndividualExpression;
-                    OWLIndividualExpression fopAsnTargetIdvExpr = ifopAsn.TargetIndividualExpression;
+                //Temporary working variables
+                List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
+                Dictionary<string, List<OWLIndividualExpression>> idvxLookup = new Dictionary<string, List<OWLIndividualExpression>>();
 
-                    //In case the inverse functional object property works under inverse logic, we must swap source/target of the object assertion
-                    if (ifop.ObjectPropertyExpression is OWLObjectInverseOf)
+                //InverseFunctionalObjectProperty(IFOP) ^ ObjectPropertyAssertion(IFOP,IDV1,IDVX) ^ ObjectPropertyAssertion(IFOP,IDV2,IDVX) -> SameIndividual(IDV1,IDV2)
+                foreach (OWLInverseFunctionalObjectProperty ifop in ifopAxms)
+                {
+                    idvxLookup.Clear();
+                    foreach (OWLObjectPropertyAssertion ifopAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, ifop.ObjectPropertyExpression))
                     {
-                        fopAsnSourceIdvExpr = ifopAsn.TargetIndividualExpression;
-                        fopAsnTargetIdvExpr = ifopAsn.SourceIndividualExpression;
+                        OWLIndividualExpression fopAsnSourceIdvExpr = ifopAsn.SourceIndividualExpression;
+                        OWLIndividualExpression fopAsnTargetIdvExpr = ifopAsn.TargetIndividualExpression;
+
+                        //In case the inverse functional object property works under inverse logic, we must swap source/target of the object assertion
+                        if (ifop.ObjectPropertyExpression is OWLObjectInverseOf)
+                        {
+                            fopAsnSourceIdvExpr = ifopAsn.TargetIndividualExpression;
+                            fopAsnTargetIdvExpr = ifopAsn.SourceIndividualExpression;
+                        }
+
+                        //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
+                        if (ifopAsn.ObjectPropertyExpression is OWLObjectInverseOf)
+                            (fopAsnSourceIdvExpr, fopAsnTargetIdvExpr) = (fopAsnTargetIdvExpr, fopAsnSourceIdvExpr);
+
+                        string idvx = fopAsnTargetIdvExpr.GetIRI().ToString();
+                        if (!idvxLookup.ContainsKey(idvx))
+                            idvxLookup.Add(idvx, new List<OWLIndividualExpression>());
+                        idvxLookup[idvx].Add(fopAsnSourceIdvExpr);
                     }
-
-                    //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
-                    if (ifopAsn.ObjectPropertyExpression is OWLObjectInverseOf)
-                        (fopAsnSourceIdvExpr, fopAsnTargetIdvExpr) = (fopAsnTargetIdvExpr, fopAsnSourceIdvExpr);
-
-                    string idvx = fopAsnTargetIdvExpr.GetIRI().ToString();
-                    if (!idvxLookup.ContainsKey(idvx))
-                        idvxLookup.Add(idvx, new List<OWLIndividualExpression>());
-                    idvxLookup[idvx].Add(fopAsnSourceIdvExpr);
-                }
-                foreach (List<OWLIndividualExpression> idvxLookupEntry in idvxLookup.Values.Where(idvExprs => idvExprs.Count > 1))
-                {
-                    OWLSameIndividual inference = new OWLSameIndividual(idvxLookupEntry) { IsInference=true };
-                    inference.GetXML();
-                    inferences.Add(new OWLInference(rulename, inference));
+                    foreach (List<OWLIndividualExpression> idvxLookupEntry in idvxLookup.Values.Where(idvExprs => idvExprs.Count > 1))
+                    {
+                        OWLSameIndividual inference = new OWLSameIndividual(idvxLookupEntry) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    }
                 }
             }
 

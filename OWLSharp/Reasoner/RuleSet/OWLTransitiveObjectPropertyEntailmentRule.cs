@@ -23,47 +23,52 @@ namespace OWLSharp.Reasoner
         private static readonly List<OWLIndividualExpression> EmptyIdvExprList = Enumerable.Empty<OWLIndividualExpression>().ToList();
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.TransitiveObjectPropertyEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-            //Temporary working variables
-            HashSet<long> visitContext = new HashSet<long>();
-
-            //TransitiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV2,IDV3) -> ObjectPropertyAssertion(OP,IDV1,IDV3)
-            foreach (OWLTransitiveObjectProperty trnObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLTransitiveObjectProperty>())
+            List<OWLTransitiveObjectProperty> transitiveObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLTransitiveObjectProperty>();
+            if (transitiveObjProps.Count > 0)
             {
-                OWLObjectProperty trnObjPropInvOfValue = (trnObjProp.ObjectPropertyExpression as OWLObjectInverseOf)?.ObjectProperty;
+                //Temporary working variables
+                List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
+                HashSet<long> visitContext = new HashSet<long>();
 
-                #region Recalibration
-                List <OWLObjectPropertyAssertion> trnObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(reasonerContext.ObjectPropertyAssertions, trnObjProp.ObjectPropertyExpression);
-                foreach (OWLObjectPropertyAssertion trnObjPropAsn in trnObjPropAsns)
+                //TransitiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV2,IDV3) -> ObjectPropertyAssertion(OP,IDV1,IDV3)
+                foreach (OWLTransitiveObjectProperty trnObjProp in transitiveObjProps)
                 {
-                    //In case the transitive object property works under inverse logic, we must swap source/target of the object assertion
-                    if (trnObjPropInvOfValue != null)
-                    {
-                        (trnObjPropAsn.SourceIndividualExpression, trnObjPropAsn.TargetIndividualExpression) = (trnObjPropAsn.TargetIndividualExpression, trnObjPropAsn.SourceIndividualExpression);
-                        trnObjPropAsn.ObjectPropertyExpression = trnObjPropInvOfValue;
-                    }
-                }
-                trnObjPropAsns = OWLAxiomHelper.RemoveDuplicates(trnObjPropAsns);
-                #endregion
+                    OWLObjectProperty trnObjPropInvOfValue = (trnObjProp.ObjectPropertyExpression as OWLObjectInverseOf)?.ObjectProperty;
 
-                #region Analysis
-                //Iterate object assertions to find inference opportunities (transitive closure)
-                List<IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion>> trnObjPropAsnGroups = trnObjPropAsns.GroupBy(asn => asn.SourceIndividualExpression).ToList();
-                foreach (IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion> trnObjPropAsnGroup in trnObjPropAsnGroups)
-                {
-                    RDFResource trnObjPropAsnGroupKeyIRI = trnObjPropAsnGroup.Key.GetIRI();
-                    foreach (OWLIndividualExpression transitiveRelatedIdvExpr in FindTransitiveRelatedIndividuals(trnObjPropAsnGroupKeyIRI, trnObjPropAsnGroups, visitContext))
+                    #region Recalibration
+                    List <OWLObjectPropertyAssertion> trnObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, trnObjProp.ObjectPropertyExpression);
+                    foreach (OWLObjectPropertyAssertion trnObjPropAsn in trnObjPropAsns)
                     {
-                        OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(trnObjPropInvOfValue ?? trnObjProp.ObjectPropertyExpression, trnObjPropAsnGroup.Key, transitiveRelatedIdvExpr) { IsInference=true };
-                        inference.GetXML();
-                        inferences.Add(new OWLInference(rulename, inference));
+                        //In case the transitive object property works under inverse logic, we must swap source/target of the object assertion
+                        if (trnObjPropInvOfValue != null)
+                        {
+                            (trnObjPropAsn.SourceIndividualExpression, trnObjPropAsn.TargetIndividualExpression) = (trnObjPropAsn.TargetIndividualExpression, trnObjPropAsn.SourceIndividualExpression);
+                            trnObjPropAsn.ObjectPropertyExpression = trnObjPropInvOfValue;
+                        }
                     }
-                    visitContext.Clear();
+                    trnObjPropAsns = OWLAxiomHelper.RemoveDuplicates(trnObjPropAsns);
+                    #endregion
+
+                    #region Analysis
+                    //Iterate object assertions to find inference opportunities (transitive closure)
+                    List<IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion>> trnObjPropAsnGroups = trnObjPropAsns.GroupBy(asn => asn.SourceIndividualExpression).ToList();
+                    foreach (IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion> trnObjPropAsnGroup in trnObjPropAsnGroups)
+                    {
+                        RDFResource trnObjPropAsnGroupKeyIRI = trnObjPropAsnGroup.Key.GetIRI();
+                        foreach (OWLIndividualExpression transitiveRelatedIdvExpr in FindTransitiveRelatedIndividuals(trnObjPropAsnGroupKeyIRI, trnObjPropAsnGroups, visitContext))
+                        {
+                            OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(trnObjPropInvOfValue ?? trnObjProp.ObjectPropertyExpression, trnObjPropAsnGroup.Key, transitiveRelatedIdvExpr) { IsInference=true };
+                            inference.GetXML();
+                            inferences.Add(new OWLInference(rulename, inference));
+                        }
+                        visitContext.Clear();
+                    }
+                    #endregion
                 }
-                #endregion
             }
 
             return inferences;

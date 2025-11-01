@@ -21,54 +21,61 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.SubObjectPropertyOfEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-            foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
-                                                                         .Select(ax => (OWLObjectProperty)ax.Entity))
+            List<OWLSubObjectPropertyOf> sopofAxms = ontology.GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>();
+            if (sopofAxms.Count > 0)
             {
-                //SubObjectPropertyOf(P1,P2) ^ SubObjectPropertyOf(P2,P3) -> SubObjectPropertyOf(P1,P3)
-                //SubObjectPropertyOf(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> SubObjectPropertyOf(P1,P3)
-                List<OWLObjectPropertyExpression> superObjectPropertyExprs = ontology.GetSuperObjectPropertiesOf(declaredObjectProperty);
-                foreach (OWLObjectProperty superObjectProperty in superObjectPropertyExprs.OfType<OWLObjectProperty>())
-                {
-                    OWLSubObjectPropertyOf inference = new OWLSubObjectPropertyOf(declaredObjectProperty, superObjectProperty) { IsInference=true };
-                    inference.GetXML();
-                    inferences.Add(new OWLInference(rulename, inference));
-                }
-                foreach (OWLObjectInverseOf superObjectInverseOf in superObjectPropertyExprs.OfType<OWLObjectInverseOf>())
-                {
-                    OWLSubObjectPropertyOf inference = new OWLSubObjectPropertyOf(declaredObjectProperty, superObjectInverseOf) { IsInference=true };
-                    inference.GetXML();
-                    inferences.Add(new OWLInference(rulename, inference));
-                }
+                //Temporary working variables
+                List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 
-                //SubObjectPropertyOf(P1,P2) ^ ObjectPropertyAssertion(P1,I1,I2) -> ObjectPropertyAssertion(P2,I1,I2)
-                List<OWLObjectPropertyAssertion> declaredObjectPropertyAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(reasonerContext.ObjectPropertyAssertions, declaredObjectProperty);
-                foreach (OWLObjectPropertyAssertion declaredObjectPropertyAsn in declaredObjectPropertyAsns)
-                    if (declaredObjectPropertyAsn.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
+                foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
+                                                                             .Select(ax => (OWLObjectProperty)ax.Entity))
+                {
+                    //SubObjectPropertyOf(P1,P2) ^ SubObjectPropertyOf(P2,P3) -> SubObjectPropertyOf(P1,P3)
+                    //SubObjectPropertyOf(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> SubObjectPropertyOf(P1,P3)
+                    List<OWLObjectPropertyExpression> superObjectPropertyExprs = ontology.GetSuperObjectPropertiesOf(declaredObjectProperty);
+                    foreach (OWLObjectProperty superObjectProperty in superObjectPropertyExprs.OfType<OWLObjectProperty>())
                     {
-                        (declaredObjectPropertyAsn.SourceIndividualExpression, declaredObjectPropertyAsn.TargetIndividualExpression) = (declaredObjectPropertyAsn.TargetIndividualExpression, declaredObjectPropertyAsn.SourceIndividualExpression);
-                        declaredObjectPropertyAsn.ObjectPropertyExpression = objInvOf.ObjectProperty;
+                        OWLSubObjectPropertyOf inference = new OWLSubObjectPropertyOf(declaredObjectProperty, superObjectProperty) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    }
+                    foreach (OWLObjectInverseOf superObjectInverseOf in superObjectPropertyExprs.OfType<OWLObjectInverseOf>())
+                    {
+                        OWLSubObjectPropertyOf inference = new OWLSubObjectPropertyOf(declaredObjectProperty, superObjectInverseOf) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
                     }
 
-                foreach (OWLObjectPropertyAssertion declaredObjectPropertyAsn in OWLAxiomHelper.RemoveDuplicates(declaredObjectPropertyAsns))
-                    foreach (OWLObjectPropertyExpression superObjectPropertyExpr in superObjectPropertyExprs)
-                    {
-                        if (superObjectPropertyExpr is OWLObjectInverseOf objInvOf)
+                    //SubObjectPropertyOf(P1,P2) ^ ObjectPropertyAssertion(P1,I1,I2) -> ObjectPropertyAssertion(P2,I1,I2)
+                    List<OWLObjectPropertyAssertion> declaredObjectPropertyAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, declaredObjectProperty);
+                    foreach (OWLObjectPropertyAssertion declaredObjectPropertyAsn in declaredObjectPropertyAsns)
+                        if (declaredObjectPropertyAsn.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
                         {
-                            OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(objInvOf.ObjectProperty, declaredObjectPropertyAsn.TargetIndividualExpression, declaredObjectPropertyAsn.SourceIndividualExpression) { IsInference=true };
-                            inference.GetXML();
-                            inferences.Add(new OWLInference(rulename, inference));
+                            (declaredObjectPropertyAsn.SourceIndividualExpression, declaredObjectPropertyAsn.TargetIndividualExpression) = (declaredObjectPropertyAsn.TargetIndividualExpression, declaredObjectPropertyAsn.SourceIndividualExpression);
+                            declaredObjectPropertyAsn.ObjectPropertyExpression = objInvOf.ObjectProperty;
                         }
-                        else
+
+                    foreach (OWLObjectPropertyAssertion declaredObjectPropertyAsn in OWLAxiomHelper.RemoveDuplicates(declaredObjectPropertyAsns))
+                        foreach (OWLObjectPropertyExpression superObjectPropertyExpr in superObjectPropertyExprs)
                         {
-                            OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(superObjectPropertyExpr, declaredObjectPropertyAsn.SourceIndividualExpression, declaredObjectPropertyAsn.TargetIndividualExpression) { IsInference=true };
-                            inference.GetXML();
-                            inferences.Add(new OWLInference(rulename, inference));
+                            if (superObjectPropertyExpr is OWLObjectInverseOf objInvOf)
+                            {
+                                OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(objInvOf.ObjectProperty, declaredObjectPropertyAsn.TargetIndividualExpression, declaredObjectPropertyAsn.SourceIndividualExpression) { IsInference=true };
+                                inference.GetXML();
+                                inferences.Add(new OWLInference(rulename, inference));
+                            }
+                            else
+                            {
+                                OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(superObjectPropertyExpr, declaredObjectPropertyAsn.SourceIndividualExpression, declaredObjectPropertyAsn.TargetIndividualExpression) { IsInference=true };
+                                inference.GetXML();
+                                inferences.Add(new OWLInference(rulename, inference));
+                            }
                         }
-                    }
+                }
             }
 
             return inferences;

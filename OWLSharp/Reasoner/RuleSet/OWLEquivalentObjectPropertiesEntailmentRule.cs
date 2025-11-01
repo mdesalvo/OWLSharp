@@ -21,55 +21,61 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.EquivalentObjectPropertiesEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-            foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
-                                                                         .Select(ax => (OWLObjectProperty)ax.Entity))
+            if (ontology.ObjectPropertyAxioms.Any(opAxm => opAxm is OWLEquivalentObjectProperties))
             {
-                //EquivalentObjectProperties(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> EquivalentObjectProperties(P1,P3)
-                List<OWLObjectPropertyExpression> equivObjectPropertyExprs = ontology.GetEquivalentObjectProperties(declaredObjectProperty);
-                if (equivObjectPropertyExprs.Count == 0)
-                    continue;
-                foreach (OWLObjectProperty equivalentObjectProperty in equivObjectPropertyExprs.OfType<OWLObjectProperty>())
-                {
-                    OWLEquivalentObjectProperties inference = new OWLEquivalentObjectProperties(new List<OWLObjectPropertyExpression> { declaredObjectProperty, equivalentObjectProperty }) { IsInference=true };
-                    inference.GetXML();
-                    inferences.Add(new OWLInference(rulename, inference));
-                }
-                foreach (OWLObjectInverseOf equivalentObjectInverseOf in equivObjectPropertyExprs.OfType<OWLObjectInverseOf>())
-                {
-                    OWLEquivalentObjectProperties inference = new OWLEquivalentObjectProperties(new List<OWLObjectPropertyExpression> { declaredObjectProperty, equivalentObjectInverseOf }) { IsInference=true };
-                    inference.GetXML();
-                    inferences.Add(new OWLInference(rulename, inference));
-                }
+                //Temporary working variables
+                List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 
-                //EquivalentObjectProperties(P1,P2) ^ ObjectPropertyAssertion(P1,I1,I2) -> ObjectPropertyAssertion(P2,I1,I2)
-                List<OWLObjectPropertyAssertion> declaredObjectPropertyAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(reasonerContext.ObjectPropertyAssertions, declaredObjectProperty);
-                foreach (OWLObjectPropertyAssertion declaredObjectPropertyAsn in declaredObjectPropertyAsns)
-                    if (declaredObjectPropertyAsn.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
+                foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
+                                                                             .Select(ax => (OWLObjectProperty)ax.Entity))
+                {
+                    //EquivalentObjectProperties(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> EquivalentObjectProperties(P1,P3)
+                    List<OWLObjectPropertyExpression> equivObjectPropertyExprs = ontology.GetEquivalentObjectProperties(declaredObjectProperty);
+                    if (equivObjectPropertyExprs.Count == 0)
+                        continue;
+                    foreach (OWLObjectProperty equivalentObjectProperty in equivObjectPropertyExprs.OfType<OWLObjectProperty>())
                     {
-                        (declaredObjectPropertyAsn.SourceIndividualExpression, declaredObjectPropertyAsn.TargetIndividualExpression) = (declaredObjectPropertyAsn.TargetIndividualExpression, declaredObjectPropertyAsn.SourceIndividualExpression);
-                        declaredObjectPropertyAsn.ObjectPropertyExpression = objInvOf.ObjectProperty;
+                        OWLEquivalentObjectProperties inference = new OWLEquivalentObjectProperties(new List<OWLObjectPropertyExpression> { declaredObjectProperty, equivalentObjectProperty }) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    }
+                    foreach (OWLObjectInverseOf equivalentObjectInverseOf in equivObjectPropertyExprs.OfType<OWLObjectInverseOf>())
+                    {
+                        OWLEquivalentObjectProperties inference = new OWLEquivalentObjectProperties(new List<OWLObjectPropertyExpression> { declaredObjectProperty, equivalentObjectInverseOf }) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
                     }
 
-                foreach (OWLObjectPropertyAssertion declaredObjectPropertyAsn in OWLAxiomHelper.RemoveDuplicates(declaredObjectPropertyAsns))
-                    foreach (OWLObjectPropertyExpression equivObjectPropertyExpr in equivObjectPropertyExprs)
-                    {
-                        if (equivObjectPropertyExpr is OWLObjectInverseOf objInvOf)
+                    //EquivalentObjectProperties(P1,P2) ^ ObjectPropertyAssertion(P1,I1,I2) -> ObjectPropertyAssertion(P2,I1,I2)
+                    List<OWLObjectPropertyAssertion> declaredObjectPropertyAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, declaredObjectProperty);
+                    foreach (OWLObjectPropertyAssertion declaredObjectPropertyAsn in declaredObjectPropertyAsns)
+                        if (declaredObjectPropertyAsn.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
                         {
-                            OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(objInvOf.ObjectProperty, declaredObjectPropertyAsn.TargetIndividualExpression, declaredObjectPropertyAsn.SourceIndividualExpression) { IsInference=true };
-                            inference.GetXML();
-                            inferences.Add(new OWLInference(rulename, inference));
+                            (declaredObjectPropertyAsn.SourceIndividualExpression, declaredObjectPropertyAsn.TargetIndividualExpression) = (declaredObjectPropertyAsn.TargetIndividualExpression, declaredObjectPropertyAsn.SourceIndividualExpression);
+                            declaredObjectPropertyAsn.ObjectPropertyExpression = objInvOf.ObjectProperty;
                         }
-                        else
+
+                    foreach (OWLObjectPropertyAssertion declaredObjectPropertyAsn in OWLAxiomHelper.RemoveDuplicates(declaredObjectPropertyAsns))
+                        foreach (OWLObjectPropertyExpression equivObjectPropertyExpr in equivObjectPropertyExprs)
                         {
-                            OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(equivObjectPropertyExpr, declaredObjectPropertyAsn.SourceIndividualExpression, declaredObjectPropertyAsn.TargetIndividualExpression) { IsInference=true };
-                            inference.GetXML();
-                            inferences.Add(new OWLInference(rulename, inference));
+                            if (equivObjectPropertyExpr is OWLObjectInverseOf objInvOf)
+                            {
+                                OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(objInvOf.ObjectProperty, declaredObjectPropertyAsn.TargetIndividualExpression, declaredObjectPropertyAsn.SourceIndividualExpression) { IsInference=true };
+                                inference.GetXML();
+                                inferences.Add(new OWLInference(rulename, inference));
+                            }
+                            else
+                            {
+                                OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(equivObjectPropertyExpr, declaredObjectPropertyAsn.SourceIndividualExpression, declaredObjectPropertyAsn.TargetIndividualExpression) { IsInference=true };
+                                inference.GetXML();
+                                inferences.Add(new OWLInference(rulename, inference));
+                            }
                         }
-                    }
+                }
             }
 
             return inferences;
