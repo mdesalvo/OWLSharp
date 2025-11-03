@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using RDFSharp.Model;
 
@@ -33,6 +34,11 @@ namespace OWLSharp.Ontology
         /// </summary>
         internal static readonly Dictionary<string, (OWLOntology Ontology, DateTime ExpireTimestamp)> OntologyCache
             = new Dictionary<string, (OWLOntology, DateTime)>();
+
+        /// <summary>
+        /// Semaphore to control access to the cache of imported ontologies
+        /// </summary>
+        private static readonly SemaphoreSlim OntologyCacheGuard = new SemaphoreSlim(1);
         #endregion
 
         #region Methods
@@ -51,18 +57,19 @@ namespace OWLSharp.Ontology
                         throw new OWLException($"Cannot import ontology because given '{nameof(ontology)}' parameter is null");
                     if (ontologyIRI == null)
                         throw new OWLException($"Cannot import ontology because given '{nameof(ontologyIRI)}' parameter is null");
+                    string ontologyIRIString = ontologyIRI.ToString();
                     #endregion
 
                     try
                     {
-                        #region ImportCache
-                        string ontologyIRIString = ontologyIRI.ToString();
+                        #region Cache
+                        //Acquire semaphore
+                        if (!await OntologyCacheGuard.WaitAsync(timeoutMilliseconds))
+                            throw new OWLException($"could not acquire lock on the cache of imported ontologies within timeout period of '{timeoutMilliseconds}' milliseconds");
 
-                        //Cache-Expire
+                        //Access cache
                         if (OntologyCache.ContainsKey(ontologyIRIString) && OntologyCache[ontologyIRIString].ExpireTimestamp < DateTime.UtcNow)
                             OntologyCache.Remove(ontologyIRIString);
-
-                        //Cache-Miss
                         if (!OntologyCache.ContainsKey(ontologyIRIString))
                         {
                             RDFGraph importGraph = await RDFGraph.FromUriAsync(ontologyIRI, timeoutMilliseconds, true);
@@ -70,10 +77,8 @@ namespace OWLSharp.Ontology
                             //Save the ontology into the cache for the given amount of milliseconds
                             OntologyCache.Add(ontologyIRIString, (importOntology, DateTime.UtcNow.AddMilliseconds(cacheMilliseconds)));
                         }
-
-                        //Cache-Hit
                         OWLOntology importedOntology = OntologyCache[ontologyIRIString].Ontology;
-                        #endregion
+                        #endregion Cache
 
                         //Imports
                         if (shouldCollectImport)
@@ -102,6 +107,11 @@ namespace OWLSharp.Ontology
                     catch (Exception ex)
                     {
                         throw new OWLException($"Cannot import ontology from IRI {ontologyIRI} because: {ex.Message}", ex);
+                    }
+                    finally
+                    {
+                        //Release semaphore
+                        OntologyCacheGuard.Release();
                     }
                 });
 
