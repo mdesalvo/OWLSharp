@@ -36,9 +36,9 @@ namespace OWLSharp.Ontology
             = new Dictionary<string, (OWLOntology, DateTime)>();
 
         /// <summary>
-        /// Semaphore to control access to the cache of imported ontologies
+        /// Semaphore to control exclusive access to the cache of imported ontologies
         /// </summary>
-        private static readonly SemaphoreSlim OntologyCacheGuard = new SemaphoreSlim(1);
+        private static readonly SemaphoreSlim OntologyCacheSemaphore = new SemaphoreSlim(1);
         #endregion
 
         #region Methods
@@ -59,15 +59,17 @@ namespace OWLSharp.Ontology
                         throw new OWLException($"Cannot import ontology because given '{nameof(ontologyIRI)}' parameter is null");
                     #endregion
 
+                    string ontologyIRIString = ontologyIRI.ToString();
+                    bool semaphoreAcquired = false;
                     try
                     {
                         #region Cache
                         //Acquire semaphore
-                        if (!await OntologyCacheGuard.WaitAsync(timeoutMilliseconds))
-                            throw new OWLException($"could not acquire lock on the cache of imported ontologies within timeout period of '{timeoutMilliseconds}' milliseconds");
+                        semaphoreAcquired = await OntologyCacheSemaphore.WaitAsync(timeoutMilliseconds);
+                        if (!semaphoreAcquired)
+                            throw new OWLException($"could not get exclusive access to the cache of imported ontologies within the given timeout ({timeoutMilliseconds} milliseconds)");
 
                         //Access cache
-                        string ontologyIRIString = ontologyIRI.ToString();
                         if (OntologyCache.ContainsKey(ontologyIRIString) && OntologyCache[ontologyIRIString].ExpireTimestamp < DateTime.UtcNow)
                             OntologyCache.Remove(ontologyIRIString);
                         if (!OntologyCache.ContainsKey(ontologyIRIString))
@@ -113,7 +115,8 @@ namespace OWLSharp.Ontology
                     finally
                     {
                         //Release semaphore
-                        OntologyCacheGuard.Release();
+                        if (semaphoreAcquired)
+                            OntologyCacheSemaphore.Release();
                     }
                 });
 
