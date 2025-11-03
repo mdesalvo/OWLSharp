@@ -57,7 +57,6 @@ namespace OWLSharp.Ontology
                         throw new OWLException($"Cannot import ontology because given '{nameof(ontology)}' parameter is null");
                     if (ontologyIRI == null)
                         throw new OWLException($"Cannot import ontology because given '{nameof(ontologyIRI)}' parameter is null");
-                    string ontologyIRIString = ontologyIRI.ToString();
                     #endregion
 
                     try
@@ -68,6 +67,7 @@ namespace OWLSharp.Ontology
                             throw new OWLException($"could not acquire lock on the cache of imported ontologies within timeout period of '{timeoutMilliseconds}' milliseconds");
 
                         //Access cache
+                        string ontologyIRIString = ontologyIRI.ToString();
                         if (OntologyCache.ContainsKey(ontologyIRIString) && OntologyCache[ontologyIRIString].ExpireTimestamp < DateTime.UtcNow)
                             OntologyCache.Remove(ontologyIRIString);
                         if (!OntologyCache.ContainsKey(ontologyIRIString))
@@ -80,6 +80,7 @@ namespace OWLSharp.Ontology
                         OWLOntology importedOntology = OntologyCache[ontologyIRIString].Ontology;
                         #endregion Cache
 
+                        #region Merge
                         //Imports
                         if (shouldCollectImport)
                             ontology.Imports.Add(new OWLImport(new RDFResource(importedOntology.IRI)));
@@ -103,6 +104,7 @@ namespace OWLSharp.Ontology
 
                         //Rules
                         importedOntology.Rules.ForEach(rl => { rl.IsImport=true; ontology.Rules.Add(rl); });
+                        #endregion
                     }
                     catch (Exception ex)
                     {
