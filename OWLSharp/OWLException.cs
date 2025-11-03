@@ -15,6 +15,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OWLSharp
 {
@@ -22,6 +23,7 @@ namespace OWLSharp
     /// OWLException represents an exception thrown during manipulation of OWL2 ontologies
     /// </summary>
     [Serializable]
+    [ExcludeFromCodeCoverage]
     public sealed class OWLException : Exception
     {
         #region Ctors
