@@ -14,12 +14,15 @@
    limitations under the License.
 */
 
+#if !NET8_0_OR_GREATER
+using Dasync.Collections;
+#endif
+using RDFSharp.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
@@ -127,8 +130,15 @@ namespace OWLSharp.Ontology
         public static Task ResolveImportsAsync(this OWLOntology ontology, int timeoutMilliseconds=20000, int cacheMilliseconds=3600000)
             => Task.Run(async () =>
                 {
-                    foreach (OWLImport import in ontology?.Imports ?? Enumerable.Empty<OWLImport>())
-                        await ImportAsync(ontology, new Uri(import.IRI), timeoutMilliseconds, cacheMilliseconds, false);
+                    if (ontology?.Imports.Count == 0)
+                        return;
+
+#if !NET8_0_OR_GREATER
+                    await ontology.Imports.ParallelForEachAsync(async (import, _) =>
+#else
+                    await Parallel.ForEachAsync(ontology.Imports, async (import, _) =>
+#endif
+                        await ImportAsync(ontology, new Uri(import.IRI), timeoutMilliseconds, cacheMilliseconds, false));
                 });
         #endregion
     }
