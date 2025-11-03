@@ -5557,16 +5557,17 @@ public class OWLOntologyTest
     [TestMethod]
     public async Task ShouldReadOntologyFromUriAsync()
     {
-        OWLOntology ontology = await OWLOntology.FromUriAsync(new Uri(RDFVocabulary.FOAF.BASE_URI));
+        OWLOntology ontology = await OWLOntology.FromUriAsync(new Uri(RDFVocabulary.SHACL.BASE_URI));
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(RDFVocabulary.FOAF.BASE_URI, ontology.IRI);
-        Assert.IsGreaterThan(0, ontology.Annotations.Count);
-        Assert.IsGreaterThan(0, ontology.AnnotationAxioms.Count);
-        Assert.IsGreaterThan(0, ontology.ClassAxioms.Count);
-        Assert.IsGreaterThan(0, ontology.DataPropertyAxioms.Count);
-        Assert.IsGreaterThan(0, ontology.DeclarationAxioms.Count);
-        Assert.IsGreaterThan(0, ontology.ObjectPropertyAxioms.Count);
+        Assert.AreEqual(RDFVocabulary.SHACL.BASE_URI, ontology.IRI);
+        Assert.HasCount(2, ontology.Annotations);
+        Assert.IsEmpty(ontology.AnnotationAxioms);
+        Assert.HasCount(79, ontology.AssertionAxioms);
+        Assert.HasCount(39, ontology.ClassAxioms);
+        Assert.IsEmpty(ontology.DataPropertyAxioms);
+        Assert.HasCount(40, ontology.DeclarationAxioms);
+        Assert.IsEmpty(ontology.ObjectPropertyAxioms);
     }
 
     [TestMethod]

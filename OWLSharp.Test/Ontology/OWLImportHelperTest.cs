@@ -59,20 +59,21 @@ public class OWLImportHelperTest
     {
         OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
         ontology.Imports.Add(new OWLImport(new RDFResource(RDFVocabulary.SKOS.DEREFERENCE_URI)));
-        ontology.Imports.Add(new OWLImport(new RDFResource(RDFVocabulary.FOAF.DEREFERENCE_URI)));
+        ontology.Imports.Add(new OWLImport(new RDFResource(RDFVocabulary.TIME.DEREFERENCE_URI)));
         await ontology.ResolveImportsAsync();
 
         Assert.HasCount(2, ontology.Imports);
-        Assert.HasCount(151, ontology.AnnotationAxioms);
+        Assert.HasCount(53, ontology.AnnotationAxioms);
         Assert.IsTrue(ontology.AnnotationAxioms.TrueForAll(ax => ax.IsImport));
-        Assert.HasCount(21, ontology.ClassAxioms);
+        Assert.HasCount(60, ontology.ClassAxioms);
         Assert.IsTrue(ontology.ClassAxioms.TrueForAll(ax => ax.IsImport));
-        Assert.HasCount(140, ontology.DeclarationAxioms);
+        Assert.HasCount(129, ontology.DeclarationAxioms);
         Assert.IsTrue(ontology.DeclarationAxioms.TrueForAll(ax => ax.IsImport));
-        Assert.HasCount(106, ontology.ObjectPropertyAxioms);
+        Assert.HasCount(135, ontology.ObjectPropertyAxioms);
         Assert.IsTrue(ontology.ObjectPropertyAxioms.TrueForAll(ax => ax.IsImport));
-        Assert.IsEmpty(ontology.AssertionAxioms);
-        Assert.HasCount(29, ontology.DataPropertyAxioms);
+        Assert.HasCount(63, ontology.AssertionAxioms);
+        Assert.IsTrue(ontology.AssertionAxioms.TrueForAll(ax => ax.IsImport));
+        Assert.HasCount(25, ontology.DataPropertyAxioms);
         Assert.IsEmpty(ontology.DatatypeDefinitionAxioms);
         Assert.IsEmpty(ontology.KeyAxioms);
         Assert.HasCount(5, ontology.Prefixes);
@@ -80,7 +81,7 @@ public class OWLImportHelperTest
 
         Assert.IsTrue(OWLImportHelper.OntologyCache.TryGetValue(RDFVocabulary.SKOS.DEREFERENCE_URI, out var cachedSKOSOntology)
                       && cachedSKOSOntology.ExpireTimestamp > DateTime.UtcNow);
-        Assert.IsTrue(OWLImportHelper.OntologyCache.TryGetValue(RDFVocabulary.FOAF.DEREFERENCE_URI, out var cachedFOAFOntology)
+        Assert.IsTrue(OWLImportHelper.OntologyCache.TryGetValue(RDFVocabulary.TIME.DEREFERENCE_URI, out var cachedFOAFOntology)
                       && cachedFOAFOntology.ExpireTimestamp > DateTime.UtcNow);
     }
 
