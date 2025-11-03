@@ -46,10 +46,6 @@ namespace OWLSharp.Reasoner
                             opAsnTargetIdvExpr = opAsn.SourceIndividualExpression;
                         }
 
-                        //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
-                        if (opAsn.ObjectPropertyExpression is OWLObjectInverseOf)
-                            opAsnSourceIdvExpr = opAsnTargetIdvExpr;
-
                         //Exploit the reflexive object property to emit the "selfswapped-assertion" inference
                         if (refObjProp.ObjectPropertyExpression is OWLObjectInverseOf refObjInvOf)
                         {

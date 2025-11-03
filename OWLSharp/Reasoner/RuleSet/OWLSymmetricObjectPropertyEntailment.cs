@@ -39,13 +39,6 @@ namespace OWLSharp.Reasoner
                         OWLIndividualExpression opAsnSourceIdvExpr = opAsn.SourceIndividualExpression;
                         OWLIndividualExpression opAsnTargetIdvExpr = opAsn.TargetIndividualExpression;
 
-                        //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
-                        if (opAsn.ObjectPropertyExpression is OWLObjectInverseOf)
-                        {
-                            opAsnSourceIdvExpr = opAsn.TargetIndividualExpression;
-                            opAsnTargetIdvExpr = opAsn.SourceIndividualExpression;
-                        }
-
                         //Exploit the symmetric object property to emit the "swapped-assertion" inference
                         if (symObjProp.ObjectPropertyExpression is OWLObjectInverseOf symObjInvOf)
                         {
