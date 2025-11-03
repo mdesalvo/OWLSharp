@@ -58,6 +58,10 @@ public class OWLImportHelperTest
     public async Task ShouldResolveImportsAsync()
     {
         OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
+        await ontology.ResolveImportsAsync();
+
+        Assert.IsEmpty(ontology.Imports);
+
         ontology.Imports.Add(new OWLImport(new RDFResource(RDFVocabulary.SKOS.DEREFERENCE_URI)));
         ontology.Imports.Add(new OWLImport(new RDFResource(RDFVocabulary.TIME.DEREFERENCE_URI)));
         ontology.Imports.Add(new OWLImport(new RDFResource(RDFVocabulary.GEOSPARQL.DEREFERENCE_URI)));
