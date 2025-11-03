@@ -36,26 +36,16 @@ namespace OWLSharp.Reasoner
                     //Extract object assertions of the current reflexive property
                     foreach (OWLObjectPropertyAssertion opAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, refObjProp.ObjectPropertyExpression))
                     {
-                        OWLIndividualExpression opAsnSourceIdvExpr = opAsn.SourceIndividualExpression;
-                        OWLIndividualExpression opAsnTargetIdvExpr = opAsn.TargetIndividualExpression;
-
-                        //In case the reflexive object property works under inverse logic, we must swap source/target of the object assertion
-                        if (refObjProp.ObjectPropertyExpression is OWLObjectInverseOf)
-                        {
-                            opAsnSourceIdvExpr = opAsn.TargetIndividualExpression;
-                            opAsnTargetIdvExpr = opAsn.SourceIndividualExpression;
-                        }
-
                         //Exploit the reflexive object property to emit the "selfswapped-assertion" inference
                         if (refObjProp.ObjectPropertyExpression is OWLObjectInverseOf refObjInvOf)
                         {
-                            OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(refObjInvOf.ObjectProperty, opAsnSourceIdvExpr, opAsnSourceIdvExpr) { IsInference=true };
+                            OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(refObjInvOf.ObjectProperty, opAsn.TargetIndividualExpression, opAsn.TargetIndividualExpression) { IsInference=true };
                             inference.GetXML();
                             inferences.Add(new OWLInference(rulename, inference));
                         }
                         else
                         {
-                            OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(refObjProp.ObjectPropertyExpression, opAsnSourceIdvExpr, opAsnSourceIdvExpr) { IsInference=true };
+                            OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(refObjProp.ObjectPropertyExpression, opAsn.SourceIndividualExpression, opAsn.SourceIndividualExpression) { IsInference=true };
                             inference.GetXML();
                             inferences.Add(new OWLInference(rulename, inference));
                         }
