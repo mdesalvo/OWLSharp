@@ -85,7 +85,6 @@ namespace OWLSharp.Ontology
                         OWLOntology importedOntology = OntologyCache[ontologyIRIString].Ontology;
                         #endregion Cache
 
-                        #region Merge
                         //Imports
                         if (shouldCollectImport)
                             ontology.Imports.Add(new OWLImport(new RDFResource(importedOntology.IRI)));
@@ -109,7 +108,6 @@ namespace OWLSharp.Ontology
 
                         //Rules
                         importedOntology.Rules.ForEach(rl => { rl.IsImport=true; ontology.Rules.Add(rl); });
-                        #endregion
                     }
                     catch (Exception ex)
                     {
@@ -130,7 +128,7 @@ namespace OWLSharp.Ontology
         public static Task ResolveImportsAsync(this OWLOntology ontology, int timeoutMilliseconds=20000, int cacheMilliseconds=3600000)
             => Task.Run(async () =>
                 {
-                    if (ontology?.Imports.Count == 0)
+                    if (ontology == null || ontology.Imports.Count == 0)
                         return;
 
 #if !NET8_0_OR_GREATER
