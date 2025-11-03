@@ -43,21 +43,18 @@ namespace OWLSharp.Reasoner
                     //Extract object assertions of the current object property
                     foreach (OWLObjectPropertyAssertion opAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, declaredObjectProperty))
                     {
-                        OWLIndividualExpression opAsnSourceIdvExpr = opAsn.SourceIndividualExpression;
-                        OWLIndividualExpression opAsnTargetIdvExpr = opAsn.TargetIndividualExpression;
-
                         //Iterate inverse object properties of the current object property in order to materialize the "swapped-assertion" inference
                         foreach ((bool,OWLObjectPropertyExpression) invOfDeclaredObjectProperty in invsOfDeclaredObjectProperty)
                         {
                             if (invOfDeclaredObjectProperty.Item1)
                             {
-                                OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(invOfDeclaredObjectProperty.Item2, opAsnSourceIdvExpr, opAsnTargetIdvExpr) { IsInference=true };
+                                OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(invOfDeclaredObjectProperty.Item2, opAsn.SourceIndividualExpression, opAsn.TargetIndividualExpression) { IsInference=true };
                                 inference.GetXML();
                                 inferences.Add(new OWLInference(rulename, inference));
                             }
                             else
                             {
-                                OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(invOfDeclaredObjectProperty.Item2, opAsnTargetIdvExpr, opAsnSourceIdvExpr) { IsInference=true };
+                                OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(invOfDeclaredObjectProperty.Item2, opAsn.TargetIndividualExpression, opAsn.SourceIndividualExpression) { IsInference=true };
                                 inference.GetXML();
                                 inferences.Add(new OWLInference(rulename, inference));
                             }

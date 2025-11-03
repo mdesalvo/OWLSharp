@@ -34,19 +34,16 @@ namespace OWLSharp.Reasoner
                 foreach (OWLObjectPropertyDomain objectPropertyDomain in objectPropertyDomains)
                     foreach (OWLObjectPropertyAssertion objectPropertyAssertion in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, objectPropertyDomain.ObjectPropertyExpression))
                     {
-                        OWLIndividualExpression opAsnSourceIdvExpr = objectPropertyAssertion.SourceIndividualExpression;
-                        OWLIndividualExpression opAsnTargetIdvExpr = objectPropertyAssertion.TargetIndividualExpression;
-
                         //In case the object property domain works under inverse logic, we must swap source/target of the object assertion
                         if (objectPropertyDomain.ObjectPropertyExpression is OWLObjectInverseOf)
                         {
-                            OWLClassAssertion inference = new OWLClassAssertion(objectPropertyDomain.ClassExpression) { IndividualExpression=opAsnTargetIdvExpr, IsInference=true };
+                            OWLClassAssertion inference = new OWLClassAssertion(objectPropertyDomain.ClassExpression) { IndividualExpression=objectPropertyAssertion.TargetIndividualExpression, IsInference=true };
                             inference.GetXML();
                             inferences.Add(new OWLInference(rulename, inference));
                         }
                         else
                         {
-                            OWLClassAssertion inference = new OWLClassAssertion(objectPropertyDomain.ClassExpression) { IndividualExpression=opAsnSourceIdvExpr, IsInference=true };
+                            OWLClassAssertion inference = new OWLClassAssertion(objectPropertyDomain.ClassExpression) { IndividualExpression=objectPropertyAssertion.SourceIndividualExpression, IsInference=true };
                             inference.GetXML();
                             inferences.Add(new OWLInference(rulename, inference));
                         }
