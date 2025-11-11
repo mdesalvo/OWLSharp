@@ -161,10 +161,10 @@ namespace OWLSharp.Ontology
         [XmlElement("DLSafeRule")]
         public List<SWRLRule> Rules { get; internal set; }
 
-        [XmlIgnore]
         /// <summary>
         /// Flag indicating that the ontology has already been disposed
         /// </summary>
+        [XmlIgnore]
         internal bool Disposed { get; set; }
         #endregion
 
