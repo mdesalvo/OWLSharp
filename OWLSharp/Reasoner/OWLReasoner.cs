@@ -246,10 +246,11 @@ namespace OWLSharp.Reasoner
                     });
 
                 //Collect inferences
-                inferences.AddRange(inferenceRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLInference>()).Distinct());
+                IEnumerable<OWLInference> emptyInferenceSet = Enumerable.Empty<OWLInference>();
+                inferences.AddRange(inferenceRegistry.SelectMany(ir => ir.Value ?? emptyInferenceSet).Distinct());
                 #endregion
 
-                OWLEvents.RaiseInfo($"Completed OWL2/SWRL reasoner on ontology {ontology.IRI} => {inferences.Count} unique inferences");
+                OWLEvents.RaiseInfo($"Completed OWL2/SWRL reasoner on ontology {ontology.IRI} => {inferences.Count} inferences");
             }
 
             return inferences;

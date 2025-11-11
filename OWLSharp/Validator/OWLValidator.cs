@@ -176,7 +176,8 @@ namespace OWLSharp.Validator
 
                 #region Finalize issues
                 //Process issues
-                issues.AddRange(issueRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLIssue>()));
+                IEnumerable<OWLIssue> emptyIssueSet = Enumerable.Empty<OWLIssue>();
+                issues.AddRange(issueRegistry.SelectMany(ir => ir.Value ?? emptyIssueSet));
                 #endregion
 
                 OWLEvents.RaiseInfo($"Completed OWL2 validator on ontology {ontology.IRI} => {issues.Count} issues");
