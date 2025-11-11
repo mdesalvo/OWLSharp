@@ -35,7 +35,11 @@ namespace OWLSharp.Ontology
     /// data integration, and semantic interoperability.
     /// </summary>
     [XmlRoot("Ontology")]
-    public sealed class OWLOntology
+#if NET8_0_OR_GREATER
+    public sealed class OWLOntology : IDisposable, IAsyncDisposable
+#else
+    public sealed class OWLOntology : IDisposable
+#endif
     {
         #region Properties
         /// <summary>
@@ -156,6 +160,12 @@ namespace OWLSharp.Ontology
         /// </summary>
         [XmlElement("DLSafeRule")]
         public List<SWRLRule> Rules { get; internal set; }
+
+        [XmlIgnore]
+        /// <summary>
+        /// Flag indicating that the ontology has already been disposed
+        /// </summary>
+        internal bool Disposed { get; set; }
         #endregion
 
         #region Ctors
@@ -229,6 +239,74 @@ namespace OWLSharp.Ontology
 
             //Rules
             Rules = new List<SWRLRule>(ontology?.Rules ?? Enumerable.Empty<SWRLRule>());
+        }
+
+        /// <summary>
+        /// Destroys the ontology instance
+        /// </summary>
+        ~OWLOntology()
+            => Dispose(false);
+        #endregion
+
+        #region Interfaces
+        /// <summary>
+        /// Disposes the ontology (IDisposable)
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+#if NET8_0_OR_GREATER
+        /// <summary>
+        /// Asynchronously disposes the ontology (IAsyncDisposable)
+        /// </summary>
+        ValueTask IAsyncDisposable.DisposeAsync()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+            return ValueTask.CompletedTask;
+        }
+#endif
+
+        /// <summary>
+        /// Disposes the ontology
+        /// </summary>
+        private void Dispose(bool disposing)
+        {
+            if (Disposed)
+                return;
+
+            if (disposing)
+            {
+                Prefixes?.Clear();
+                Prefixes = null;
+                Imports?.Clear();
+                Imports = null;
+                Annotations?.Clear();
+                Annotations = null;
+                DeclarationAxioms?.Clear();
+                DeclarationAxioms = null;
+                ClassAxioms?.Clear();
+                ClassAxioms = null;
+                ObjectPropertyAxioms?.Clear();
+                ObjectPropertyAxioms = null;
+                DataPropertyAxioms?.Clear();
+                DataPropertyAxioms = null;
+                DatatypeDefinitionAxioms?.Clear();
+                DatatypeDefinitionAxioms = null;
+                KeyAxioms?.Clear();
+                KeyAxioms = null;
+                AssertionAxioms?.Clear();
+                AssertionAxioms = null;
+                AnnotationAxioms?.Clear();
+                AnnotationAxioms = null;
+                Rules?.Clear();
+                Rules = null;
+            }
+
+            Disposed = true;
         }
         #endregion
 

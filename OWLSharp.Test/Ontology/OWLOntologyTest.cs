@@ -171,6 +171,134 @@ public class OWLOntologyTest
     }
 
     [TestMethod]
+    public void ShouldDisposeOntologyWithUsing()
+    {
+        OWLOntology ontology;
+        using (ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1")))
+        {
+            ontology.Prefixes.Add(
+                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
+            ontology.Imports.Add(
+                new OWLImport(new RDFResource("ex:ont2")));
+            ontology.Annotations.Add(
+                new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("annotation")))
+                {
+                    Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("nested annotation")))
+                });
+            ontology.DeclarationAxioms.AddRange(
+            [ new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
+            new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)),
+            new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+            new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
+            new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION)),
+            new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
+            new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+            new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Steve"))) ]);
+            ontology.ClassAxioms.Add(
+                new OWLDisjointClasses([new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)]));
+            ontology.ObjectPropertyAxioms.Add(
+                new OWLAsymmetricObjectProperty(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+            ontology.DataPropertyAxioms.Add(
+                new OWLDataPropertyDomain(new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLClass(RDFVocabulary.FOAF.PERSON)));
+            ontology.DatatypeDefinitionAxioms.Add(
+                new OWLDatatypeDefinition(
+                    new OWLDatatype(new RDFResource("ex:length6to10")),
+                    new OWLDatatypeRestriction(
+                        new OWLDatatype(RDFVocabulary.XSD.STRING),
+                        [ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                        new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
+            ontology.KeyAxioms.Add(
+                new OWLHasKey(
+                    new OWLClass(RDFVocabulary.FOAF.AGENT),
+                    [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)]));
+            ontology.AssertionAxioms.Add(
+                new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:Mark"), new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
+            ontology.Rules.Add(new SWRLRule());
+        }
+
+        //Test disposal of ontology
+        Assert.IsTrue(ontology.Disposed);
+        Assert.IsNull(ontology.Prefixes);
+        Assert.IsNull(ontology.Imports);
+        Assert.IsNull(ontology.Annotations);
+        Assert.IsNull(ontology.DeclarationAxioms);
+        Assert.IsNull(ontology.ClassAxioms);
+        Assert.IsNull(ontology.ObjectPropertyAxioms);
+        Assert.IsNull(ontology.DataPropertyAxioms);
+        Assert.IsNull(ontology.DatatypeDefinitionAxioms);
+        Assert.IsNull(ontology.KeyAxioms);
+        Assert.IsNull(ontology.AssertionAxioms);
+        Assert.IsNull(ontology.AnnotationAxioms);
+        Assert.IsNull(ontology.Rules);
+    }
+
+    [TestMethod]
+    public async Task ShouldDisposeOntologyWithUsingAsync()
+    {
+        OWLOntology ontology;
+        await using (ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1")))
+        {
+            ontology.Prefixes.Add(
+                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
+            ontology.Imports.Add(
+                new OWLImport(new RDFResource("ex:ont2")));
+            ontology.Annotations.Add(
+                new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("annotation")))
+                {
+                    Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("nested annotation")))
+                });
+            ontology.DeclarationAxioms.AddRange(
+            [ new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
+            new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)),
+            new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+            new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
+            new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION)),
+            new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
+            new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+            new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Steve"))) ]);
+            ontology.ClassAxioms.Add(
+                new OWLDisjointClasses([new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)]));
+            ontology.ObjectPropertyAxioms.Add(
+                new OWLAsymmetricObjectProperty(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+            ontology.DataPropertyAxioms.Add(
+                new OWLDataPropertyDomain(new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLClass(RDFVocabulary.FOAF.PERSON)));
+            ontology.DatatypeDefinitionAxioms.Add(
+                new OWLDatatypeDefinition(
+                    new OWLDatatype(new RDFResource("ex:length6to10")),
+                    new OWLDatatypeRestriction(
+                        new OWLDatatype(RDFVocabulary.XSD.STRING),
+                        [ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                        new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
+            ontology.KeyAxioms.Add(
+                new OWLHasKey(
+                    new OWLClass(RDFVocabulary.FOAF.AGENT),
+                    [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)]));
+            ontology.AssertionAxioms.Add(
+                new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:Mark"), new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
+            ontology.Rules.Add(new SWRLRule());
+        }
+
+        //Test disposal of ontology
+        Assert.IsTrue(ontology.Disposed);
+        Assert.IsNull(ontology.Prefixes);
+        Assert.IsNull(ontology.Imports);
+        Assert.IsNull(ontology.Annotations);
+        Assert.IsNull(ontology.DeclarationAxioms);
+        Assert.IsNull(ontology.ClassAxioms);
+        Assert.IsNull(ontology.ObjectPropertyAxioms);
+        Assert.IsNull(ontology.DataPropertyAxioms);
+        Assert.IsNull(ontology.DatatypeDefinitionAxioms);
+        Assert.IsNull(ontology.KeyAxioms);
+        Assert.IsNull(ontology.AssertionAxioms);
+        Assert.IsNull(ontology.AnnotationAxioms);
+        Assert.IsNull(ontology.Rules);
+    }
+
+    [TestMethod]
     public void ShouldAnnotateOntology()
     {
         OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
