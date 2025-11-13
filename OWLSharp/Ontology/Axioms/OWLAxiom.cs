@@ -110,7 +110,7 @@ namespace OWLSharp.Ontology
         /// </summary>
         public virtual RDFGraph ToRDFGraph()
             => new RDFGraph();
-        
+
         /// <summary>
         /// Adds the given annotation to the set of this axiom's annotations
         /// </summary>

@@ -28,7 +28,7 @@ namespace OWLSharp.Validator
 
             //Temporary working variables
             List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
-            
+
             //ClassAssertion(CLS,IDV) ^ ClassAssertion(ObjectComplementOf(CLS),IDV) -> ERROR
             foreach (var classAsnMap in clsAsns.GroupBy(clax => clax.IndividualExpression.GetIRI().ToString())
                                                .ToDictionary(grp => grp.Key, grp => grp.Select(g => g.ClassExpression)))

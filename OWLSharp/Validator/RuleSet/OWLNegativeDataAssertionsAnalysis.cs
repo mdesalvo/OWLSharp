@@ -32,7 +32,7 @@ namespace OWLSharp.Validator
             {
                 //Temporary working variables
                 List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
-            
+
                 //NegativeDataPropertyAssertion(DP,IDV,LIT) ^ DataPropertyAssertion(DP,IDV,LIT) -> ERROR
                 foreach (OWLNegativeDataPropertyAssertion ndpAsn in ndpAxms)
                 {
