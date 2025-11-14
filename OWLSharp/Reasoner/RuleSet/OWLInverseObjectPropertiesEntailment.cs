@@ -32,8 +32,6 @@ namespace OWLSharp.Reasoner
             {
                 //Temporary working variables
                 List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
-                //List<OWLObjectPropertyDomain> objectPropertyDomains = ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyDomain>();
-                //List<OWLObjectPropertyRange> objectPropertyRanges = ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyRange>();
 
                 foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
                                                                              .Select(ax => (OWLObjectProperty)ax.Entity))
