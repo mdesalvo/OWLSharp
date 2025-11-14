@@ -13,6 +13,7 @@
 
 using OWLSharp.Ontology;
 using RDFSharp.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,48 +32,44 @@ namespace OWLSharp.Reasoner
             {
                 //Temporary working variables
                 List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
+                //List<OWLObjectPropertyDomain> objectPropertyDomains = ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyDomain>();
+                //List<OWLObjectPropertyRange> objectPropertyRanges = ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyRange>();
 
-                //InverseObjectProperties(OP,IOP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ObjectPropertyAssertion(IOP,IDV2,IDV1)
-                //InverseObjectProperties(OP,IOP) ^ EquivalentObjectProperties(IOP,IOP2) -> InverseObjectProperties(OP,IOP2)
                 foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
                                                                              .Select(ax => (OWLObjectProperty)ax.Entity))
                 {
                     //Extract inverse object properties of the current object property
-                    List<(bool,OWLObjectPropertyExpression)> invsOfDeclaredObjectProperty = GetInverseObjectProperties(ontology, declaredObjectProperty, invObjProps);
-
-                    //Extract object assertions of the current object property
-                    foreach (OWLObjectPropertyAssertion opAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, declaredObjectProperty))
+                    foreach ((bool, OWLObjectPropertyExpression) invOfDeclaredObjectProperty in GetInverseObjectProperties(ontology, declaredObjectProperty, invObjProps))
                     {
-                        //Iterate inverse object properties of the current object property in order to materialize the "swapped-assertion" inference
-                        foreach ((bool,OWLObjectPropertyExpression) invOfDeclaredObjectProperty in invsOfDeclaredObjectProperty)
+                        //InverseObjectProperties(OP,IOP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ObjectPropertyAssertion(IOP,IDV2,IDV1)
+                        foreach (OWLObjectPropertyAssertion opAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, declaredObjectProperty))
                         {
                             if (invOfDeclaredObjectProperty.Item1)
                             {
-                                OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(invOfDeclaredObjectProperty.Item2, opAsn.SourceIndividualExpression, opAsn.TargetIndividualExpression) { IsInference=true };
+                                OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(invOfDeclaredObjectProperty.Item2, opAsn.SourceIndividualExpression, opAsn.TargetIndividualExpression) { IsInference = true };
                                 inference.GetXML();
                                 inferences.Add(new OWLInference(rulename, inference));
                             }
                             else
                             {
-                                OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(invOfDeclaredObjectProperty.Item2, opAsn.TargetIndividualExpression, opAsn.SourceIndividualExpression) { IsInference=true };
+                                OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(invOfDeclaredObjectProperty.Item2, opAsn.TargetIndividualExpression, opAsn.SourceIndividualExpression) { IsInference = true };
                                 inference.GetXML();
                                 inferences.Add(new OWLInference(rulename, inference));
                             }
                         }
-                    }
 
-                    //Iterate inverse object properties of the current object property in order to materialize the "swapped-assertion" inference
-                    foreach ((bool,OWLObjectPropertyExpression) invOfDeclaredObjectProperty in invsOfDeclaredObjectProperty)
+                        //InverseObjectProperties(OP,IOP) ^ EquivalentObjectProperties(IOP,IOP2) -> InverseObjectProperties(OP,IOP2)
                         foreach (OWLObjectPropertyExpression equivOfInvOfDeclaredObjectProperty in ontology.GetEquivalentObjectProperties(invOfDeclaredObjectProperty.Item2))
                         {
-                            OWLInverseObjectProperties inferenceA = new OWLInverseObjectProperties(declaredObjectProperty, equivOfInvOfDeclaredObjectProperty) { IsInference=true };
+                            OWLInverseObjectProperties inferenceA = new OWLInverseObjectProperties(declaredObjectProperty, equivOfInvOfDeclaredObjectProperty) { IsInference = true };
                             inferenceA.GetXML();
                             inferences.Add(new OWLInference(rulename, inferenceA));
 
-                            OWLInverseObjectProperties inferenceB = new OWLInverseObjectProperties(equivOfInvOfDeclaredObjectProperty, declaredObjectProperty) { IsInference=true };
+                            OWLInverseObjectProperties inferenceB = new OWLInverseObjectProperties(equivOfInvOfDeclaredObjectProperty, declaredObjectProperty) { IsInference = true };
                             inferenceB.GetXML();
                             inferences.Add(new OWLInference(rulename, inferenceB));
                         }
+                    }
                 }
             }
 
