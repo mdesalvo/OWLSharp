@@ -94,6 +94,8 @@ namespace OWLSharp.Reasoner
                 Task<HashSet<string>> eqvOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLEquivalentObjectProperties>().Select(asn => asn.GetXML())));
                 Task<HashSet<string>> subOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>().Select(asn => asn.GetXML())));
                 Task<HashSet<string>> invOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLInverseObjectProperties>().Select(asn => asn.GetXML())));
+                Task<HashSet<string>> opDomainAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyDomain>().Select(asn => asn.GetXML())));
+                Task<HashSet<string>> opRangeAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyRange>().Select(asn => asn.GetXML())));
                 #endregion
 
                 #region Process rules
@@ -204,7 +206,7 @@ namespace OWLSharp.Reasoner
                 #region Deduplicate & finalize inferences
                 //Deduplicate inferences (in order to not state already known knowledge)
                 await Task.WhenAll(clsAsnAxiomsTask, dtPropAsnAxiomsTask, opPropAsnAxiomsTask, sameIdvsAxiomsTask, diffIdvsAxiomsTask, dsjClsAxiomsTask, eqvClsAxiomsTask, subClsAxiomsTask,
-                    dsjDtPropAxiomsTask, eqvDtPropAxiomsTask, subDtPropAxiomsTask, dsjOpPropAxiomsTask, eqvOpPropAxiomsTask, subOpPropAxiomsTask, invOpPropAxiomsTask);
+                    dsjDtPropAxiomsTask, eqvDtPropAxiomsTask, subDtPropAxiomsTask, dsjOpPropAxiomsTask, eqvOpPropAxiomsTask, subOpPropAxiomsTask, invOpPropAxiomsTask, opDomainAxiomsTask, opRangeAxiomsTask);
                 foreach (KeyValuePair<string, List<OWLInference>> inferenceRegistryEntry in inferenceRegistry.Where(ir => ir.Value?.Count > 0))
                     inferenceRegistryEntry.Value.RemoveAll(inf =>
                     {
@@ -240,6 +242,10 @@ namespace OWLSharp.Reasoner
                                 return subOpPropAxiomsTask.Result.Contains(inf.Axiom.GetXML());
                             case nameof(OWLInverseObjectProperties):
                                 return invOpPropAxiomsTask.Result.Contains(inf.Axiom.GetXML());
+                            case nameof(OWLObjectPropertyDomain):
+                                return opDomainAxiomsTask.Result.Contains(inf.Axiom.GetXML());
+                            case nameof(OWLObjectPropertyRange):
+                                return opRangeAxiomsTask.Result.Contains(inf.Axiom.GetXML());
                             //Not explicitly handled inference type: just keep it
                             default: return true;
                         }

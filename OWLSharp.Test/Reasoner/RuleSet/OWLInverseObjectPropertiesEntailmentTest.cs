@@ -218,5 +218,39 @@ public class OWLInverseObjectPropertiesEntailmentTest
                                           && string.Equals(inf1.LeftObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/isFriendOf")
                                           && string.Equals(inf1.RightObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/knows")));
     }
+
+    [TestMethod]
+    public void ShouldEntailInverseObjectPropertiesViaDomainRangeCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isKnownBy"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/HumanD"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/HumanR")))
+            ],
+            ObjectPropertyAxioms = [
+                new OWLInverseObjectProperties(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isKnownBy"))),
+                new OWLObjectPropertyDomain(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/HumanD"))),
+                new OWLObjectPropertyRange(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/HumanR")))
+            ]
+        };
+        List<OWLInference> inferences = OWLInverseObjectPropertiesEntailment.ExecuteRule(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyDomain inf
+                                          && string.Equals(inf.ObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/isKnownBy")
+                                          && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/HumanR")));
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyRange inf1
+                                          && string.Equals(inf1.ObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/isKnownBy")
+                                          && string.Equals(inf1.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/HumanD")));
+    }
     #endregion
 }

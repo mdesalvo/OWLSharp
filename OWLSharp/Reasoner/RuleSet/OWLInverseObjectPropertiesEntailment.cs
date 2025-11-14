@@ -37,6 +37,11 @@ namespace OWLSharp.Reasoner
                 {
                     List<OWLObjectPropertyAssertion> opAsnAxioms = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, op);
 
+                    //Exploit an object property view to compute domains and ranges of the current object property
+                    OWLObjectPropertyView opView = new OWLObjectPropertyView(op, ontology);
+                    List<OWLClassExpression> opDomains = opView.DomainsAsync().GetAwaiter().GetResult();
+                    List<OWLClassExpression> opRanges = opView.RangesAsync().GetAwaiter().GetResult();
+
                     //Extract inverse object properties of the current object property
                     foreach ((bool, OWLObjectPropertyExpression) iop in GetInverseObjectProperties(ontology, op, invObjProps))
                     {
@@ -67,6 +72,40 @@ namespace OWLSharp.Reasoner
                             OWLInverseObjectProperties inferenceB = new OWLInverseObjectProperties(equivOfIOP, op) { IsInference=true };
                             inferenceB.GetXML();
                             inferences.Add(new OWLInference(rulename, inferenceB));
+                        }
+
+                        //InverseObjectProperties(OP,IOP) ^ ObjectPropertyDomain(OP,C) -> ObjectPropertyRange(IOP,C)
+                        foreach (OWLClassExpression opDomain in opDomains)
+                        {
+                            if (iop.Item1)
+                            {
+                                OWLObjectPropertyDomain inference = new OWLObjectPropertyDomain(((OWLObjectInverseOf)iop.Item2).ObjectProperty, opDomain) { IsInference=true };
+                                inference.GetXML();
+                                inferences.Add(new OWLInference(rulename, inference));
+                            }
+                            else
+                            {
+                                OWLObjectPropertyRange inference = new OWLObjectPropertyRange(iop.Item2, opDomain) { IsInference=true };
+                                inference.GetXML();
+                                inferences.Add(new OWLInference(rulename, inference));
+                            }
+                        }
+
+                        //InverseObjectProperties(OP,IOP) ^ ObjectPropertyRange(OP,C) -> ObjectPropertyDomain(IOP,C)
+                        foreach (OWLClassExpression opRange in opRanges)
+                        {
+                            if (iop.Item1)
+                            {
+                                OWLObjectPropertyRange inference = new OWLObjectPropertyRange(((OWLObjectInverseOf)iop.Item2).ObjectProperty, opRange) { IsInference = true };
+                                inference.GetXML();
+                                inferences.Add(new OWLInference(rulename, inference));
+                            }
+                            else
+                            {
+                                OWLObjectPropertyDomain inference = new OWLObjectPropertyDomain(iop.Item2, opRange) { IsInference = true };
+                                inference.GetXML();
+                                inferences.Add(new OWLInference(rulename, inference));
+                            }
                         }
                     }
                 }
