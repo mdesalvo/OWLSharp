@@ -1086,6 +1086,59 @@ public class OWLReasonerTest
     }
 
     [TestMethod]
+    public async Task ShouldEntailWithIterativeBehaviorAsync()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jenny"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen")))
+            ],
+            ObjectPropertyAxioms = [
+                new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+                new OWLObjectPropertyDomain(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person"))),
+                new OWLObjectPropertyRange(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")))
+            ],
+            AssertionAxioms = [
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jenny"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jenny")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen")))
+            ]
+        };
+        OWLReasoner reasoner = new OWLReasoner { Rules = [
+            OWLEnums.OWLReasonerRules.TransitiveObjectPropertyEntailment,
+            OWLEnums.OWLReasonerRules.ObjectPropertyDomainEntailment,
+            OWLEnums.OWLReasonerRules.ObjectPropertyRangeEntailment
+        ] };
+        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology, true);
+
+        Assert.HasCount(11, inferences);
+        Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+    }
+
+    [TestMethod]
     public async Task ShouldEntailOntologyRulesAsync()
     {
         OWLOntology ontology = new OWLOntology
