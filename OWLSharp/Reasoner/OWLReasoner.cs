@@ -59,10 +59,10 @@ namespace OWLSharp.Reasoner
         }
 
         /// <summary>
-        /// Applies the reasoner to the given ontology. If specified, it automatically merges the inferences into the ontology.
+        /// Applies the reasoner to the given ontology. If specified, it automatically merges the inferences into the ontology and iterates again (until no more inferences are discoverable).
         /// </summary>
         /// <returns>The list of discovered inferences</returns>
-        public async Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology, bool shouldMergeInferences=false)
+        public async Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology, bool enableIterativeReasoning=false)
         {
             List<OWLInference> inferences = new List<OWLInference>();
             Rules = Rules.Distinct().ToList();
@@ -256,14 +256,13 @@ namespace OWLSharp.Reasoner
                 inferences.AddRange(inferenceRegistry.SelectMany(ir => ir.Value ?? emptyInferenceSet).Distinct());
                 #endregion
 
-                OWLEvents.RaiseInfo($"Completed OWL2/SWRL reasoner on ontology {ontology.IRI} => {inferences.Count} inferences");
+                OWLEvents.RaiseInfo($"Completed OWL2/SWRL reasoner on ontology '{ontology.IRI}' => {inferences.Count} inferences");
                 #endregion
 
                 #region Merge inferences
-                if (shouldMergeInferences)
+                if (enableIterativeReasoning && inferences.Count > 0)
                 {
-                    OWLEvents.RaiseInfo($"Merging OWL2/SWRL inferences into ontology '{ontology.IRI}'...");
-
+                    OWLEvents.RaiseInfo($"Merging inferences into ontology '{ontology.IRI}'...");
                     foreach (OWLInference inference in inferences)
                     {
                         switch (inference.Axiom)
@@ -285,8 +284,10 @@ namespace OWLSharp.Reasoner
                                 break;
                         }
                     }
+                    OWLEvents.RaiseInfo($"Completed merging of inferences into ontology '{ontology.IRI}'");
 
-                    OWLEvents.RaiseInfo($"Completed merging of OWL2/SWRL inferences into ontology {ontology.IRI}");
+                    OWLEvents.RaiseInfo($"There were new inferences merged into ontology '{ontology.IRI}'! Preparing for next reasoning iteration...");
+                    inferences.AddRange(await ApplyToOntologyAsync(ontology, true));
                 }
                 #endregion
             }
