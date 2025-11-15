@@ -2726,7 +2726,7 @@ namespace OWLSharp.Ontology
         /// </summary>
         private static async Task IntegrateInferencesAsync(this OWLOntology ontology, OWLReasoner reasoner)
         {
-            Parallel.ForEach(await reasoner.ApplyToOntologyAsync(ontology), inference =>
+            foreach (OWLInference inference in await reasoner.ApplyToOntologyAsync(ontology))
             {
                 switch (inference.Axiom)
                 {
@@ -2746,7 +2746,7 @@ namespace OWLSharp.Ontology
                         ontology.DeclareAnnotationAxiom(annAx);
                         break;
                 }
-            });
+            }
         }
         #endregion
     }

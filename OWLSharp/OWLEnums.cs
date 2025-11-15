@@ -103,7 +103,9 @@ namespace OWLSharp
             InverseFunctionalObjectPropertyEntailment = 14,
             /// <summary>
             /// InverseObjectProperties(OP,IOP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ObjectPropertyAssertion(IOP,IDV2,IDV1)<br/>
-            /// InverseObjectProperties(OP,IOP) ^ EquivalentObjectProperties(IOP,IOP2) -> InverseObjectProperties(OP,IOP2)
+            /// InverseObjectProperties(OP,IOP) ^ EquivalentObjectProperties(IOP,IOP2)  -> InverseObjectProperties(OP,IOP2)<br/>
+            /// InverseObjectProperties(OP,IOP) ^ ObjectPropertyDomain(OP,C) -> ObjectPropertyRange(IOP,C)<br/>
+            /// InverseObjectProperties(OP,IOP) ^ ObjectPropertyRange(OP,C)  -> ObjectPropertyDomain(IOP,C)
             /// </summary>
             InverseObjectPropertiesEntailment = 15,
             /// <summary>
