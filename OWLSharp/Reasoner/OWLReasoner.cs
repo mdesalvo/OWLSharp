@@ -62,10 +62,11 @@ namespace OWLSharp.Reasoner
         /// Applies the reasoner to the given ontology. If specified, it automatically merges the inferences into the ontology and iterates again (until no more inferences are discoverable).
         /// </summary>
         /// <returns>The list of discovered inferences</returns>
-        public async Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology, bool enableIterativeReasoning=false)
+        public Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology, bool enableIterativeReasoning=false)
+            => ApplyToOntologyAsync(ontology, enableIterativeReasoning, Rules.Distinct().ToList(), 1);
+        private async Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology, bool enableIterativeReasoning, List<OWLEnums.OWLReasonerRules> rules, int iteration)
         {
             List<OWLInference> inferences = new List<OWLInference>();
-            Rules = Rules.Distinct().ToList();
 
             if (ontology != null)
             {
@@ -74,8 +75,8 @@ namespace OWLSharp.Reasoner
 
                 #region Init registry & context
                 //Initialize inference registry
-                Dictionary<string, List<OWLInference>> inferenceRegistry = new Dictionary<string, List<OWLInference>>(Rules.Count + ontology.Rules.Count);
-                Rules.ForEach(owl2Rule => inferenceRegistry.Add(owl2Rule.ToString(), null));
+                Dictionary<string, List<OWLInference>> inferenceRegistry = new Dictionary<string, List<OWLInference>>(rules.Count + ontology.Rules.Count);
+                rules.ForEach(owl2Rule => inferenceRegistry.Add(owl2Rule.ToString(), null));
                 ontology.Rules.ForEach(swrlRule => inferenceRegistry.Add(swrlRule.ToString(), null));
 
                 //Initialize axioms XML (required for inference deduplication phase)
@@ -100,7 +101,7 @@ namespace OWLSharp.Reasoner
 
                 #region Process rules
                 //Execute OWL2 reasoner rules
-                Parallel.ForEach(Rules, rule =>
+                Parallel.ForEach(rules, rule =>
                 {
                     string ruleString = rule.ToString();
                     OWLEvents.RaiseInfo($"Launching OWL2 rule {ruleString}...");
@@ -188,11 +189,11 @@ namespace OWLSharp.Reasoner
                 });
 
                 //Execute SWRL reasoner rules
-#if !NET8_0_OR_GREATER
+                #if !NET8_0_OR_GREATER
                 await ontology.Rules.ParallelForEachAsync(async (swrlRule, _) =>
-#else
+                #else
                 await Parallel.ForEachAsync(ontology.Rules, async (swrlRule, _) =>
-#endif
+                #endif
                 {
                     string swrlRuleString = swrlRule.ToString();
                     OWLEvents.RaiseInfo($"Launching SWRL rule {swrlRuleString}...");
@@ -262,7 +263,7 @@ namespace OWLSharp.Reasoner
                 #region Merge inferences
                 if (enableIterativeReasoning && inferences.Count > 0)
                 {
-                    OWLEvents.RaiseInfo($"Merging inferences into ontology '{ontology.IRI}'...");
+                    OWLEvents.RaiseInfo($"Merging inferences into ontology '{ontology.IRI}' after iteration {iteration}...");
                     foreach (OWLInference inference in inferences)
                     {
                         switch (inference.Axiom)
@@ -284,10 +285,9 @@ namespace OWLSharp.Reasoner
                                 break;
                         }
                     }
-                    OWLEvents.RaiseInfo($"Completed merging of inferences into ontology '{ontology.IRI}'");
+                    OWLEvents.RaiseInfo($"Completed merging of inferences into ontology '{ontology.IRI}' after iteration {iteration}");
 
-                    OWLEvents.RaiseInfo($"There were new inferences merged into ontology '{ontology.IRI}'! Preparing for next reasoning iteration...");
-                    inferences.AddRange(await ApplyToOntologyAsync(ontology, true));
+                    inferences.AddRange(await ApplyToOntologyAsync(ontology, true, rules, ++iteration));
                 }
                 #endregion
             }
