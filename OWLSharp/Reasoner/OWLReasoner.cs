@@ -59,7 +59,7 @@ namespace OWLSharp.Reasoner
         }
 
         /// <summary>
-        /// Applies the reasoner to the given ontology (using the eventually specified options)
+        /// Applies the reasoner to the given ontology, using the eventually specified options
         /// </summary>
         /// <returns>The list of discovered inferences</returns>
         public async Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology, OWLReasonerOptions reasonerOptions=null)
@@ -303,15 +303,16 @@ namespace OWLSharp.Reasoner
     }
 
     /// <summary>
-    /// OWLReasonerOptions permits fine-tuning the behavior of an OWLReasoner
+    /// OWLReasonerOptions permits fine-tuning of the behavior of an OWLReasoner.<br/>
+    /// Default configuration enables iterative reasoning with 3 maximum allowed iterations.
     /// </summary>
     public sealed class OWLReasonerOptions
     {
         #region Properties
         /// <summary>
-        /// Enables the reasoner to iterate until no new inferences are discovered, or until the maximum number of iterations has been reached (default: false)
+        /// Enables the reasoner to iterate until no new inferences are discovered, or until the maximum number of iterations has been reached (default: true)
         /// </summary>
-        public bool EnableIterativeReasoning { get; set; } = false;
+        public bool EnableIterativeReasoning { get; set; } = true;
 
         /// <summary>
         /// Allows the reasoner to execute at most this number of iterations (default: 3)

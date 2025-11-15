@@ -47,7 +47,7 @@ namespace OWLSharp.Ontology
 
             //Apply reasoner and integrate inferred axioms
             if (reasoner != null)
-                await reasoner.ApplyToOntologyAsync(ontology, new OWLReasonerOptions() { EnableIterativeReasoning=true});
+                await reasoner.ApplyToOntologyAsync(ontology);
 
             //Export ontology to graph (with support for inferences and imports)
             RDFGraph graph = await ontology.ToRDFGraphAsync(true,true);
@@ -71,7 +71,7 @@ namespace OWLSharp.Ontology
 
             //Apply reasoner and integrate inferred axioms
             if (reasoner != null)
-                await reasoner.ApplyToOntologyAsync(ontology, new OWLReasonerOptions() { EnableIterativeReasoning=true});
+                await reasoner.ApplyToOntologyAsync(ontology);
 
             //Export ontology to graph (with support for inferences and imports)
             RDFGraph graph = await ontology.ToRDFGraphAsync(true,true);
@@ -95,7 +95,7 @@ namespace OWLSharp.Ontology
 
             //Apply reasoner and integrate inferred axioms
             if (reasoner != null)
-                await reasoner.ApplyToOntologyAsync(ontology, new OWLReasonerOptions() { EnableIterativeReasoning=true});
+                await reasoner.ApplyToOntologyAsync(ontology);
 
             //Export ontology to graph (with support for inferences and imports)
             RDFGraph graph = await ontology.ToRDFGraphAsync(true,true);
@@ -119,7 +119,7 @@ namespace OWLSharp.Ontology
 
             //Apply reasoner and integrate inferred axioms
             if (reasoner != null)
-                await reasoner.ApplyToOntologyAsync(ontology, new OWLReasonerOptions() { EnableIterativeReasoning=true});
+                await reasoner.ApplyToOntologyAsync(ontology);
 
             //Export ontology to graph (with support for inferences and imports)
             RDFGraph graph = await ontology.ToRDFGraphAsync(true,true);
