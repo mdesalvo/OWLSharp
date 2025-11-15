@@ -267,7 +267,7 @@ namespace OWLSharp.Reasoner
                      && inferences.Count > 0
                      && reasonerOptions.CurrentIteration < reasonerOptions.MaxAllowedIterations)
                 {
-                    OWLEvents.RaiseInfo($"Merging inferences into ontology '{ontology.IRI}' after iteration {reasonerOptions.CurrentIteration}...");
+                    OWLEvents.RaiseInfo($"Merging inferences into ontology '{ontology.IRI}' (iteration: {reasonerOptions.CurrentIteration})...");
                     foreach (OWLInference inference in inferences)
                     {
                         switch (inference.Axiom)
@@ -289,7 +289,7 @@ namespace OWLSharp.Reasoner
                                 break;
                         }
                     }
-                    OWLEvents.RaiseInfo($"Completed merging of inferences into ontology '{ontology.IRI}' after iteration {reasonerOptions.CurrentIteration}");
+                    OWLEvents.RaiseInfo($"Completed merging of inferences into ontology '{ontology.IRI}' (iteration: {reasonerOptions.CurrentIteration})");
 
                     reasonerOptions.CurrentIteration++;
                     inferences.AddRange(await ApplyToOntologyAsync(ontology, reasonerOptions));
