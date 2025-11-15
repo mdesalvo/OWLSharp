@@ -1,6 +1,6 @@
 # OWLSharp <a href="https://www.nuget.org/packages/OWLSharp"><img src="https://img.shields.io/nuget/dt/OWLSharp?style=flat&color=abcdef&logo=nuget&label=downloads"/></a> [![codecov](https://codecov.io/gh/mdesalvo/OWLSharp/graph/badge.svg?token=s7ifp1Uf6D)](https://codecov.io/gh/mdesalvo/OWLSharp)
 
-OWLSharp is a .NET library built atop <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</a> with the goal of delivering **semantic expressivity** for ontology:
+OWLSharp is a .NET library built atop <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</a> with the goal of delivering **expressivity** for ontology:
 
 <b>Modeling</b>
 <ul>
@@ -11,7 +11,7 @@ OWLSharp is a .NET library built atop <a href="https://github.com/mdesalvo/RDFSh
 <b>Reasoning</b>
 <ul>
     <li>Apply logical deduction to derive knowledge that is entailed, but not stated, with <b>25 inference rules</b></li>
-    <li>Create, exchange and execute <b>SWRL rules</b> encoding custom business logic deductions</li>
+    <li>Create, exchange and execute <b>SWRL rules</b> encoding domain-specific logic deductions</li>
 </ul>
 
 <b>Validation</b>
