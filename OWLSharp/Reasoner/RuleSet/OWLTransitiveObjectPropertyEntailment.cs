@@ -35,33 +35,33 @@ namespace OWLSharp.Reasoner
                 HashSet<long> visitContext = new HashSet<long>();
 
                 //TransitiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV2,IDV3) -> ObjectPropertyAssertion(OP,IDV1,IDV3)
-                foreach (OWLTransitiveObjectProperty trnObjProp in transitiveObjProps)
+                foreach (OWLTransitiveObjectProperty transitiveObjProp in transitiveObjProps)
                 {
-                    OWLObjectProperty trnObjPropInvOfValue = (trnObjProp.ObjectPropertyExpression as OWLObjectInverseOf)?.ObjectProperty;
+                    OWLObjectProperty trnObjPropInvOfValue = (transitiveObjProp.ObjectPropertyExpression as OWLObjectInverseOf)?.ObjectProperty;
 
                     #region Recalibration
-                    List <OWLObjectPropertyAssertion> trnObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, trnObjProp.ObjectPropertyExpression);
-                    foreach (OWLObjectPropertyAssertion trnObjPropAsn in trnObjPropAsns)
+                    List <OWLObjectPropertyAssertion> transitiveObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, transitiveObjProp.ObjectPropertyExpression);
+                    foreach (OWLObjectPropertyAssertion transitiveObjPropAsn in transitiveObjPropAsns)
                     {
                         //In case the transitive object property works under inverse logic, we must swap source/target of the object assertion
                         if (trnObjPropInvOfValue != null)
                         {
-                            (trnObjPropAsn.SourceIndividualExpression, trnObjPropAsn.TargetIndividualExpression) = (trnObjPropAsn.TargetIndividualExpression, trnObjPropAsn.SourceIndividualExpression);
-                            trnObjPropAsn.ObjectPropertyExpression = trnObjPropInvOfValue;
+                            (transitiveObjPropAsn.SourceIndividualExpression, transitiveObjPropAsn.TargetIndividualExpression) = (transitiveObjPropAsn.TargetIndividualExpression, transitiveObjPropAsn.SourceIndividualExpression);
+                            transitiveObjPropAsn.ObjectPropertyExpression = trnObjPropInvOfValue;
                         }
                     }
-                    trnObjPropAsns = OWLAxiomHelper.RemoveDuplicates(trnObjPropAsns);
+                    transitiveObjPropAsns = OWLAxiomHelper.RemoveDuplicates(transitiveObjPropAsns);
                     #endregion
 
                     #region Analysis
                     //Iterate object assertions to find inference opportunities (transitive closure)
-                    List<IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion>> trnObjPropAsnGroups = trnObjPropAsns.GroupBy(asn => asn.SourceIndividualExpression).ToList();
+                    List<IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion>> trnObjPropAsnGroups = transitiveObjPropAsns.GroupBy(asn => asn.SourceIndividualExpression).ToList();
                     foreach (IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion> trnObjPropAsnGroup in trnObjPropAsnGroups)
                     {
                         RDFResource trnObjPropAsnGroupKeyIRI = trnObjPropAsnGroup.Key.GetIRI();
                         foreach (OWLIndividualExpression transitiveRelatedIdvExpr in FindTransitiveRelatedIndividuals(trnObjPropAsnGroupKeyIRI, trnObjPropAsnGroups, visitContext))
                         {
-                            OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(trnObjPropInvOfValue ?? trnObjProp.ObjectPropertyExpression, trnObjPropAsnGroup.Key, transitiveRelatedIdvExpr) { IsInference=true };
+                            OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(trnObjPropInvOfValue ?? transitiveObjProp.ObjectPropertyExpression, trnObjPropAsnGroup.Key, transitiveRelatedIdvExpr) { IsInference=true };
                             inference.GetXML();
                             inferences.Add(new OWLInference(rulename, inference));
                         }
