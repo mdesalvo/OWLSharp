@@ -59,10 +59,10 @@ namespace OWLSharp.Reasoner
         }
 
         /// <summary>
-        /// Applies the reasoner on the given ontology
+        /// Applies the reasoner to the given ontology. If specified, it automatically merges the inferences into the ontology.
         /// </summary>
         /// <returns>The list of discovered inferences</returns>
-        public async Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology)
+        public async Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology, bool mergeInferences=false)
         {
             List<OWLInference> inferences = new List<OWLInference>();
             Rules = Rules.Distinct().ToList();
@@ -256,6 +256,37 @@ namespace OWLSharp.Reasoner
                 #endregion
 
                 OWLEvents.RaiseInfo($"Completed OWL2/SWRL reasoner on ontology {ontology.IRI} => {inferences.Count} inferences");
+
+                #region Merge inferences
+                if (mergeInferences)
+                {
+                    OWLEvents.RaiseInfo($"Merging OWL2/SWRL inferences into ontology '{ontology.IRI}'...");
+
+                    foreach (OWLInference inference in inferences)
+                    {
+                        switch (inference.Axiom)
+                        {
+                            case OWLAssertionAxiom asnAx:
+                                ontology.DeclareAssertionAxiom(asnAx);
+                                break;
+                            case OWLClassAxiom clsAx:
+                                ontology.DeclareClassAxiom(clsAx);
+                                break;
+                            case OWLDataPropertyAxiom dpAx:
+                                ontology.DeclareDataPropertyAxiom(dpAx);
+                                break;
+                            case OWLObjectPropertyAxiom opAx:
+                                ontology.DeclareObjectPropertyAxiom(opAx);
+                                break;
+                            case OWLAnnotationAxiom annAx:
+                                ontology.DeclareAnnotationAxiom(annAx);
+                                break;
+                        }
+                    }
+
+                    OWLEvents.RaiseInfo($"Completed merging of OWL2/SWRL inferences into ontology {ontology.IRI}");
+                }
+                #endregion
             }
 
             return inferences;

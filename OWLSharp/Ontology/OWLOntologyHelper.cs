@@ -47,7 +47,7 @@ namespace OWLSharp.Ontology
 
             //Apply reasoner and integrate inferred axioms
             if (reasoner != null)
-                await ontology.IntegrateInferencesAsync(reasoner);
+                await reasoner.ApplyToOntologyAsync(ontology, true);
 
             //Export ontology to graph (with support for inferences and imports)
             RDFGraph graph = await ontology.ToRDFGraphAsync(true,true);
@@ -71,7 +71,7 @@ namespace OWLSharp.Ontology
 
             //Apply reasoner and integrate inferred axioms
             if (reasoner != null)
-                await ontology.IntegrateInferencesAsync(reasoner);
+                await reasoner.ApplyToOntologyAsync(ontology, true);
 
             //Export ontology to graph (with support for inferences and imports)
             RDFGraph graph = await ontology.ToRDFGraphAsync(true,true);
@@ -95,7 +95,7 @@ namespace OWLSharp.Ontology
 
             //Apply reasoner and integrate inferred axioms
             if (reasoner != null)
-                await ontology.IntegrateInferencesAsync(reasoner);
+                await reasoner.ApplyToOntologyAsync(ontology, true);
 
             //Export ontology to graph (with support for inferences and imports)
             RDFGraph graph = await ontology.ToRDFGraphAsync(true,true);
@@ -119,7 +119,7 @@ namespace OWLSharp.Ontology
 
             //Apply reasoner and integrate inferred axioms
             if (reasoner != null)
-                await ontology.IntegrateInferencesAsync(reasoner);
+                await reasoner.ApplyToOntologyAsync(ontology, true);
 
             //Export ontology to graph (with support for inferences and imports)
             RDFGraph graph = await ontology.ToRDFGraphAsync(true,true);
@@ -2718,36 +2718,6 @@ namespace OWLSharp.Ontology
 
                     return ontology;
                 });
-        #endregion
-
-        #region Utilities
-        /// <summary>
-        /// Executes the given OWL reasoner on the given ontology and merges inferred axioms into its knowledge
-        /// </summary>
-        private static async Task IntegrateInferencesAsync(this OWLOntology ontology, OWLReasoner reasoner)
-        {
-            foreach (OWLInference inference in await reasoner.ApplyToOntologyAsync(ontology))
-            {
-                switch (inference.Axiom)
-                {
-                    case OWLAssertionAxiom asnAx:
-                        ontology.DeclareAssertionAxiom(asnAx);
-                        break;
-                    case OWLClassAxiom clsAx:
-                        ontology.DeclareClassAxiom(clsAx);
-                        break;
-                    case OWLDataPropertyAxiom dpAx:
-                        ontology.DeclareDataPropertyAxiom(dpAx);
-                        break;
-                    case OWLObjectPropertyAxiom opAx:
-                        ontology.DeclareObjectPropertyAxiom(opAx);
-                        break;
-                    case OWLAnnotationAxiom annAx:
-                        ontology.DeclareAnnotationAxiom(annAx);
-                        break;
-                }
-            }
-        }
         #endregion
     }
 }
