@@ -59,27 +59,29 @@ namespace OWLSharp.Reasoner
         }
 
         /// <summary>
-        /// Applies the reasoner to the given ontology. If specified, it automatically merges the inferences into the ontology and iterates again (until no more inferences are discoverable).
+        /// Applies the reasoner to the given ontology (using the eventually specified options)
         /// </summary>
         /// <returns>The list of discovered inferences</returns>
-        public Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology, bool enableIterativeReasoning=false)
-            => ApplyToOntologyAsync(ontology, enableIterativeReasoning, Rules.Distinct().ToList(), 1);
-        private async Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology, bool enableIterativeReasoning, List<OWLEnums.OWLReasonerRules> rules, int iteration)
+        public async Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology, OWLReasonerOptions reasonerOptions=null)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
             if (ontology != null)
             {
-                #region Discover inferences
+                if (reasonerOptions == null)
+                    reasonerOptions = new OWLReasonerOptions();
+                Rules = Rules.Distinct().ToList();
+
+                #region Execute
                 OWLEvents.RaiseInfo($"Launching OWL2/SWRL reasoner on ontology '{ontology.IRI}'...");
 
                 #region Init registry & context
                 //Initialize inference registry
-                Dictionary<string, List<OWLInference>> inferenceRegistry = new Dictionary<string, List<OWLInference>>(rules.Count + ontology.Rules.Count);
-                rules.ForEach(owl2Rule => inferenceRegistry.Add(owl2Rule.ToString(), null));
+                Dictionary<string, List<OWLInference>> inferenceRegistry = new Dictionary<string, List<OWLInference>>(Rules.Count + ontology.Rules.Count);
+                Rules.ForEach(owl2Rule => inferenceRegistry.Add(owl2Rule.ToString(), null));
                 ontology.Rules.ForEach(swrlRule => inferenceRegistry.Add(swrlRule.ToString(), null));
 
-                //Initialize axioms XML (required for inference deduplication phase)
+                //Initialize axioms XML (required for inference deduplication)
                 Task<HashSet<string>> clsAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Select(asn => asn.GetXML())));
                 Task<HashSet<string>> dtPropAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>().Select(asn => asn.GetXML())));
                 Task<HashSet<string>> opPropAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Select(asn => asn.GetXML())));
@@ -101,7 +103,7 @@ namespace OWLSharp.Reasoner
 
                 #region Process rules
                 //Execute OWL2 reasoner rules
-                Parallel.ForEach(rules, rule =>
+                Parallel.ForEach(Rules, rule =>
                 {
                     string ruleString = rule.ToString();
                     OWLEvents.RaiseInfo($"Launching OWL2 rule {ruleString}...");
@@ -189,11 +191,11 @@ namespace OWLSharp.Reasoner
                 });
 
                 //Execute SWRL reasoner rules
-                #if !NET8_0_OR_GREATER
+#if !NET8_0_OR_GREATER
                 await ontology.Rules.ParallelForEachAsync(async (swrlRule, _) =>
-                #else
+#else
                 await Parallel.ForEachAsync(ontology.Rules, async (swrlRule, _) =>
-                #endif
+#endif
                 {
                     string swrlRuleString = swrlRule.ToString();
                     OWLEvents.RaiseInfo($"Launching SWRL rule {swrlRuleString}...");
@@ -260,10 +262,12 @@ namespace OWLSharp.Reasoner
                 OWLEvents.RaiseInfo($"Completed OWL2/SWRL reasoner on ontology '{ontology.IRI}' => {inferences.Count} inferences");
                 #endregion
 
-                #region Merge inferences
-                if (enableIterativeReasoning && inferences.Count > 0)
+                #region Iterate
+                if (reasonerOptions.EnableIterativeReasoning
+                     && inferences.Count > 0
+                     && reasonerOptions.CurrentIteration < reasonerOptions.MaxAllowedIterations)
                 {
-                    OWLEvents.RaiseInfo($"Merging inferences into ontology '{ontology.IRI}' after iteration {iteration}...");
+                    OWLEvents.RaiseInfo($"Merging inferences into ontology '{ontology.IRI}' after iteration {reasonerOptions.CurrentIteration}...");
                     foreach (OWLInference inference in inferences)
                     {
                         switch (inference.Axiom)
@@ -285,15 +289,39 @@ namespace OWLSharp.Reasoner
                                 break;
                         }
                     }
-                    OWLEvents.RaiseInfo($"Completed merging of inferences into ontology '{ontology.IRI}' after iteration {iteration}");
+                    OWLEvents.RaiseInfo($"Completed merging of inferences into ontology '{ontology.IRI}' after iteration {reasonerOptions.CurrentIteration}");
 
-                    inferences.AddRange(await ApplyToOntologyAsync(ontology, true, rules, ++iteration));
+                    reasonerOptions.CurrentIteration++;
+                    inferences.AddRange(await ApplyToOntologyAsync(ontology, reasonerOptions));
                 }
                 #endregion
             }
 
             return inferences;
         }
+        #endregion
+    }
+
+    /// <summary>
+    /// OWLReasonerOptions permits fine-tuning the behavior of an OWLReasoner
+    /// </summary>
+    public sealed class OWLReasonerOptions
+    {
+        #region Properties
+        /// <summary>
+        /// Enables the reasoner to iterate until no new inferences are discovered, or until the maximum number of iterations has been reached (default: false)
+        /// </summary>
+        public bool EnableIterativeReasoning { get; set; } = false;
+
+        /// <summary>
+        /// Allows the reasoner to execute at most this number of iterations (default: 3)
+        /// </summary>
+        public uint MaxAllowedIterations { get; set; } = 3;
+
+        /// <summary>
+        /// Indicates the number of the current iteration (default: 1)
+        /// </summary>
+        internal uint CurrentIteration { get; set; } = 1;
         #endregion
     }
 }

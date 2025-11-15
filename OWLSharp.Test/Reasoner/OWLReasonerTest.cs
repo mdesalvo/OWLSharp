@@ -1132,7 +1132,7 @@ public class OWLReasonerTest
             OWLEnums.OWLReasonerRules.ObjectPropertyDomainEntailment,
             OWLEnums.OWLReasonerRules.ObjectPropertyRangeEntailment
         ] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology, true);
+        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology, new OWLReasonerOptions { EnableIterativeReasoning=true });
 
         Assert.HasCount(11, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
