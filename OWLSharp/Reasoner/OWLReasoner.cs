@@ -62,13 +62,14 @@ namespace OWLSharp.Reasoner
         /// Applies the reasoner to the given ontology. If specified, it automatically merges the inferences into the ontology.
         /// </summary>
         /// <returns>The list of discovered inferences</returns>
-        public async Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology, bool mergeInferences=false)
+        public async Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology, bool shouldMergeInferences=false)
         {
             List<OWLInference> inferences = new List<OWLInference>();
             Rules = Rules.Distinct().ToList();
 
             if (ontology != null)
             {
+                #region Discover inferences
                 OWLEvents.RaiseInfo($"Launching OWL2/SWRL reasoner on ontology '{ontology.IRI}'...");
 
                 #region Init registry & context
@@ -256,9 +257,10 @@ namespace OWLSharp.Reasoner
                 #endregion
 
                 OWLEvents.RaiseInfo($"Completed OWL2/SWRL reasoner on ontology {ontology.IRI} => {inferences.Count} inferences");
+                #endregion
 
                 #region Merge inferences
-                if (mergeInferences)
+                if (shouldMergeInferences)
                 {
                     OWLEvents.RaiseInfo($"Merging OWL2/SWRL inferences into ontology '{ontology.IRI}'...");
 
