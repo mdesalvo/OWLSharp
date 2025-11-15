@@ -32,7 +32,6 @@ namespace OWLSharp.Validator
         /// <summary>
         /// A predefined validator including all available OWL2 validator rules
         /// </summary>
-
         public static readonly OWLValidator Default = new OWLValidator {
             Rules = Enum.GetValues(typeof(OWLEnums.OWLValidatorRules)).Cast<OWLEnums.OWLValidatorRules>().ToList() };
 

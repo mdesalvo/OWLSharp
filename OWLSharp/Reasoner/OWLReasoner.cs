@@ -38,7 +38,6 @@ namespace OWLSharp.Reasoner
         /// <summary>
         /// A predefined reasoner including all available OWL2 reasoner rules
         /// </summary>
-
         public static readonly OWLReasoner Default = new OWLReasoner {
             Rules = Enum.GetValues(typeof(OWLEnums.OWLReasonerRules)).Cast<OWLEnums.OWLReasonerRules>().ToList() };
 
