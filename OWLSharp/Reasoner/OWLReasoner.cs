@@ -73,7 +73,7 @@ namespace OWLSharp.Reasoner
                 Rules = Rules.Distinct().ToList();
 
                 #region Execute
-                OWLEvents.RaiseInfo($"Launching OWL2/SWRL reasoner on ontology '{ontology.IRI}'...");
+                OWLEvents.RaiseInfo($"Launching reasoner on ontology '{ontology.IRI}'...");
 
                 #region Init registry & context
                 //Initialize inference registry
@@ -259,7 +259,7 @@ namespace OWLSharp.Reasoner
                 inferences.AddRange(inferenceRegistry.SelectMany(ir => ir.Value ?? emptyInferenceSet).Distinct());
                 #endregion
 
-                OWLEvents.RaiseInfo($"Completed OWL2/SWRL reasoner on ontology '{ontology.IRI}' => {inferences.Count} inferences");
+                OWLEvents.RaiseInfo($"Completed reasoner on ontology '{ontology.IRI}' => {inferences.Count} inferences");
                 #endregion
 
                 #region Iterate
@@ -267,7 +267,7 @@ namespace OWLSharp.Reasoner
                      && inferences.Count > 0
                      && reasonerOptions.CurrentIteration < reasonerOptions.MaxAllowedIterations)
                 {
-                    OWLEvents.RaiseInfo($"Merging inferences into ontology '{ontology.IRI}' (iteration: {reasonerOptions.CurrentIteration})...");
+                    OWLEvents.RaiseInfo($"Merging inferences (iteration: {reasonerOptions.CurrentIteration})...");
                     foreach (IGrouping<Type,OWLInference> inferenceGroupType in inferences.GroupBy(inf => inf.Axiom.GetType()))
                     {
                         switch (inferenceGroupType.Key.BaseType?.Name)
@@ -294,7 +294,6 @@ namespace OWLSharp.Reasoner
                                 break;
                         }
                     }
-                    OWLEvents.RaiseInfo($"Completed merging of inferences into ontology '{ontology.IRI}' (iteration: {reasonerOptions.CurrentIteration})");
 
                     reasonerOptions.CurrentIteration++;
                     inferences.AddRange(await ApplyToOntologyAsync(ontology, reasonerOptions));

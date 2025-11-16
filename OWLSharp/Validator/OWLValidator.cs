@@ -59,15 +59,15 @@ namespace OWLSharp.Validator
         public Task<List<OWLIssue>> ApplyToOntologyAsync(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
-            Rules = Rules.Distinct().ToList();
 
             if (ontology != null)
             {
-                OWLEvents.RaiseInfo($"Launching OWL2 validator on ontology '{ontology.IRI}'...");
+                OWLEvents.RaiseInfo($"Launching validator on ontology '{ontology.IRI}'...");
 
                 #region Init registry & context
                 //Initialize issue registry
                 Dictionary<string, List<OWLIssue>> issueRegistry = new Dictionary<string, List<OWLIssue>>(Rules.Count);
+                Rules = Rules.Distinct().ToList();
                 Rules.ForEach(rule => issueRegistry.Add(rule.ToString(), null));
                 #endregion
 
@@ -179,7 +179,7 @@ namespace OWLSharp.Validator
                 issues.AddRange(issueRegistry.SelectMany(ir => ir.Value ?? emptyIssueSet));
                 #endregion
 
-                OWLEvents.RaiseInfo($"Completed OWL2 validator on ontology {ontology.IRI} => {issues.Count} issues");
+                OWLEvents.RaiseInfo($"Completed validator on ontology {ontology.IRI} => {issues.Count} issues");
             }
 
             return Task.FromResult(issues);
