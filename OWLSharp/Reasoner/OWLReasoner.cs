@@ -268,7 +268,8 @@ namespace OWLSharp.Reasoner
                      && reasonerOptions.CurrentIteration < reasonerOptions.MaxAllowedIterations)
                 {
                     OWLEvents.RaiseInfo($"Merging inferences into ontology '{ontology.IRI}' (iteration: {reasonerOptions.CurrentIteration})...");
-                    Parallel.ForEach(inferences.GroupBy(inf => inf.Axiom.GetType()), inferenceGroupType => {
+                    List<IGrouping<Type,OWLInference>> inferencesGroupTypes = inferences.GroupBy(inf => inf.Axiom.GetType()).ToList();
+                    Parallel.ForEach(inferencesGroupTypes, inferenceGroupType => {
                         switch (inferenceGroupType.Key.BaseType?.Name)
                         {
                             case nameof(OWLAssertionAxiom):
