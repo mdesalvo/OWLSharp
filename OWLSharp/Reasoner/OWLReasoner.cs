@@ -268,27 +268,30 @@ namespace OWLSharp.Reasoner
                      && reasonerOptions.CurrentIteration < reasonerOptions.MaxAllowedIterations)
                 {
                     OWLEvents.RaiseInfo($"Merging inferences into ontology '{ontology.IRI}' (iteration: {reasonerOptions.CurrentIteration})...");
-                    foreach (OWLInference inference in inferences)
-                    {
-                        switch (inference.Axiom)
+                    Parallel.ForEach(inferences.GroupBy(inf => inf.Axiom.GetType()), inferenceGroupType => {
+                        switch (inferenceGroupType.Key.BaseType?.Name)
                         {
-                            case OWLAssertionAxiom asnAx:
-                                ontology.DeclareAssertionAxiom(asnAx);
+                            case nameof(OWLAssertionAxiom):
+                                ontology.AssertionAxioms.AddRange(inferenceGroupType.Select(g => (OWLAssertionAxiom)g.Axiom));
+                                ontology.AssertionAxioms = OWLAxiomHelper.RemoveDuplicates(ontology.AssertionAxioms);
                                 break;
-                            case OWLClassAxiom clsAx:
-                                ontology.DeclareClassAxiom(clsAx);
+                            case nameof(OWLClassAxiom):
+                                ontology.ClassAxioms.AddRange(inferenceGroupType.Select(g => (OWLClassAxiom)g.Axiom));
+                                ontology.ClassAxioms = OWLAxiomHelper.RemoveDuplicates(ontology.ClassAxioms);
                                 break;
-                            case OWLDataPropertyAxiom dpAx:
-                                ontology.DeclareDataPropertyAxiom(dpAx);
+                            case nameof(OWLDataPropertyAxiom):
+                                ontology.DataPropertyAxioms.AddRange(inferenceGroupType.Select(g => (OWLDataPropertyAxiom)g.Axiom));
+                                ontology.DataPropertyAxioms = OWLAxiomHelper.RemoveDuplicates(ontology.DataPropertyAxioms);
                                 break;
-                            case OWLObjectPropertyAxiom opAx:
-                                ontology.DeclareObjectPropertyAxiom(opAx);
+                            case nameof(OWLObjectPropertyAxiom):
+                                ontology.ObjectPropertyAxioms.AddRange(inferenceGroupType.Select(g => (OWLObjectPropertyAxiom)g.Axiom));
+                                ontology.ObjectPropertyAxioms = OWLAxiomHelper.RemoveDuplicates(ontology.ObjectPropertyAxioms);
                                 break;
-                            case OWLAnnotationAxiom annAx:
-                                ontology.DeclareAnnotationAxiom(annAx);
+                            case nameof(OWLAnnotationAxiom):
+                                ontology.AnnotationAxioms.AddRange(inferenceGroupType.Select(g => (OWLAnnotationAxiom)g.Axiom));
+                                ontology.AnnotationAxioms = OWLAxiomHelper.RemoveDuplicates(ontology.AnnotationAxioms);
                                 break;
-                        }
-                    }
+                        }});
                     OWLEvents.RaiseInfo($"Completed merging of inferences into ontology '{ontology.IRI}' (iteration: {reasonerOptions.CurrentIteration})");
 
                     reasonerOptions.CurrentIteration++;
