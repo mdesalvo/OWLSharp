@@ -29,16 +29,21 @@ namespace OWLSharp.Ontology
         /// </summary>
         internal static List<T> RemoveDuplicates<T>(List<T> axioms) where T : OWLAxiom
         {
-            List<T> deduplicatedAxioms = new List<T>();
-            if (axioms?.Count > 0)
+            #region Guards
+            if (axioms == null || axioms.Count == 0)
+                return new List<T>();
+            #endregion
+
+#if NET8_0_OR_GREATER
+            HashSet<string> lookup = new HashSet<string>(axioms.Count);
+#else
+            HashSet<string> lookup = new HashSet<string>();
+#endif
+            List<T> deduplicatedAxioms = new List<T>(axioms.Count);
+            foreach (T axiom in axioms)
             {
-                HashSet<string> lookup = new HashSet<string>();
-                axioms.ForEach(axiom =>
-                {
-                    string axiomID = axiom.GetXML();
-                    if (lookup.Add(axiomID))
-                        deduplicatedAxioms.Add(axiom);
-                });
+                if (lookup.Add(axiom.GetXML()))
+                    deduplicatedAxioms.Add(axiom);
             }
             return deduplicatedAxioms;
         }
