@@ -267,7 +267,7 @@ namespace OWLSharp.Reasoner
                      && inferences.Count > 0
                      && reasonerOptions.CurrentIteration < reasonerOptions.MaxAllowedIterations)
                 {
-                    OWLEvents.RaiseInfo($"Merging inferences (iteration: {reasonerOptions.CurrentIteration})...");
+                    OWLEvents.RaiseInfo($"Merging inferences (iteration {reasonerOptions.CurrentIteration})...");
                     foreach (IGrouping<Type,OWLInference> inferenceGroupType in inferences.GroupBy(inf => inf.Axiom.GetType()))
                     {
                         switch (inferenceGroupType.Key.BaseType?.Name)
