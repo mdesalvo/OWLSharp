@@ -60,16 +60,21 @@ namespace OWLSharp.Ontology
         /// </summary>
         internal static List<T> RemoveDuplicates<T>(List<T> expressions) where T : OWLExpression
         {
-            List<T> deduplicatedExpressions = new List<T>();
-            if (expressions?.Count > 0)
+            #region Guards
+            if (expressions == null || expressions.Count == 0)
+                return new List<T>();
+            #endregion
+
+#if NET8_0_OR_GREATER
+            HashSet<long> lookup = new HashSet<long>(expressions.Count);
+#else
+            HashSet<long> lookup = new HashSet<long>();
+#endif
+            List<T> deduplicatedExpressions = new List<T>(expressions.Count);
+            foreach (T expression in expressions)
             {
-                HashSet<long> lookup = new HashSet<long>();
-                expressions.ForEach(expression =>
-                {
-                    long expressionID = expression.GetIRI().PatternMemberID;
-                    if (lookup.Add(expressionID))
-                        deduplicatedExpressions.Add(expression);
-                });
+                if (lookup.Add(expression.GetIRI().PatternMemberID))
+                    deduplicatedExpressions.Add(expression);
             }
             return deduplicatedExpressions;
         }
