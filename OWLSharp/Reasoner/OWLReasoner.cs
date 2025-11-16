@@ -268,8 +268,8 @@ namespace OWLSharp.Reasoner
                      && reasonerOptions.CurrentIteration < reasonerOptions.MaxAllowedIterations)
                 {
                     OWLEvents.RaiseInfo($"Merging inferences into ontology '{ontology.IRI}' (iteration: {reasonerOptions.CurrentIteration})...");
-                    List<IGrouping<Type,OWLInference>> inferencesGroupTypes = inferences.GroupBy(inf => inf.Axiom.GetType()).ToList();
-                    Parallel.ForEach(inferencesGroupTypes, inferenceGroupType => {
+                    foreach (IGrouping<Type,OWLInference> inferenceGroupType in inferences.GroupBy(inf => inf.Axiom.GetType()))
+                    {
                         switch (inferenceGroupType.Key.BaseType?.Name)
                         {
                             case nameof(OWLAssertionAxiom):
@@ -292,7 +292,8 @@ namespace OWLSharp.Reasoner
                                 ontology.AnnotationAxioms.AddRange(inferenceGroupType.Select(g => (OWLAnnotationAxiom)g.Axiom));
                                 ontology.AnnotationAxioms = OWLAxiomHelper.RemoveDuplicates(ontology.AnnotationAxioms);
                                 break;
-                        }});
+                        }
+                    }
                     OWLEvents.RaiseInfo($"Completed merging of inferences into ontology '{ontology.IRI}' (iteration: {reasonerOptions.CurrentIteration})");
 
                     reasonerOptions.CurrentIteration++;
