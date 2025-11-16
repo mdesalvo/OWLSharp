@@ -2,19 +2,19 @@
 
 OWLSharp is a .NET library built atop <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</a> with the goal of delivering **expressivity** for ontology:
 
-<b>Modeling</b>
+<b><a href="https://github.com/mdesalvo/OWLSharp/releases/download/v4.22.0/OWLSharp.Modeling-4.22.pdf">Modeling</a></b>
 <ul>
     <li>Create and manage <b>OWL2 ontologies</b> (classes, properties, individuals, expressions, axioms, rules, ...)</li>
     <li>Exchange them using standard <b>OWL2 formats</b> (OWL2/XML)</li>
 </ul>
 
-<b>Reasoning</b>
+<b><a href="https://github.com/mdesalvo/OWLSharp/releases/download/v4.22.0/OWLSharp.Reasoning-4.22.pdf">Reasoning</a></b>
 <ul>
     <li>Apply logical deduction to derive knowledge that is entailed, but not stated, with <b>25 inference rules</b></li>
     <li>Create, exchange and execute <b>SWRL rules</b> encoding domain-specific logic deductions</li>
 </ul>
 
-<b>Validation</b>
+<b><a href="https://github.com/mdesalvo/OWLSharp/releases/download/v4.22.0/OWLSharp.Validation-4.22.pdf">Validation</a></b>
 <ul>
     <li>Detect pitfalls, structural inconsistencies and constraint violations with <b>29 analysis rules</b></li>
 </ul>
