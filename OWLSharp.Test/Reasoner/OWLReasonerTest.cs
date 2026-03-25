@@ -1252,5 +1252,322 @@ public class OWLReasonerTest
 
         bool Evaluator(DataRow datarow) => string.Equals(datarow["?P"].ToString(), "ex:Mark");
     }
+
+    // ── Complex SWRL end-to-end tests ────────────────────────────────────────
+
+    [TestMethod]
+    public async Task ShouldEntailAdultClassificationViaSWRLRuleAsync()
+    {
+        // Rule: Person(?p) ∧ hasAge(?p,?age) ∧ greaterThanOrEqual(?age,18) → Adult(?p)
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Person"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Adult"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:hasAge"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Alice"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Bob")))
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Person")), new OWLNamedIndividual(new RDFResource("ex:Alice"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Person")), new OWLNamedIndividual(new RDFResource("ex:Bob"))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasAge")), new OWLNamedIndividual(new RDFResource("ex:Alice")), new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasAge")), new OWLNamedIndividual(new RDFResource("ex:Bob")),   new OWLLiteral(new RDFTypedLiteral("15", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
+            ],
+            Rules = [
+                new SWRLRule(new RDFPlainLiteral("AgeRule"), new RDFPlainLiteral("Adults are at least 18"),
+                    new SWRLAntecedent
+                    {
+                        Atoms = [
+                            new SWRLClassAtom(new OWLClass(new RDFResource("ex:Person")), new SWRLVariableArgument(new RDFVariable("?p"))),
+                            new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:hasAge")), new SWRLVariableArgument(new RDFVariable("?p")), new SWRLVariableArgument(new RDFVariable("?age")))
+                        ],
+                        BuiltIns = [
+                            SWRLBuiltIn.GreaterThanOrEqual(new SWRLVariableArgument(new RDFVariable("?age")), new SWRLLiteralArgument(new RDFTypedLiteral("18", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
+                        ]
+                    },
+                    new SWRLConsequent
+                    {
+                        Atoms = [ new SWRLClassAtom(new OWLClass(new RDFResource("ex:Adult")), new SWRLVariableArgument(new RDFVariable("?p"))) ]
+                    })
+            ]
+        };
+        List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.HasCount(1, inferences);
+        Assert.IsTrue(inferences[0].Axiom is OWLClassAssertion ca
+                      && ca.ClassExpression.GetIRI().Equals(new RDFResource("ex:Adult"))
+                      && ca.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Alice")));
+    }
+
+    [TestMethod]
+    public async Task ShouldEntailPremiumProductClassificationViaSWRLRuleAsync()
+    {
+        // Rule: Product(?p) ∧ hasCode(?p,?code) ∧ startsWith(?code,"PRE-") → PremiumProduct(?p)
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Product"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:PremiumProduct"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:hasCode"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LuxuryWatch"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:BasicPen")))
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Product")), new OWLNamedIndividual(new RDFResource("ex:LuxuryWatch"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Product")), new OWLNamedIndividual(new RDFResource("ex:BasicPen"))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasCode")), new OWLNamedIndividual(new RDFResource("ex:LuxuryWatch")), new OWLLiteral(new RDFPlainLiteral("PRE-001"))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasCode")), new OWLNamedIndividual(new RDFResource("ex:BasicPen")),    new OWLLiteral(new RDFPlainLiteral("STD-042")))
+            ],
+            Rules = [
+                new SWRLRule(new RDFPlainLiteral("PremiumRule"), new RDFPlainLiteral("Products with PRE- code are premium"),
+                    new SWRLAntecedent
+                    {
+                        Atoms = [
+                            new SWRLClassAtom(new OWLClass(new RDFResource("ex:Product")), new SWRLVariableArgument(new RDFVariable("?p"))),
+                            new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:hasCode")), new SWRLVariableArgument(new RDFVariable("?p")), new SWRLVariableArgument(new RDFVariable("?code")))
+                        ],
+                        BuiltIns = [
+                            SWRLBuiltIn.StartsWith(new SWRLVariableArgument(new RDFVariable("?code")), new SWRLLiteralArgument(new RDFPlainLiteral("PRE-")))
+                        ]
+                    },
+                    new SWRLConsequent
+                    {
+                        Atoms = [ new SWRLClassAtom(new OWLClass(new RDFResource("ex:PremiumProduct")), new SWRLVariableArgument(new RDFVariable("?p"))) ]
+                    })
+            ]
+        };
+        List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.HasCount(1, inferences);
+        Assert.IsTrue(inferences[0].Axiom is OWLClassAssertion ca
+                      && ca.ClassExpression.GetIRI().Equals(new RDFResource("ex:PremiumProduct"))
+                      && ca.IndividualExpression.GetIRI().Equals(new RDFResource("ex:LuxuryWatch")));
+    }
+
+    [TestMethod]
+    public async Task ShouldEntailIsOlderThanRelationViaSWRLRuleAsync()
+    {
+        // Rule: Person(?p) ∧ Person(?q) ∧ hasAge(?p,?ap) ∧ hasAge(?q,?aq) ∧ greaterThan(?ap,?aq) → isOlderThan(?p,?q)
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Person"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:isOlderThan"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:hasAge"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Alice"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Bob"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Carol")))
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Person")), new OWLNamedIndividual(new RDFResource("ex:Alice"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Person")), new OWLNamedIndividual(new RDFResource("ex:Bob"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Person")), new OWLNamedIndividual(new RDFResource("ex:Carol"))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasAge")), new OWLNamedIndividual(new RDFResource("ex:Alice")), new OWLLiteral(new RDFTypedLiteral("40", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasAge")), new OWLNamedIndividual(new RDFResource("ex:Bob")),   new OWLLiteral(new RDFTypedLiteral("30", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasAge")), new OWLNamedIndividual(new RDFResource("ex:Carol")), new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
+            ],
+            Rules = [
+                new SWRLRule(new RDFPlainLiteral("OlderThanRule"), new RDFPlainLiteral("Derive age order between persons"),
+                    new SWRLAntecedent
+                    {
+                        Atoms = [
+                            new SWRLClassAtom(new OWLClass(new RDFResource("ex:Person")), new SWRLVariableArgument(new RDFVariable("?p"))),
+                            new SWRLClassAtom(new OWLClass(new RDFResource("ex:Person")), new SWRLVariableArgument(new RDFVariable("?q"))),
+                            new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:hasAge")), new SWRLVariableArgument(new RDFVariable("?p")), new SWRLVariableArgument(new RDFVariable("?ap"))),
+                            new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:hasAge")), new SWRLVariableArgument(new RDFVariable("?q")), new SWRLVariableArgument(new RDFVariable("?aq")))
+                        ],
+                        BuiltIns = [
+                            SWRLBuiltIn.GreaterThan(new SWRLVariableArgument(new RDFVariable("?ap")), new SWRLVariableArgument(new RDFVariable("?aq")))
+                        ]
+                    },
+                    new SWRLConsequent
+                    {
+                        Atoms = [ new SWRLObjectPropertyAtom(new OWLObjectProperty(new RDFResource("ex:isOlderThan")), new SWRLVariableArgument(new RDFVariable("?p")), new SWRLVariableArgument(new RDFVariable("?q"))) ]
+                    })
+            ]
+        };
+        List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.HasCount(3, inferences); // Alice>Bob, Alice>Carol, Bob>Carol
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion opa
+                                          && opa.ObjectPropertyExpression.GetIRI().Equals(new RDFResource("ex:isOlderThan"))
+                                          && opa.SourceIndividualExpression.GetIRI().Equals(new RDFResource("ex:Alice"))
+                                          && opa.TargetIndividualExpression.GetIRI().Equals(new RDFResource("ex:Bob"))));
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion opa
+                                          && opa.ObjectPropertyExpression.GetIRI().Equals(new RDFResource("ex:isOlderThan"))
+                                          && opa.SourceIndividualExpression.GetIRI().Equals(new RDFResource("ex:Alice"))
+                                          && opa.TargetIndividualExpression.GetIRI().Equals(new RDFResource("ex:Carol"))));
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion opa
+                                          && opa.ObjectPropertyExpression.GetIRI().Equals(new RDFResource("ex:isOlderThan"))
+                                          && opa.SourceIndividualExpression.GetIRI().Equals(new RDFResource("ex:Bob"))
+                                          && opa.TargetIndividualExpression.GetIRI().Equals(new RDFResource("ex:Carol"))));
+    }
+
+    [TestMethod]
+    public async Task ShouldEntailWorkplaceClassificationViaObjectPropertyChainViaSWRLRuleAsync()
+    {
+        // Rule: Employee(?e) ∧ worksFor(?e,?c) ∧ hasRevenue(?c,?rev) ∧ greaterThan(?rev,1000000) → WorksForLargeCompany(?e)
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Employee"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Company"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:WorksForLargeCompany"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:worksFor"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:hasRevenue"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Alice"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Bob"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:BigCorp"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:SmallCo")))
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Employee")), new OWLNamedIndividual(new RDFResource("ex:Alice"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Employee")), new OWLNamedIndividual(new RDFResource("ex:Bob"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Company")),  new OWLNamedIndividual(new RDFResource("ex:BigCorp"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Company")),  new OWLNamedIndividual(new RDFResource("ex:SmallCo"))),
+                new OWLObjectPropertyAssertion(new OWLObjectProperty(new RDFResource("ex:worksFor")), new OWLNamedIndividual(new RDFResource("ex:Alice")), new OWLNamedIndividual(new RDFResource("ex:BigCorp"))),
+                new OWLObjectPropertyAssertion(new OWLObjectProperty(new RDFResource("ex:worksFor")), new OWLNamedIndividual(new RDFResource("ex:Bob")),   new OWLNamedIndividual(new RDFResource("ex:SmallCo"))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasRevenue")), new OWLNamedIndividual(new RDFResource("ex:BigCorp")), new OWLLiteral(new RDFTypedLiteral("5000000", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasRevenue")), new OWLNamedIndividual(new RDFResource("ex:SmallCo")), new OWLLiteral(new RDFTypedLiteral("100000",  RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
+            ],
+            Rules = [
+                new SWRLRule(new RDFPlainLiteral("LargeCompanyRule"), new RDFPlainLiteral("Employees of companies with revenue > 1M"),
+                    new SWRLAntecedent
+                    {
+                        Atoms = [
+                            new SWRLClassAtom(new OWLClass(new RDFResource("ex:Employee")), new SWRLVariableArgument(new RDFVariable("?e"))),
+                            new SWRLObjectPropertyAtom(new OWLObjectProperty(new RDFResource("ex:worksFor")), new SWRLVariableArgument(new RDFVariable("?e")), new SWRLVariableArgument(new RDFVariable("?c"))),
+                            new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:hasRevenue")), new SWRLVariableArgument(new RDFVariable("?c")), new SWRLVariableArgument(new RDFVariable("?rev")))
+                        ],
+                        BuiltIns = [
+                            SWRLBuiltIn.GreaterThan(new SWRLVariableArgument(new RDFVariable("?rev")), new SWRLLiteralArgument(new RDFTypedLiteral("1000000", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
+                        ]
+                    },
+                    new SWRLConsequent
+                    {
+                        Atoms = [ new SWRLClassAtom(new OWLClass(new RDFResource("ex:WorksForLargeCompany")), new SWRLVariableArgument(new RDFVariable("?e"))) ]
+                    })
+            ]
+        };
+        List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.HasCount(1, inferences);
+        Assert.IsTrue(inferences[0].Axiom is OWLClassAssertion ca
+                      && ca.ClassExpression.GetIRI().Equals(new RDFResource("ex:WorksForLargeCompany"))
+                      && ca.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Alice")));
+    }
+
+    [TestMethod]
+    public async Task ShouldEntailSameIndividualViaCaseInsensitiveNicknameViaSWRLRuleAsync()
+    {
+        // Rule: Person(?p) ∧ Person(?q) ∧ hasNickname(?p,?n1) ∧ hasNickname(?q,?n2) ∧ stringEqualIgnoreCase(?n1,?n2) → SameIndividual(?p,?q)
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Person"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:hasNickname"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:AliceA"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:AliceB"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Bob")))
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Person")), new OWLNamedIndividual(new RDFResource("ex:AliceA"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Person")), new OWLNamedIndividual(new RDFResource("ex:AliceB"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Person")), new OWLNamedIndividual(new RDFResource("ex:Bob"))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasNickname")), new OWLNamedIndividual(new RDFResource("ex:AliceA")), new OWLLiteral(new RDFPlainLiteral("ali"))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasNickname")), new OWLNamedIndividual(new RDFResource("ex:AliceB")), new OWLLiteral(new RDFPlainLiteral("ALI"))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasNickname")), new OWLNamedIndividual(new RDFResource("ex:Bob")),    new OWLLiteral(new RDFPlainLiteral("bobby")))
+            ],
+            Rules = [
+                new SWRLRule(new RDFPlainLiteral("NicknameRule"), new RDFPlainLiteral("Persons sharing the same nickname (case-insensitive) are the same individual"),
+                    new SWRLAntecedent
+                    {
+                        Atoms = [
+                            new SWRLClassAtom(new OWLClass(new RDFResource("ex:Person")), new SWRLVariableArgument(new RDFVariable("?p"))),
+                            new SWRLClassAtom(new OWLClass(new RDFResource("ex:Person")), new SWRLVariableArgument(new RDFVariable("?q"))),
+                            new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:hasNickname")), new SWRLVariableArgument(new RDFVariable("?p")), new SWRLVariableArgument(new RDFVariable("?n1"))),
+                            new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:hasNickname")), new SWRLVariableArgument(new RDFVariable("?q")), new SWRLVariableArgument(new RDFVariable("?n2")))
+                        ],
+                        BuiltIns = [
+                            SWRLBuiltIn.StringEqualIgnoreCase(new SWRLVariableArgument(new RDFVariable("?n1")), new SWRLVariableArgument(new RDFVariable("?n2"))),
+                            SWRLBuiltIn.NotEqual(new SWRLVariableArgument(new RDFVariable("?p")), new SWRLVariableArgument(new RDFVariable("?q")))
+                        ]
+                    },
+                    new SWRLConsequent
+                    {
+                        Atoms = [ new SWRLSameIndividualAtom(new SWRLVariableArgument(new RDFVariable("?p")), new SWRLVariableArgument(new RDFVariable("?q"))) ]
+                    })
+            ]
+        };
+        List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.IsTrue(inferences.Count >= 1);
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual si
+                                          && si.IndividualExpressions.Any(ie => ie.GetIRI().Equals(new RDFResource("ex:AliceA")))
+                                          && si.IndividualExpressions.Any(ie => ie.GetIRI().Equals(new RDFResource("ex:AliceB")))));
+    }
+
+    [TestMethod]
+    public async Task ShouldEntailMultiBuiltInClassificationViaSWRLRuleAsync()
+    {
+        // Rule: Product(?p) ∧ hasCode(?p,?code) ∧ hasPrice(?p,?price)
+        //       ∧ startsWith(?code,"PREM") ∧ greaterThan(?price,100) → HighValuePremiumProduct(?p)
+        // Uses two independent built-ins acting as AND-filters on the same individual.
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Product"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:HighValuePremiumProduct"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:hasCode"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:hasPrice"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:WatchA"))),  // PREM code, price 500 → qualifies
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:WatchB"))),  // PREM code, price  50 → fails price
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:WatchC")))   // STD  code, price 500 → fails code
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Product")), new OWLNamedIndividual(new RDFResource("ex:WatchA"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Product")), new OWLNamedIndividual(new RDFResource("ex:WatchB"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Product")), new OWLNamedIndividual(new RDFResource("ex:WatchC"))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasCode")),  new OWLNamedIndividual(new RDFResource("ex:WatchA")), new OWLLiteral(new RDFPlainLiteral("PREM-001"))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasCode")),  new OWLNamedIndividual(new RDFResource("ex:WatchB")), new OWLLiteral(new RDFPlainLiteral("PREM-002"))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasCode")),  new OWLNamedIndividual(new RDFResource("ex:WatchC")), new OWLLiteral(new RDFPlainLiteral("STD-099"))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasPrice")), new OWLNamedIndividual(new RDFResource("ex:WatchA")), new OWLLiteral(new RDFTypedLiteral("500", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasPrice")), new OWLNamedIndividual(new RDFResource("ex:WatchB")), new OWLLiteral(new RDFTypedLiteral("50",  RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasPrice")), new OWLNamedIndividual(new RDFResource("ex:WatchC")), new OWLLiteral(new RDFTypedLiteral("500", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
+            ],
+            Rules = [
+                new SWRLRule(new RDFPlainLiteral("HighValueRule"), new RDFPlainLiteral("PREM code AND price > 100"),
+                    new SWRLAntecedent
+                    {
+                        Atoms = [
+                            new SWRLClassAtom(new OWLClass(new RDFResource("ex:Product")), new SWRLVariableArgument(new RDFVariable("?p"))),
+                            new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:hasCode")),  new SWRLVariableArgument(new RDFVariable("?p")), new SWRLVariableArgument(new RDFVariable("?code"))),
+                            new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:hasPrice")), new SWRLVariableArgument(new RDFVariable("?p")), new SWRLVariableArgument(new RDFVariable("?price")))
+                        ],
+                        BuiltIns = [
+                            SWRLBuiltIn.StartsWith(new SWRLVariableArgument(new RDFVariable("?code")),  new SWRLLiteralArgument(new RDFPlainLiteral("PREM"))),
+                            SWRLBuiltIn.GreaterThan(new SWRLVariableArgument(new RDFVariable("?price")), new SWRLLiteralArgument(new RDFTypedLiteral("100", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
+                        ]
+                    },
+                    new SWRLConsequent
+                    {
+                        Atoms = [ new SWRLClassAtom(new OWLClass(new RDFResource("ex:HighValuePremiumProduct")), new SWRLVariableArgument(new RDFVariable("?p"))) ]
+                    })
+            ]
+        };
+        List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.HasCount(1, inferences);
+        Assert.IsTrue(inferences[0].Axiom is OWLClassAssertion ca
+                      && ca.ClassExpression.GetIRI().Equals(new RDFResource("ex:HighValuePremiumProduct"))
+                      && ca.IndividualExpression.GetIRI().Equals(new RDFResource("ex:WatchA")));
+    }
     #endregion
 }

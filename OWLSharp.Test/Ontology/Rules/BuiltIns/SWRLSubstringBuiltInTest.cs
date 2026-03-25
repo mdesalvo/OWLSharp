@@ -99,13 +99,16 @@ public class SWRLSubstringBuiltInTest
     [TestMethod]
     public void ShouldEvaluateSubstringBuiltIn()
     {
+        // W3C SWRL spec uses 1-based indexing (aligned with XPath fn:substring):
+        // substring("hello", 2) = "ello"  (from position 2, i.e. the second character)
+        // substring("http://example.org/test", 8) = "example.org/test"  (h=1..e=8)
         DataTable antecedentResults = new DataTable();
         antecedentResults.Columns.Add("?X");
         antecedentResults.Columns.Add("?Y");
         antecedentResults.Columns.Add("?Z");
-        antecedentResults.Rows.Add("llo", "hello", "2^^http://www.w3.org/2001/XMLSchema#int");
+        antecedentResults.Rows.Add("ello", "hello", "2^^http://www.w3.org/2001/XMLSchema#int");
         antecedentResults.Rows.Add("@EN-US", "hello@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("org/test", "http://example.org/test", "15^^http://www.w3.org/2001/XMLSchema#int");
+        antecedentResults.Rows.Add("example.org/test", "http://example.org/test", "8^^http://www.w3.org/2001/XMLSchema#int");
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Substring(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -117,12 +120,12 @@ public class SWRLSubstringBuiltInTest
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);
         Assert.HasCount(2, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "llo"));
+        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "ello"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "hello"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "org/test"));
+        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "example.org/test"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "http://example.org/test"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Z"].ToString(), "15^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Z"].ToString(), "8^^http://www.w3.org/2001/XMLSchema#int"));
 
         //Test with unexisting variables
 
@@ -170,9 +173,10 @@ public class SWRLSubstringBuiltInTest
         DataTable antecedentResults = new DataTable();
         antecedentResults.Columns.Add("?X");
         antecedentResults.Columns.Add("?Z");
-        antecedentResults.Rows.Add("llo", "2^^http://www.w3.org/2001/XMLSchema#int");
+        // 1-based: substring("hello", 2) = "ello"; substring("hello", 4) = "o" ≠ "@EN-US"
+        antecedentResults.Rows.Add("ello", "2^^http://www.w3.org/2001/XMLSchema#int");
         antecedentResults.Rows.Add("@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("org/test", "2^^http://www.w3.org/2001/XMLSchema#int");
+        antecedentResults.Rows.Add("llo", "2^^http://www.w3.org/2001/XMLSchema#int");
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Substring(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -184,7 +188,7 @@ public class SWRLSubstringBuiltInTest
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
         Assert.HasCount(1, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "llo"));
+        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "ello"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
     }
 
@@ -194,7 +198,8 @@ public class SWRLSubstringBuiltInTest
         DataTable antecedentResults = new DataTable();
         antecedentResults.Columns.Add("?X");
         antecedentResults.Columns.Add("?Y");
-        antecedentResults.Rows.Add("llo", "hello");
+        // 1-based literal index 2: substring("hello", 2) = "ello"
+        antecedentResults.Rows.Add("ello", "hello");
         antecedentResults.Rows.Add("@EN-US", "hello@EN-US");
         antecedentResults.Rows.Add("org/test", "http://example.org/test");
 
@@ -208,7 +213,7 @@ public class SWRLSubstringBuiltInTest
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
         Assert.HasCount(1, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "llo"));
+        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "ello"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "hello"));
     }
 
@@ -218,9 +223,10 @@ public class SWRLSubstringBuiltInTest
         DataTable antecedentResults = new DataTable();
         antecedentResults.Columns.Add("?X");
         antecedentResults.Columns.Add("?Y");
-        antecedentResults.Rows.Add("ll", "hello");
+        // 1-based literal index 2, len 2: substring("hello",2,2)="el"; substring("http://...",2,2)="tt"
+        antecedentResults.Rows.Add("el", "hello");
         antecedentResults.Rows.Add("@EN-US", "hello@EN-US");
-        antecedentResults.Rows.Add("tp", "http://example.org/test");
+        antecedentResults.Rows.Add("tt", "http://example.org/test");
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Substring(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -233,9 +239,9 @@ public class SWRLSubstringBuiltInTest
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
         Assert.HasCount(2, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "ll"));
+        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "el"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "hello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "tp"));
+        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "tt"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "http://example.org/test"));
     }
 
@@ -247,9 +253,11 @@ public class SWRLSubstringBuiltInTest
         antecedentResults.Columns.Add("?Y");
         antecedentResults.Columns.Add("?Z");
         antecedentResults.Columns.Add("?Q");
-        antecedentResults.Rows.Add("ll", "hello", "2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int");
+        // 1-based: substring("hello",2,2)="el"; substring("hello@EN-US",4,1)="l"≠"@EN-US";
+        // substring("http://example.org/test",16,3)="org"  (h=1..o=16)
+        antecedentResults.Rows.Add("el", "hello", "2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int");
         antecedentResults.Rows.Add("@EN-US", "hello@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int", "1^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("org", "http://example.org/test", "15^^http://www.w3.org/2001/XMLSchema#int", "3^^http://www.w3.org/2001/XMLSchema#int");
+        antecedentResults.Rows.Add("org", "http://example.org/test", "16^^http://www.w3.org/2001/XMLSchema#int", "3^^http://www.w3.org/2001/XMLSchema#int");
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Substring(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -262,13 +270,13 @@ public class SWRLSubstringBuiltInTest
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
         Assert.HasCount(2, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "ll"));
+        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "el"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "hello"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "org"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "http://example.org/test"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Z"].ToString(), "15^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Z"].ToString(), "16^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Q"].ToString(), "3^^http://www.w3.org/2001/XMLSchema#int"));
     }
     #endregion

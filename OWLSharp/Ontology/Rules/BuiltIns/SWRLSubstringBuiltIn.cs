@@ -148,16 +148,16 @@ namespace OWLSharp.Ontology
                      && leftTypedLiteralIDX.HasDecimalDatatype()
                      && int.TryParse(leftTypedLiteralIDX.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int leftNumberIDX))
                 {
-                    //startIndex
+                    //startIndex (W3C SWRL spec uses 1-based indexing, aligned with XPath fn:substring)
                     if (builtInArguments.Count == 3)
-                        return string.Equals(leftPMValue, rightPMValue.Substring(leftNumberIDX));
+                        return string.Equals(leftPMValue, rightPMValue.Substring(leftNumberIDX - 1));
 
-                    //startIndex+length
+                    //startIndex+length (W3C SWRL spec uses 1-based indexing, aligned with XPath fn:substring)
                     if (rightPatternMemberLEN is RDFTypedLiteral leftTypedLiteralLEN
                         && leftTypedLiteralLEN.HasDecimalDatatype()
                         && int.TryParse(leftTypedLiteralLEN.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int leftNumberLEN))
                     {
-                        return string.Equals(leftPMValue, rightPMValue.Substring(leftNumberIDX, leftNumberLEN));
+                        return string.Equals(leftPMValue, rightPMValue.Substring(leftNumberIDX - 1, leftNumberLEN));
                     }
                 }
             }
