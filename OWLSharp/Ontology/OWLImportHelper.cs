@@ -51,8 +51,8 @@ namespace OWLSharp.Ontology
         /// </summary>
         /// <exception cref="OWLException"></exception>
         public static Task ImportAsync(this OWLOntology ontology, Uri ontologyIRI, int timeoutMilliseconds=20000, int cacheMilliseconds=3600000)
-            => ImportAsync(ontology, ontologyIRI, timeoutMilliseconds, cacheMilliseconds, true);
-        private static Task ImportAsync(this OWLOntology ontology, Uri ontologyIRI, int timeoutMilliseconds, int cacheMilliseconds, bool shouldCollectImport)
+            => ImportAsync(ontology, ontologyIRI, timeoutMilliseconds, cacheMilliseconds, true, null);
+        private static Task ImportAsync(this OWLOntology ontology, Uri ontologyIRI, int timeoutMilliseconds, int cacheMilliseconds, bool shouldCollectImport, HashSet<string> visitedIRIs)
             => Task.Run(async () =>
                 {
                     #region Guards
@@ -71,6 +71,11 @@ namespace OWLSharp.Ontology
                         semaphoreAcquired = await OntologyCacheSemaphore.WaitAsync(timeoutMilliseconds);
                         if (!semaphoreAcquired)
                             throw new OWLException($"could not get exclusive access to the cache of imported ontologies within the given timeout ({timeoutMilliseconds} milliseconds)");
+
+                        //Skip if already visited in this resolution chain (handles self-imports, duplicate entries and import cycles)
+                        //This check is inside the semaphore so that it is atomic with respect to concurrent ImportAsync calls
+                        if (visitedIRIs != null && !visitedIRIs.Add(ontologyIRIString))
+                            return;
 
                         //Access cache
                         if (OntologyCache.ContainsKey(ontologyIRIString) && OntologyCache[ontologyIRIString].ExpireTimestamp < DateTime.UtcNow)
@@ -131,12 +136,16 @@ namespace OWLSharp.Ontology
                     if (ontology == null || ontology.Imports.Count == 0)
                         return;
 
+                    //Initialize visited set with this ontology's own IRI to prevent self-imports,
+                    //duplicate entries and import cycles from being resolved more than once
+                    HashSet<string> visitedIRIs = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ontology.IRI };
+
 #if !NET8_0_OR_GREATER
                     await ontology.Imports.ParallelForEachAsync(async (import, _) =>
 #else
                     await Parallel.ForEachAsync(ontology.Imports, async (import, _) =>
 #endif
-                        await ImportAsync(ontology, new Uri(import.IRI), timeoutMilliseconds, cacheMilliseconds, false));
+                        await ImportAsync(ontology, new Uri(import.IRI), timeoutMilliseconds, cacheMilliseconds, false, visitedIRIs));
                 });
         #endregion
     }

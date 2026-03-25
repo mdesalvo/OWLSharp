@@ -93,6 +93,34 @@ public class OWLImportHelperTest
     }
 
     [TestMethod]
+    public async Task ShouldSkipSelfImportOnResolveImportsAsync()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("ex:selfImport"));
+        ontology.Imports.Add(new OWLImport(new RDFResource("ex:selfImport")));
+        await ontology.ResolveImportsAsync();
+
+        Assert.HasCount(1, ontology.Imports);
+        Assert.IsEmpty(ontology.DeclarationAxioms);
+    }
+
+    [TestMethod]
+    public async Task ShouldSkipDuplicateImportOnResolveImportsAsync()
+    {
+        //Pre-populate the cache with a minimal ontology so no network call is needed
+        OWLOntology cachedOntology = new OWLOntology(new Uri("ex:duplicateImport"));
+        cachedOntology.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass(new RDFResource("ex:SomeClass"))));
+        OWLImportHelper.OntologyCache["ex:duplicateImport"] = (cachedOntology, DateTime.UtcNow.AddHours(1));
+
+        OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
+        ontology.Imports.Add(new OWLImport(new RDFResource("ex:duplicateImport")));
+        ontology.Imports.Add(new OWLImport(new RDFResource("ex:duplicateImport"))); //duplicate
+        await ontology.ResolveImportsAsync();
+
+        //Axioms must have been merged exactly once, not twice
+        Assert.HasCount(1, ontology.DeclarationAxioms);
+    }
+
+    [TestMethod]
     public async Task ShouldThrowExceptionOnImportingNullOntologyAsync()
     {
         await Assert.ThrowsExactlyAsync<OWLException>(() => (null as OWLOntology).ImportAsync(new Uri("ex:ont"), 5, 5));
