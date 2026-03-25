@@ -386,7 +386,7 @@ public class OWLOntologyTest
 
         string serializedXML = OWLSerializer.SerializeOntology(ontology);
 
-        Assert.IsTrue(string.Equals(serializedXML,
+        Assert.IsTrue(string.Equals(serializedXML.ReplaceLineEndings(),
             """
             <?xml version="1.0" encoding="utf-8"?>
             <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont" ontologyVersion="ex:ont/v1">
@@ -489,7 +489,7 @@ public class OWLOntologyTest
                 </Head>
               </DLSafeRule>
             </Ontology>
-            """, StringComparison.Ordinal));
+            """.ReplaceLineEndings(), StringComparison.Ordinal));
     }
 
     [TestMethod]
@@ -1027,7 +1027,7 @@ public class OWLOntologyTest
 
         string serializedXML = OWLSerializer.SerializeOntology(ontology);
 
-        Assert.IsTrue(string.Equals(serializedXML,
+        Assert.IsTrue(string.Equals(serializedXML.ReplaceLineEndings(),
             """
             <?xml version="1.0" encoding="utf-8"?>
             <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont" ontologyVersion="ex:ont/v1">
@@ -1127,7 +1127,7 @@ public class OWLOntologyTest
                 </Head>
               </DLSafeRule>
             </Ontology>
-            """, StringComparison.Ordinal));
+            """.ReplaceLineEndings(), StringComparison.Ordinal));
     }
 
     [TestMethod]
@@ -1199,7 +1199,7 @@ public class OWLOntologyTest
         MemoryStream stream = new MemoryStream();
         await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2XML, stream, false);
         using StreamReader reader = new StreamReader(new MemoryStream(stream.ToArray()));
-        Assert.IsTrue(string.Equals(await reader.ReadToEndAsync(TestContext.CancellationToken),
+        Assert.IsTrue(string.Equals((await reader.ReadToEndAsync(TestContext.CancellationToken)).ReplaceLineEndings(),
             """
             <?xml version="1.0" encoding="utf-8"?>
             <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont" ontologyVersion="ex:ont/v1">
@@ -1299,7 +1299,7 @@ public class OWLOntologyTest
                 </Head>
               </DLSafeRule>
             </Ontology>
-            """, StringComparison.Ordinal));
+            """.ReplaceLineEndings(), StringComparison.Ordinal));
     }
 
     [TestMethod]
@@ -4399,13 +4399,13 @@ public class OWLOntologyTest
                       && negObjPropAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.AssertionAxioms[1] is OWLNegativeObjectPropertyAssertion
                       {
-                          ObjectPropertyExpression: OWLObjectProperty foafDepicts
+                          ObjectPropertyExpression: OWLObjectProperty foafKnows2
                       } negObjPropAsn2
-                      && foafDepicts.GetIRI().Equals(RDFVocabulary.FOAF.DEPICTS)
-                      && negObjPropAsn2.SourceIndividualExpression is OWLAnonymousIndividual anonIdv1
-                      && anonIdv1.GetIRI().Equals(new RDFResource("bnode:ANONIDV1"))
-                      && negObjPropAsn2.TargetIndividualExpression is OWLNamedIndividual exIdv3
-                      && exIdv3.GetIRI().Equals(new RDFResource("ex:IDV3"))
+                      && foafKnows2.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
+                      && negObjPropAsn2.SourceIndividualExpression is OWLNamedIndividual exIdv4
+                      && exIdv4.GetIRI().Equals(new RDFResource("ex:IDV4"))
+                      && negObjPropAsn2.TargetIndividualExpression is OWLAnonymousIndividual anonIdv2
+                      && anonIdv2.GetIRI().Equals(new RDFResource("bnode:ANONIDV2"))
                       && negObjPropAsn2.Annotations.Count == 2
                       && negObjPropAsn2.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && string.Equals(negObjPropAsn2.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
@@ -4417,13 +4417,13 @@ public class OWLOntologyTest
                       && negObjPropAsn2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.AssertionAxioms[2] is OWLNegativeObjectPropertyAssertion
                       {
-                          ObjectPropertyExpression: OWLObjectProperty foafKnows2
+                          ObjectPropertyExpression: OWLObjectProperty foafKnows3
                       } negObjPropAsn3
-                      && foafKnows2.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
-                      && negObjPropAsn3.SourceIndividualExpression is OWLNamedIndividual exIdv4
-                      && exIdv4.GetIRI().Equals(new RDFResource("ex:IDV4"))
-                      && negObjPropAsn3.TargetIndividualExpression is OWLAnonymousIndividual anonIdv2
-                      && anonIdv2.GetIRI().Equals(new RDFResource("bnode:ANONIDV2"))
+                      && foafKnows3.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
+                      && negObjPropAsn3.SourceIndividualExpression is OWLAnonymousIndividual fullAnonIdv
+                      && fullAnonIdv.GetIRI().IsBlank //Full anonymous
+                      && negObjPropAsn3.TargetIndividualExpression is OWLAnonymousIndividual anonIdv3
+                      && anonIdv3.GetIRI().Equals(new RDFResource("bnode:ANONIDV3"))
                       && negObjPropAsn3.Annotations.Count == 2
                       && negObjPropAsn3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && string.Equals(negObjPropAsn3.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
@@ -4435,13 +4435,13 @@ public class OWLOntologyTest
                       && negObjPropAsn3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.AssertionAxioms[3] is OWLNegativeObjectPropertyAssertion
                       {
-                          ObjectPropertyExpression: OWLObjectProperty foafKnows3
+                          ObjectPropertyExpression: OWLObjectProperty foafDepicts
                       } negObjPropAsn4
-                      && foafKnows3.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
-                      && negObjPropAsn4.SourceIndividualExpression is OWLAnonymousIndividual fullAnonIdv
-                      && fullAnonIdv.GetIRI().IsBlank //Full anonymous
-                      && negObjPropAsn4.TargetIndividualExpression is OWLAnonymousIndividual anonIdv3
-                      && anonIdv3.GetIRI().Equals(new RDFResource("bnode:ANONIDV3"))
+                      && foafDepicts.GetIRI().Equals(RDFVocabulary.FOAF.DEPICTS)
+                      && negObjPropAsn4.SourceIndividualExpression is OWLAnonymousIndividual anonIdv1
+                      && anonIdv1.GetIRI().Equals(new RDFResource("bnode:ANONIDV1"))
+                      && negObjPropAsn4.TargetIndividualExpression is OWLNamedIndividual exIdv3
+                      && exIdv3.GetIRI().Equals(new RDFResource("ex:IDV3"))
                       && negObjPropAsn4.Annotations.Count == 2
                       && negObjPropAsn4.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && string.Equals(negObjPropAsn4.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
@@ -4451,6 +4451,7 @@ public class OWLOntologyTest
                       && string.Equals(negObjPropAsn4.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && negObjPropAsn4.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && negObjPropAsn4.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
+
     }
 
     [TestMethod]

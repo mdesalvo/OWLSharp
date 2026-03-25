@@ -62,23 +62,23 @@ public class OWLImportHelperTest
 
         Assert.IsEmpty(ontology.Imports);
 
-        ontology.Imports.Add(new OWLImport(new RDFResource(RDFVocabulary.SKOS.DEREFERENCE_URI)));
-        ontology.Imports.Add(new OWLImport(new RDFResource(RDFVocabulary.TIME.DEREFERENCE_URI)));
-        ontology.Imports.Add(new OWLImport(new RDFResource(RDFVocabulary.GEOSPARQL.DEREFERENCE_URI)));
+        ontology.Imports.Add(new OWLImport(new RDFResource(RDFVocabulary.SKOS.BASE_URI)));
+        ontology.Imports.Add(new OWLImport(new RDFResource(RDFVocabulary.TIME.BASE_URI)));
+        ontology.Imports.Add(new OWLImport(new RDFResource(RDFVocabulary.FOAF.BASE_URI)));
         await ontology.ResolveImportsAsync();
 
         Assert.HasCount(3, ontology.Imports);
-        Assert.HasCount(53, ontology.AnnotationAxioms);
+        Assert.HasCount(153, ontology.AnnotationAxioms);
         Assert.IsTrue(ontology.AnnotationAxioms.TrueForAll(ax => ax.IsImport));
-        Assert.HasCount(65, ontology.ClassAxioms);
+        Assert.HasCount(77, ontology.ClassAxioms);
         Assert.IsTrue(ontology.ClassAxioms.TrueForAll(ax => ax.IsImport));
-        Assert.HasCount(200, ontology.DeclarationAxioms);
+        Assert.HasCount(237, ontology.DeclarationAxioms);
         Assert.IsTrue(ontology.DeclarationAxioms.TrueForAll(ax => ax.IsImport));
-        Assert.HasCount(238, ontology.ObjectPropertyAxioms);
+        Assert.HasCount(200, ontology.ObjectPropertyAxioms);
         Assert.IsTrue(ontology.ObjectPropertyAxioms.TrueForAll(ax => ax.IsImport));
         Assert.HasCount(63, ontology.AssertionAxioms);
         Assert.IsTrue(ontology.AssertionAxioms.TrueForAll(ax => ax.IsImport));
-        Assert.HasCount(57, ontology.DataPropertyAxioms);
+        Assert.HasCount(54, ontology.DataPropertyAxioms);
         Assert.IsEmpty(ontology.DatatypeDefinitionAxioms);
         Assert.IsEmpty(ontology.KeyAxioms);
         Assert.HasCount(5, ontology.Prefixes);
@@ -86,10 +86,10 @@ public class OWLImportHelperTest
 
         Assert.IsTrue(OWLImportHelper.OntologyCache.TryGetValue(RDFVocabulary.SKOS.DEREFERENCE_URI, out var cachedSKOSOntology)
                        && cachedSKOSOntology.ExpireTimestamp > DateTime.UtcNow);
-        Assert.IsTrue(OWLImportHelper.OntologyCache.TryGetValue(RDFVocabulary.TIME.DEREFERENCE_URI, out var cachedFOAFOntology)
+        Assert.IsTrue(OWLImportHelper.OntologyCache.TryGetValue(RDFVocabulary.TIME.DEREFERENCE_URI, out var cachedTIMEOntology)
+                       && cachedTIMEOntology.ExpireTimestamp > DateTime.UtcNow);
+        Assert.IsTrue(OWLImportHelper.OntologyCache.TryGetValue(RDFVocabulary.FOAF.DEREFERENCE_URI, out var cachedFOAFOntology)
                        && cachedFOAFOntology.ExpireTimestamp > DateTime.UtcNow);
-        Assert.IsTrue(OWLImportHelper.OntologyCache.TryGetValue(RDFVocabulary.GEOSPARQL.DEREFERENCE_URI, out var cachedGEOSPARQLOntology)
-                       && cachedGEOSPARQLOntology.ExpireTimestamp > DateTime.UtcNow);
     }
 
     [TestMethod]
