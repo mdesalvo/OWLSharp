@@ -91,6 +91,57 @@ public class OWLHasKeyAnalysisTest
     }
 
     [TestMethod]
+    public void ShouldAnalyzeObjectHasKeyWithInversePropertyCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Child"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isParentOf"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Rose"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Rosa")))
+            ],
+            KeyAxioms = [
+                new OWLHasKey(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Child")),
+                    [ new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isParentOf"))) ]
+                )
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Child")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Rose"))
+                ),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Child")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Rosa"))
+                ),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isParentOf")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Rose"))
+                ),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isParentOf")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Rosa"))
+                ),
+                new OWLDifferentIndividuals([
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Rose")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Rosa")) ]) //Will cause the validation error, since they conflict on computed key
+            ]
+        };
+        List<OWLIssue> issues = OWLHasKeyAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.HasCount(1, issues);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLHasKeyAnalysis.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLHasKeyAnalysis.rulesugg)));
+    }
+
+    [TestMethod]
     public void ShouldAnalyzeDataHasKeyCase()
     {
         OWLOntology ontology = new OWLOntology

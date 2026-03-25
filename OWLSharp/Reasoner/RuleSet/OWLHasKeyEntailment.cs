@@ -62,16 +62,25 @@ namespace OWLSharp.Reasoner
                 RDFResource idvExprIRI = idvExpr.GetIRI();
 
                 #region Object Keys
-                if (hasKeyAxiom.ObjectPropertyExpressions.Any(opex => opex is OWLObjectProperty))
+                if (hasKeyAxiom.ObjectPropertyExpressions.Any(opex => opex is OWLObjectProperty || opex is OWLObjectInverseOf))
                 {
                     //Calculate the object key values of the current individual
                     StringBuilder objSB = new StringBuilder();
-                    foreach (OWLObjectPropertyExpression keyObjectProperty in hasKeyAxiom.ObjectPropertyExpressions.Where(opex => opex is OWLObjectProperty))
+                    foreach (OWLObjectPropertyExpression keyObjectProperty in hasKeyAxiom.ObjectPropertyExpressions.Where(opex => opex is OWLObjectProperty || opex is OWLObjectInverseOf))
                     {
+                        //In case the key object property works under inverse logic, we must lookup by target and collect sources
+                        //because CalibrateObjectAssertions already swapped source/target for inverse assertions
+                        bool isInverse = keyObjectProperty is OWLObjectInverseOf;
                         List<OWLObjectPropertyAssertion> keyObjectPropertyAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, keyObjectProperty);
                         if (keyObjectPropertyAsns.Count > 0)
-                            objSB.Append(string.Join("§§", keyObjectPropertyAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(idvExprIRI))
-                                                                                .Select(asn => asn.TargetIndividualExpression.GetIRI().ToString())));
+                        {
+                            if (isInverse)
+                                objSB.Append(string.Join("§§", keyObjectPropertyAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(idvExprIRI))
+                                                                                    .Select(asn => asn.SourceIndividualExpression.GetIRI().ToString())));
+                            else
+                                objSB.Append(string.Join("§§", keyObjectPropertyAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(idvExprIRI))
+                                                                                    .Select(asn => asn.TargetIndividualExpression.GetIRI().ToString())));
+                        }
                     }
 
                     //Collect the object key values of the current individual into the register
