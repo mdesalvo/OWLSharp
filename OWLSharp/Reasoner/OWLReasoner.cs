@@ -185,6 +185,9 @@ namespace OWLSharp.Reasoner
                         case OWLEnums.OWLReasonerRules.TransitiveObjectPropertyEntailment:
                             inferenceRegistry[OWLTransitiveObjectPropertyEntailment.rulename] = OWLTransitiveObjectPropertyEntailment.ExecuteRule(ontology);
                             break;
+                        case OWLEnums.OWLReasonerRules.ObjectRestrictionEntailment:
+                            inferenceRegistry[OWLObjectRestrictionEntailment.rulename] = OWLObjectRestrictionEntailment.ExecuteRule(ontology);
+                            break;
                     }
 
                     OWLEvents.RaiseInfo($"Completed OWL2 rule {ruleString} => {inferenceRegistry[ruleString].Count} candidate inferences");

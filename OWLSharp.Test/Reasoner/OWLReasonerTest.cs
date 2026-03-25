@@ -608,13 +608,19 @@ public class OWLReasonerTest
         OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.HasValueEntailment] };
         List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-        Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
         Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLHasValueEntailment.rulename)));
+        //Forward (cls-hv1): ClassAssertion(C, I) ^ SubClassOf(C, DataHasValue(DP,44)) -> DataPropertyAssertion(DP, I, 44)
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDataPropertyAssertion inf
                                           && string.Equals(inf.DataProperty.GetIRI().ToString(), "http://frede.gat/stuff#propData")
                                           && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemDefinedByClassRestrictions")
                                           && string.Equals(inf.Literal.GetLiteral().ToString(), "44^^http://www.w3.org/2001/XMLSchema#integer")));
+        //Reverse (cls-hv2): in the next iteration DataPropertyAssertion(DP,I,44) triggers ClassAssertion(DataHasValue(DP,44), I)
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLClassAssertion inf
+                                          && inf.ClassExpression is OWLDataHasValue dhv
+                                          && string.Equals(dhv.DataProperty.GetIRI().ToString(), "http://frede.gat/stuff#propData")
+                                          && string.Equals(dhv.Literal.GetLiteral().ToString(), "44^^http://www.w3.org/2001/XMLSchema#integer")
+                                          && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemDefinedByClassRestrictions")));
     }
 
     [TestMethod]

@@ -31,6 +31,7 @@ namespace OWLSharp.Reasoner
             //Temporary working variables
             List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
             List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
+            List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
 
             foreach (OWLNamedIndividual declaredIdv in ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>()
                                                                .Select(ax => (OWLNamedIndividual)ax.Entity))
@@ -44,6 +45,7 @@ namespace OWLSharp.Reasoner
                 List<OWLObjectPropertyAssertion> declaredIdvSrcOpAsns = opAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList();
                 List<OWLObjectPropertyAssertion> declaredIdvTgtOpAsns = opAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList();
                 List<OWLDataPropertyAssertion> declaredIdvDpAsns = dpAsns.Where(asn => asn.IndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList();
+                List<OWLClassAssertion> declaredIdvClsAsns = clsAsns.Where(asn => asn.IndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList();
 
                 foreach (OWLIndividualExpression sameIdv in sameIdvs)
                 {
@@ -52,6 +54,7 @@ namespace OWLSharp.Reasoner
                     List<OWLObjectPropertyAssertion> sameIdvSrcOpAsns = opAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(sameIdvIRI)).ToList();
                     List<OWLObjectPropertyAssertion> sameIdvTgtOpAsns = opAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(sameIdvIRI)).ToList();
                     List<OWLDataPropertyAssertion> sameIdvDpAsns = dpAsns.Where(asn => asn.IndividualExpression.GetIRI().Equals(sameIdvIRI)).ToList();
+                    List<OWLClassAssertion> sameIdvClsAsns = clsAsns.Where(asn => asn.IndividualExpression.GetIRI().Equals(sameIdvIRI)).ToList();
 
                     /* SAMEAS TRANSITIVITY */
                     //SameIndividual(I1,I2) ^ SameIndividual(I2,I3) -> SameIndividual(I1,I3)
@@ -115,6 +118,22 @@ namespace OWLSharp.Reasoner
                     sameIdvDpAsns.ForEach(idvDpAsn =>
                     {
                         OWLDataPropertyAssertion inference = new OWLDataPropertyAssertion(idvDpAsn.DataProperty, declaredIdv, idvDpAsn.Literal) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    });
+
+                    /* SAMEAS CLASS ASSERTION PROPAGATION */
+                    //SameIndividual(I1,I2) ^ ClassAssertion(C,I1) -> ClassAssertion(C,I2)
+                    //SameIndividual(I1,I2) ^ ClassAssertion(C,I2) -> ClassAssertion(C,I1)
+                    declaredIdvClsAsns.ForEach(idvClsAsn =>
+                    {
+                        OWLClassAssertion inference = new OWLClassAssertion(idvClsAsn.ClassExpression) { IndividualExpression=sameIdv, IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    });
+                    sameIdvClsAsns.ForEach(idvClsAsn =>
+                    {
+                        OWLClassAssertion inference = new OWLClassAssertion(idvClsAsn.ClassExpression) { IndividualExpression=declaredIdv, IsInference=true };
                         inference.GetXML();
                         inferences.Add(new OWLInference(rulename, inference));
                     });

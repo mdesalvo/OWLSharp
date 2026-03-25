@@ -94,7 +94,9 @@ namespace OWLSharp
             HasSelfEntailment = 12,
             /// <summary>
             /// SubClassOf(C,ObjectHasValue(OP,I2)) ^ ClassAssertion(C,I1) -> ObjectPropertyAssertion(OP,I1,I2)<br/>
-            /// SubClassOf(C,DataHasValue(DP,LIT)) ^ ClassAssertion(C,I) -> DataPropertyAssertion(DP,I,LIT)
+            /// SubClassOf(C,DataHasValue(DP,LIT)) ^ ClassAssertion(C,I) -> DataPropertyAssertion(DP,I,LIT)<br/>
+            /// ObjectPropertyAssertion(OP,I1,V) ^ ObjectHasValue(OP,V) [referenced] -> ClassAssertion(ObjectHasValue(OP,V),I1)<br/>
+            /// DataPropertyAssertion(DP,I,LIT) ^ DataHasValue(DP,LIT) [referenced] -> ClassAssertion(DataHasValue(DP,LIT),I)
             /// </summary>
             HasValueEntailment = 13,
             /// <summary>
@@ -127,7 +129,8 @@ namespace OWLSharp
             /// <summary>
             /// SameIndividual(I1,I2) ^ SameIndividual(I2,I3) -> SameIndividual(I1,I3)<br/>
             /// SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I1,I3) -> ObjectPropertyAssertion(OP,I2,I3)<br/>
-            /// SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I2,I3) -> ObjectPropertyAssertion(OP,I1,I3)
+            /// SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I2,I3) -> ObjectPropertyAssertion(OP,I1,I3)<br/>
+            /// SameIndividual(I1,I2) ^ ClassAssertion(C,I1) -> ClassAssertion(C,I2)
             /// </summary>
             SameIndividualEntailment = 20,
             /// <summary>
@@ -156,7 +159,14 @@ namespace OWLSharp
             /// <summary>
             /// TransitiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV2,IDV3) -> ObjectPropertyAssertion(OP,IDV1,IDV3)
             /// </summary>
-            TransitiveObjectPropertyEntailment = 25
+            TransitiveObjectPropertyEntailment = 25,
+            /// <summary>
+            /// ObjectSomeValuesFrom(OP,C) ^ ObjectPropertyAssertion(OP,I1,I2) ^ ClassAssertion(C,I2) -> ClassAssertion(ObjectSomeValuesFrom(OP,C),I1)<br/>
+            /// ClassAssertion(ObjectAllValuesFrom(OP,C),I1) ^ ObjectPropertyAssertion(OP,I1,I2) -> ClassAssertion(C,I2)<br/>
+            /// SubClassOf(D,ObjectMaxCardinality(1,OP)) ^ ClassAssertion(D,I) ^ ObjectPropertyAssertion(OP,I,I1) ^ ObjectPropertyAssertion(OP,I,I2) -> SameIndividual(I1,I2)<br/>
+            /// ObjectHasSelf(OP) [referenced] ^ ObjectPropertyAssertion(OP,I,I) -> ClassAssertion(ObjectHasSelf(OP),I)
+            /// </summary>
+            ObjectRestrictionEntailment = 26
         }
 
         /// <summary>

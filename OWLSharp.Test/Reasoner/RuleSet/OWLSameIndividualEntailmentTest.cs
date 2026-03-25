@@ -180,6 +180,73 @@ public class OWLSameIndividualEntailmentTest
     }
 
     [TestMethod]
+    public void ShouldEntailSameIndividualClassAssertionCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco")))
+            ],
+            AssertionAxioms = [
+                new OWLSameIndividual([
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco"))
+                ]),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
+            ]
+        };
+        List<OWLInference> inferences = OWLSameIndividualEntailment.ExecuteRule(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+        //Mark sameAs Marco, Mark is Person -> Marco is Person
+        Assert.IsTrue(inferences.Any(inf => inf.Axiom is OWLClassAssertion clsAsn
+                                            && string.Equals(clsAsn.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Person")
+                                            && string.Equals(clsAsn.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Marco")));
+    }
+
+    [TestMethod]
+    public void ShouldEntailSameIndividualSymmetricClassAssertionCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Agent"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco")))
+            ],
+            AssertionAxioms = [
+                new OWLSameIndividual([
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco"))
+                ]),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Agent")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco")))
+            ]
+        };
+        List<OWLInference> inferences = OWLSameIndividualEntailment.ExecuteRule(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+        //Mark->Marco for Person, Marco->Mark for Agent
+        Assert.IsTrue(inferences.Any(inf => inf.Axiom is OWLClassAssertion clsAsn
+                                            && string.Equals(clsAsn.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Person")
+                                            && string.Equals(clsAsn.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Marco")));
+        Assert.IsTrue(inferences.Any(inf => inf.Axiom is OWLClassAssertion clsAsn
+                                            && string.Equals(clsAsn.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Agent")
+                                            && string.Equals(clsAsn.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mark")));
+    }
+
+    [TestMethod]
     public void ShouldEntailSameAnonymousIndividualDataAssertionCase()
     {
         OWLOntology ontology = new OWLOntology
