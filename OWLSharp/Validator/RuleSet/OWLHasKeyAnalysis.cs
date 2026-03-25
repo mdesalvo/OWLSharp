@@ -67,7 +67,7 @@ namespace OWLSharp.Validator
                 {
                     //Calculate the object key values of the current individual
                     StringBuilder objSB = new StringBuilder();
-                    foreach (OWLObjectPropertyExpression keyObjectProperty in hasKeyAxiom.ObjectPropertyExpressions.Where(opex => opex is OWLObjectProperty || opex is OWLObjectInverseOf))
+                    foreach (OWLObjectPropertyExpression keyObjectProperty in hasKeyAxiom.ObjectPropertyExpressions)
                     {
                         //In case the key object property works under inverse logic, we must lookup by target and collect sources
                         //because CalibrateObjectAssertions already swapped source/target for inverse assertions
