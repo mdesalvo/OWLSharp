@@ -832,6 +832,48 @@ public class OWLReasonerTest
     }
 
     [TestMethod]
+    public async Task ShouldEntailObjectRestrictionAsync()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Parent"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasChild"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
+            ],
+            ClassAxioms = [
+                new OWLSubClassOf(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Parent")),
+                    new OWLObjectSomeValuesFrom(
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasChild")),
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))))
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasChild")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
+            ]
+        };
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.ObjectRestrictionEntailment] };
+        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+
+        Assert.HasCount(1, inferences);
+        Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLObjectRestrictionEntailment.rulename)));
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLClassAssertion inf
+                                           && inf.ClassExpression is OWLObjectSomeValuesFrom svf
+                                           && string.Equals(svf.ObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasChild")
+                                           && string.Equals(svf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Human")
+                                           && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mark")));
+    }
+
+    [TestMethod]
     public async Task ShouldEntailReflexiveObjectPropertyAsync()
     {
         OWLOntology ontology = new OWLOntology
