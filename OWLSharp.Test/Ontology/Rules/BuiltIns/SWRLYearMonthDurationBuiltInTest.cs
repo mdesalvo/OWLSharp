@@ -1,4 +1,4 @@
-/*
+﻿/*
    Copyright 2014-2025 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -93,29 +93,26 @@ public class SWRLYearMonthDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateYearMonthDurationBuiltIn()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Rows.Add(
-            "P2Y7M^^http://www.w3.org/2001/XMLSchema#duration",
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddRow(new string[] { "P2Y7M^^http://www.w3.org/2001/XMLSchema#duration",
             "2^^http://www.w3.org/2001/XMLSchema#int",
-            "7^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add(
-            "P0Y0M^^http://www.w3.org/2001/XMLSchema#duration",
+            "7^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "P0Y0M^^http://www.w3.org/2001/XMLSchema#duration",
             "0^^http://www.w3.org/2001/XMLSchema#int",
-            "0^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add(
-            "P2Y7M^^http://www.w3.org/2001/XMLSchema#duration",
+            "0^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "P2Y7M^^http://www.w3.org/2001/XMLSchema#duration",
             "2^^http://www.w3.org/2001/XMLSchema#int",
-            "9^^http://www.w3.org/2001/XMLSchema#int");
+            "9^^http://www.w3.org/2001/XMLSchema#int" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.YearMonthDuration(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?Z")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);
@@ -133,7 +130,7 @@ public class SWRLYearMonthDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Z")));
-        DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(3, builtinResults2.Columns);
         Assert.HasCount(3, builtinResults2.Rows);
@@ -142,7 +139,7 @@ public class SWRLYearMonthDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?F"))); //unexisting
-        DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(3, builtinResults3.Columns);
         Assert.HasCount(3, builtinResults3.Rows);
@@ -170,25 +167,22 @@ public class SWRLYearMonthDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateYearMonthDurationBuiltInWithLeftLiteral()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Rows.Add(
-            "1^^http://www.w3.org/2001/XMLSchema#int",
-            "7^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add(
-            "0^^http://www.w3.org/2001/XMLSchema#int",
-            "19^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add(
-            "1^^http://www.w3.org/2001/XMLSchema#int",
-            "5^^http://www.w3.org/2001/XMLSchema#int");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddRow(new string[] { "1^^http://www.w3.org/2001/XMLSchema#int",
+            "7^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "0^^http://www.w3.org/2001/XMLSchema#int",
+            "19^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "1^^http://www.w3.org/2001/XMLSchema#int",
+            "5^^http://www.w3.org/2001/XMLSchema#int" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.YearMonthDuration(
             new SWRLLiteralArgument(new RDFTypedLiteral("P1Y7M", RDFModelEnums.RDFDatatypes.XSD_DURATION)),
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?Z")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -202,25 +196,22 @@ public class SWRLYearMonthDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateYearMonthDurationBuiltInWithRightYearLiteral()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Rows.Add(
-            "P1Y7M^^http://www.w3.org/2001/XMLSchema#duration",
-            "7^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add(
-            "P1Y7M^^http://www.w3.org/2001/XMLSchema#duration",
-            "6^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add(
-            "P1Y6M^^http://www.w3.org/2001/XMLSchema#duration",
-            "7^^http://www.w3.org/2001/XMLSchema#int");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddRow(new string[] { "P1Y7M^^http://www.w3.org/2001/XMLSchema#duration",
+            "7^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "P1Y7M^^http://www.w3.org/2001/XMLSchema#duration",
+            "6^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "P1Y6M^^http://www.w3.org/2001/XMLSchema#duration",
+            "7^^http://www.w3.org/2001/XMLSchema#int" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.YearMonthDuration(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLLiteralArgument(RDFTypedLiteral.One),
             new SWRLVariableArgument(new RDFVariable("?Z")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -232,22 +223,20 @@ public class SWRLYearMonthDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateYearMonthBuiltInWithRightMonthLiteral()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Rows.Add(
-            "P1Y7M^^http://www.w3.org/2001/XMLSchema#duration",
-            "1^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add(
-            "P1Y7M^^http://www.w3.org/2001/XMLSchema#duration",
-            "2^^http://www.w3.org/2001/XMLSchema#int");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(new string[] { "P1Y7M^^http://www.w3.org/2001/XMLSchema#duration",
+            "1^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "P1Y7M^^http://www.w3.org/2001/XMLSchema#duration",
+            "2^^http://www.w3.org/2001/XMLSchema#int" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.YearMonthDuration(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLLiteralArgument(new RDFTypedLiteral("7", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);

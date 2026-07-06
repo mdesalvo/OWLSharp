@@ -1,4 +1,4 @@
-/*
+﻿/*
    Copyright 2014-2025 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -115,7 +115,7 @@ public class SWRLClassAtomTest
                     new OWLNamedIndividual(new RDFResource("ex:Mark")))
             ]
         };
-        DataTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
+        RDFTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(1, antecedentResult.Columns);
@@ -130,9 +130,9 @@ public class SWRLClassAtomTest
             new OWLClass(RDFVocabulary.FOAF.AGENT),
             new SWRLVariableArgument(new RDFVariable("?P")));
 
-        DataTable antecedentResult = new DataTable();
-        antecedentResult.Columns.Add("?P");
-        antecedentResult.Rows.Add("ex:Mark");
+        RDFTable antecedentResult = new RDFTable();
+        antecedentResult.AddColumn("?P");
+        antecedentResult.AddRow(new string[] { "ex:Mark" });
 
         List<OWLInference> inferences = atom.EvaluateOnConsequent(antecedentResult, null);
 

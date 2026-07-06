@@ -14,7 +14,6 @@
    limitations under the License.
 */
 
-using System.Data;
 using System.Collections.Generic;
 using System;
 using RDFSharp.Query;
@@ -33,7 +32,7 @@ namespace OWLSharp.Ontology
         /// Evaluates the built-in in the context of being part of a SWRL antecedent
         /// </summary>
         /// <exception cref="ArgumentException"></exception>
-        internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
+        internal static bool EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
             if (builtInArguments?.Count != 3)
@@ -48,8 +47,8 @@ namespace OWLSharp.Ontology
                 RDFPatternMember patternMember = null;
                 switch (builtInArguments[i])
                 {
-                    case SWRLVariableArgument argVar when antecedentResultsRow.Table.Columns.Contains(argVar.GetVariable().ToString()):
-                        patternMember = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[argVar.GetVariable().ToString()].ToString());
+                    case SWRLVariableArgument argVar when antecedentResultsRow.HasColumn(argVar.GetVariable().ToString()):
+                        patternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[argVar.GetVariable().ToString()] ?? string.Empty));
                         break;
                     case SWRLLiteralArgument argLit:
                         patternMember = argLit.GetLiteral();

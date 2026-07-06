@@ -1,4 +1,4 @@
-/*
+﻿/*
    Copyright 2014-2025 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -134,7 +134,7 @@ public class SWRLAntecedentTest
                     })
             ]
         };
-        DataTable antecedentResult = ontology.Rules[0].Antecedent.Evaluate(ontology);
+        RDFTable antecedentResult = ontology.Rules[0].Antecedent.Evaluate(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(1, antecedentResult.Columns);

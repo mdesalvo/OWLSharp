@@ -1,4 +1,4 @@
-/*
+﻿/*
    Copyright 2014-2025 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -126,27 +126,27 @@ public class SWRLCeilingBuiltInTest
     [TestMethod]
     public void ShouldEvaluateCeilingBuiltIn()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "2.18^^http://www.w3.org/2001/XMLSchema#double");
-        antecedentResults.Rows.Add("3^^http://www.w3.org/2001/XMLSchema#int", "2.73^^http://www.w3.org/2001/XMLSchema#double");
-        antecedentResults.Rows.Add(DBNull.Value, "-2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", DBNull.Value);
-        antecedentResults.Rows.Add(DBNull.Value, DBNull.Value);
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string");
-        antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello");
-        antecedentResults.Rows.Add("hello", "-2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN");
-        antecedentResults.Rows.Add("hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "http://example.org/tests");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2.18^^http://www.w3.org/2001/XMLSchema#double" });
+        antecedentResults.AddRow(new string[] { "3^^http://www.w3.org/2001/XMLSchema#int", "2.73^^http://www.w3.org/2001/XMLSchema#double" });
+        antecedentResults.AddRow(new string[] { null, "-2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", null });
+        antecedentResults.AddRow(new string[] { null, null });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string" });
+        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello" });
+        antecedentResults.AddRow(new string[] { "hello", "-2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN" });
+        antecedentResults.AddRow(new string[] { "hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "http://example.org/tests" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Ceiling(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -159,7 +159,7 @@ public class SWRLCeilingBuiltInTest
         SWRLBuiltIn builtin2 = SWRLBuiltIn.Ceiling(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
-        DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(2, builtinResults2.Columns);
         Assert.HasCount(12, builtinResults2.Rows);
@@ -167,7 +167,7 @@ public class SWRLCeilingBuiltInTest
         SWRLBuiltIn builtin3 = SWRLBuiltIn.Ceiling(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(2, builtinResults3.Columns);
         Assert.HasCount(12, builtinResults3.Rows);
@@ -195,16 +195,16 @@ public class SWRLCeilingBuiltInTest
     [TestMethod]
     public void ShouldEvaluateCeilingBuiltInWithLeftNumber()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Rows.Add("2.18^^http://www.w3.org/2001/XMLSchema#double");
-        antecedentResults.Rows.Add("2.73^^http://www.w3.org/2001/XMLSchema#double");
-        antecedentResults.Rows.Add("7^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add(DBNull.Value);
-        antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string");
-        antecedentResults.Rows.Add("hello");
-        antecedentResults.Rows.Add("hello@EN");
-        antecedentResults.Rows.Add("http://example.org/tests");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(new string[] { "2.18^^http://www.w3.org/2001/XMLSchema#double" });
+        antecedentResults.AddRow(new string[] { "2.73^^http://www.w3.org/2001/XMLSchema#double" });
+        antecedentResults.AddRow(new string[] { "7^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { null });
+        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string" });
+        antecedentResults.AddRow(new string[] { "hello" });
+        antecedentResults.AddRow(new string[] { "hello@EN" });
+        antecedentResults.AddRow(new string[] { "http://example.org/tests" });
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -215,7 +215,7 @@ public class SWRLCeilingBuiltInTest
             ]
         };
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
@@ -227,16 +227,16 @@ public class SWRLCeilingBuiltInTest
     [TestMethod]
     public void ShouldEvaluateCeilingBuiltInWithRightNumber()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("3^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("7^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("2.0^^http://www.w3.org/2001/XMLSchema#float");
-        antecedentResults.Rows.Add(DBNull.Value);
-        antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string");
-        antecedentResults.Rows.Add("hello");
-        antecedentResults.Rows.Add("hello@EN");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "3^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "7^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "2.0^^http://www.w3.org/2001/XMLSchema#float" });
+        antecedentResults.AddRow(new string[] { null });
+        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string" });
+        antecedentResults.AddRow(new string[] { "hello" });
+        antecedentResults.AddRow(new string[] { "hello@EN" });
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -247,7 +247,7 @@ public class SWRLCeilingBuiltInTest
             ]
         };
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);

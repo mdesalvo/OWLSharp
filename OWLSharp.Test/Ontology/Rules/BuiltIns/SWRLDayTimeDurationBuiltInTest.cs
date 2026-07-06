@@ -1,4 +1,4 @@
-/*
+﻿/*
    Copyright 2014-2025 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -105,24 +105,22 @@ public class SWRLDayTimeDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateDayTimeDurationBuiltIn()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Columns.Add("?Q");
-        antecedentResults.Columns.Add("?U");
-        antecedentResults.Rows.Add(
-            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddColumn("?Q");
+        antecedentResults.AddColumn("?U");
+        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "1^^http://www.w3.org/2001/XMLSchema#int",
             "7^^http://www.w3.org/2001/XMLSchema#int",
             "6^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add(
-            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+            "12^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "1^^http://www.w3.org/2001/XMLSchema#int",
             "7^^http://www.w3.org/2001/XMLSchema#int",
             "8^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int");
+            "12^^http://www.w3.org/2001/XMLSchema#int" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DayTimeDuration(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -131,7 +129,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(5, builtinResults.Columns);
@@ -150,7 +148,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
-        DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(5, builtinResults2.Columns);
         Assert.HasCount(2, builtinResults2.Rows);
@@ -161,7 +159,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
-        DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(5, builtinResults3.Columns);
         Assert.HasCount(2, builtinResults3.Rows);
@@ -172,7 +170,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?U")));
-        DataTable builtinResults4 = builtin4.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults4 = builtin4.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults4);
         Assert.HasCount(5, builtinResults4.Columns);
         Assert.HasCount(2, builtinResults4.Rows);
@@ -183,7 +181,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?F"))); //unexisting
-        DataTable builtinResults5 = builtin5.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults5 = builtin5.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults5);
         Assert.HasCount(5, builtinResults5.Columns);
         Assert.HasCount(2, builtinResults5.Rows);
@@ -211,21 +209,19 @@ public class SWRLDayTimeDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateDayTimeDurationBuiltInWithLeftLiteral()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Columns.Add("?Q");
-        antecedentResults.Columns.Add("?U");
-        antecedentResults.Rows.Add(
-            "1^^http://www.w3.org/2001/XMLSchema#int",
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddColumn("?Q");
+        antecedentResults.AddColumn("?U");
+        antecedentResults.AddRow(new string[] { "1^^http://www.w3.org/2001/XMLSchema#int",
             "7^^http://www.w3.org/2001/XMLSchema#int",
             "6^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add(
-            "1^^http://www.w3.org/2001/XMLSchema#int",
+            "12^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "1^^http://www.w3.org/2001/XMLSchema#int",
             "7^^http://www.w3.org/2001/XMLSchema#int",
             "9^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int");
+            "12^^http://www.w3.org/2001/XMLSchema#int" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DayTimeDuration(
             new SWRLLiteralArgument(new RDFTypedLiteral("P1DT7H6M12S", RDFModelEnums.RDFDatatypes.XSD_DURATION)),
@@ -234,7 +230,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
@@ -248,21 +244,19 @@ public class SWRLDayTimeDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateDayTimeDurationBuiltInWithRightDayLiteral()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Columns.Add("?Q");
-        antecedentResults.Columns.Add("?U");
-        antecedentResults.Rows.Add(
-            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddColumn("?Q");
+        antecedentResults.AddColumn("?U");
+        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "7^^http://www.w3.org/2001/XMLSchema#int",
             "6^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add(
-            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+            "12^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "7^^http://www.w3.org/2001/XMLSchema#int",
             "9^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int");
+            "12^^http://www.w3.org/2001/XMLSchema#int" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DayTimeDuration(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -271,7 +265,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
@@ -285,21 +279,19 @@ public class SWRLDayTimeDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateDayTimeBuiltInWithRightHourLiteral()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Columns.Add("?Q");
-        antecedentResults.Columns.Add("?U");
-        antecedentResults.Rows.Add(
-            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Q");
+        antecedentResults.AddColumn("?U");
+        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "1^^http://www.w3.org/2001/XMLSchema#int",
             "6^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add(
-            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+            "12^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "1^^http://www.w3.org/2001/XMLSchema#int",
             "9^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int");
+            "12^^http://www.w3.org/2001/XMLSchema#int" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DayTimeDuration(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -308,7 +300,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
@@ -322,21 +314,19 @@ public class SWRLDayTimeDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateDayTimeBuiltInWithRightMinuteLiteral()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Columns.Add("?U");
-        antecedentResults.Rows.Add(
-            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddColumn("?U");
+        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "1^^http://www.w3.org/2001/XMLSchema#int",
             "7^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add(
-            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+            "12^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "1^^http://www.w3.org/2001/XMLSchema#int",
             "9^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int");
+            "12^^http://www.w3.org/2001/XMLSchema#int" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DayTimeDuration(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -345,7 +335,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLLiteralArgument(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INTEGER)),
             new SWRLVariableArgument(new RDFVariable("?U")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
@@ -359,21 +349,19 @@ public class SWRLDayTimeDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateDayTimeBuiltInWithRightSecondLiteral()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Columns.Add("?Q");
-        antecedentResults.Rows.Add(
-            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddColumn("?Q");
+        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "1^^http://www.w3.org/2001/XMLSchema#int",
             "7^^http://www.w3.org/2001/XMLSchema#int",
-            "6^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add(
-            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+            "6^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "1^^http://www.w3.org/2001/XMLSchema#int",
             "9^^http://www.w3.org/2001/XMLSchema#int",
-            "6^^http://www.w3.org/2001/XMLSchema#int");
+            "6^^http://www.w3.org/2001/XMLSchema#int" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DayTimeDuration(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -382,7 +370,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLLiteralArgument(new RDFTypedLiteral("12", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);

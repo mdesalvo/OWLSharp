@@ -47,8 +47,8 @@ namespace OWLSharp.Reasoner
                 //Transform OWL2 property chain into equivalent SPARQL property path
                 RDFPropertyPath propertyPath = new RDFPropertyPath(new RDFVariable("?PROPERTY_CHAIN_AXIOM_START"), new RDFVariable("?PROPERTY_CHAIN_AXIOM_END"));
                 foreach (OWLObjectPropertyExpression propertyPathStep in subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions)
-                    propertyPath.AddSequenceStep(propertyPathStep is OWLObjectInverseOf objInvOfPropertyPathStep ? new RDFPropertyPathStep(objInvOfPropertyPathStep.ObjectProperty.GetIRI()).Inverse()
-                                                                                                                 : new RDFPropertyPathStep(propertyPathStep.GetIRI()));
+                    propertyPath.AddStep(propertyPathStep is OWLObjectInverseOf objInvOfPropertyPathStep ? RDFPropertyPathStep.Link(objInvOfPropertyPathStep.ObjectProperty.GetIRI()).Inverse()
+                                                                                                         : RDFPropertyPathStep.Link(propertyPathStep.GetIRI()));
 
                 //Execute SPARQL construct query to materialize property chain inferences
                 RDFPattern templatePattern = subObjectPropertyOf.SuperObjectPropertyExpression is OWLObjectInverseOf objInvOfSuperObjPropExpr

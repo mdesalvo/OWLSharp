@@ -1,4 +1,4 @@
-/*
+﻿/*
    Copyright 2014-2025 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -105,30 +105,27 @@ public class SWRLTimeBuiltInTest
     [TestMethod]
     public void ShouldEvaluateTimeBuiltIn()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Columns.Add("?Q");
-        antecedentResults.Columns.Add("?T");
-        antecedentResults.Rows.Add(
-            "10:30:30Z^^http://www.w3.org/2001/XMLSchema#time",
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddColumn("?Q");
+        antecedentResults.AddColumn("?T");
+        antecedentResults.AddRow(new string[] { "10:30:30Z^^http://www.w3.org/2001/XMLSchema#time",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC");
-        antecedentResults.Rows.Add(
-            "10:30:30^^http://www.w3.org/2001/XMLSchema#time",
+            "UTC" });
+        antecedentResults.AddRow(new string[] { "10:30:30^^http://www.w3.org/2001/XMLSchema#time",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            ""); //Will fallback to "UTC"
-        antecedentResults.Rows.Add(
-            "10:34:30Z^^http://www.w3.org/2001/XMLSchema#time",
+            "" }); //Will fallback to "UTC"
+        antecedentResults.AddRow(new string[] { "10:34:30Z^^http://www.w3.org/2001/XMLSchema#time",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC");
+            "UTC" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Time(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -137,7 +134,7 @@ public class SWRLTimeBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?T")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(5, builtinResults.Columns);
@@ -161,7 +158,7 @@ public class SWRLTimeBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?T")));
-        DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(5, builtinResults2.Columns);
         Assert.HasCount(3, builtinResults2.Rows);
@@ -172,7 +169,7 @@ public class SWRLTimeBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?T")));
-        DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(5, builtinResults3.Columns);
         Assert.HasCount(3, builtinResults3.Rows);
@@ -183,7 +180,7 @@ public class SWRLTimeBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?T")));
-        DataTable builtinResults4 = builtin4.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults4 = builtin4.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults4);
         Assert.HasCount(5, builtinResults4.Columns);
         Assert.HasCount(3, builtinResults4.Rows);
@@ -194,7 +191,7 @@ public class SWRLTimeBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?F"))); //unexisting
-        DataTable builtinResults5 = builtin5.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults5 = builtin5.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults5);
         Assert.HasCount(5, builtinResults5.Columns);
         Assert.HasCount(3, builtinResults5.Rows);
@@ -222,26 +219,23 @@ public class SWRLTimeBuiltInTest
     [TestMethod]
     public void ShouldEvaluateTimeBuiltInWithLeftLiteral()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Columns.Add("?Q");
-        antecedentResults.Columns.Add("?T");
-        antecedentResults.Rows.Add(
-            "10^^http://www.w3.org/2001/XMLSchema#int",
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddColumn("?Q");
+        antecedentResults.AddColumn("?T");
+        antecedentResults.AddRow(new string[] { "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC");
-        antecedentResults.Rows.Add(
-            "10^^http://www.w3.org/2001/XMLSchema#int",
+            "UTC" });
+        antecedentResults.AddRow(new string[] { "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            ""); //Will fallback to "UTC"
-        antecedentResults.Rows.Add(
-            "10^^http://www.w3.org/2001/XMLSchema#int",
+            "" }); //Will fallback to "UTC"
+        antecedentResults.AddRow(new string[] { "10^^http://www.w3.org/2001/XMLSchema#int",
             "34^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC");
+            "UTC" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Time(
             new SWRLLiteralArgument(new RDFTypedLiteral("10:30:30Z", RDFModelEnums.RDFDatatypes.XSD_TIME)),
@@ -250,7 +244,7 @@ public class SWRLTimeBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?T")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
@@ -268,26 +262,23 @@ public class SWRLTimeBuiltInTest
     [TestMethod]
     public void ShouldEvaluateTimeBuiltInWithRightHourLiteral()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Columns.Add("?Q");
-        antecedentResults.Columns.Add("?T");
-        antecedentResults.Rows.Add(
-            "10:30:30Z^^http://www.w3.org/2001/XMLSchema#time",
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddColumn("?Q");
+        antecedentResults.AddColumn("?T");
+        antecedentResults.AddRow(new string[] { "10:30:30Z^^http://www.w3.org/2001/XMLSchema#time",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC");
-        antecedentResults.Rows.Add(
-            "10:30:30^^http://www.w3.org/2001/XMLSchema#time",
+            "UTC" });
+        antecedentResults.AddRow(new string[] { "10:30:30^^http://www.w3.org/2001/XMLSchema#time",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            ""); //Will fallback to "UTC"
-        antecedentResults.Rows.Add(
-            "10:30:30Z^^http://www.w3.org/2001/XMLSchema#time",
+            "" }); //Will fallback to "UTC"
+        antecedentResults.AddRow(new string[] { "10:30:30Z^^http://www.w3.org/2001/XMLSchema#time",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "34^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC");
+            "UTC" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Time(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -296,7 +287,7 @@ public class SWRLTimeBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?T")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
@@ -314,26 +305,23 @@ public class SWRLTimeBuiltInTest
     [TestMethod]
     public void ShouldEvaluateTimeBuiltInWithRightMinuteLiteral()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Columns.Add("?Q");
-        antecedentResults.Columns.Add("?T");
-        antecedentResults.Rows.Add(
-            "10:30:30Z^^http://www.w3.org/2001/XMLSchema#time",
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Q");
+        antecedentResults.AddColumn("?T");
+        antecedentResults.AddRow(new string[] { "10:30:30Z^^http://www.w3.org/2001/XMLSchema#time",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC");
-        antecedentResults.Rows.Add(
-            "10:30:30^^http://www.w3.org/2001/XMLSchema#time",
+            "UTC" });
+        antecedentResults.AddRow(new string[] { "10:30:30^^http://www.w3.org/2001/XMLSchema#time",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            ""); //Will fallback to "UTC"
-        antecedentResults.Rows.Add(
-            "10:30:30Z^^http://www.w3.org/2001/XMLSchema#time",
+            "" }); //Will fallback to "UTC"
+        antecedentResults.AddRow(new string[] { "10:30:30Z^^http://www.w3.org/2001/XMLSchema#time",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "34^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC");
+            "UTC" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Time(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -342,7 +330,7 @@ public class SWRLTimeBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?T")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
@@ -360,31 +348,27 @@ public class SWRLTimeBuiltInTest
     [TestMethod]
     public void ShouldEvaluateTimeBuiltInWithRightSecondLiteral()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Columns.Add("?T");
-        antecedentResults.Rows.Add(
-            "10:30:30Z^^http://www.w3.org/2001/XMLSchema#time",
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddColumn("?T");
+        antecedentResults.AddRow(new string[] { "10:30:30Z^^http://www.w3.org/2001/XMLSchema#time",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC");
-        antecedentResults.Rows.Add(
-            "10:30:30^^http://www.w3.org/2001/XMLSchema#time",
+            "UTC" });
+        antecedentResults.AddRow(new string[] { "10:30:30^^http://www.w3.org/2001/XMLSchema#time",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            ""); //Will fallback to "UTC"
-        antecedentResults.Rows.Add(
-            "10:30:30Z^^http://www.w3.org/2001/XMLSchema#time",
+            "" }); //Will fallback to "UTC"
+        antecedentResults.AddRow(new string[] { "10:30:30Z^^http://www.w3.org/2001/XMLSchema#time",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "34^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC");
-        antecedentResults.Rows.Add(
-            "10:65:30Z^^http://www.w3.org/2001/XMLSchema#time", //not valid
+            "UTC" });
+        antecedentResults.AddRow(new string[] { "10:65:30Z^^http://www.w3.org/2001/XMLSchema#time", //not valid
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "34^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC");
+            "UTC" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Time(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -393,7 +377,7 @@ public class SWRLTimeBuiltInTest
             new SWRLLiteralArgument(new RDFTypedLiteral("30", RDFModelEnums.RDFDatatypes.XSD_INTEGER)),
             new SWRLVariableArgument(new RDFVariable("?T")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);

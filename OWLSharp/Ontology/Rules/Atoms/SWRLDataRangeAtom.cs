@@ -1,4 +1,4 @@
-﻿/*
+/*
    Copyright 2014-2025 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Xml.Serialization;
 
@@ -48,13 +47,13 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Evaluates the atom in the context of being part of a SWRL antecedent
         /// </summary>
-        internal override DataTable EvaluateOnAntecedent(OWLOntology ontology)
+        internal override RDFTable EvaluateOnAntecedent(OWLOntology ontology)
         {
             string leftArgumentString = LeftArgument.ToString();
 
             //Initialize the structure of the atom result
-            DataTable atomResult = new DataTable();
-            RDFQueryEngine.AddColumn(atomResult, leftArgumentString);
+            RDFTable atomResult = new RDFTable();
+            atomResult.AddColumn(leftArgumentString);
 
             //Extract data property assertions of the atom predicate
             List<OWLLiteral> dpAsnLiterals = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
@@ -68,7 +67,7 @@ namespace OWLSharp.Ontology
             {
                 atomResultBindings.Add(leftArgumentString, dpAsnLiteral.GetLiteral().ToString());
 
-                RDFQueryEngine.AddRow(atomResult, atomResultBindings);
+                atomResult.AddRow(atomResultBindings);
 
                 atomResultBindings.Clear();
             }
@@ -80,7 +79,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Evaluates the atom in the context of being part of a SWRL consequent
         /// </summary>
-        internal override List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology)
+        internal override List<OWLInference> EvaluateOnConsequent(RDFTable antecedentResults, OWLOntology ontology)
             => new List<OWLInference>(); //This kind of atom does not emit inferences
 
         /// <summary>

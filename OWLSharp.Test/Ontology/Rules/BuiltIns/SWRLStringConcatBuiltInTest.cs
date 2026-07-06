@@ -1,4 +1,4 @@
-/*
+﻿/*
    Copyright 2014-2025 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -126,30 +126,30 @@ public class SWRLStringConcatBuiltInTest
     [TestMethod]
     public void ShouldEvaluateStringConcatBuiltIn()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Rows.Add("hello", "h", "ello");
-        antecedentResults.Rows.Add("hello@EN-US", "EN-US");
-        antecedentResults.Rows.Add("22", "2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("-2", DBNull.Value, "-2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", DBNull.Value);
-        antecedentResults.Rows.Add("hello", "hello@EN", DBNull.Value);
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "2", "hello^^http://www.w3.org/2001/XMLSchema#string");
-        antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string", DBNull.Value, "hello@EN--ltr");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello");
-        antecedentResults.Rows.Add("hello", "-2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN");
-        antecedentResults.Rows.Add("hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("http://example.org/test/", "http://example.org/", "test/");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddRow(new string[] { "hello", "h", "ello" });
+        antecedentResults.AddRow(new string[] { "hello@EN-US", "EN-US" });
+        antecedentResults.AddRow(new string[] { "22", "2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "-2", null, "-2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", null });
+        antecedentResults.AddRow(new string[] { "hello", "hello@EN", null });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2", "hello^^http://www.w3.org/2001/XMLSchema#string" });
+        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string", null, "hello@EN--ltr" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello" });
+        antecedentResults.AddRow(new string[] { "hello", "-2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN" });
+        antecedentResults.AddRow(new string[] { "hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "http://example.org/test/", "http://example.org/", "test/" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.StringConcat(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?Z")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);
@@ -172,7 +172,7 @@ public class SWRLStringConcatBuiltInTest
         SWRLBuiltIn builtin2 = SWRLBuiltIn.StringConcat(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?F"))); //unexisting
-        DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(3, builtinResults2.Columns);
         Assert.IsEmpty(builtinResults2.Rows);
@@ -180,7 +180,7 @@ public class SWRLStringConcatBuiltInTest
         SWRLBuiltIn builtin3 = SWRLBuiltIn.StringConcat(
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(3, builtinResults3.Columns);
         Assert.IsEmpty(builtinResults3.Rows);
@@ -208,15 +208,15 @@ public class SWRLStringConcatBuiltInTest
     [TestMethod]
     public void ShouldEvaluateStringConcatBuiltInWithLeftString()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Rows.Add("llo");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("7^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("2.0^^http://www.w3.org/2001/XMLSchema#float");
-        antecedentResults.Rows.Add(DBNull.Value);
-        antecedentResults.Rows.Add("llo^^http://www.w3.org/2001/XMLSchema#string");
-        antecedentResults.Rows.Add("llo@EN");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(new string[] { "llo" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "7^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "2.0^^http://www.w3.org/2001/XMLSchema#float" });
+        antecedentResults.AddRow(new string[] { null });
+        antecedentResults.AddRow(new string[] { "llo^^http://www.w3.org/2001/XMLSchema#string" });
+        antecedentResults.AddRow(new string[] { "llo@EN" });
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -228,7 +228,7 @@ public class SWRLStringConcatBuiltInTest
             ]
         };
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
@@ -241,17 +241,17 @@ public class SWRLStringConcatBuiltInTest
     [TestMethod]
     public void ShouldEvaluateStringConcatBuiltInWithRightString()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("7^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("2.0^^http://www.w3.org/2001/XMLSchema#float");
-        antecedentResults.Rows.Add(DBNull.Value);
-        antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string");
-        antecedentResults.Rows.Add("hello");
-        antecedentResults.Rows.Add("heLlo");
-        antecedentResults.Rows.Add("hello@EN");
-        antecedentResults.Rows.Add("http://example.org/test");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "7^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "2.0^^http://www.w3.org/2001/XMLSchema#float" });
+        antecedentResults.AddRow(new string[] { null });
+        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string" });
+        antecedentResults.AddRow(new string[] { "hello" });
+        antecedentResults.AddRow(new string[] { "heLlo" });
+        antecedentResults.AddRow(new string[] { "hello@EN" });
+        antecedentResults.AddRow(new string[] { "http://example.org/test" });
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -263,7 +263,7 @@ public class SWRLStringConcatBuiltInTest
             ]
         };
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
@@ -274,11 +274,11 @@ public class SWRLStringConcatBuiltInTest
     [TestMethod]
     public void ShouldEvaluateStringConcatBuiltInWithMultipleArguments()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Rows.Add("The white fox jumps");
-        antecedentResults.Rows.Add("The white fox jumpsover the lazy...");
-        antecedentResults.Rows.Add("The white fox jumps over the lazy...");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddRow(new string[] { "The white fox jumps" });
+        antecedentResults.AddRow(new string[] { "The white fox jumpsover the lazy..." });
+        antecedentResults.AddRow(new string[] { "The white fox jumps over the lazy..." });
 
         SWRLBuiltIn builtin2 = SWRLBuiltIn.StringConcat(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -287,7 +287,7 @@ public class SWRLStringConcatBuiltInTest
             new SWRLLiteralArgument(new RDFTypedLiteral(" the lazy...", RDFModelEnums.RDFDatatypes.XSD_STRING))
         );
 
-        DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(1, builtinResults2.Columns);

@@ -1,4 +1,4 @@
-/*
+﻿/*
    Copyright 2014-2025 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -100,19 +100,19 @@ public class SWRLReplaceBuiltInTest
     [TestMethod]
     public void ShouldEvaluateReplaceBuiltIn()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Columns.Add("?Q");
-        antecedentResults.Rows.Add("heMMo", "hello", "ll", "MM");
-        antecedentResults.Rows.Add("hemMo", "hello", "ll", "MM");
-        antecedentResults.Rows.Add("heMMo@EN", "hello@EN", "ll@EN", "MM@EN");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "2", "2", "2");
-        antecedentResults.Rows.Add(DBNull.Value, DBNull.Value, DBNull.Value, DBNull.Value);
-        antecedentResults.Rows.Add(DBNull.Value, "hello", "[a-z]+", "");
-        antecedentResults.Rows.Add("hello", DBNull.Value, "hello", "hello");
-        antecedentResults.Rows.Add("http://example.org/test/", "ftp://example.org/test/", "ftp", "http");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddColumn("?Q");
+        antecedentResults.AddRow(new string[] { "heMMo", "hello", "ll", "MM" });
+        antecedentResults.AddRow(new string[] { "hemMo", "hello", "ll", "MM" });
+        antecedentResults.AddRow(new string[] { "heMMo@EN", "hello@EN", "ll@EN", "MM@EN" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2", "2", "2" });
+        antecedentResults.AddRow(new string[] { null, null, null, null });
+        antecedentResults.AddRow(new string[] { null, "hello", "[a-z]+", "" });
+        antecedentResults.AddRow(new string[] { "hello", null, "hello", "hello" });
+        antecedentResults.AddRow(new string[] { "http://example.org/test/", "ftp://example.org/test/", "ftp", "http" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Replace(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -120,7 +120,7 @@ public class SWRLReplaceBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
@@ -153,7 +153,7 @@ public class SWRLReplaceBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?P"))); //unexisting
-        DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(4, builtinResults2.Columns);
         Assert.HasCount(8, builtinResults2.Rows);
@@ -163,7 +163,7 @@ public class SWRLReplaceBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
-        DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(4, builtinResults3.Columns);
         Assert.HasCount(8, builtinResults3.Rows);
@@ -191,18 +191,18 @@ public class SWRLReplaceBuiltInTest
     [TestMethod]
     public void ShouldEvaluateReplaceBuiltInWithSTRLiteral()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Columns.Add("?Q");
-        antecedentResults.Rows.Add("heMMo", "ll", "MM");
-        antecedentResults.Rows.Add("hemMo", "ll", "MM");
-        antecedentResults.Rows.Add("heMMo@EN", "ll@EN", "MM@EN");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "2", "2");
-        antecedentResults.Rows.Add(DBNull.Value, DBNull.Value, DBNull.Value);
-        antecedentResults.Rows.Add(DBNull.Value, "[a-z]+", "");
-        antecedentResults.Rows.Add("hello", "hello", "hello");
-        antecedentResults.Rows.Add("http://example.org/test/", "ftp", "http");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddColumn("?Q");
+        antecedentResults.AddRow(new string[] { "heMMo", "ll", "MM" });
+        antecedentResults.AddRow(new string[] { "hemMo", "ll", "MM" });
+        antecedentResults.AddRow(new string[] { "heMMo@EN", "ll@EN", "MM@EN" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2", "2" });
+        antecedentResults.AddRow(new string[] { null, null, null });
+        antecedentResults.AddRow(new string[] { null, "[a-z]+", "" });
+        antecedentResults.AddRow(new string[] { "hello", "hello", "hello" });
+        antecedentResults.AddRow(new string[] { "http://example.org/test/", "ftp", "http" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Replace(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -210,7 +210,7 @@ public class SWRLReplaceBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);
@@ -232,18 +232,18 @@ public class SWRLReplaceBuiltInTest
     [TestMethod]
     public void ShouldEvaluateReplaceBuiltInWithRGXLiteral()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Columns.Add("?Q");
-        antecedentResults.Rows.Add("heMMo", "hello", "MM");
-        antecedentResults.Rows.Add("hemMo", "hello", "MM");
-        antecedentResults.Rows.Add("heMMo@EN", "hello@EN", "MM@EN");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "2", "2");
-        antecedentResults.Rows.Add(DBNull.Value, DBNull.Value, DBNull.Value);
-        antecedentResults.Rows.Add(DBNull.Value, "hello", "");
-        antecedentResults.Rows.Add("hello", DBNull.Value, "hello");
-        antecedentResults.Rows.Add("http://example.org/test/", "ftp://example.org/test/", "http");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Q");
+        antecedentResults.AddRow(new string[] { "heMMo", "hello", "MM" });
+        antecedentResults.AddRow(new string[] { "hemMo", "hello", "MM" });
+        antecedentResults.AddRow(new string[] { "heMMo@EN", "hello@EN", "MM@EN" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2", "2" });
+        antecedentResults.AddRow(new string[] { null, null, null });
+        antecedentResults.AddRow(new string[] { null, "hello", "" });
+        antecedentResults.AddRow(new string[] { "hello", null, "hello" });
+        antecedentResults.AddRow(new string[] { "http://example.org/test/", "ftp://example.org/test/", "http" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Replace(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -251,7 +251,7 @@ public class SWRLReplaceBuiltInTest
             new SWRLLiteralArgument(new RDFPlainLiteral("ll")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);
@@ -270,18 +270,18 @@ public class SWRLReplaceBuiltInTest
     [TestMethod]
     public void ShouldEvaluateReplaceBuiltInWithRPLLiteral()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Rows.Add("heMMo", "hello", "ll");
-        antecedentResults.Rows.Add("hemMo", "hello", "ll");
-        antecedentResults.Rows.Add("heMMo@EN", "hello@EN", "ll@EN");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "2", "2");
-        antecedentResults.Rows.Add(DBNull.Value, DBNull.Value, DBNull.Value);
-        antecedentResults.Rows.Add(DBNull.Value, "hello", "[a-z]+");
-        antecedentResults.Rows.Add("hello", DBNull.Value, "hello");
-        antecedentResults.Rows.Add("http://example.org/test/", "ftp://example.org/test/", "ftp");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddRow(new string[] { "heMMo", "hello", "ll" });
+        antecedentResults.AddRow(new string[] { "hemMo", "hello", "ll" });
+        antecedentResults.AddRow(new string[] { "heMMo@EN", "hello@EN", "ll@EN" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2", "2" });
+        antecedentResults.AddRow(new string[] { null, null, null });
+        antecedentResults.AddRow(new string[] { null, "hello", "[a-z]+" });
+        antecedentResults.AddRow(new string[] { "hello", null, "hello" });
+        antecedentResults.AddRow(new string[] { "http://example.org/test/", "ftp://example.org/test/", "ftp" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Replace(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -289,7 +289,7 @@ public class SWRLReplaceBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLLiteralArgument(new RDFTypedLiteral("MM", RDFModelEnums.RDFDatatypes.XSD_STRING)));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);

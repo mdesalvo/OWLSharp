@@ -123,9 +123,9 @@ public class SWRLBuiltInTest
                 new SWRLLiteralArgument(new RDFPlainLiteral("lit"))
             ]
         };
-        DataTable table = new DataTable();
-        table.Columns.Add("?VAR");
-        table.Rows.Add("value");
+        RDFTable table = new RDFTable();
+        table.AddColumn("?VAR");
+        table.AddRow(new string[] { "value" });
         Assert.ThrowsExactly<SWRLException>(() => _ = builtin.EvaluateOnAntecedent(table));
     }
 
@@ -138,11 +138,11 @@ public class SWRLBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?VAR")),
             new SWRLIndividualArgument(new RDFResource("http://test.org/")),
             new SWRLLiteralArgument(new RDFPlainLiteral("lit")));
-        DataTable table = new DataTable();
-        table.Columns.Add("?VAR");
-        table.Rows.Add("value");
-        table.Rows.Add("value2");
-        table.Rows.Add("value3");
+        RDFTable table = new RDFTable();
+        table.AddColumn("?VAR");
+        table.AddRow(new string[] { "value" });
+        table.AddRow(new string[] { "value2" });
+        table.AddRow(new string[] { "value3" });
         SWRLBuiltInRegister.AddBuiltIn(builtin);
 
         Assert.HasCount(1, builtin.EvaluateOnAntecedent(table).Rows);

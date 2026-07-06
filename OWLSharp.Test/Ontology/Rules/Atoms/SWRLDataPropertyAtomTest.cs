@@ -1,4 +1,4 @@
-/*
+﻿/*
    Copyright 2014-2025 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -173,7 +173,7 @@ public class SWRLDataPropertyAtomTest
                     new OWLLiteral(new RDFTypedLiteral("34", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)))
             ]
         };
-        DataTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
+        RDFTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(2, antecedentResult.Columns);
@@ -203,7 +203,7 @@ public class SWRLDataPropertyAtomTest
                     new OWLLiteral(new RDFPlainLiteral("hello","en-US--RTL")))
             ]
         };
-        DataTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
+        RDFTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(1, antecedentResult.Columns);
@@ -219,10 +219,10 @@ public class SWRLDataPropertyAtomTest
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-        DataTable antecedentResult = new DataTable();
-        antecedentResult.Columns.Add("?P");
-        antecedentResult.Columns.Add("?Q");
-        antecedentResult.Rows.Add("ex:Mark", "34^^http://www.w3.org/2001/XMLSchema#positiveInteger");
+        RDFTable antecedentResult = new RDFTable();
+        antecedentResult.AddColumn("?P");
+        antecedentResult.AddColumn("?Q");
+        antecedentResult.AddRow(new string[] { "ex:Mark", "34^^http://www.w3.org/2001/XMLSchema#positiveInteger" });
 
         List<OWLInference> inferences = atom.EvaluateOnConsequent(antecedentResult, null);
 
@@ -242,9 +242,9 @@ public class SWRLDataPropertyAtomTest
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLLiteralArgument(new RDFPlainLiteral("hello","en-US--RTL")));
 
-        DataTable antecedentResult = new DataTable();
-        antecedentResult.Columns.Add("?P");
-        antecedentResult.Rows.Add("ex:Mark");
+        RDFTable antecedentResult = new RDFTable();
+        antecedentResult.AddColumn("?P");
+        antecedentResult.AddRow(new string[] { "ex:Mark" });
 
         List<OWLInference> inferences = atom.EvaluateOnConsequent(antecedentResult, null);
 

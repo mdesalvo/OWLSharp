@@ -14,7 +14,6 @@
    limitations under the License.
 */
 
-using System.Data;
 using System.Collections.Generic;
 using System;
 using RDFSharp.Query;
@@ -33,7 +32,7 @@ namespace OWLSharp.Ontology
         /// Evaluates the built-in in the context of being part of a SWRL antecedent
         /// </summary>
         /// <exception cref="ArgumentException"></exception>
-        internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
+        internal static bool EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
             if (builtInArguments?.Count != 4)
@@ -48,11 +47,11 @@ namespace OWLSharp.Ontology
                 {
                     #region Guards
                     string leftArgVarName = leftArgVar.GetVariable().ToString();
-                    if (!antecedentResultsRow.Table.Columns.Contains(leftArgVarName))
+                    if (!antecedentResultsRow.HasColumn(leftArgVarName))
                         return true;
                     #endregion
 
-                    leftPatternMember = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[leftArgVarName].ToString());
+                    leftPatternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[leftArgVarName] ?? string.Empty));
                     break;
                 }
                 case SWRLLiteralArgument leftArgLit:
@@ -72,11 +71,11 @@ namespace OWLSharp.Ontology
                 {
                     #region Guards
                     string rightArgVarName = rightArgVarSTR.GetVariable().ToString();
-                    if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
+                    if (!antecedentResultsRow.HasColumn(rightArgVarName))
                         return true;
                     #endregion
 
-                    rightPatternMemberSTR = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+                    rightPatternMemberSTR = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[rightArgVarName] ?? string.Empty));
                     break;
                 }
                 case SWRLLiteralArgument rightArgLitSTR:
@@ -96,11 +95,11 @@ namespace OWLSharp.Ontology
                 {
                     #region Guards
                     string rightArgVarName = rightArgVarRGX.GetVariable().ToString();
-                    if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
+                    if (!antecedentResultsRow.HasColumn(rightArgVarName))
                         return true;
                     #endregion
 
-                    rightPatternMemberRGX = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+                    rightPatternMemberRGX = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[rightArgVarName] ?? string.Empty));
                     break;
                 }
                 case SWRLLiteralArgument rightArgLitRGX:
@@ -120,11 +119,11 @@ namespace OWLSharp.Ontology
                 {
                     #region Guards
                     string rightArgVarName = rightArgVarRPL.GetVariable().ToString();
-                    if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
+                    if (!antecedentResultsRow.HasColumn(rightArgVarName))
                         return true;
                     #endregion
 
-                    rightPatternMemberRPL = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+                    rightPatternMemberRPL = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[rightArgVarName] ?? string.Empty));
                     break;
                 }
                 case SWRLLiteralArgument rightArgLitRPL:

@@ -17,7 +17,6 @@
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
-using System.Data;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -70,14 +69,14 @@ namespace OWLSharp.Ontology
         /// Analyzes and filters the ontology knowledge by sequentially applying the set of atoms and built-ins.<br/>
         /// The result of the process is a tabular binding of variables ready for evaluation by the consequent.
         /// </summary>
-        internal DataTable Evaluate(OWLOntology ontology)
+        internal RDFTable Evaluate(OWLOntology ontology)
         {
             //Execute the antecedent atoms
-            List<DataTable> atomResults = new List<DataTable>(Atoms.Count);
+            List<RDFTable> atomResults = new List<RDFTable>(Atoms.Count);
             Atoms.ForEach(atom => atomResults.Add(atom.EvaluateOnAntecedent(ontology)));
 
             //Join results of antecedent atoms
-            DataTable antecedentResult = RDFQueryEngine.CombineTables(atomResults);
+            RDFTable antecedentResult = RDFTableEngine.CombineTables(atomResults);
 
             //Execute the antecedent built-ins
             BuiltIns.ForEach(builtin => antecedentResult = builtin.EvaluateOnAntecedent(antecedentResult));

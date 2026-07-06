@@ -1,4 +1,4 @@
-/*
+﻿/*
    Copyright 2014-2025 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -126,24 +126,24 @@ public class SWRLNotEqualBuiltInTest
     [TestMethod]
     public void ShouldEvaluateNotEqualBuiltIn()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "2.0^^http://www.w3.org/2001/XMLSchema#float");
-        antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add(DBNull.Value, "-2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add(DBNull.Value, DBNull.Value);
-        antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello");
-        antecedentResults.Rows.Add("hello", "hello");
-        antecedentResults.Rows.Add("hello", "hello@EN-US");
-        antecedentResults.Rows.Add("http://example.org/idv1", "http://example.org/idv2");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2.0^^http://www.w3.org/2001/XMLSchema#float" });
+        antecedentResults.AddRow(new string[] { "-2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { null, "-2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { null, null });
+        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello" });
+        antecedentResults.AddRow(new string[] { "hello", "hello" });
+        antecedentResults.AddRow(new string[] { "hello", "hello@EN-US" });
+        antecedentResults.AddRow(new string[] { "http://example.org/idv1", "http://example.org/idv2" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.NotEqual(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -160,7 +160,7 @@ public class SWRLNotEqualBuiltInTest
         SWRLBuiltIn builtin2 = SWRLBuiltIn.NotEqual(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
-        DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(2, builtinResults2.Columns);
         Assert.HasCount(9, builtinResults2.Rows);
@@ -168,7 +168,7 @@ public class SWRLNotEqualBuiltInTest
         SWRLBuiltIn builtin3 = SWRLBuiltIn.NotEqual(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(2, builtinResults3.Columns);
         Assert.HasCount(9, builtinResults3.Rows);
@@ -196,10 +196,10 @@ public class SWRLNotEqualBuiltInTest
     [TestMethod]
     public void ShouldEvaluateNotEqualBuiltInWithLeftResource()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Rows.Add("http://example.org/test");
-        antecedentResults.Rows.Add("http://example.org/test2");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(new string[] { "http://example.org/test" });
+        antecedentResults.AddRow(new string[] { "http://example.org/test2" });
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -210,7 +210,7 @@ public class SWRLNotEqualBuiltInTest
             ]
         };
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
@@ -221,9 +221,9 @@ public class SWRLNotEqualBuiltInTest
     [TestMethod]
     public void ShouldEvaluateNotEqualBuiltInWithLeftLiteral()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(new string[] { "-2^^http://www.w3.org/2001/XMLSchema#int" });
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -234,7 +234,7 @@ public class SWRLNotEqualBuiltInTest
             ]
         };
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
@@ -245,9 +245,9 @@ public class SWRLNotEqualBuiltInTest
     [TestMethod]
     public void ShouldEvaluateNotEqualBuiltInWithRightResource()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Rows.Add("http://example.org/test1");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddRow(new string[] { "http://example.org/test1" });
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -258,7 +258,7 @@ public class SWRLNotEqualBuiltInTest
             ]
         };
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
@@ -269,9 +269,9 @@ public class SWRLNotEqualBuiltInTest
     [TestMethod]
     public void ShouldEvaluateNotEqualBuiltInWithRightLiteral()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddRow(new string[] { "-2^^http://www.w3.org/2001/XMLSchema#int" });
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -282,7 +282,7 @@ public class SWRLNotEqualBuiltInTest
             ]
         };
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);

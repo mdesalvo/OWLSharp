@@ -1,4 +1,4 @@
-﻿/*
+/*
    Copyright 2014-2025 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
-using System.Data;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
@@ -46,13 +45,13 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Evaluates the atom in the context of being part of a SWRL antecedent
         /// </summary>
-        internal override DataTable EvaluateOnAntecedent(OWLOntology ontology)
+        internal override RDFTable EvaluateOnAntecedent(OWLOntology ontology)
         {
             string leftArgumentString = LeftArgument.ToString();
 
             //Initialize the structure of the atom result
-            DataTable atomResult = new DataTable();
-            RDFQueryEngine.AddColumn(atomResult, leftArgumentString);
+            RDFTable atomResult = new RDFTable();
+            atomResult.AddColumn(leftArgumentString);
 
             //Calculate individuals of the atom predicate
             List<OWLIndividualExpression> atomClassIndividuals = ontology.GetIndividualsOf((OWLClassExpression)Predicate);
@@ -63,7 +62,7 @@ namespace OWLSharp.Ontology
             {
                 atomResultBindings.Add(leftArgumentString, atomClassIndividual.GetIRI().ToString());
 
-                RDFQueryEngine.AddRow(atomResult, atomResultBindings);
+                atomResult.AddRow(atomResultBindings);
 
                 atomResultBindings.Clear();
             }
@@ -75,7 +74,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Evaluates the atom in the context of being part of a SWRL consequent
         /// </summary>
-        internal override List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology)
+        internal override List<OWLInference> EvaluateOnConsequent(RDFTable antecedentResults, OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
             string leftArgumentString = LeftArgument.ToString();
@@ -83,21 +82,21 @@ namespace OWLSharp.Ontology
 
             #region Guards
             //The antecedent results table MUST have a column corresponding to the atom's left argument
-            if (!antecedentResults.Columns.Contains(leftArgumentString))
+            if (!antecedentResults.HasColumn(leftArgumentString))
                 return inferences;
             #endregion
 
             //Iterate the antecedent results table to materialize the atom's reasoner evidences
-            foreach (DataRow currentRow in antecedentResults.Rows)
+            foreach (RDFTableRow currentRow in antecedentResults.Rows)
             {
                 #region Guards
                 //The current row MUST have a BOUND value in the column corresponding to the atom's left argument
-                if (currentRow.IsNull(leftArgumentString))
+                if (currentRow.IsUnbound(leftArgumentString))
                     continue;
                 #endregion
 
                 //Parse the value of the column corresponding to the atom's left argument
-                RDFPatternMember leftArgumentValue = RDFQueryUtilities.ParseRDFPatternMember(currentRow[leftArgumentString].ToString());
+                RDFPatternMember leftArgumentValue = RDFQueryUtilities.ParseRDFPatternMember(currentRow[leftArgumentString]);
                 if (leftArgumentValue is RDFResource leftArgumentValueResource)
                 {
                     //Build the inference individual

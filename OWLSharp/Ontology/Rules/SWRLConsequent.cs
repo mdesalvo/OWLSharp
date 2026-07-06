@@ -15,10 +15,10 @@
 */
 
 using System.Collections.Generic;
-using System.Data;
 using System.Xml.Serialization;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
+using RDFSharp.Query;
 
 namespace OWLSharp.Ontology
 {
@@ -57,7 +57,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Materializes the logical derivations by applying the set of axioms on the given antecedent results
         /// </summary>
-        internal List<OWLInference> Evaluate(DataTable antecedentResults, OWLOntology ontology)
+        internal List<OWLInference> Evaluate(RDFTable antecedentResults, OWLOntology ontology)
         {
             List<OWLInference>  inferences = new List<OWLInference> ();
 

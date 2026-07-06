@@ -1,4 +1,4 @@
-/*
+﻿/*
    Copyright 2014-2025 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -142,29 +142,29 @@ public class SWRLMatchesBuiltInTest
     [TestMethod]
     public void ShouldEvaluateMatchesBuiltIn()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Rows.Add("hello", "ello$");
-        antecedentResults.Rows.Add("hello", "eLLo$");
-        antecedentResults.Rows.Add("hello@EN-US", "EN-US$");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "2");
-        antecedentResults.Rows.Add(DBNull.Value, "^hello");
-        antecedentResults.Rows.Add("hello", DBNull.Value);
-        antecedentResults.Rows.Add(DBNull.Value, DBNull.Value);
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string");
-        antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello");
-        antecedentResults.Rows.Add("hello", "-2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN");
-        antecedentResults.Rows.Add("hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("http://example.org/test/", "^http");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(new string[] { "hello", "ello$" });
+        antecedentResults.AddRow(new string[] { "hello", "eLLo$" });
+        antecedentResults.AddRow(new string[] { "hello@EN-US", "EN-US$" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2" });
+        antecedentResults.AddRow(new string[] { null, "^hello" });
+        antecedentResults.AddRow(new string[] { "hello", null });
+        antecedentResults.AddRow(new string[] { null, null });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string" });
+        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello" });
+        antecedentResults.AddRow(new string[] { "hello", "-2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN" });
+        antecedentResults.AddRow(new string[] { "hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "http://example.org/test/", "^http" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Matches(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -183,7 +183,7 @@ public class SWRLMatchesBuiltInTest
         SWRLBuiltIn builtin2 = SWRLBuiltIn.Matches(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
-        DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(2, builtinResults2.Columns);
         Assert.HasCount(14, builtinResults2.Rows);
@@ -191,7 +191,7 @@ public class SWRLMatchesBuiltInTest
         SWRLBuiltIn builtin3 = SWRLBuiltIn.Matches(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(2, builtinResults3.Columns);
         Assert.HasCount(14, builtinResults3.Rows);
@@ -219,23 +219,23 @@ public class SWRLMatchesBuiltInTest
     [TestMethod]
     public void ShouldEvaluateMatchesBuiltInWithLiteralLeftArgument()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Rows.Add("ello$");
-        antecedentResults.Rows.Add("eLLo$");
-        antecedentResults.Rows.Add("EN-US$");
-        antecedentResults.Rows.Add("2");
-        antecedentResults.Rows.Add("^hello");
-        antecedentResults.Rows.Add(DBNull.Value);
-        antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("^hello$");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(new string[] { "ello$" });
+        antecedentResults.AddRow(new string[] { "eLLo$" });
+        antecedentResults.AddRow(new string[] { "EN-US$" });
+        antecedentResults.AddRow(new string[] { "2" });
+        antecedentResults.AddRow(new string[] { "^hello" });
+        antecedentResults.AddRow(new string[] { null });
+        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "^hello$" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Matches(
             new SWRLLiteralArgument(new RDFPlainLiteral("hello")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
@@ -250,21 +250,21 @@ public class SWRLMatchesBuiltInTest
     [TestMethod]
     public void ShouldEvaluateMatchesBuiltInWithLiteralRightArgument()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Rows.Add("hello");
-        antecedentResults.Rows.Add("eLLo$");
-        antecedentResults.Rows.Add("2");
-        antecedentResults.Rows.Add("lo");
-        antecedentResults.Rows.Add(DBNull.Value);
-        antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddRow(new string[] { "hello" });
+        antecedentResults.AddRow(new string[] { "eLLo$" });
+        antecedentResults.AddRow(new string[] { "2" });
+        antecedentResults.AddRow(new string[] { "lo" });
+        antecedentResults.AddRow(new string[] { null });
+        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Matches(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLLiteralArgument(new RDFPlainLiteral("ello$")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
@@ -276,29 +276,29 @@ public class SWRLMatchesBuiltInTest
     [TestMethod]
     public void ShouldEvaluateMatchesBuiltInWithFlags()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Rows.Add("hello", "eLLo$");
-        antecedentResults.Rows.Add("hello@EN-US", "EN-US$");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "2");
-        antecedentResults.Rows.Add(DBNull.Value, "^hello");
-        antecedentResults.Rows.Add("hello", DBNull.Value);
-        antecedentResults.Rows.Add(DBNull.Value, DBNull.Value);
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string");
-        antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello");
-        antecedentResults.Rows.Add("hello", "-2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN");
-        antecedentResults.Rows.Add("hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("HTtp://example.org/test/", "^http");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(new string[] { "hello", "eLLo$" });
+        antecedentResults.AddRow(new string[] { "hello@EN-US", "EN-US$" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2" });
+        antecedentResults.AddRow(new string[] { null, "^hello" });
+        antecedentResults.AddRow(new string[] { "hello", null });
+        antecedentResults.AddRow(new string[] { null, null });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string" });
+        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello" });
+        antecedentResults.AddRow(new string[] { "hello", "-2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN" });
+        antecedentResults.AddRow(new string[] { "hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "HTtp://example.org/test/", "^http" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Matches(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLLiteralArgument(new RDFPlainLiteral("ismx")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);

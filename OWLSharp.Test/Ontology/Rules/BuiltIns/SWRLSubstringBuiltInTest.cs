@@ -1,4 +1,4 @@
-/*
+﻿/*
    Copyright 2014-2025 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -102,20 +102,20 @@ public class SWRLSubstringBuiltInTest
         // W3C SWRL spec uses 1-based indexing (aligned with XPath fn:substring):
         // substring("hello", 2) = "ello"  (from position 2, i.e. the second character)
         // substring("http://example.org/test", 8) = "example.org/test"  (h=1..e=8)
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Rows.Add("ello", "hello", "2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("@EN-US", "hello@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("example.org/test", "http://example.org/test", "8^^http://www.w3.org/2001/XMLSchema#int");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddRow(new string[] { "ello", "hello", "2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "@EN-US", "hello@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "example.org/test", "http://example.org/test", "8^^http://www.w3.org/2001/XMLSchema#int" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Substring(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?Z")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);
@@ -133,7 +133,7 @@ public class SWRLSubstringBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?F"))); //unexisting
-        DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(3, builtinResults2.Columns);
         Assert.HasCount(3, builtinResults2.Rows);
@@ -142,7 +142,7 @@ public class SWRLSubstringBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(3, builtinResults3.Columns);
         Assert.HasCount(3, builtinResults3.Rows);
@@ -170,20 +170,20 @@ public class SWRLSubstringBuiltInTest
     [TestMethod]
     public void ShouldEvaluateSubstringBuiltInWithStringRightArgumentSRC()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Z");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Z");
         // 1-based: substring("hello", 2) = "ello"; substring("hello", 4) = "o" ≠ "@EN-US"
-        antecedentResults.Rows.Add("ello", "2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("llo", "2^^http://www.w3.org/2001/XMLSchema#int");
+        antecedentResults.AddRow(new string[] { "ello", "2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "llo", "2^^http://www.w3.org/2001/XMLSchema#int" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Substring(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLLiteralArgument(new RDFPlainLiteral("hello")),
             new SWRLVariableArgument(new RDFVariable("?Z")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -195,20 +195,20 @@ public class SWRLSubstringBuiltInTest
     [TestMethod]
     public void ShouldEvaluateSubstringBuiltInWithNumericRightArgumentIDX()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
         // 1-based literal index 2: substring("hello", 2) = "ello"
-        antecedentResults.Rows.Add("ello", "hello");
-        antecedentResults.Rows.Add("@EN-US", "hello@EN-US");
-        antecedentResults.Rows.Add("org/test", "http://example.org/test");
+        antecedentResults.AddRow(new string[] { "ello", "hello" });
+        antecedentResults.AddRow(new string[] { "@EN-US", "hello@EN-US" });
+        antecedentResults.AddRow(new string[] { "org/test", "http://example.org/test" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Substring(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLLiteralArgument(new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -220,13 +220,13 @@ public class SWRLSubstringBuiltInTest
     [TestMethod]
     public void ShouldEvaluateSubstringBuiltInWithNumericRightArgumentIDXLEN()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
         // 1-based literal index 2, len 2: substring("hello",2,2)="el"; substring("http://...",2,2)="tt"
-        antecedentResults.Rows.Add("el", "hello");
-        antecedentResults.Rows.Add("@EN-US", "hello@EN-US");
-        antecedentResults.Rows.Add("tt", "http://example.org/test");
+        antecedentResults.AddRow(new string[] { "el", "hello" });
+        antecedentResults.AddRow(new string[] { "@EN-US", "hello@EN-US" });
+        antecedentResults.AddRow(new string[] { "tt", "http://example.org/test" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Substring(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -234,7 +234,7 @@ public class SWRLSubstringBuiltInTest
             new SWRLLiteralArgument(new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)),
             new SWRLLiteralArgument(new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -248,16 +248,16 @@ public class SWRLSubstringBuiltInTest
     [TestMethod]
     public void ShouldEvaluateSubstringBuiltInWithLength()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Columns.Add("?Z");
-        antecedentResults.Columns.Add("?Q");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddColumn("?Q");
         // 1-based: substring("hello",2,2)="el"; substring("hello@EN-US",4,1)="l"≠"@EN-US";
         // substring("http://example.org/test",16,3)="org"  (h=1..o=16)
-        antecedentResults.Rows.Add("el", "hello", "2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("@EN-US", "hello@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int", "1^^http://www.w3.org/2001/XMLSchema#int");
-        antecedentResults.Rows.Add("org", "http://example.org/test", "16^^http://www.w3.org/2001/XMLSchema#int", "3^^http://www.w3.org/2001/XMLSchema#int");
+        antecedentResults.AddRow(new string[] { "el", "hello", "2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "@EN-US", "hello@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int", "1^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "org", "http://example.org/test", "16^^http://www.w3.org/2001/XMLSchema#int", "3^^http://www.w3.org/2001/XMLSchema#int" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Substring(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -265,7 +265,7 @@ public class SWRLSubstringBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);

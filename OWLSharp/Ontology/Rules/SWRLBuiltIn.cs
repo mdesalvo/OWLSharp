@@ -752,13 +752,19 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Evaluates the built-in in the context of being part of a SWRL antecedent
         /// </summary>
-        internal DataTable EvaluateOnAntecedent(DataTable antecedentResults)
+        internal RDFTable EvaluateOnAntecedent(RDFTable antecedentResults)
         {
-            DataTable filteredTable = antecedentResults.Clone();
+            RDFTable filteredTable = antecedentResults.Clone();
 
+            //Custom built-ins expose a public DataRow-based evaluator function: this DataTable is materialized
+            //lazily (at most once), only if a custom built-in is actually encountered while scanning the rows.
+            DataTable lazyDataTableForCustomBuiltIns = null;
+
+            int rowIndex = -1;
             //Iterate the rows of the antecedent results table
-            foreach (DataRow currentRow in antecedentResults.Rows)
+            foreach (RDFTableRow currentRow in antecedentResults.Rows)
             {
+                rowIndex++;
                 try
                 {
                     bool keepRow;
@@ -904,8 +910,12 @@ namespace OWLSharp.Ontology
                                                           ?? throw new NotImplementedException($"unregistered IRI {IRI}");
                             //Assign the built-in arguments before evaluation
                             customBuiltIn.Arguments = Arguments;
+                            //Custom built-ins are public API and evaluate against a DataRow: materialize the
+                            //antecedent results into a DataTable (once) so the corresponding row can be handed to it
+                            if (lazyDataTableForCustomBuiltIns == null)
+                                lazyDataTableForCustomBuiltIns = antecedentResults.ToDataTable();
                             //Evaluate the built-in on the current row
-                            keepRow = customBuiltIn.EvaluatorFunction(currentRow);
+                            keepRow = customBuiltIn.EvaluatorFunction(lazyDataTableForCustomBuiltIns.Rows[rowIndex]);
                             //Cleanup the built-in arguments after evaluation
                             customBuiltIn.Arguments = null;
                             break;
@@ -914,9 +924,10 @@ namespace OWLSharp.Ontology
                     //If current row has satisfied the builtIn, keep it in the filtered result table
                     if (keepRow)
                     {
-                        DataRow newRow = filteredTable.NewRow();
-                        newRow.ItemArray = currentRow.ItemArray;
-                        filteredTable.Rows.Add(newRow);
+                        string[] cells = new string[antecedentResults.ColumnsCount];
+                        for (int c = 0; c < cells.Length; c++)
+                            cells[c] = currentRow[c];
+                        filteredTable.AddRow(cells);
                     }
                 }
                 catch (Exception ex)

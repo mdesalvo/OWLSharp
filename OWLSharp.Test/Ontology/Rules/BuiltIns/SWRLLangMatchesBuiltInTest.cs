@@ -1,4 +1,4 @@
-/*
+﻿/*
    Copyright 2014-2025 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -125,13 +125,13 @@ public class SWRLLangMatchesBuiltInTest
     [TestMethod]
     public void ShouldEvaluateEXTLangMatchesBuiltIn()
     {
-        DataTable antecedentResults = new DataTable();
-        antecedentResults.Columns.Add("?X");
-        antecedentResults.Columns.Add("?Y");
-        antecedentResults.Rows.Add("hello", "hi");
-        antecedentResults.Rows.Add("hello", "hi@EN-US");
-        antecedentResults.Rows.Add("http://example.org/", "http://example.org/hello");
-        antecedentResults.Rows.Add("hello@EN-US", "hi@EN-US");
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(new string[] { "hello", "hi" });
+        antecedentResults.AddRow(new string[] { "hello", "hi@EN-US" });
+        antecedentResults.AddRow(new string[] { "http://example.org/", "http://example.org/hello" });
+        antecedentResults.AddRow(new string[] { "hello@EN-US", "hi@EN-US" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.LangMatches(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -139,7 +139,7 @@ public class SWRLLangMatchesBuiltInTest
 
         Assert.IsTrue(builtin.IsExtension);
 
-        DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -154,7 +154,7 @@ public class SWRLLangMatchesBuiltInTest
         SWRLBuiltIn builtin2 = SWRLBuiltIn.LangMatches(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
-        DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(2, builtinResults2.Columns);
         Assert.HasCount(4, builtinResults2.Rows);
@@ -162,7 +162,7 @@ public class SWRLLangMatchesBuiltInTest
         SWRLBuiltIn builtin3 = SWRLBuiltIn.LangMatches(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(2, builtinResults3.Columns);
         Assert.HasCount(4, builtinResults3.Rows);
