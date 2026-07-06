@@ -1,9 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyTitle>OWLSharp</AssemblyTitle>
     <AssemblyName>OWLSharp</AssemblyName>
     <AssemblyVersion>$(Version)</AssemblyVersion>
-    <Version>4.23.0</Version>
+    <Version>5.0.0</Version>
     <Authors>Marco De Salvo</Authors>
     <Copyright>Marco De Salvo</Copyright>
     <Description>Lightweight and friendly .NET library for working with OWL2 ontologies</Description>
@@ -46,7 +46,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="RDFSharp" Version="3.23.0" />
+    <PackageReference Include="RDFSharp" Version="4.0.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
     <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
