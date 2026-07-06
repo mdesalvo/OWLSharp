@@ -58,8 +58,8 @@ namespace OWLSharp.Reasoner
                     new RDFConstructQuery()
                         .AddPatternGroup(new RDFPatternGroup()
                             .AddPropertyPath(propertyPath)
-                            .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?PROPERTY_CHAIN_AXIOM_START"))))
-                            .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?PROPERTY_CHAIN_AXIOM_END")))))
+                            .AddFilter(new RDFFilter(new RDFIsUriExpression(new RDFVariable("?PROPERTY_CHAIN_AXIOM_START"))))
+                            .AddFilter(new RDFFilter(new RDFIsUriExpression(new RDFVariable("?PROPERTY_CHAIN_AXIOM_END")))))
                         .AddTemplate(templatePattern)
                         .ApplyToGraph(lazyOPAsnsGraph.Value);
 

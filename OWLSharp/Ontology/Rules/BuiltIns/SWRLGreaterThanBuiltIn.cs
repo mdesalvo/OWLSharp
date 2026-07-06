@@ -133,7 +133,7 @@ namespace OWLSharp.Ontology
             }
             #endregion
 
-            return new RDFExpressionFilter(comparisonExpression).ApplyFilter(antecedentResultsRow, false);
+            return new RDFFilter(comparisonExpression).ApplyFilter(antecedentResultsRow, false);
         }
         #endregion
     }
