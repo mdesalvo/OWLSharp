@@ -88,6 +88,12 @@ namespace OWLSharp.Ontology
             => GetIRI().URI.GetShortUri();
 
         /// <summary>
+        /// Gets the OWL2/Manchester representation of this expression
+        /// </summary>
+        public virtual string ToManchesterString(OWLManchesterContext manchesterContext)
+            => manchesterContext.Abbreviate(GetIRI());
+
+        /// <summary>
         /// Exports this expression to an equivalent RDFGraph object
         /// </summary>
         internal virtual RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

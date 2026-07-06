@@ -97,6 +97,12 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
+        /// Gets the OWL2/Manchester representation of this OWLDataExactCardinality expression
+        /// </summary>
+        public override string ToManchesterString(OWLManchesterContext manchesterContext)
+            => $"{DataProperty.ToManchesterString(manchesterContext)} exactly {Cardinality}{(DataRangeExpression != null ? $" {manchesterContext.Nest(DataRangeExpression)}" : string.Empty)}";
+
+        /// <summary>
         /// Exports this OWLDataExactCardinality expression to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

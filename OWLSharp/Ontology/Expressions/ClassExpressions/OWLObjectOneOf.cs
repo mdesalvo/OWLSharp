@@ -77,6 +77,12 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
+        /// Gets the OWL2/Manchester representation of this OWLObjectOneOf expression
+        /// </summary>
+        public override string ToManchesterString(OWLManchesterContext manchesterContext)
+            => $"{{{string.Join(", ", IndividualExpressions.Select(idvExpr => idvExpr.ToManchesterString(manchesterContext)))}}}";
+
+        /// <summary>
         /// Exports this OWLObjectOneOf expression to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

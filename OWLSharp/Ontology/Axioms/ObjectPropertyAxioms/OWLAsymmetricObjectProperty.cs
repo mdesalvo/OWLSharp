@@ -58,6 +58,18 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLAsymmetricObjectProperty to the OWL2/Manchester rendering of the ontology
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+            => ObjectPropertyExpression is OWLObjectProperty objProp
+                ? new OWLManchesterFrameItem {
+                    FrameKind = OWLManchesterFrameKind.ObjectProperty,
+                    EntityName = objProp.ToManchesterString(manchesterContext),
+                    SectionKeyword = "Characteristics:",
+                    ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}Asymmetric" }
+                : null;
+
+        /// <summary>
         /// Exports this OWLAsymmetricObjectProperty to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

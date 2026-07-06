@@ -74,6 +74,12 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
+        /// Gets the OWL2/Manchester representation of this OWLDataHasValue expression
+        /// </summary>
+        public override string ToManchesterString(OWLManchesterContext manchesterContext)
+            => $"{DataProperty.ToManchesterString(manchesterContext)} value {Literal.ToManchesterString(manchesterContext)}";
+
+        /// <summary>
         /// Exports this OWLDataHasValue expression to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

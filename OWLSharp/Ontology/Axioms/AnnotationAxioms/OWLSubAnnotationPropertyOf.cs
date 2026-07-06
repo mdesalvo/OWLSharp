@@ -59,6 +59,16 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLSubAnnotationPropertyOf to the OWL2/Manchester rendering of the ontology
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+            => new OWLManchesterFrameItem {
+                FrameKind = OWLManchesterFrameKind.AnnotationProperty,
+                EntityName = SubAnnotationProperty.ToManchesterString(manchesterContext),
+                SectionKeyword = "SubPropertyOf:",
+                ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{SuperAnnotationProperty.ToManchesterString(manchesterContext)}" };
+
+        /// <summary>
         /// Exports this OWLSubAnnotationPropertyOf to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

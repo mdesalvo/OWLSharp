@@ -112,6 +112,19 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLHasKey to the OWL2/Manchester rendering of the ontology
+        /// (null if the keyed class expression is anonymous, since Manchester class frames require named entities)
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+            => ClassExpression is OWLClass keyedClass
+                ? new OWLManchesterFrameItem {
+                    FrameKind = OWLManchesterFrameKind.Class,
+                    EntityName = keyedClass.ToManchesterString(manchesterContext),
+                    SectionKeyword = "HasKey:",
+                    ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{string.Join(" ", (ObjectPropertyExpressions ?? Enumerable.Empty<OWLObjectPropertyExpression>()).Select(opex => opex.ToManchesterString(manchesterContext)).Concat((DataProperties ?? Enumerable.Empty<OWLDataProperty>()).Select(dtProp => dtProp.ToManchesterString(manchesterContext))))}" }
+                : null;
+
+        /// <summary>
         /// Exports this OWLHasKey to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

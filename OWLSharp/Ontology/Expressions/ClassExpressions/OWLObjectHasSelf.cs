@@ -64,6 +64,12 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
+        /// Gets the OWL2/Manchester representation of this OWLObjectHasSelf expression
+        /// </summary>
+        public override string ToManchesterString(OWLManchesterContext manchesterContext)
+            => $"{ObjectPropertyExpression.ToManchesterString(manchesterContext)} Self";
+
+        /// <summary>
         /// Exports this OWLObjectHasSelf expression to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

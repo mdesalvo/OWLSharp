@@ -87,6 +87,16 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLDisjointUnion to the OWL2/Manchester rendering of the ontology
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+            => new OWLManchesterFrameItem {
+                FrameKind = OWLManchesterFrameKind.Class,
+                EntityName = ClassIRI.ToManchesterString(manchesterContext),
+                SectionKeyword = "DisjointUnionOf:",
+                ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{string.Join(", ", ClassExpressions.Select(clsExpr => clsExpr.ToManchesterString(manchesterContext)))}" };
+
+        /// <summary>
         /// Exports this OWLDisjointUnion to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

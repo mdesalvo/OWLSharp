@@ -91,6 +91,29 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLDeclaration to the OWL2/Manchester rendering of the ontology:
+        /// the bare frame of the declared entity (Class:, ObjectProperty:, ...)
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+        {
+            OWLManchesterFrameKind? frameKind = null;
+            switch (Entity)
+            {
+                case OWLClass _: frameKind = OWLManchesterFrameKind.Class; break;
+                case OWLDatatype _: frameKind = OWLManchesterFrameKind.Datatype; break;
+                case OWLObjectProperty _: frameKind = OWLManchesterFrameKind.ObjectProperty; break;
+                case OWLDataProperty _: frameKind = OWLManchesterFrameKind.DataProperty; break;
+                case OWLAnnotationProperty _: frameKind = OWLManchesterFrameKind.AnnotationProperty; break;
+                case OWLNamedIndividual _: frameKind = OWLManchesterFrameKind.Individual; break;
+            }
+            return frameKind.HasValue
+                ? new OWLManchesterFrameItem {
+                    FrameKind = frameKind.Value,
+                    EntityName = Entity.ToManchesterString(manchesterContext) }
+                : null;
+        }
+
+        /// <summary>
         /// Exports this OWLDeclaration to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

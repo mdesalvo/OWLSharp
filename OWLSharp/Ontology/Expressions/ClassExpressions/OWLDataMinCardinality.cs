@@ -97,6 +97,12 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
+        /// Gets the OWL2/Manchester representation of this OWLDataMinCardinality expression
+        /// </summary>
+        public override string ToManchesterString(OWLManchesterContext manchesterContext)
+            => $"{DataProperty.ToManchesterString(manchesterContext)} min {Cardinality}{(DataRangeExpression != null ? $" {manchesterContext.Nest(DataRangeExpression)}" : string.Empty)}";
+
+        /// <summary>
         /// Exports this OWLDataMinCardinality expression to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

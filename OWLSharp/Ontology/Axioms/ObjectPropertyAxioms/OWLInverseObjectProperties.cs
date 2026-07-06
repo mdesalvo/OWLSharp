@@ -61,6 +61,28 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLInverseObjectProperties to the OWL2/Manchester rendering of the ontology
+        /// (anchored to whichever of the two property expressions is named; null if both are anonymous)
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+        {
+            if (LeftObjectPropertyExpression is OWLObjectProperty leftObjProp)
+                return new OWLManchesterFrameItem {
+                    FrameKind = OWLManchesterFrameKind.ObjectProperty,
+                    EntityName = leftObjProp.ToManchesterString(manchesterContext),
+                    SectionKeyword = "InverseOf:",
+                    ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{RightObjectPropertyExpression.ToManchesterString(manchesterContext)}" };
+
+            return RightObjectPropertyExpression is OWLObjectProperty rightObjProp
+                ? new OWLManchesterFrameItem {
+                    FrameKind = OWLManchesterFrameKind.ObjectProperty,
+                    EntityName = rightObjProp.ToManchesterString(manchesterContext),
+                    SectionKeyword = "InverseOf:",
+                    ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{LeftObjectPropertyExpression.ToManchesterString(manchesterContext)}" }
+                : null;
+        }
+
+        /// <summary>
         /// Exports this OWLInverseObjectProperties to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

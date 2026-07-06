@@ -64,6 +64,12 @@ namespace OWLSharp.Ontology
         /// </summary>
         public override RDFResource GetIRI()
             => new RDFResource(string.Concat($"bnode:{NodeID}"));
+
+        /// <summary>
+        /// Gets the OWL2/Manchester representation of this anonymous individual (e.g: _:ANON2447)
+        /// </summary>
+        public override string ToManchesterString(OWLManchesterContext manchesterContext)
+            => $"_:{NodeID}";
         #endregion
     }
 }

@@ -29,7 +29,11 @@ namespace OWLSharp
             /// <summary>
             /// OWL2/XML format (https://www.w3.org/TR/owl2-xml-serialization/)
             /// </summary>
-            OWL2XML = 1
+            OWL2XML = 1,
+            /// <summary>
+            /// OWL2/Manchester format (https://www.w3.org/TR/owl2-manchester-syntax/)
+            /// </summary>
+            OWL2MANCHESTER = 2
         }
 
         /// <summary>

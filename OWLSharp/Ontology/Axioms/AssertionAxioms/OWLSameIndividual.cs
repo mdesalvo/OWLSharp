@@ -63,6 +63,15 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLSameIndividual to the OWL2/Manchester rendering of the ontology
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+            => new OWLManchesterFrameItem {
+                FrameKind = OWLManchesterFrameKind.Misc,
+                SectionKeyword = "SameIndividual:",
+                ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{string.Join(", ", IndividualExpressions.Select(idvExpr => idvExpr.ToManchesterString(manchesterContext)))}" };
+
+        /// <summary>
         /// Exports this OWLSameIndividual to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

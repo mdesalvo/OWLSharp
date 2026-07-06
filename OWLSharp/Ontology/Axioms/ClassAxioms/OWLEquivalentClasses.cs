@@ -79,6 +79,15 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLEquivalentClasses to the OWL2/Manchester rendering of the ontology
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+            => new OWLManchesterFrameItem {
+                FrameKind = OWLManchesterFrameKind.Misc,
+                SectionKeyword = "EquivalentClasses:",
+                ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{string.Join(", ", ClassExpressions.Select(clsExpr => clsExpr.ToManchesterString(manchesterContext)))}" };
+
+        /// <summary>
         /// Exports this OWLEquivalentClasses to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

@@ -82,6 +82,29 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
+        /// Gets the OWL2/Manchester representation of this datatype restriction
+        /// </summary>
+        public override string ToManchesterString(OWLManchesterContext manchesterContext)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(Datatype.ToManchesterString(manchesterContext));
+            if (FacetRestrictions?.Count > 0)
+            {
+                sb.Append('[');
+                sb.Append(string.Join(", ", FacetRestrictions.Select(fct =>
+                {
+                    string facetSymbol = OWLManchesterContext.FacetSymbols.TryGetValue(fct.FacetIRI, out string symbol)
+                        ? symbol : manchesterContext.Abbreviate(new RDFResource(fct.FacetIRI));
+                    return $"{facetSymbol} {fct.Literal.ToManchesterString(manchesterContext)}";
+                })));
+                sb.Append(']');
+            }
+
+            return sb.ToString();
+        }
+
+        /// <summary>
         /// Exports this datatype restriction to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

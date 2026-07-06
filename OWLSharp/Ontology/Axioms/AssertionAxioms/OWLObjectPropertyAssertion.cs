@@ -68,6 +68,22 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLObjectPropertyAssertion to the OWL2/Manchester rendering of the ontology
+        /// (Manchester facts only admit named properties, so ObjectInverseOf assertions are normalized by swapping individuals)
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+        {
+            OWLObjectProperty objProp = ObjectPropertyExpression as OWLObjectProperty ?? ((OWLObjectInverseOf)ObjectPropertyExpression).ObjectProperty;
+            OWLIndividualExpression sourceIdvExpr = ObjectPropertyExpression is OWLObjectInverseOf ? TargetIndividualExpression : SourceIndividualExpression;
+            OWLIndividualExpression targetIdvExpr = ObjectPropertyExpression is OWLObjectInverseOf ? SourceIndividualExpression : TargetIndividualExpression;
+            return new OWLManchesterFrameItem {
+                FrameKind = OWLManchesterFrameKind.Individual,
+                EntityName = sourceIdvExpr.ToManchesterString(manchesterContext),
+                SectionKeyword = "Facts:",
+                ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{objProp.ToManchesterString(manchesterContext)} {targetIdvExpr.ToManchesterString(manchesterContext)}" };
+        }
+
+        /// <summary>
         /// Exports this OWLObjectPropertyAssertion to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

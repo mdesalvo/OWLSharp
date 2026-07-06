@@ -92,6 +92,19 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLSubClassOf to the OWL2/Manchester rendering of the ontology
+        /// (null in case of GCI, since Manchester class frames require a named subclass)
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+            => SubClassExpression is OWLClass subClass
+                ? new OWLManchesterFrameItem {
+                    FrameKind = OWLManchesterFrameKind.Class,
+                    EntityName = subClass.ToManchesterString(manchesterContext),
+                    SectionKeyword = "SubClassOf:",
+                    ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{SuperClassExpression.ToManchesterString(manchesterContext)}" }
+                : null;
+
+        /// <summary>
         /// Exports this OWLSubClassOf to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

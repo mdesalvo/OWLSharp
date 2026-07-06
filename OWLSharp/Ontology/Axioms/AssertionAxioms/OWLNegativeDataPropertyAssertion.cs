@@ -79,6 +79,16 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLNegativeDataPropertyAssertion to the OWL2/Manchester rendering of the ontology
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+            => new OWLManchesterFrameItem {
+                FrameKind = OWLManchesterFrameKind.Individual,
+                EntityName = IndividualExpression.ToManchesterString(manchesterContext),
+                SectionKeyword = "Facts:",
+                ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}not {DataProperty.ToManchesterString(manchesterContext)} {Literal.ToManchesterString(manchesterContext)}" };
+
+        /// <summary>
         /// Exports this OWLNegativeDataPropertyAssertion to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

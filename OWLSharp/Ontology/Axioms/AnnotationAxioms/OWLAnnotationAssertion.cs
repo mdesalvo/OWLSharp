@@ -87,6 +87,27 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLAnnotationAssertion to the OWL2/Manchester rendering of the ontology
+        /// (the serializer resolves the subject IRI against the declared entity frames)
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+        {
+            string annotationValue;
+            if (ValueIRI != null)
+                annotationValue = manchesterContext.Abbreviate(new RDFResource(ValueIRI));
+            else if (ValueLiteral != null)
+                annotationValue = ValueLiteral.ToManchesterString(manchesterContext);
+            else
+                return null;
+
+            return new OWLManchesterFrameItem {
+                FrameKind = OWLManchesterFrameKind.EntityAnnotation,
+                EntityName = manchesterContext.Abbreviate(new RDFResource(SubjectIRI)),
+                SectionKeyword = "Annotations:",
+                ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{AnnotationProperty.ToManchesterString(manchesterContext)} {annotationValue}" };
+        }
+
+        /// <summary>
         /// Exports this OWLAnnotationAssertion to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

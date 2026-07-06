@@ -112,6 +112,13 @@ namespace OWLSharp.Ontology
             => new RDFGraph();
 
         /// <summary>
+        /// Gets the contribution of this axiom to the OWL2/Manchester rendering of the ontology
+        /// (null if this axiom is not representable in Manchester syntax)
+        /// </summary>
+        internal virtual OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+            => null;
+
+        /// <summary>
         /// Adds the given annotation to the set of this axiom's annotations
         /// </summary>
         /// <exception cref="OWLException"></exception>

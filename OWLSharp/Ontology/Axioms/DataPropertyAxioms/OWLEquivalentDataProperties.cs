@@ -63,6 +63,15 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLEquivalentDataProperties to the OWL2/Manchester rendering of the ontology
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+            => new OWLManchesterFrameItem {
+                FrameKind = OWLManchesterFrameKind.Misc,
+                SectionKeyword = "EquivalentProperties:",
+                ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{string.Join(", ", DataProperties.Select(dtProp => dtProp.ToManchesterString(manchesterContext)))}" };
+
+        /// <summary>
         /// Exports this OWLEquivalentDataProperties to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

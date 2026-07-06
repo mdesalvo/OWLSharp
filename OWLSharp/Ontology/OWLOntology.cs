@@ -426,6 +426,10 @@ namespace OWLSharp.Ontology
                                 using (StreamWriter streamWriter = new StreamWriter(outputStream, RDFModelUtilities.UTF8_NoBOM))
                                     streamWriter.Write(OWLSerializer.SerializeOntology(exportOntology));
                                 break;
+                            case OWLEnums.OWLFormats.OWL2MANCHESTER:
+                                using (StreamWriter streamWriter = new StreamWriter(outputStream, RDFModelUtilities.UTF8_NoBOM))
+                                    streamWriter.Write(OWLManchesterSerializer.SerializeOntology(exportOntology));
+                                break;
                         }
                     }
                     catch (Exception ex)

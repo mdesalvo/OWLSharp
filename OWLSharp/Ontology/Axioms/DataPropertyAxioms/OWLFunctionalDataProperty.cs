@@ -51,6 +51,16 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLFunctionalDataProperty to the OWL2/Manchester rendering of the ontology
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+            => new OWLManchesterFrameItem {
+                FrameKind = OWLManchesterFrameKind.DataProperty,
+                EntityName = DataProperty.ToManchesterString(manchesterContext),
+                SectionKeyword = "Characteristics:",
+                ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}Functional" };
+
+        /// <summary>
         /// Exports this OWLFunctionalDataProperty to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

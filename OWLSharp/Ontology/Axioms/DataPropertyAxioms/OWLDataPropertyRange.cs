@@ -62,6 +62,16 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLDataPropertyRange to the OWL2/Manchester rendering of the ontology
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+            => new OWLManchesterFrameItem {
+                FrameKind = OWLManchesterFrameKind.DataProperty,
+                EntityName = DataProperty.ToManchesterString(manchesterContext),
+                SectionKeyword = "Range:",
+                ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{DataRangeExpression.ToManchesterString(manchesterContext)}" };
+
+        /// <summary>
         /// Exports this OWLDataPropertyRange to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

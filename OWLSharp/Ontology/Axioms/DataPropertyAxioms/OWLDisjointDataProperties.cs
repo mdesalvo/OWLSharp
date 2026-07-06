@@ -62,6 +62,15 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLDisjointDataProperties to the OWL2/Manchester rendering of the ontology
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+            => new OWLManchesterFrameItem {
+                FrameKind = OWLManchesterFrameKind.Misc,
+                SectionKeyword = "DisjointProperties:",
+                ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{string.Join(", ", DataProperties.Select(dtProp => dtProp.ToManchesterString(manchesterContext)))}" };
+
+        /// <summary>
         /// Exports this OWLDisjointDataProperties to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

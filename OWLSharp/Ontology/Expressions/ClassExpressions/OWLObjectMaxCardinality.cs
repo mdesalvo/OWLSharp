@@ -111,6 +111,12 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
+        /// Gets the OWL2/Manchester representation of this OWLObjectMaxCardinality expression
+        /// </summary>
+        public override string ToManchesterString(OWLManchesterContext manchesterContext)
+            => $"{ObjectPropertyExpression.ToManchesterString(manchesterContext)} max {Cardinality}{(ClassExpression != null ? $" {manchesterContext.Nest(ClassExpression)}" : string.Empty)}";
+
+        /// <summary>
         /// Exports this OWLObjectMaxCardinality expression to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

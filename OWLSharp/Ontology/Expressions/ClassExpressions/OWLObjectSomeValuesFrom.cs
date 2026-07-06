@@ -93,6 +93,12 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
+        /// Gets the OWL2/Manchester representation of this OWLObjectSomeValuesFrom expression
+        /// </summary>
+        public override string ToManchesterString(OWLManchesterContext manchesterContext)
+            => $"{ObjectPropertyExpression.ToManchesterString(manchesterContext)} some {manchesterContext.Nest(ClassExpression)}";
+
+        /// <summary>
         /// Exports this OWLObjectSomeValuesFrom expression to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

@@ -64,6 +64,16 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLDatatypeDefinition to the OWL2/Manchester rendering of the ontology
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+            => new OWLManchesterFrameItem {
+                FrameKind = OWLManchesterFrameKind.Datatype,
+                EntityName = Datatype.ToManchesterString(manchesterContext),
+                SectionKeyword = "EquivalentTo:",
+                ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{DataRangeExpression.ToManchesterString(manchesterContext)}" };
+
+        /// <summary>
         /// Exports this OWLDatatypeDefinition to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

@@ -77,6 +77,21 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
+        /// Gets the contribution of this OWLAnnotationPropertyRange to the OWL2/Manchester rendering of the ontology
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+        {
+            string rangeIRI = IRI ?? (AbbreviatedIRI != null ? string.Concat(AbbreviatedIRI.Namespace, AbbreviatedIRI.Name) : null);
+            return rangeIRI != null
+                ? new OWLManchesterFrameItem {
+                    FrameKind = OWLManchesterFrameKind.AnnotationProperty,
+                    EntityName = AnnotationProperty.ToManchesterString(manchesterContext),
+                    SectionKeyword = "Range:",
+                    ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{manchesterContext.Abbreviate(new RDFResource(rangeIRI))}" }
+                : null;
+        }
+
+        /// <summary>
         /// Exports this OWLAnnotationPropertyRange to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

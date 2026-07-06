@@ -70,6 +70,19 @@ namespace OWLSharp.Ontology
             => RDFQueryPrinter.PrintPatternMember(GetLiteral(), RDFNamespaceRegister.Instance.Register);
 
         /// <summary>
+        /// Gets the OWL2/Manchester representation of this literal
+        /// </summary>
+        public override string ToManchesterString(OWLManchesterContext manchesterContext)
+        {
+            string escapedValue = Value.Replace("\\", "\\\\").Replace("\"", "\\\"");
+            if (DatatypeIRI != null)
+                return $"\"{escapedValue}\"^^{manchesterContext.Abbreviate(new RDFResource(DatatypeIRI))}";
+            if (!string.IsNullOrEmpty(Language))
+                return $"\"{escapedValue}\"@{Language}";
+            return $"\"{escapedValue}\"";
+        }
+
+        /// <summary>
         /// Gets the RDFLiteral representation of this literal
         /// </summary>
         public RDFLiteral GetLiteral()

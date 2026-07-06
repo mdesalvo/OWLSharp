@@ -15,6 +15,7 @@
 */
 
 using RDFSharp.Model;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
@@ -76,6 +77,31 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Gets the contribution of this OWLSubObjectPropertyOf to the OWL2/Manchester rendering of the ontology
+        /// (property chains go under the SubPropertyChain: section of the named super property frame;
+        /// null if the frame-owning property expression is anonymous, since Manchester frames require named entities)
+        /// </summary>
+        internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
+        {
+            if (SubObjectPropertyChain != null)
+                return SuperObjectPropertyExpression is OWLObjectProperty superObjProp
+                    ? new OWLManchesterFrameItem {
+                        FrameKind = OWLManchesterFrameKind.ObjectProperty,
+                        EntityName = superObjProp.ToManchesterString(manchesterContext),
+                        SectionKeyword = "SubPropertyChain:",
+                        ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{string.Join(" o ", SubObjectPropertyChain.ObjectPropertyExpressions.Select(opex => opex.ToManchesterString(manchesterContext)))}" }
+                    : null;
+
+            return SubObjectPropertyExpression is OWLObjectProperty subObjProp
+                ? new OWLManchesterFrameItem {
+                    FrameKind = OWLManchesterFrameKind.ObjectProperty,
+                    EntityName = subObjProp.ToManchesterString(manchesterContext),
+                    SectionKeyword = "SubPropertyOf:",
+                    ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{SuperObjectPropertyExpression.ToManchesterString(manchesterContext)}" }
+                : null;
+        }
+
         /// <summary>
         /// Exports this OWLSubObjectPropertyOf to an equivalent RDFGraph object
         /// </summary>
