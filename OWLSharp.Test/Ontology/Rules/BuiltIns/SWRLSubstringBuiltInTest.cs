@@ -1,4 +1,4 @@
-﻿/*
+/*
    Copyright 2014-2026 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,6 +19,7 @@ using OWLSharp.Ontology;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Data;
+using OWLSharp;
 
 namespace OWLSharp.Test.Ontology;
 
@@ -102,7 +103,7 @@ public class SWRLSubstringBuiltInTest
         // W3C SWRL spec uses 1-based indexing (aligned with XPath fn:substring):
         // substring("hello", 2) = "ello"  (from position 2, i.e. the second character)
         // substring("http://example.org/test", 8) = "example.org/test"  (h=1..e=8)
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
@@ -115,17 +116,17 @@ public class SWRLSubstringBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?Z")));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);
         Assert.HasCount(2, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "ello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "hello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "example.org/test"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "http://example.org/test"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Z"].ToString(), "8^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "ello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Z"] ?? string.Empty), "2^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "example.org/test"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "http://example.org/test"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Z"] ?? string.Empty), "8^^http://www.w3.org/2001/XMLSchema#int"));
 
         //Test with unexisting variables
 
@@ -133,7 +134,7 @@ public class SWRLSubstringBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?F"))); //unexisting
-        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(3, builtinResults2.Columns);
         Assert.HasCount(3, builtinResults2.Rows);
@@ -142,7 +143,7 @@ public class SWRLSubstringBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(3, builtinResults3.Columns);
         Assert.HasCount(3, builtinResults3.Rows);
@@ -170,10 +171,10 @@ public class SWRLSubstringBuiltInTest
     [TestMethod]
     public void ShouldEvaluateSubstringBuiltInWithStringRightArgumentSRC()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Z");
-        // 1-based: substring("hello", 2) = "ello"; substring("hello", 4) = "o" ≠ "@EN-US"
+        // 1-based: substring("hello", 2) = "ello"; substring("hello", 4) = "o" ? "@EN-US"
         antecedentResults.AddRow(new string[] { "ello", "2^^http://www.w3.org/2001/XMLSchema#int" });
         antecedentResults.AddRow(new string[] { "@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int" });
         antecedentResults.AddRow(new string[] { "llo", "2^^http://www.w3.org/2001/XMLSchema#int" });
@@ -183,19 +184,19 @@ public class SWRLSubstringBuiltInTest
             new SWRLLiteralArgument(new RDFPlainLiteral("hello")),
             new SWRLVariableArgument(new RDFVariable("?Z")));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
         Assert.HasCount(1, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "ello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "ello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Z"] ?? string.Empty), "2^^http://www.w3.org/2001/XMLSchema#int"));
     }
 
     [TestMethod]
     public void ShouldEvaluateSubstringBuiltInWithNumericRightArgumentIDX()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         // 1-based literal index 2: substring("hello", 2) = "ello"
@@ -208,19 +209,19 @@ public class SWRLSubstringBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLLiteralArgument(new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
         Assert.HasCount(1, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "ello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "ello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "hello"));
     }
 
     [TestMethod]
     public void ShouldEvaluateSubstringBuiltInWithNumericRightArgumentIDXLEN()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         // 1-based literal index 2, len 2: substring("hello",2,2)="el"; substring("http://...",2,2)="tt"
@@ -234,26 +235,26 @@ public class SWRLSubstringBuiltInTest
             new SWRLLiteralArgument(new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)),
             new SWRLLiteralArgument(new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
         Assert.HasCount(2, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "el"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "hello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "tt"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "http://example.org/test"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "el"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "tt"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "http://example.org/test"));
     }
 
     [TestMethod]
     public void ShouldEvaluateSubstringBuiltInWithLength()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
         antecedentResults.AddColumn("?Q");
-        // 1-based: substring("hello",2,2)="el"; substring("hello@EN-US",4,1)="l"≠"@EN-US";
+        // 1-based: substring("hello",2,2)="el"; substring("hello@EN-US",4,1)="l"?"@EN-US";
         // substring("http://example.org/test",16,3)="org"  (h=1..o=16)
         antecedentResults.AddRow(new string[] { "el", "hello", "2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int" });
         antecedentResults.AddRow(new string[] { "@EN-US", "hello@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int", "1^^http://www.w3.org/2001/XMLSchema#int" });
@@ -265,19 +266,20 @@ public class SWRLSubstringBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
         Assert.HasCount(2, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "el"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "hello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "org"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "http://example.org/test"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Z"].ToString(), "16^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Q"].ToString(), "3^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "el"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Z"] ?? string.Empty), "2^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Q"] ?? string.Empty), "2^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "org"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "http://example.org/test"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Z"] ?? string.Empty), "16^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Q"] ?? string.Empty), "3^^http://www.w3.org/2001/XMLSchema#int"));
     }
     #endregion
 }
+

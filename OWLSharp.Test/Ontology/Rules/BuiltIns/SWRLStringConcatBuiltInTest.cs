@@ -1,4 +1,4 @@
-﻿/*
+/*
    Copyright 2014-2026 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +20,7 @@ using RDFSharp.Model;
 using RDFSharp.Query;
 using System;
 using System.Data;
+using OWLSharp;
 
 namespace OWLSharp.Test.Ontology;
 
@@ -126,22 +127,22 @@ public class SWRLStringConcatBuiltInTest
     [TestMethod]
     public void ShouldEvaluateStringConcatBuiltIn()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
         antecedentResults.AddRow(new string[] { "hello", "h", "ello" });
-        antecedentResults.AddRow(new string[] { "hello@EN-US", "EN-US" });
+        antecedentResults.AddRow(new string[] { "hello@EN-US", "EN-US", null });
         antecedentResults.AddRow(new string[] { "22", "2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int" });
         antecedentResults.AddRow(new string[] { "-2", null, "-2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", null });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", null, null });
         antecedentResults.AddRow(new string[] { "hello", "hello@EN", null });
         antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2", "hello^^http://www.w3.org/2001/XMLSchema#string" });
         antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string", null, "hello@EN--ltr" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello" });
-        antecedentResults.AddRow(new string[] { "hello", "-2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN" });
-        antecedentResults.AddRow(new string[] { "hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello", null });
+        antecedentResults.AddRow(new string[] { "hello", "-2^^http://www.w3.org/2001/XMLSchema#int", null });
+        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN", null });
+        antecedentResults.AddRow(new string[] { "hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int", null });
         antecedentResults.AddRow(new string[] { "http://example.org/test/", "http://example.org/", "test/" });
 
         SWRLBuiltIn builtin = SWRLBuiltIn.StringConcat(
@@ -149,30 +150,30 @@ public class SWRLStringConcatBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?Z")));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);
         Assert.HasCount(4, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "hello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "h"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "ello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "hello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "hello@EN"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Z"].ToString(), ""));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?X"].ToString(), "hello^^http://www.w3.org/2001/XMLSchema#string"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?Y"].ToString(), ""));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?Z"].ToString(), "hello@EN--ltr"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[3]["?X"].ToString(), "http://example.org/test/"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[3]["?Y"].ToString(), "http://example.org/"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[3]["?Z"].ToString(), "test/"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "h"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Z"] ?? string.Empty), "ello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "hello@EN"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Z"] ?? string.Empty), ""));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), "hello^^http://www.w3.org/2001/XMLSchema#string"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Y"] ?? string.Empty), ""));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Z"] ?? string.Empty), "hello@EN--ltr"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?X"] ?? string.Empty), "http://example.org/test/"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?Y"] ?? string.Empty), "http://example.org/"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?Z"] ?? string.Empty), "test/"));
 
         //Test with unexisting variables
 
         SWRLBuiltIn builtin2 = SWRLBuiltIn.StringConcat(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?F"))); //unexisting
-        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(3, builtinResults2.Columns);
         Assert.IsEmpty(builtinResults2.Rows);
@@ -180,7 +181,7 @@ public class SWRLStringConcatBuiltInTest
         SWRLBuiltIn builtin3 = SWRLBuiltIn.StringConcat(
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(3, builtinResults3.Columns);
         Assert.IsEmpty(builtinResults3.Rows);
@@ -208,7 +209,7 @@ public class SWRLStringConcatBuiltInTest
     [TestMethod]
     public void ShouldEvaluateStringConcatBuiltInWithLeftString()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(new string[] { "llo" });
         antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
@@ -228,20 +229,20 @@ public class SWRLStringConcatBuiltInTest
             ]
         };
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
         Assert.HasCount(3, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "llo"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "llo^^http://www.w3.org/2001/XMLSchema#string"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?Y"].ToString(), "llo@EN"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "llo"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "llo^^http://www.w3.org/2001/XMLSchema#string"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Y"] ?? string.Empty), "llo@EN"));
     }
 
     [TestMethod]
     public void ShouldEvaluateStringConcatBuiltInWithRightString()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
         antecedentResults.AddRow(new string[] { "7^^http://www.w3.org/2001/XMLSchema#int" });
@@ -263,18 +264,18 @@ public class SWRLStringConcatBuiltInTest
             ]
         };
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
         Assert.HasCount(1, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "http://example.org/test"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "http://example.org/test"));
     }
 
     [TestMethod]
     public void ShouldEvaluateStringConcatBuiltInWithMultipleArguments()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddRow(new string[] { "The white fox jumps" });
         antecedentResults.AddRow(new string[] { "The white fox jumpsover the lazy..." });
@@ -287,12 +288,13 @@ public class SWRLStringConcatBuiltInTest
             new SWRLLiteralArgument(new RDFTypedLiteral(" the lazy...", RDFModelEnums.RDFDatatypes.XSD_STRING))
         );
 
-        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(1, builtinResults2.Columns);
         Assert.HasCount(1, builtinResults2.Rows);
-        Assert.IsTrue(string.Equals(builtinResults2.Rows[0]["?X"].ToString(), "The white fox jumps over the lazy..."));
+        Assert.IsTrue(string.Equals((builtinResults2.Rows[0]["?X"] ?? string.Empty), "The white fox jumps over the lazy..."));
     }
     #endregion
 }
+

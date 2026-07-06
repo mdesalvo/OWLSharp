@@ -21,6 +21,7 @@ using OWLSharp.Ontology;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
+using OWLSharp;
 
 namespace OWLSharp.Test.Ontology;
 
@@ -108,7 +109,7 @@ public class SWRLConsequentTest
                     })
             ]
         };
-        RDFTable antecedentResult = ontology.Rules[0].Antecedent.Evaluate(ontology);
+        OWLTable antecedentResult = ontology.Rules[0].Antecedent.Evaluate(ontology);
         List<OWLInference> consequentResult = ontology.Rules[0].Consequent.Evaluate(antecedentResult, ontology);
 
         Assert.IsNotNull(consequentResult);
@@ -153,3 +154,4 @@ public class SWRLConsequentTest
     }
     #endregion
 }
+

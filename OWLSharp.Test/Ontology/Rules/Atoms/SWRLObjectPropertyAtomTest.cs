@@ -1,4 +1,4 @@
-﻿/*
+/*
    Copyright 2014-2026 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -174,13 +174,13 @@ public class SWRLObjectPropertyAtomTest
                     new OWLNamedIndividual(new RDFResource("ex:John")))
             ]
         };
-        RDFTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
+        OWLTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(2, antecedentResult.Columns);
         Assert.HasCount(1, antecedentResult.Rows);
-        Assert.IsTrue(string.Equals(antecedentResult.Rows[0]["?P"].ToString(), "ex:Mark"));
-        Assert.IsTrue(string.Equals(antecedentResult.Rows[0]["?Q"].ToString(), "ex:John"));
+        Assert.IsTrue(string.Equals((antecedentResult.Rows[0]["?P"] ?? string.Empty), "ex:Mark"));
+        Assert.IsTrue(string.Equals((antecedentResult.Rows[0]["?Q"] ?? string.Empty), "ex:John"));
     }
 
     [TestMethod]
@@ -205,12 +205,12 @@ public class SWRLObjectPropertyAtomTest
                     new OWLNamedIndividual(new RDFResource("ex:John")))
             ]
         };
-        RDFTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
+        OWLTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(1, antecedentResult.Columns);
         Assert.HasCount(1, antecedentResult.Rows);
-        Assert.IsTrue(string.Equals(antecedentResult.Rows[0]["?P"].ToString(), "ex:Mark"));
+        Assert.IsTrue(string.Equals((antecedentResult.Rows[0]["?P"] ?? string.Empty), "ex:Mark"));
     }
 
     [TestMethod]
@@ -235,13 +235,13 @@ public class SWRLObjectPropertyAtomTest
                     new OWLNamedIndividual(new RDFResource("ex:John")))
             ]
         };
-        RDFTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
+        OWLTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(2, antecedentResult.Columns);
         Assert.HasCount(1, antecedentResult.Rows);
-        Assert.IsTrue(string.Equals(antecedentResult.Rows[0]["?P"].ToString(), "ex:John"));
-        Assert.IsTrue(string.Equals(antecedentResult.Rows[0]["?Q"].ToString(), "ex:Mark"));
+        Assert.IsTrue(string.Equals((antecedentResult.Rows[0]["?P"] ?? string.Empty), "ex:John"));
+        Assert.IsTrue(string.Equals((antecedentResult.Rows[0]["?Q"] ?? string.Empty), "ex:Mark"));
     }
 
     [TestMethod]
@@ -252,7 +252,7 @@ public class SWRLObjectPropertyAtomTest
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-        RDFTable antecedentResult = new RDFTable();
+        OWLTable antecedentResult = new OWLTable();
         antecedentResult.AddColumn("?P");
         antecedentResult.AddColumn("?Q");
         antecedentResult.AddRow(new string[] { "ex:Mark", "ex:John" });
@@ -275,7 +275,7 @@ public class SWRLObjectPropertyAtomTest
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLIndividualArgument(new RDFResource("ex:John")));
 
-        RDFTable antecedentResult = new RDFTable();
+        OWLTable antecedentResult = new OWLTable();
         antecedentResult.AddColumn("?P");
         antecedentResult.AddRow(new string[] { "ex:Mark" });
 

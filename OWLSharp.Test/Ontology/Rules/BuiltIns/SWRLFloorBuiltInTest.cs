@@ -1,4 +1,4 @@
-﻿/*
+/*
    Copyright 2014-2026 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +20,7 @@ using RDFSharp.Model;
 using RDFSharp.Query;
 using System;
 using System.Data;
+using OWLSharp;
 
 namespace OWLSharp.Test.Ontology;
 
@@ -126,7 +127,7 @@ public class SWRLFloorBuiltInTest
     [TestMethod]
     public void ShouldEvaluateFloorBuiltIn()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2.18^^http://www.w3.org/2001/XMLSchema#double" });
@@ -146,20 +147,20 @@ public class SWRLFloorBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
         Assert.HasCount(1, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2.18^^http://www.w3.org/2001/XMLSchema#double"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "2^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "2.18^^http://www.w3.org/2001/XMLSchema#double"));
 
         //Test with unexisting variables
 
         SWRLBuiltIn builtin2 = SWRLBuiltIn.Floor(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
-        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(2, builtinResults2.Columns);
         Assert.HasCount(12, builtinResults2.Rows);
@@ -167,7 +168,7 @@ public class SWRLFloorBuiltInTest
         SWRLBuiltIn builtin3 = SWRLBuiltIn.Floor(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(2, builtinResults3.Columns);
         Assert.HasCount(12, builtinResults3.Rows);
@@ -195,7 +196,7 @@ public class SWRLFloorBuiltInTest
     [TestMethod]
     public void ShouldEvaluateFloorBuiltInWithLeftNumber()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(new string[] { "2.18^^http://www.w3.org/2001/XMLSchema#double" });
         antecedentResults.AddRow(new string[] { "2.73^^http://www.w3.org/2001/XMLSchema#double" });
@@ -215,19 +216,19 @@ public class SWRLFloorBuiltInTest
             ]
         };
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
         Assert.HasCount(2, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2.18^^http://www.w3.org/2001/XMLSchema#double"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "2.73^^http://www.w3.org/2001/XMLSchema#double"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "2.18^^http://www.w3.org/2001/XMLSchema#double"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "2.73^^http://www.w3.org/2001/XMLSchema#double"));
     }
 
     [TestMethod]
     public void ShouldEvaluateFloorBuiltInWithRightNumber()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
         antecedentResults.AddRow(new string[] { "3^^http://www.w3.org/2001/XMLSchema#int" });
@@ -247,13 +248,14 @@ public class SWRLFloorBuiltInTest
             ]
         };
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
         Assert.HasCount(2, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "2.0^^http://www.w3.org/2001/XMLSchema#float"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "2^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "2.0^^http://www.w3.org/2001/XMLSchema#float"));
     }
     #endregion
 }
+

@@ -57,7 +57,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Materializes the logical derivations by applying the set of axioms on the given antecedent results
         /// </summary>
-        internal List<OWLInference> Evaluate(RDFTable antecedentResults, OWLOntology ontology)
+        internal List<OWLInference> Evaluate(OWLTable antecedentResults, OWLOntology ontology)
         {
             List<OWLInference>  inferences = new List<OWLInference> ();
 

@@ -752,9 +752,9 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Evaluates the built-in in the context of being part of a SWRL antecedent
         /// </summary>
-        internal RDFTable EvaluateOnAntecedent(RDFTable antecedentResults)
+        internal OWLTable EvaluateOnAntecedent(OWLTable antecedentResults)
         {
-            RDFTable filteredTable = antecedentResults.Clone();
+            OWLTable filteredTable = antecedentResults.Clone();
 
             //Custom built-ins expose a public DataRow-based evaluator function: this DataTable is materialized
             //lazily (at most once), only if a custom built-in is actually encountered while scanning the rows.
@@ -762,7 +762,7 @@ namespace OWLSharp.Ontology
 
             int rowIndex = -1;
             //Iterate the rows of the antecedent results table
-            foreach (RDFTableRow currentRow in antecedentResults.Rows)
+            foreach (OWLTableRow currentRow in antecedentResults.Rows)
             {
                 rowIndex++;
                 try

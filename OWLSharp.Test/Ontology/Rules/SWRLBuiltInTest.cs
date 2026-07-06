@@ -19,6 +19,7 @@ using OWLSharp.Ontology;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Data;
+using OWLSharp;
 
 namespace OWLSharp.Test.Ontology;
 
@@ -123,7 +124,7 @@ public class SWRLBuiltInTest
                 new SWRLLiteralArgument(new RDFPlainLiteral("lit"))
             ]
         };
-        RDFTable table = new RDFTable();
+        OWLTable table = new OWLTable();
         table.AddColumn("?VAR");
         table.AddRow(new string[] { "value" });
         Assert.ThrowsExactly<SWRLException>(() => _ = builtin.EvaluateOnAntecedent(table));
@@ -138,7 +139,7 @@ public class SWRLBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?VAR")),
             new SWRLIndividualArgument(new RDFResource("http://test.org/")),
             new SWRLLiteralArgument(new RDFPlainLiteral("lit")));
-        RDFTable table = new RDFTable();
+        OWLTable table = new OWLTable();
         table.AddColumn("?VAR");
         table.AddRow(new string[] { "value" });
         table.AddRow(new string[] { "value2" });
@@ -186,3 +187,4 @@ public class SWRLBuiltInTest
     }
     #endregion
 }
+

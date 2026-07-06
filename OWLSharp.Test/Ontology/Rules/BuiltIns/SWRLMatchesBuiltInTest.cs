@@ -1,4 +1,4 @@
-﻿/*
+/*
    Copyright 2014-2026 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +20,7 @@ using RDFSharp.Model;
 using RDFSharp.Query;
 using System;
 using System.Data;
+using OWLSharp;
 
 namespace OWLSharp.Test.Ontology;
 
@@ -142,7 +143,7 @@ public class SWRLMatchesBuiltInTest
     [TestMethod]
     public void ShouldEvaluateMatchesBuiltIn()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(new string[] { "hello", "ello$" });
@@ -164,26 +165,26 @@ public class SWRLMatchesBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
         Assert.HasCount(4, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "hello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "ello$"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "hello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), ""));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?X"].ToString(), ""));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?Y"].ToString(), ""));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[3]["?X"].ToString(), "http://example.org/test/"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[3]["?Y"].ToString(), "^http"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "ello$"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), ""));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), ""));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Y"] ?? string.Empty), ""));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?X"] ?? string.Empty), "http://example.org/test/"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?Y"] ?? string.Empty), "^http"));
 
         //Test with unexisting variables
 
         SWRLBuiltIn builtin2 = SWRLBuiltIn.Matches(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
-        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(2, builtinResults2.Columns);
         Assert.HasCount(14, builtinResults2.Rows);
@@ -191,7 +192,7 @@ public class SWRLMatchesBuiltInTest
         SWRLBuiltIn builtin3 = SWRLBuiltIn.Matches(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(2, builtinResults3.Columns);
         Assert.HasCount(14, builtinResults3.Rows);
@@ -219,7 +220,7 @@ public class SWRLMatchesBuiltInTest
     [TestMethod]
     public void ShouldEvaluateMatchesBuiltInWithLiteralLeftArgument()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(new string[] { "ello$" });
         antecedentResults.AddRow(new string[] { "eLLo$" });
@@ -235,22 +236,22 @@ public class SWRLMatchesBuiltInTest
             new SWRLLiteralArgument(new RDFPlainLiteral("hello")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
         Assert.HasCount(5, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "ello$"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "^hello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?Y"].ToString(), ""));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[3]["?Y"].ToString(), "hello^^http://www.w3.org/2001/XMLSchema#string"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[4]["?Y"].ToString(), "^hello$"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "ello$"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "^hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Y"] ?? string.Empty), ""));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?Y"] ?? string.Empty), "hello^^http://www.w3.org/2001/XMLSchema#string"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[4]["?Y"] ?? string.Empty), "^hello$"));
     }
 
     [TestMethod]
     public void ShouldEvaluateMatchesBuiltInWithLiteralRightArgument()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddRow(new string[] { "hello" });
         antecedentResults.AddRow(new string[] { "eLLo$" });
@@ -264,19 +265,19 @@ public class SWRLMatchesBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLLiteralArgument(new RDFPlainLiteral("ello$")));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
         Assert.HasCount(2, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "hello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "hello^^http://www.w3.org/2001/XMLSchema#string"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "hello^^http://www.w3.org/2001/XMLSchema#string"));
     }
 
     [TestMethod]
     public void ShouldEvaluateMatchesBuiltInWithFlags()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(new string[] { "hello", "eLLo$" });
@@ -298,19 +299,20 @@ public class SWRLMatchesBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLLiteralArgument(new RDFPlainLiteral("ismx")));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
         Assert.HasCount(4, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "hello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "eLLo$"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "hello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), ""));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?X"].ToString(), ""));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?Y"].ToString(), ""));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[3]["?X"].ToString(), "HTtp://example.org/test/"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[3]["?Y"].ToString(), "^http"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "eLLo$"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), ""));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), ""));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Y"] ?? string.Empty), ""));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?X"] ?? string.Empty), "HTtp://example.org/test/"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?Y"] ?? string.Empty), "^http"));
     }
     #endregion
 }
+

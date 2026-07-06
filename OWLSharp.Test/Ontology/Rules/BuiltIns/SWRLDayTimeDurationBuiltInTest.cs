@@ -1,4 +1,4 @@
-﻿/*
+/*
    Copyright 2014-2026 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,6 +19,7 @@ using OWLSharp.Ontology;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Data;
+using OWLSharp;
 
 namespace OWLSharp.Test.Ontology;
 
@@ -105,7 +106,7 @@ public class SWRLDayTimeDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateDayTimeDurationBuiltIn()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
@@ -129,16 +130,16 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(5, builtinResults.Columns);
         Assert.HasCount(1, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "1^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "7^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "6^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?U"].ToString(), "12^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "1^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Z"] ?? string.Empty), "7^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Q"] ?? string.Empty), "6^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?U"] ?? string.Empty), "12^^http://www.w3.org/2001/XMLSchema#int"));
 
         //Test with unexisting variables
 
@@ -148,7 +149,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
-        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(5, builtinResults2.Columns);
         Assert.HasCount(2, builtinResults2.Rows);
@@ -159,7 +160,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
-        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(5, builtinResults3.Columns);
         Assert.HasCount(2, builtinResults3.Rows);
@@ -170,7 +171,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?U")));
-        RDFTable builtinResults4 = builtin4.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults4 = builtin4.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults4);
         Assert.HasCount(5, builtinResults4.Columns);
         Assert.HasCount(2, builtinResults4.Rows);
@@ -181,7 +182,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?F"))); //unexisting
-        RDFTable builtinResults5 = builtin5.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults5 = builtin5.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults5);
         Assert.HasCount(5, builtinResults5.Columns);
         Assert.HasCount(2, builtinResults5.Rows);
@@ -209,7 +210,7 @@ public class SWRLDayTimeDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateDayTimeDurationBuiltInWithLeftLiteral()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
         antecedentResults.AddColumn("?Q");
@@ -230,21 +231,21 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
         Assert.HasCount(1, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "1^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "7^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "6^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?U"].ToString(), "12^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "1^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Z"] ?? string.Empty), "7^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Q"] ?? string.Empty), "6^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?U"] ?? string.Empty), "12^^http://www.w3.org/2001/XMLSchema#int"));
     }
 
     [TestMethod]
     public void ShouldEvaluateDayTimeDurationBuiltInWithRightDayLiteral()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Z");
         antecedentResults.AddColumn("?Q");
@@ -265,21 +266,21 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
         Assert.HasCount(1, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "7^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "6^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?U"].ToString(), "12^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Z"] ?? string.Empty), "7^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Q"] ?? string.Empty), "6^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?U"] ?? string.Empty), "12^^http://www.w3.org/2001/XMLSchema#int"));
     }
 
     [TestMethod]
     public void ShouldEvaluateDayTimeBuiltInWithRightHourLiteral()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Q");
@@ -300,21 +301,21 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
         Assert.HasCount(1, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "1^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "6^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?U"].ToString(), "12^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "1^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Q"] ?? string.Empty), "6^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?U"] ?? string.Empty), "12^^http://www.w3.org/2001/XMLSchema#int"));
     }
 
     [TestMethod]
     public void ShouldEvaluateDayTimeBuiltInWithRightMinuteLiteral()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
@@ -335,21 +336,21 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLLiteralArgument(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INTEGER)),
             new SWRLVariableArgument(new RDFVariable("?U")));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
         Assert.HasCount(1, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "1^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "7^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?U"].ToString(), "12^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "1^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Z"] ?? string.Empty), "7^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?U"] ?? string.Empty), "12^^http://www.w3.org/2001/XMLSchema#int"));
     }
 
     [TestMethod]
     public void ShouldEvaluateDayTimeBuiltInWithRightSecondLiteral()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
@@ -370,15 +371,16 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLLiteralArgument(new RDFTypedLiteral("12", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
         Assert.HasCount(1, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "1^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "7^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "6^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "1^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Z"] ?? string.Empty), "7^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Q"] ?? string.Empty), "6^^http://www.w3.org/2001/XMLSchema#int"));
     }
     #endregion
 }
+

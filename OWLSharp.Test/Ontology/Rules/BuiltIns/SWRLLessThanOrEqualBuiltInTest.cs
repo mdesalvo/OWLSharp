@@ -1,4 +1,4 @@
-﻿/*
+/*
    Copyright 2014-2026 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +20,7 @@ using RDFSharp.Model;
 using RDFSharp.Query;
 using System;
 using System.Data;
+using OWLSharp;
 
 namespace OWLSharp.Test.Ontology;
 
@@ -126,7 +127,7 @@ public class SWRLLessThanOrEqualBuiltInTest
     [TestMethod]
     public void ShouldEvaluateLessThanOrEqualBuiltIn()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "5^^http://www.w3.org/2001/XMLSchema#int" });
@@ -147,28 +148,28 @@ public class SWRLLessThanOrEqualBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
         Assert.HasCount(5, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), ""));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), ""));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?X"].ToString(), "hello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?Y"].ToString(), "hello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[3]["?X"].ToString(), "hello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[3]["?Y"].ToString(), "hello@EN-US"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[4]["?X"].ToString(), "http://example.org/idv1"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[4]["?Y"].ToString(), "http://example.org/idv2"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "2^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "5^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), ""));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), ""));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Y"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?X"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?Y"] ?? string.Empty), "hello@EN-US"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[4]["?X"] ?? string.Empty), "http://example.org/idv1"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[4]["?Y"] ?? string.Empty), "http://example.org/idv2"));
 
         //Test with unexisting variables
 
         SWRLBuiltIn builtin2 = SWRLBuiltIn.LessThanOrEqual(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
-        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(2, builtinResults2.Columns);
         Assert.HasCount(13, builtinResults2.Rows);
@@ -176,7 +177,7 @@ public class SWRLLessThanOrEqualBuiltInTest
         SWRLBuiltIn builtin3 = SWRLBuiltIn.LessThanOrEqual(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(2, builtinResults3.Columns);
         Assert.HasCount(13, builtinResults3.Rows);
@@ -204,7 +205,7 @@ public class SWRLLessThanOrEqualBuiltInTest
     [TestMethod]
     public void ShouldEvaluateLessThanOrEqualBuiltInWithLeftResource()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(new string[] { "-2^^http://www.w3.org/2001/XMLSchema#int" });
         antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
@@ -225,18 +226,18 @@ public class SWRLLessThanOrEqualBuiltInTest
             ]
         };
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
         Assert.HasCount(1, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "http://example.org/test2"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "http://example.org/test2"));
     }
 
     [TestMethod]
     public void ShouldEvaluateLessThanOrEqualBuiltInWithLeftLiteral()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(new string[] { "-2^^http://www.w3.org/2001/XMLSchema#int" });
         antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
@@ -256,20 +257,20 @@ public class SWRLLessThanOrEqualBuiltInTest
             ]
         };
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
         Assert.HasCount(3, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "7^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?Y"].ToString(), "2.0^^http://www.w3.org/2001/XMLSchema#float"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "2^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "7^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Y"] ?? string.Empty), "2.0^^http://www.w3.org/2001/XMLSchema#float"));
     }
 
     [TestMethod]
     public void ShouldEvaluateLessThanOrEqualBuiltInWithRightResource()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddRow(new string[] { "-2^^http://www.w3.org/2001/XMLSchema#int" });
         antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
@@ -290,22 +291,22 @@ public class SWRLLessThanOrEqualBuiltInTest
             ]
         };
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
         Assert.HasCount(5, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), ""));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "hello^^http://www.w3.org/2001/XMLSchema#string"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?X"].ToString(), "hello"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[3]["?X"].ToString(), "hello@EN"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[4]["?X"].ToString(), "http://example.org/test1"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), ""));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "hello^^http://www.w3.org/2001/XMLSchema#string"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?X"] ?? string.Empty), "hello@EN"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[4]["?X"] ?? string.Empty), "http://example.org/test1"));
     }
 
     [TestMethod]
     public void ShouldEvaluateLessThanOrEqualBuiltInWithRightLiteral()
     {
-        RDFTable antecedentResults = new RDFTable();
+        OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddRow(new string[] { "-2^^http://www.w3.org/2001/XMLSchema#int" });
         antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
@@ -325,14 +326,15 @@ public class SWRLLessThanOrEqualBuiltInTest
             ]
         };
 
-        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
         Assert.HasCount(3, builtinResults.Rows);
-        Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "-2^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
-        Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?X"].ToString(), "2.0^^http://www.w3.org/2001/XMLSchema#float"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "-2^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "2^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), "2.0^^http://www.w3.org/2001/XMLSchema#float"));
     }
     #endregion
 }
+

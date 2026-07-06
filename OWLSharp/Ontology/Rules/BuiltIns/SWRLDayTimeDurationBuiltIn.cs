@@ -34,7 +34,7 @@ namespace OWLSharp.Ontology
         /// Evaluates the built-in in the context of being part of a SWRL antecedent
         /// </summary>
         /// <exception cref="ArgumentException"></exception>
-        internal static bool EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
+        internal static bool EvaluateOnAntecedent(OWLTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
             if (builtInArguments?.Count != 5)

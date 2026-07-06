@@ -1,4 +1,4 @@
-﻿/*
+/*
    Copyright 2014-2026 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -110,12 +110,12 @@ public class SWRLDataRangeAtomTest
                     new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)))
             ]
         };
-        RDFTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
+        OWLTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(1, antecedentResult.Columns);
         Assert.HasCount(1, antecedentResult.Rows);
-        Assert.IsTrue(string.Equals(antecedentResult.Rows[0]["?P"].ToString(), "hello^^http://www.w3.org/2001/XMLSchema#string"));
+        Assert.IsTrue(string.Equals((antecedentResult.Rows[0]["?P"] ?? string.Empty), "hello^^http://www.w3.org/2001/XMLSchema#string"));
     }
 
     [TestMethod]

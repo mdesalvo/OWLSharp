@@ -47,12 +47,12 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Evaluates the atom in the context of being part of a SWRL antecedent
         /// </summary>
-        internal override RDFTable EvaluateOnAntecedent(OWLOntology ontology)
+        internal override OWLTable EvaluateOnAntecedent(OWLOntology ontology)
         {
             string leftArgumentString = LeftArgument.ToString();
 
             //Initialize the structure of the atom result
-            RDFTable atomResult = new RDFTable();
+            OWLTable atomResult = new OWLTable();
             atomResult.AddColumn(leftArgumentString);
 
             //Extract data property assertions of the atom predicate
@@ -79,7 +79,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Evaluates the atom in the context of being part of a SWRL consequent
         /// </summary>
-        internal override List<OWLInference> EvaluateOnConsequent(RDFTable antecedentResults, OWLOntology ontology)
+        internal override List<OWLInference> EvaluateOnConsequent(OWLTable antecedentResults, OWLOntology ontology)
             => new List<OWLInference>(); //This kind of atom does not emit inferences
 
         /// <summary>

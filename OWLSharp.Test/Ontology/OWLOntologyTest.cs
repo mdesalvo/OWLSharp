@@ -5692,10 +5692,10 @@ public class OWLOntologyTest
         Assert.AreEqual(RDFVocabulary.SHACL.BASE_URI, ontology.IRI);
         Assert.HasCount(2, ontology.Annotations);
         Assert.IsEmpty(ontology.AnnotationAxioms);
-        Assert.HasCount(79, ontology.AssertionAxioms);
-        Assert.HasCount(39, ontology.ClassAxioms);
+        Assert.HasCount(109, ontology.AssertionAxioms);
+        Assert.HasCount(37, ontology.ClassAxioms);
         Assert.IsEmpty(ontology.DataPropertyAxioms);
-        Assert.HasCount(40, ontology.DeclarationAxioms);
+        Assert.HasCount(43, ontology.DeclarationAxioms);
         Assert.IsEmpty(ontology.ObjectPropertyAxioms);
     }
 

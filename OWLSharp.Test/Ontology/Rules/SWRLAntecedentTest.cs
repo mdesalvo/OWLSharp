@@ -1,4 +1,4 @@
-﻿/*
+/*
    Copyright 2014-2026 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,6 +19,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 using RDFSharp.Query;
+using OWLSharp;
 
 namespace OWLSharp.Test.Ontology;
 
@@ -134,12 +135,12 @@ public class SWRLAntecedentTest
                     })
             ]
         };
-        RDFTable antecedentResult = ontology.Rules[0].Antecedent.Evaluate(ontology);
+        OWLTable antecedentResult = ontology.Rules[0].Antecedent.Evaluate(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(1, antecedentResult.Columns);
         Assert.HasCount(1, antecedentResult.Rows);
-        Assert.IsTrue(string.Equals(antecedentResult.Rows[0]["?P"].ToString(), "ex:Mark"));
+        Assert.IsTrue(string.Equals((antecedentResult.Rows[0]["?P"] ?? string.Empty), "ex:Mark"));
     }
 
     [TestMethod]
@@ -186,3 +187,4 @@ public class SWRLAntecedentTest
     }
     #endregion
 }
+
