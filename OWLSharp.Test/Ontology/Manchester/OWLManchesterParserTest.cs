@@ -123,6 +123,71 @@ public class OWLManchesterParserTest
     }
     #endregion
 
+    #region Tests (annotation values and blocks)
+    [TestMethod]
+    public void ShouldParseAnnotationValueAsIRI()
+    {
+        OWLOntology ontology = ParseWithRdfs(
+            "Class: pz:Pizza\n    Annotations: rdfs:seeAlso pz:Topping");
+
+        OWLAnnotationAssertion ann = (OWLAnnotationAssertion)ontology.AnnotationAxioms[0];
+        Assert.AreEqual("http://example.org/pz#Topping", ann.ValueIRI);
+        Assert.IsNull(ann.ValueLiteral);
+    }
+
+    [TestMethod]
+    public void ShouldParseAnnotationValueAsAnonymousIndividual()
+    {
+        OWLOntology ontology = ParseWithRdfs(
+            "Class: pz:Pizza\n    Annotations: rdfs:seeAlso _:anon1");
+
+        OWLAnnotationAssertion ann = (OWLAnnotationAssertion)ontology.AnnotationAxioms[0];
+        Assert.AreEqual("bnode:anon1", ann.ValueIRI);
+    }
+
+    [TestMethod]
+    public void ShouldParseAnnotationBlockWithMultipleCommaSeparatedAnnotations()
+    {
+        //Exercises the branch of TryParseAnnotationBlock that consumes the comma and loops, because
+        //IsAnnotationStart recognizes the token right after it as the start of a further annotation
+        //(here: a QuotedString follows, which is conclusive regardless of the symbol table)
+        OWLOntology ontology = ParseWithRdfs(
+            "Class: pz:Margherita\n    SubClassOf: Annotations: rdfs:comment \"c1\", rdfs:label \"c2\" pz:Pizza");
+
+        OWLSubClassOf sco = (OWLSubClassOf)ontology.ClassAxioms[0];
+        Assert.HasCount(2, sco.Annotations);
+        Assert.AreEqual("c1", sco.Annotations[0].ValueLiteral.Value);
+        Assert.AreEqual("c2", sco.Annotations[1].ValueLiteral.Value);
+    }
+
+    [TestMethod]
+    public void ShouldRejectRatherThanMisreadAClassReferenceAsAFurtherAnnotation()
+    {
+        //After "why", a comma is followed by "pz:Pizza". Per the grammar there is no valid continuation
+        //at this position other than another annotation, so IsAnnotationStart looks "pz:Pizza" up in
+        //the symbol table: finding it declared as a Class (not an AnnotationProperty) proves it cannot
+        //be one, so it correctly returns false rather than misreading it as an annotationProperty
+        //awaiting a value (which would silently swallow "pz:Pizza, pz:Food" and fail even more confusingly
+        //downstream). The document is malformed either way, but this makes it fail immediately and clearly
+        //at the dangling comma instead of after consuming extra, unrelated tokens
+        Assert.ThrowsExactly<OWLException>(() => OWLManchesterParser.DeserializeOntology(
+            "Prefix: pz: <http://example.org/pz#>\nPrefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+            + "Ontology: <http://example.org/pz>\nClass: pz:Pizza\nClass: pz:Food\n"
+            + "Class: pz:Margherita\n    SubClassOf: Annotations: rdfs:comment \"why\", pz:Pizza, pz:Food"));
+    }
+
+    [TestMethod]
+    public void ShouldNotThrowDuringSpeculativeLookaheadOnUndeclaredPrefix()
+    {
+        //Speculative lookahead must not throw even when the token after the comma has an unresolvable
+        //prefix: IsAnnotationStart must fail closed (return false) rather than propagate the error.
+        //The comma is then left for the enclosing list, which does fail loudly once it actually
+        //tries to resolve "undeclared:Foo" as the real SubClassOf target
+        Assert.ThrowsExactly<OWLException>(() => Parse(
+            "Class: pz:Margherita\n    SubClassOf: Annotations: rdfs:comment \"why\", undeclared:Foo"));
+    }
+    #endregion
+
     #region Tests (Class frame)
     [TestMethod]
     public void ShouldParseClassDeclaration()
@@ -247,6 +312,18 @@ public class OWLManchesterParserTest
 
     #region Tests (ObjectProperty frame)
     [TestMethod]
+    public void ShouldParseObjectPropertyEntityAnnotations()
+    {
+        OWLOntology ontology = ParseWithRdfs(
+            "ObjectProperty: pz:hasTopping\n    Annotations: rdfs:label \"has topping\"");
+
+        Assert.HasCount(1, ontology.AnnotationAxioms);
+        OWLAnnotationAssertion ann = (OWLAnnotationAssertion)ontology.AnnotationAxioms[0];
+        Assert.AreEqual("http://example.org/pz#hasTopping", ann.SubjectIRI);
+        Assert.AreEqual("has topping", ann.ValueLiteral.Value);
+    }
+
+    [TestMethod]
     public void ShouldParseObjectPropertyDomainAndRange()
     {
         OWLOntology ontology = Parse(
@@ -341,6 +418,18 @@ public class OWLManchesterParserTest
 
     #region Tests (DataProperty frame)
     [TestMethod]
+    public void ShouldParseDataPropertyEntityAnnotations()
+    {
+        OWLOntology ontology = ParseWithRdfs(
+            "DataProperty: pz:hasCalories\n    Annotations: rdfs:label \"has calories\"");
+
+        Assert.HasCount(1, ontology.AnnotationAxioms);
+        OWLAnnotationAssertion ann = (OWLAnnotationAssertion)ontology.AnnotationAxioms[0];
+        Assert.AreEqual("http://example.org/pz#hasCalories", ann.SubjectIRI);
+        Assert.AreEqual("has calories", ann.ValueLiteral.Value);
+    }
+
+    [TestMethod]
     public void ShouldParseDataPropertyDomainAndRange()
     {
         OWLOntology ontology = Parse(
@@ -379,6 +468,18 @@ public class OWLManchesterParserTest
 
     #region Tests (AnnotationProperty frame)
     [TestMethod]
+    public void ShouldParseAnnotationPropertyEntityAnnotations()
+    {
+        OWLOntology ontology = ParseWithRdfs(
+            "AnnotationProperty: pz:note\n    Annotations: rdfs:label \"note\"");
+
+        Assert.HasCount(1, ontology.AnnotationAxioms);
+        OWLAnnotationAssertion ann = (OWLAnnotationAssertion)ontology.AnnotationAxioms[0];
+        Assert.AreEqual("http://example.org/pz#note", ann.SubjectIRI);
+        Assert.AreEqual("note", ann.ValueLiteral.Value);
+    }
+
+    [TestMethod]
     public void ShouldParseAnnotationPropertyDomainRangeAndSubPropertyOf()
     {
         OWLOntology ontology = Parse(
@@ -392,6 +493,18 @@ public class OWLManchesterParserTest
     #endregion
 
     #region Tests (Datatype frame)
+    [TestMethod]
+    public void ShouldParseDatatypeEntityAnnotations()
+    {
+        OWLOntology ontology = ParseWithRdfs(
+            "Datatype: pz:PositiveInt\n    Annotations: rdfs:label \"positive integer\"");
+
+        Assert.HasCount(1, ontology.AnnotationAxioms);
+        OWLAnnotationAssertion ann = (OWLAnnotationAssertion)ontology.AnnotationAxioms[0];
+        Assert.AreEqual("http://example.org/pz#PositiveInt", ann.SubjectIRI);
+        Assert.AreEqual("positive integer", ann.ValueLiteral.Value);
+    }
+
     [TestMethod]
     public void ShouldParseDatatypeEquivalentTo()
     {
@@ -744,6 +857,34 @@ public class OWLManchesterParserTest
     }
 
     [TestMethod]
+    public void ShouldParseCardinalityQualifiedByNegatedClassExpression()
+    {
+        //The qualifier of a cardinality restriction can itself start with "not": IsPrimaryStart must
+        //recognize a bare "not" keyword (OWLManchesterTokenType.Name) as the start of a primary
+        OWLOntology ontology = Parse(
+            "ObjectProperty: pz:hasTopping\nClass: pz:Topping\nClass: pz:X\n    SubClassOf: pz:hasTopping min 2 not pz:Topping");
+
+        OWLObjectMinCardinality min = (OWLObjectMinCardinality)((OWLSubClassOf)ontology.ClassAxioms[0]).SuperClassExpression;
+        Assert.AreEqual("2", min.Cardinality);
+        Assert.IsInstanceOfType<OWLObjectComplementOf>(min.ClassExpression);
+    }
+
+    [TestMethod]
+    public void ShouldNotConsumeFollowingConjunctionKeywordAsCardinalityQualifier()
+    {
+        //After parsing the unqualified restriction, the next bare word is "and": IsPrimaryStart must
+        //return false for it (only "not" starts a qualifier), leaving it for the enclosing conjunction
+        OWLOntology ontology = Parse(
+            "ObjectProperty: pz:hasTopping\nClass: pz:Topping\nClass: pz:X\n    SubClassOf: pz:hasTopping min 1 and pz:Topping");
+
+        OWLObjectIntersectionOf inter = (OWLObjectIntersectionOf)((OWLSubClassOf)ontology.ClassAxioms[0]).SuperClassExpression;
+        OWLObjectMinCardinality min = (OWLObjectMinCardinality)inter.ClassExpressions[0];
+        Assert.AreEqual("1", min.Cardinality);
+        Assert.IsNull(min.ClassExpression);
+        Assert.AreEqual("http://example.org/pz#Topping", inter.ClassExpressions[1].GetIRI().ToString());
+    }
+
+    [TestMethod]
     public void ShouldParseInverseObjectPropertyRestriction()
     {
         OWLOntology ontology = Parse(
@@ -760,6 +901,42 @@ public class OWLManchesterParserTest
             "DataProperty: pz:hasCalories\nClass: pz:X\n    SubClassOf: pz:hasCalories some xsd:integer");
 
         Assert.IsInstanceOfType<OWLDataSomeValuesFrom>(((OWLSubClassOf)ontology.ClassAxioms[0]).SuperClassExpression);
+    }
+
+    [TestMethod]
+    public void ShouldParseDataAllValuesFrom()
+    {
+        OWLOntology ontology = Parse(
+            "DataProperty: pz:hasCalories\nClass: pz:X\n    SubClassOf: pz:hasCalories only xsd:integer");
+
+        Assert.IsInstanceOfType<OWLDataAllValuesFrom>(((OWLSubClassOf)ontology.ClassAxioms[0]).SuperClassExpression);
+    }
+
+    [TestMethod]
+    public void ShouldParseUnqualifiedDataExactCardinality()
+    {
+        OWLOntology ontology = Parse(
+            "DataProperty: pz:hasCalories\nClass: pz:X\n    SubClassOf: pz:hasCalories exactly 1");
+
+        OWLDataExactCardinality exact = (OWLDataExactCardinality)((OWLSubClassOf)ontology.ClassAxioms[0]).SuperClassExpression;
+        Assert.AreEqual("1", exact.Cardinality);
+        Assert.IsNull(exact.DataRangeExpression);
+    }
+
+    [TestMethod]
+    public void ShouldParseQualifiedDataMinAndMaxCardinality()
+    {
+        OWLOntology ontology = Parse(
+            "DataProperty: pz:hasCalories\nClass: pz:X\n"
+            + "    SubClassOf: pz:hasCalories min 1 xsd:integer\n"
+            + "    SubClassOf: pz:hasCalories max 3 xsd:integer");
+
+        OWLDataMinCardinality min = (OWLDataMinCardinality)((OWLSubClassOf)ontology.ClassAxioms[0]).SuperClassExpression;
+        OWLDataMaxCardinality max = (OWLDataMaxCardinality)((OWLSubClassOf)ontology.ClassAxioms[1]).SuperClassExpression;
+        Assert.AreEqual("1", min.Cardinality);
+        Assert.IsInstanceOfType<OWLDatatype>(min.DataRangeExpression);
+        Assert.AreEqual("3", max.Cardinality);
+        Assert.IsInstanceOfType<OWLDatatype>(max.DataRangeExpression);
     }
 
     [TestMethod]
@@ -822,6 +999,34 @@ public class OWLManchesterParserTest
         Assert.HasCount(2, restriction.FacetRestrictions);
         Assert.AreEqual(RDFSharp.Model.RDFVocabulary.XSD.MIN_INCLUSIVE.ToString(), restriction.FacetRestrictions[0].FacetIRI);
         Assert.AreEqual(RDFSharp.Model.RDFVocabulary.XSD.MAX_EXCLUSIVE.ToString(), restriction.FacetRestrictions[1].FacetIRI);
+    }
+
+    [TestMethod]
+    public void ShouldParseEveryManchesterFacetSymbol()
+    {
+        //The spec defines 9 facet symbols (numeric comparators + keyword facets); the writer emits all
+        //of them via OWLManchesterContext.FacetSymbols, so the reader must recognize all of them too
+        OWLOntology ontology = Parse(
+            "DataProperty: pz:p\nClass: pz:X\n"
+            + "    SubClassOf: pz:p some xsd:string[length \"5\"^^xsd:integer, minLength \"1\"^^xsd:integer, "
+            + "maxLength \"10\"^^xsd:integer, pattern \"[0-9]+\", langRange \"en\"]\n"
+            + "    SubClassOf: pz:p some xsd:integer[>= \"0\"^^xsd:integer, > \"0\"^^xsd:integer, "
+            + "<= \"100\"^^xsd:integer, < \"100\"^^xsd:integer]");
+
+        OWLDatatypeRestriction stringRestriction = (OWLDatatypeRestriction)
+            ((OWLDataSomeValuesFrom)((OWLSubClassOf)ontology.ClassAxioms[0]).SuperClassExpression).DataRangeExpression;
+        Assert.AreEqual(RDFSharp.Model.RDFVocabulary.XSD.LENGTH.ToString(), stringRestriction.FacetRestrictions[0].FacetIRI);
+        Assert.AreEqual(RDFSharp.Model.RDFVocabulary.XSD.MIN_LENGTH.ToString(), stringRestriction.FacetRestrictions[1].FacetIRI);
+        Assert.AreEqual(RDFSharp.Model.RDFVocabulary.XSD.MAX_LENGTH.ToString(), stringRestriction.FacetRestrictions[2].FacetIRI);
+        Assert.AreEqual(RDFSharp.Model.RDFVocabulary.XSD.PATTERN.ToString(), stringRestriction.FacetRestrictions[3].FacetIRI);
+        Assert.AreEqual(RDFSharp.Model.RDFVocabulary.RDF.LANG_RANGE.ToString(), stringRestriction.FacetRestrictions[4].FacetIRI);
+
+        OWLDatatypeRestriction numericRestriction = (OWLDatatypeRestriction)
+            ((OWLDataSomeValuesFrom)((OWLSubClassOf)ontology.ClassAxioms[1]).SuperClassExpression).DataRangeExpression;
+        Assert.AreEqual(RDFSharp.Model.RDFVocabulary.XSD.MIN_INCLUSIVE.ToString(), numericRestriction.FacetRestrictions[0].FacetIRI);
+        Assert.AreEqual(RDFSharp.Model.RDFVocabulary.XSD.MIN_EXCLUSIVE.ToString(), numericRestriction.FacetRestrictions[1].FacetIRI);
+        Assert.AreEqual(RDFSharp.Model.RDFVocabulary.XSD.MAX_INCLUSIVE.ToString(), numericRestriction.FacetRestrictions[2].FacetIRI);
+        Assert.AreEqual(RDFSharp.Model.RDFVocabulary.XSD.MAX_EXCLUSIVE.ToString(), numericRestriction.FacetRestrictions[3].FacetIRI);
     }
 
     [TestMethod]
