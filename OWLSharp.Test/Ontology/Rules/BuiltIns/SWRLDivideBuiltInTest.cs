@@ -120,18 +120,25 @@ public class SWRLDivideBuiltInTest
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
-        antecedentResults.AddRow(new string[] { "4^^http://www.w3.org/2001/XMLSchema#int", "8^^http://www.w3.org/2001/XMLSchema#int", "2.0^^http://www.w3.org/2001/XMLSchema#float" });
-        antecedentResults.AddRow(new string[] { "-2^^http://www.w3.org/2001/XMLSchema#int", "-2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { null, "-2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", null, "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { null, null, null });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string", "hello^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string", "hello^^http://www.w3.org/2001/XMLSchema#string", "hello^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello", "hello" });
-        antecedentResults.AddRow(new string[] { "hello", "-2^^http://www.w3.org/2001/XMLSchema#int", "hello" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN", "hello@EN" });
-        antecedentResults.AddRow(new string[] { "hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN" });
-        antecedentResults.AddRow(new string[] { "0^^http://www.w3.org/2001/XMLSchema#int", "0^^http://www.w3.org/2001/XMLSchema#int", "5.0^^http://www.w3.org/2001/XMLSchema#float" });
+        antecedentResults.AddRow(["4^^http://www.w3.org/2001/XMLSchema#int", "8^^http://www.w3.org/2001/XMLSchema#int", "2.0^^http://www.w3.org/2001/XMLSchema#float"
+        ]);
+        antecedentResults.AddRow(["-2^^http://www.w3.org/2001/XMLSchema#int", "-2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow([null, "-2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", null, "2^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow([null, null, null]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string", "hello^^http://www.w3.org/2001/XMLSchema#string"
+        ]);
+        antecedentResults.AddRow(["hello^^http://www.w3.org/2001/XMLSchema#string", "hello^^http://www.w3.org/2001/XMLSchema#string", "hello^^http://www.w3.org/2001/XMLSchema#string"
+        ]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello", "hello"]);
+        antecedentResults.AddRow(["hello", "-2^^http://www.w3.org/2001/XMLSchema#int", "hello"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN", "hello@EN"]);
+        antecedentResults.AddRow(["hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN"]);
+        antecedentResults.AddRow(["0^^http://www.w3.org/2001/XMLSchema#int", "0^^http://www.w3.org/2001/XMLSchema#int", "5.0^^http://www.w3.org/2001/XMLSchema#float"
+        ]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Divide(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -198,17 +205,21 @@ public class SWRLDivideBuiltInTest
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "4.0^^http://www.w3.org/2001/XMLSchema#float" });
-        antecedentResults.AddRow(new string[] { "-2^^http://www.w3.org/2001/XMLSchema#int", "-2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { null, "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", null });
-        antecedentResults.AddRow(new string[] { null, null });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string", "hello^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello" });
-        antecedentResults.AddRow(new string[] { "hello", "-2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN" });
-        antecedentResults.AddRow(new string[] { "hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "4.0^^http://www.w3.org/2001/XMLSchema#float"
+        ]);
+        antecedentResults.AddRow(["-2^^http://www.w3.org/2001/XMLSchema#int", "-2^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow([null, "2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", null]);
+        antecedentResults.AddRow([null, null]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string"
+        ]);
+        antecedentResults.AddRow(["hello^^http://www.w3.org/2001/XMLSchema#string", "hello^^http://www.w3.org/2001/XMLSchema#string"
+        ]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello"]);
+        antecedentResults.AddRow(["hello", "-2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN"]);
+        antecedentResults.AddRow(["hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Divide(
             new SWRLVariableArgument(new RDFVariable("?X")),

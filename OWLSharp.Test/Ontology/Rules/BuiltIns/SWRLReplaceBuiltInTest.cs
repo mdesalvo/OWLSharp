@@ -106,14 +106,14 @@ public class SWRLReplaceBuiltInTest
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
         antecedentResults.AddColumn("?Q");
-        antecedentResults.AddRow(new string[] { "heMMo", "hello", "ll", "MM" });
-        antecedentResults.AddRow(new string[] { "hemMo", "hello", "ll", "MM" });
-        antecedentResults.AddRow(new string[] { "heMMo@EN", "hello@EN", "ll@EN", "MM@EN" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2", "2", "2" });
-        antecedentResults.AddRow(new string[] { null, null, null, null });
-        antecedentResults.AddRow(new string[] { null, "hello", "[a-z]+", "" });
-        antecedentResults.AddRow(new string[] { "hello", null, "hello", "hello" });
-        antecedentResults.AddRow(new string[] { "http://example.org/test/", "ftp://example.org/test/", "ftp", "http" });
+        antecedentResults.AddRow(["heMMo", "hello", "ll", "MM"]);
+        antecedentResults.AddRow(["hemMo", "hello", "ll", "MM"]);
+        antecedentResults.AddRow(["heMMo@EN", "hello@EN", "ll@EN", "MM@EN"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "2", "2", "2"]);
+        antecedentResults.AddRow([null, null, null, null]);
+        antecedentResults.AddRow([null, "hello", "[a-z]+", ""]);
+        antecedentResults.AddRow(["hello", null, "hello", "hello"]);
+        antecedentResults.AddRow(["http://example.org/test/", "ftp://example.org/test/", "ftp", "http"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Replace(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -196,14 +196,14 @@ public class SWRLReplaceBuiltInTest
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Z");
         antecedentResults.AddColumn("?Q");
-        antecedentResults.AddRow(new string[] { "heMMo", "ll", "MM" });
-        antecedentResults.AddRow(new string[] { "hemMo", "ll", "MM" });
-        antecedentResults.AddRow(new string[] { "heMMo@EN", "ll@EN", "MM@EN" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2", "2" });
-        antecedentResults.AddRow(new string[] { null, null, null });
-        antecedentResults.AddRow(new string[] { null, "[a-z]+", "" });
-        antecedentResults.AddRow(new string[] { "hello", "hello", "hello" });
-        antecedentResults.AddRow(new string[] { "http://example.org/test/", "ftp", "http" });
+        antecedentResults.AddRow(["heMMo", "ll", "MM"]);
+        antecedentResults.AddRow(["hemMo", "ll", "MM"]);
+        antecedentResults.AddRow(["heMMo@EN", "ll@EN", "MM@EN"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "2", "2"]);
+        antecedentResults.AddRow([null, null, null]);
+        antecedentResults.AddRow([null, "[a-z]+", ""]);
+        antecedentResults.AddRow(["hello", "hello", "hello"]);
+        antecedentResults.AddRow(["http://example.org/test/", "ftp", "http"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Replace(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -237,14 +237,14 @@ public class SWRLReplaceBuiltInTest
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Q");
-        antecedentResults.AddRow(new string[] { "heMMo", "hello", "MM" });
-        antecedentResults.AddRow(new string[] { "hemMo", "hello", "MM" });
-        antecedentResults.AddRow(new string[] { "heMMo@EN", "hello@EN", "MM@EN" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2", "2" });
-        antecedentResults.AddRow(new string[] { null, null, null });
-        antecedentResults.AddRow(new string[] { null, "hello", "" });
-        antecedentResults.AddRow(new string[] { "hello", null, "hello" });
-        antecedentResults.AddRow(new string[] { "http://example.org/test/", "ftp://example.org/test/", "http" });
+        antecedentResults.AddRow(["heMMo", "hello", "MM"]);
+        antecedentResults.AddRow(["hemMo", "hello", "MM"]);
+        antecedentResults.AddRow(["heMMo@EN", "hello@EN", "MM@EN"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "2", "2"]);
+        antecedentResults.AddRow([null, null, null]);
+        antecedentResults.AddRow([null, "hello", ""]);
+        antecedentResults.AddRow(["hello", null, "hello"]);
+        antecedentResults.AddRow(["http://example.org/test/", "ftp://example.org/test/", "http"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Replace(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -275,14 +275,14 @@ public class SWRLReplaceBuiltInTest
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
-        antecedentResults.AddRow(new string[] { "heMMo", "hello", "ll" });
-        antecedentResults.AddRow(new string[] { "hemMo", "hello", "ll" });
-        antecedentResults.AddRow(new string[] { "heMMo@EN", "hello@EN", "ll@EN" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2", "2" });
-        antecedentResults.AddRow(new string[] { null, null, null });
-        antecedentResults.AddRow(new string[] { null, "hello", "[a-z]+" });
-        antecedentResults.AddRow(new string[] { "hello", null, "hello" });
-        antecedentResults.AddRow(new string[] { "http://example.org/test/", "ftp://example.org/test/", "ftp" });
+        antecedentResults.AddRow(["heMMo", "hello", "ll"]);
+        antecedentResults.AddRow(["hemMo", "hello", "ll"]);
+        antecedentResults.AddRow(["heMMo@EN", "hello@EN", "ll@EN"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "2", "2"]);
+        antecedentResults.AddRow([null, null, null]);
+        antecedentResults.AddRow([null, "hello", "[a-z]+"]);
+        antecedentResults.AddRow(["hello", null, "hello"]);
+        antecedentResults.AddRow(["http://example.org/test/", "ftp://example.org/test/", "ftp"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Replace(
             new SWRLVariableArgument(new RDFVariable("?X")),

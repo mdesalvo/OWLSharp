@@ -126,7 +126,7 @@ public class SWRLBuiltInTest
         };
         OWLTable table = new OWLTable();
         table.AddColumn("?VAR");
-        table.AddRow(new string[] { "value" });
+        table.AddRow(["value"]);
         Assert.ThrowsExactly<SWRLException>(() => _ = builtin.EvaluateOnAntecedent(table));
     }
 
@@ -141,9 +141,9 @@ public class SWRLBuiltInTest
             new SWRLLiteralArgument(new RDFPlainLiteral("lit")));
         OWLTable table = new OWLTable();
         table.AddColumn("?VAR");
-        table.AddRow(new string[] { "value" });
-        table.AddRow(new string[] { "value2" });
-        table.AddRow(new string[] { "value3" });
+        table.AddRow(["value"]);
+        table.AddRow(["value2"]);
+        table.AddRow(["value3"]);
         SWRLBuiltInRegister.AddBuiltIn(builtin);
 
         Assert.HasCount(1, builtin.EvaluateOnAntecedent(table).Rows);

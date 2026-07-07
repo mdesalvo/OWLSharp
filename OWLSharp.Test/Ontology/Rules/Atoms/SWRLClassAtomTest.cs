@@ -132,7 +132,7 @@ public class SWRLClassAtomTest
 
         OWLTable antecedentResult = new OWLTable();
         antecedentResult.AddColumn("?P");
-        antecedentResult.AddRow(new string[] { "ex:Mark" });
+        antecedentResult.AddRow(["ex:Mark"]);
 
         List<OWLInference> inferences = atom.EvaluateOnConsequent(antecedentResult, null);
 

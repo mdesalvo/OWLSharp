@@ -130,19 +130,21 @@ public class SWRLLowerCaseBuiltInTest
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow(new string[] { "hello", "Hello" });
-        antecedentResults.AddRow(new string[] { "hello@EN-US", "EN-US" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { null, "-2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", null });
-        antecedentResults.AddRow(new string[] { null, null });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello" });
-        antecedentResults.AddRow(new string[] { "hello", "-2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN" });
-        antecedentResults.AddRow(new string[] { "hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "http://example.org/", "htTp://example.org/" });
+        antecedentResults.AddRow(["hello", "Hello"]);
+        antecedentResults.AddRow(["hello@EN-US", "EN-US"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow([null, "-2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", null]);
+        antecedentResults.AddRow([null, null]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string"
+        ]);
+        antecedentResults.AddRow(["hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello"]);
+        antecedentResults.AddRow(["hello", "-2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN"]);
+        antecedentResults.AddRow(["hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["http://example.org/", "htTp://example.org/"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.LowerCase(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -203,14 +205,14 @@ public class SWRLLowerCaseBuiltInTest
     {
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow(new string[] { "Hello" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "7^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2.0^^http://www.w3.org/2001/XMLSchema#float" });
-        antecedentResults.AddRow(new string[] { null });
-        antecedentResults.AddRow(new string[] { "heLlo^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "hello" });
-        antecedentResults.AddRow(new string[] { "hellO@EN" });
+        antecedentResults.AddRow(["Hello"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["7^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2.0^^http://www.w3.org/2001/XMLSchema#float"]);
+        antecedentResults.AddRow([null]);
+        antecedentResults.AddRow(["heLlo^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow(["hello"]);
+        antecedentResults.AddRow(["hellO@EN"]);
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -237,15 +239,15 @@ public class SWRLLowerCaseBuiltInTest
     {
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "7^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2.0^^http://www.w3.org/2001/XMLSchema#float" });
-        antecedentResults.AddRow(new string[] { null });
-        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "hello" });
-        antecedentResults.AddRow(new string[] { "heLlo" });
-        antecedentResults.AddRow(new string[] { "hello@EN" });
-        antecedentResults.AddRow(new string[] { "http://example.org/hello" });
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["7^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2.0^^http://www.w3.org/2001/XMLSchema#float"]);
+        antecedentResults.AddRow([null]);
+        antecedentResults.AddRow(["hello^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow(["hello"]);
+        antecedentResults.AddRow(["heLlo"]);
+        antecedentResults.AddRow(["hello@EN"]);
+        antecedentResults.AddRow(["http://example.org/hello"]);
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -264,6 +266,24 @@ public class SWRLLowerCaseBuiltInTest
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "hello^^http://www.w3.org/2001/XMLSchema#string"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "hello"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), "hello@EN"));
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateLowerCaseBuiltInWithIndividualArguments()
+    {
+        OWLTable antecedentResults = new OWLTable();
+        antecedentResults.AddColumn("?dummy");
+        antecedentResults.AddRow(["dummy"]);
+
+        //Same already-lowercase resource on both sides: ToLower() on the right is a no-op, so it equals the left
+        SWRLBuiltIn builtin = SWRLBuiltIn.LowerCase(
+            new SWRLIndividualArgument(new RDFResource("http://example.org/hello")),
+            new SWRLIndividualArgument(new RDFResource("http://example.org/hello")));
+
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+        Assert.IsNotNull(builtinResults);
+        Assert.HasCount(1, builtinResults.Rows);
     }
     #endregion
 }

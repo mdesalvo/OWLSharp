@@ -107,9 +107,10 @@ public class SWRLSubstringBuiltInTest
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
-        antecedentResults.AddRow(new string[] { "ello", "hello", "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "@EN-US", "hello@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "example.org/test", "http://example.org/test", "8^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(["ello", "hello", "2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["@EN-US", "hello@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["example.org/test", "http://example.org/test", "8^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Substring(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -175,9 +176,9 @@ public class SWRLSubstringBuiltInTest
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Z");
         // 1-based: substring("hello", 2) = "ello"; substring("hello", 4) = "o" ? "@EN-US"
-        antecedentResults.AddRow(new string[] { "ello", "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "llo", "2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(["ello", "2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["llo", "2^^http://www.w3.org/2001/XMLSchema#int"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Substring(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -200,9 +201,9 @@ public class SWRLSubstringBuiltInTest
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         // 1-based literal index 2: substring("hello", 2) = "ello"
-        antecedentResults.AddRow(new string[] { "ello", "hello" });
-        antecedentResults.AddRow(new string[] { "@EN-US", "hello@EN-US" });
-        antecedentResults.AddRow(new string[] { "org/test", "http://example.org/test" });
+        antecedentResults.AddRow(["ello", "hello"]);
+        antecedentResults.AddRow(["@EN-US", "hello@EN-US"]);
+        antecedentResults.AddRow(["org/test", "http://example.org/test"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Substring(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -225,9 +226,9 @@ public class SWRLSubstringBuiltInTest
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         // 1-based literal index 2, len 2: substring("hello",2,2)="el"; substring("http://...",2,2)="tt"
-        antecedentResults.AddRow(new string[] { "el", "hello" });
-        antecedentResults.AddRow(new string[] { "@EN-US", "hello@EN-US" });
-        antecedentResults.AddRow(new string[] { "tt", "http://example.org/test" });
+        antecedentResults.AddRow(["el", "hello"]);
+        antecedentResults.AddRow(["@EN-US", "hello@EN-US"]);
+        antecedentResults.AddRow(["tt", "http://example.org/test"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Substring(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -256,9 +257,12 @@ public class SWRLSubstringBuiltInTest
         antecedentResults.AddColumn("?Q");
         // 1-based: substring("hello",2,2)="el"; substring("hello@EN-US",4,1)="l"?"@EN-US";
         // substring("http://example.org/test",16,3)="org"  (h=1..o=16)
-        antecedentResults.AddRow(new string[] { "el", "hello", "2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "@EN-US", "hello@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int", "1^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "org", "http://example.org/test", "16^^http://www.w3.org/2001/XMLSchema#int", "3^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(["el", "hello", "2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow(["@EN-US", "hello@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int", "1^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow(["org", "http://example.org/test", "16^^http://www.w3.org/2001/XMLSchema#int", "3^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.Substring(
             new SWRLVariableArgument(new RDFVariable("?X")),

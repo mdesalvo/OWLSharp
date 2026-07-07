@@ -130,19 +130,22 @@ public class SWRLLessThanBuiltInTest
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "5^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "-2^^http://www.w3.org/2001/XMLSchema#int", "-8^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { null, "-2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", null });
-        antecedentResults.AddRow(new string[] { null, null });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello" });
-        antecedentResults.AddRow(new string[] { "hello", "hello" });
-        antecedentResults.AddRow(new string[] { "hello", "hello@EN-US" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN" });
-        antecedentResults.AddRow(new string[] { "hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "http://example.org/idv1", "http://example.org/idv2" });
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "5^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["-2^^http://www.w3.org/2001/XMLSchema#int", "-8^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow([null, "-2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", null]);
+        antecedentResults.AddRow([null, null]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string"
+        ]);
+        antecedentResults.AddRow(["hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello"]);
+        antecedentResults.AddRow(["hello", "hello"]);
+        antecedentResults.AddRow(["hello", "hello@EN-US"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN"]);
+        antecedentResults.AddRow(["hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["http://example.org/idv1", "http://example.org/idv2"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.LessThan(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -203,15 +206,15 @@ public class SWRLLessThanBuiltInTest
     {
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow(new string[] { "-2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "7^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2.0^^http://www.w3.org/2001/XMLSchema#float" });
-        antecedentResults.AddRow(new string[] { null });
-        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "hello" });
-        antecedentResults.AddRow(new string[] { "hello@EN" });
-        antecedentResults.AddRow(new string[] { "http://example.org/test2" });
+        antecedentResults.AddRow(["-2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["7^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2.0^^http://www.w3.org/2001/XMLSchema#float"]);
+        antecedentResults.AddRow([null]);
+        antecedentResults.AddRow(["hello^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow(["hello"]);
+        antecedentResults.AddRow(["hello@EN"]);
+        antecedentResults.AddRow(["http://example.org/test2"]);
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -235,14 +238,14 @@ public class SWRLLessThanBuiltInTest
     {
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow(new string[] { "-2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "7^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2.0^^http://www.w3.org/2001/XMLSchema#float" });
-        antecedentResults.AddRow(new string[] { null });
-        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "hello" });
-        antecedentResults.AddRow(new string[] { "hello@EN" });
+        antecedentResults.AddRow(["-2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["7^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2.0^^http://www.w3.org/2001/XMLSchema#float"]);
+        antecedentResults.AddRow([null]);
+        antecedentResults.AddRow(["hello^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow(["hello"]);
+        antecedentResults.AddRow(["hello@EN"]);
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -266,15 +269,15 @@ public class SWRLLessThanBuiltInTest
     {
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
-        antecedentResults.AddRow(new string[] { "-2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "7^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2.0^^http://www.w3.org/2001/XMLSchema#float" });
-        antecedentResults.AddRow(new string[] { null });
-        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "hello" });
-        antecedentResults.AddRow(new string[] { "hello@EN" });
-        antecedentResults.AddRow(new string[] { "http://example.org/test1" });
+        antecedentResults.AddRow(["-2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["7^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2.0^^http://www.w3.org/2001/XMLSchema#float"]);
+        antecedentResults.AddRow([null]);
+        antecedentResults.AddRow(["hello^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow(["hello"]);
+        antecedentResults.AddRow(["hello@EN"]);
+        antecedentResults.AddRow(["http://example.org/test1"]);
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -302,14 +305,14 @@ public class SWRLLessThanBuiltInTest
     {
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
-        antecedentResults.AddRow(new string[] { "-2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "7^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2.0^^http://www.w3.org/2001/XMLSchema#float" });
-        antecedentResults.AddRow(new string[] { null });
-        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "hello" });
-        antecedentResults.AddRow(new string[] { "hello@EN" });
+        antecedentResults.AddRow(["-2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["7^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2.0^^http://www.w3.org/2001/XMLSchema#float"]);
+        antecedentResults.AddRow([null]);
+        antecedentResults.AddRow(["hello^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow(["hello"]);
+        antecedentResults.AddRow(["hello@EN"]);
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {

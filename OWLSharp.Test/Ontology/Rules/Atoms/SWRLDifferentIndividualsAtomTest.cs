@@ -209,7 +209,7 @@ public class SWRLDifferentIndividualsAtomTest
         OWLTable antecedentResult = new OWLTable();
         antecedentResult.AddColumn("?P");
         antecedentResult.AddColumn("?Q");
-        antecedentResult.AddRow(new string[] { "ex:Mark", "ex:John" });
+        antecedentResult.AddRow(["ex:Mark", "ex:John"]);
 
         List<OWLInference> inferences = atom.EvaluateOnConsequent(antecedentResult, null);
 
@@ -229,7 +229,7 @@ public class SWRLDifferentIndividualsAtomTest
 
         OWLTable antecedentResult = new OWLTable();
         antecedentResult.AddColumn("?P");
-        antecedentResult.AddRow(new string[] { "ex:John" });
+        antecedentResult.AddRow(["ex:John"]);
 
         List<OWLInference> inferences = atom.EvaluateOnConsequent(antecedentResult, null);
 

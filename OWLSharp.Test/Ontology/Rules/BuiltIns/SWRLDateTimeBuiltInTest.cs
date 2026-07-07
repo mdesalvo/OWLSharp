@@ -133,30 +133,36 @@ public class SWRLDateTimeBuiltInTest
         antecedentResults.AddColumn("?V");
         antecedentResults.AddColumn("?W");
         antecedentResults.AddColumn("?T");
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "5^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30^^http://www.w3.org/2001/XMLSchema#dateTime",
+            "UTC"
+        ]);
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "5^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "" }); //Will fallback to "UTC"
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
+            ""
+        ]); //Will fallback to "UTC"
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "5^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "20^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
+            "UTC"
+        ]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DateTime(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -307,27 +313,33 @@ public class SWRLDateTimeBuiltInTest
         antecedentResults.AddColumn("?V");
         antecedentResults.AddColumn("?W");
         antecedentResults.AddColumn("?T");
-        antecedentResults.AddRow(new string[] { "2010^^http://www.w3.org/2001/XMLSchema#int",
+        antecedentResults.AddRow([
+            "2010^^http://www.w3.org/2001/XMLSchema#int",
             "5^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
-        antecedentResults.AddRow(new string[] { "2010^^http://www.w3.org/2001/XMLSchema#int",
+            "UTC"
+        ]);
+        antecedentResults.AddRow([
+            "2010^^http://www.w3.org/2001/XMLSchema#int",
             "5^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "" }); //Will fallback to "UTC"
-        antecedentResults.AddRow(new string[] { "2012^^http://www.w3.org/2001/XMLSchema#int",
+            ""
+        ]); //Will fallback to "UTC"
+        antecedentResults.AddRow([
+            "2012^^http://www.w3.org/2001/XMLSchema#int",
             "5^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
+            "UTC"
+        ]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DateTime(
             new SWRLLiteralArgument(new RDFTypedLiteral("2010-05-22T10:30:30Z", RDFModelEnums.RDFDatatypes.XSD_DATETIME)),
@@ -371,27 +383,33 @@ public class SWRLDateTimeBuiltInTest
         antecedentResults.AddColumn("?V");
         antecedentResults.AddColumn("?W");
         antecedentResults.AddColumn("?T");
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
             "5^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30^^http://www.w3.org/2001/XMLSchema#dateTime",
+            "UTC"
+        ]);
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30^^http://www.w3.org/2001/XMLSchema#dateTime",
             "5^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "" }); //Will fallback to "UTC"
-        antecedentResults.AddRow(new string[] { "2010-08-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
+            ""
+        ]); //Will fallback to "UTC"
+        antecedentResults.AddRow([
+            "2010-08-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
             "5^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
+            "UTC"
+        ]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DateTime(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -435,27 +453,33 @@ public class SWRLDateTimeBuiltInTest
         antecedentResults.AddColumn("?V");
         antecedentResults.AddColumn("?W");
         antecedentResults.AddColumn("?T");
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30^^http://www.w3.org/2001/XMLSchema#dateTime",
+            "UTC"
+        ]);
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "" }); //Will fallback to "UTC"
-        antecedentResults.AddRow(new string[] { "2010-08-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
+            ""
+        ]); //Will fallback to "UTC"
+        antecedentResults.AddRow([
+            "2010-08-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
+            "UTC"
+        ]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DateTime(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -499,34 +523,42 @@ public class SWRLDateTimeBuiltInTest
         antecedentResults.AddColumn("?V");
         antecedentResults.AddColumn("?W");
         antecedentResults.AddColumn("?T");
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "5^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30^^http://www.w3.org/2001/XMLSchema#dateTime",
+            "UTC"
+        ]);
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "5^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "" }); //Will fallback to "UTC"
-        antecedentResults.AddRow(new string[] { "2010-08-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
+            ""
+        ]); //Will fallback to "UTC"
+        antecedentResults.AddRow([
+            "2010-08-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "5^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
-        antecedentResults.AddRow(new string[] { "2010-16-22T25:10:10Z^^http://www.w3.org/2001/XMLSchema#dateTime", //not valid
+            "UTC"
+        ]);
+        antecedentResults.AddRow([
+            "2010-16-22T25:10:10Z^^http://www.w3.org/2001/XMLSchema#dateTime", //not valid
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "5^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
+            "UTC"
+        ]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DateTime(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -570,27 +602,33 @@ public class SWRLDateTimeBuiltInTest
         antecedentResults.AddColumn("?V");
         antecedentResults.AddColumn("?W");
         antecedentResults.AddColumn("?T");
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "05^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30^^http://www.w3.org/2001/XMLSchema#dateTime",
+            "UTC"
+        ]);
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "05^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "" }); //Will fallback to "UTC"
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
+            ""
+        ]); //Will fallback to "UTC"
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "05^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
             "34^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
+            "UTC"
+        ]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DateTime(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -634,27 +672,33 @@ public class SWRLDateTimeBuiltInTest
         antecedentResults.AddColumn("?U");
         antecedentResults.AddColumn("?W");
         antecedentResults.AddColumn("?T");
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "05^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30^^http://www.w3.org/2001/XMLSchema#dateTime",
+            "UTC"
+        ]);
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "05^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "" }); //Will fallback to "UTC"
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
+            ""
+        ]); //Will fallback to "UTC"
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "05^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "34^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
+            "UTC"
+        ]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DateTime(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -697,34 +741,42 @@ public class SWRLDateTimeBuiltInTest
         antecedentResults.AddColumn("?U");
         antecedentResults.AddColumn("?V");
         antecedentResults.AddColumn("?T");
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "05^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30^^http://www.w3.org/2001/XMLSchema#dateTime",
+            "UTC"
+        ]);
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "05^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "30^^http://www.w3.org/2001/XMLSchema#int",
-            "" }); //Will fallback to "UTC"
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
+            ""
+        ]); //Will fallback to "UTC"
+        antecedentResults.AddRow([
+            "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime",
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "05^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "34^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
-        antecedentResults.AddRow(new string[] { "2010-05-22T10:65:30Z^^http://www.w3.org/2001/XMLSchema#time", //not valid
+            "UTC"
+        ]);
+        antecedentResults.AddRow([
+            "2010-05-22T10:65:30Z^^http://www.w3.org/2001/XMLSchema#time", //not valid
             "2010^^http://www.w3.org/2001/XMLSchema#int",
             "05^^http://www.w3.org/2001/XMLSchema#int",
             "22^^http://www.w3.org/2001/XMLSchema#int",
             "10^^http://www.w3.org/2001/XMLSchema#int",
             "34^^http://www.w3.org/2001/XMLSchema#int",
-            "UTC" });
+            "UTC"
+        ]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DateTime(
             new SWRLVariableArgument(new RDFVariable("?X")),

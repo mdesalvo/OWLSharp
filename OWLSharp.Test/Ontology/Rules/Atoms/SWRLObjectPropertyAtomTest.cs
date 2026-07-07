@@ -255,7 +255,7 @@ public class SWRLObjectPropertyAtomTest
         OWLTable antecedentResult = new OWLTable();
         antecedentResult.AddColumn("?P");
         antecedentResult.AddColumn("?Q");
-        antecedentResult.AddRow(new string[] { "ex:Mark", "ex:John" });
+        antecedentResult.AddRow(["ex:Mark", "ex:John"]);
 
         List<OWLInference> inferences = atom.EvaluateOnConsequent(antecedentResult, null);
 
@@ -277,7 +277,7 @@ public class SWRLObjectPropertyAtomTest
 
         OWLTable antecedentResult = new OWLTable();
         antecedentResult.AddColumn("?P");
-        antecedentResult.AddRow(new string[] { "ex:Mark" });
+        antecedentResult.AddRow(["ex:Mark"]);
 
         List<OWLInference> inferences = atom.EvaluateOnConsequent(antecedentResult, null);
 

@@ -130,8 +130,8 @@ public class SWRLEndsWithBuiltInTest
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow(new string[] { "hello", "ello" });
-        antecedentResults.AddRow(new string[] { "hello@EN-US", "lo" });
+        antecedentResults.AddRow(["hello", "ello"]);
+        antecedentResults.AddRow(["hello@EN-US", "lo"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.EndsWith(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -190,15 +190,15 @@ public class SWRLEndsWithBuiltInTest
     {
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow(new string[] { "ello" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "7^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2.0^^http://www.w3.org/2001/XMLSchema#float" });
-        antecedentResults.AddRow(new string[] { null });
-        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "hello" });
-        antecedentResults.AddRow(new string[] { "heLlo" });
-        antecedentResults.AddRow(new string[] { "hello@EN" });
+        antecedentResults.AddRow(["ello"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["7^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2.0^^http://www.w3.org/2001/XMLSchema#float"]);
+        antecedentResults.AddRow([null]);
+        antecedentResults.AddRow(["hello^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow(["hello"]);
+        antecedentResults.AddRow(["heLlo"]);
+        antecedentResults.AddRow(["hello@EN"]);
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -226,15 +226,15 @@ public class SWRLEndsWithBuiltInTest
     {
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "7^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2.0^^http://www.w3.org/2001/XMLSchema#float" });
-        antecedentResults.AddRow(new string[] { null });
-        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "hello" });
-        antecedentResults.AddRow(new string[] { "heLlo" });
-        antecedentResults.AddRow(new string[] { "hello@EN" });
-        antecedentResults.AddRow(new string[] { "http://example.org/hello" });
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["7^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2.0^^http://www.w3.org/2001/XMLSchema#float"]);
+        antecedentResults.AddRow([null]);
+        antecedentResults.AddRow(["hello^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow(["hello"]);
+        antecedentResults.AddRow(["heLlo"]);
+        antecedentResults.AddRow(["hello@EN"]);
+        antecedentResults.AddRow(["http://example.org/hello"]);
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -254,6 +254,23 @@ public class SWRLEndsWithBuiltInTest
         Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "hello"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), "hello@EN"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?X"] ?? string.Empty), "http://example.org/hello"));
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateEndsWithBuiltInWithIndividualArguments()
+    {
+        OWLTable antecedentResults = new OWLTable();
+        antecedentResults.AddColumn("?dummy");
+        antecedentResults.AddRow(["dummy"]);
+
+        SWRLBuiltIn builtin = SWRLBuiltIn.EndsWith(
+            new SWRLIndividualArgument(new RDFResource("http://example.org/hello")),
+            new SWRLIndividualArgument(new RDFResource("http://example.org/hello")));
+
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+        Assert.IsNotNull(builtinResults);
+        Assert.HasCount(1, builtinResults.Rows);
     }
     #endregion
 }

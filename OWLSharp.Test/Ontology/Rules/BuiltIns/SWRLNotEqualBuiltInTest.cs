@@ -130,15 +130,18 @@ public class SWRLNotEqualBuiltInTest
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2.0^^http://www.w3.org/2001/XMLSchema#float" });
-        antecedentResults.AddRow(new string[] { "-2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { null, "-2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { null, null });
-        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello" });
-        antecedentResults.AddRow(new string[] { "hello", "hello" });
-        antecedentResults.AddRow(new string[] { "hello", "hello@EN-US" });
-        antecedentResults.AddRow(new string[] { "http://example.org/idv1", "http://example.org/idv2" });
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "2.0^^http://www.w3.org/2001/XMLSchema#float"
+        ]);
+        antecedentResults.AddRow(["-2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow([null, "-2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow([null, null]);
+        antecedentResults.AddRow(["hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello"]);
+        antecedentResults.AddRow(["hello", "hello"]);
+        antecedentResults.AddRow(["hello", "hello@EN-US"]);
+        antecedentResults.AddRow(["http://example.org/idv1", "http://example.org/idv2"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.NotEqual(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -199,8 +202,8 @@ public class SWRLNotEqualBuiltInTest
     {
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow(new string[] { "http://example.org/test" });
-        antecedentResults.AddRow(new string[] { "http://example.org/test2" });
+        antecedentResults.AddRow(["http://example.org/test"]);
+        antecedentResults.AddRow(["http://example.org/test2"]);
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -224,7 +227,7 @@ public class SWRLNotEqualBuiltInTest
     {
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow(new string[] { "-2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(["-2^^http://www.w3.org/2001/XMLSchema#int"]);
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -248,7 +251,7 @@ public class SWRLNotEqualBuiltInTest
     {
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
-        antecedentResults.AddRow(new string[] { "http://example.org/test1" });
+        antecedentResults.AddRow(["http://example.org/test1"]);
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -272,7 +275,7 @@ public class SWRLNotEqualBuiltInTest
     {
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
-        antecedentResults.AddRow(new string[] { "-2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow(["-2^^http://www.w3.org/2001/XMLSchema#int"]);
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {

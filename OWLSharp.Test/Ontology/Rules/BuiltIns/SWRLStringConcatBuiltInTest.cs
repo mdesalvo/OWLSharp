@@ -131,19 +131,21 @@ public class SWRLStringConcatBuiltInTest
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
-        antecedentResults.AddRow(new string[] { "hello", "h", "ello" });
-        antecedentResults.AddRow(new string[] { "hello@EN-US", "EN-US", null });
-        antecedentResults.AddRow(new string[] { "22", "2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "-2", null, "-2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", null, null });
-        antecedentResults.AddRow(new string[] { "hello", "hello@EN", null });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2", "hello^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string", null, "hello@EN--ltr" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello", null });
-        antecedentResults.AddRow(new string[] { "hello", "-2^^http://www.w3.org/2001/XMLSchema#int", null });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN", null });
-        antecedentResults.AddRow(new string[] { "hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int", null });
-        antecedentResults.AddRow(new string[] { "http://example.org/test/", "http://example.org/", "test/" });
+        antecedentResults.AddRow(["hello", "h", "ello"]);
+        antecedentResults.AddRow(["hello@EN-US", "EN-US", null]);
+        antecedentResults.AddRow(["22", "2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow(["-2", null, "-2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", null, null]);
+        antecedentResults.AddRow(["hello", "hello@EN", null]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "2", "hello^^http://www.w3.org/2001/XMLSchema#string"
+        ]);
+        antecedentResults.AddRow(["hello^^http://www.w3.org/2001/XMLSchema#string", null, "hello@EN--ltr"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello", null]);
+        antecedentResults.AddRow(["hello", "-2^^http://www.w3.org/2001/XMLSchema#int", null]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN", null]);
+        antecedentResults.AddRow(["hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int", null]);
+        antecedentResults.AddRow(["http://example.org/test/", "http://example.org/", "test/"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.StringConcat(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -211,13 +213,13 @@ public class SWRLStringConcatBuiltInTest
     {
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow(new string[] { "llo" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "7^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2.0^^http://www.w3.org/2001/XMLSchema#float" });
-        antecedentResults.AddRow(new string[] { null });
-        antecedentResults.AddRow(new string[] { "llo^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "llo@EN" });
+        antecedentResults.AddRow(["llo"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["7^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2.0^^http://www.w3.org/2001/XMLSchema#float"]);
+        antecedentResults.AddRow([null]);
+        antecedentResults.AddRow(["llo^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow(["llo@EN"]);
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -244,15 +246,15 @@ public class SWRLStringConcatBuiltInTest
     {
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "7^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2.0^^http://www.w3.org/2001/XMLSchema#float" });
-        antecedentResults.AddRow(new string[] { null });
-        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "hello" });
-        antecedentResults.AddRow(new string[] { "heLlo" });
-        antecedentResults.AddRow(new string[] { "hello@EN" });
-        antecedentResults.AddRow(new string[] { "http://example.org/test" });
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["7^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2.0^^http://www.w3.org/2001/XMLSchema#float"]);
+        antecedentResults.AddRow([null]);
+        antecedentResults.AddRow(["hello^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow(["hello"]);
+        antecedentResults.AddRow(["heLlo"]);
+        antecedentResults.AddRow(["hello@EN"]);
+        antecedentResults.AddRow(["http://example.org/test"]);
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -277,9 +279,9 @@ public class SWRLStringConcatBuiltInTest
     {
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
-        antecedentResults.AddRow(new string[] { "The white fox jumps" });
-        antecedentResults.AddRow(new string[] { "The white fox jumpsover the lazy..." });
-        antecedentResults.AddRow(new string[] { "The white fox jumps over the lazy..." });
+        antecedentResults.AddRow(["The white fox jumps"]);
+        antecedentResults.AddRow(["The white fox jumpsover the lazy..."]);
+        antecedentResults.AddRow(["The white fox jumps over the lazy..."]);
 
         SWRLBuiltIn builtin2 = SWRLBuiltIn.StringConcat(
             new SWRLVariableArgument(new RDFVariable("?X")),

@@ -222,7 +222,7 @@ public class SWRLAnnotationPropertyAtomTest
         OWLTable antecedentResult = new OWLTable();
         antecedentResult.AddColumn("?P");
         antecedentResult.AddColumn("?Q");
-        antecedentResult.AddRow(new string[] { "ex:Mark", "34^^http://www.w3.org/2001/XMLSchema#positiveInteger" });
+        antecedentResult.AddRow(["ex:Mark", "34^^http://www.w3.org/2001/XMLSchema#positiveInteger"]);
 
         List<OWLInference> inferences = atom.EvaluateOnConsequent(antecedentResult, null);
 
@@ -244,7 +244,7 @@ public class SWRLAnnotationPropertyAtomTest
 
         OWLTable antecedentResult = new OWLTable();
         antecedentResult.AddColumn("?P");
-        antecedentResult.AddRow(new string[] { "ex:Mark" });
+        antecedentResult.AddRow(["ex:Mark"]);
 
         List<OWLInference> inferences = atom.EvaluateOnConsequent(antecedentResult, null);
 

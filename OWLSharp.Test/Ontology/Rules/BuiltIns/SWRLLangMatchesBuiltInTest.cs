@@ -129,10 +129,10 @@ public class SWRLLangMatchesBuiltInTest
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow(new string[] { "hello", "hi" });
-        antecedentResults.AddRow(new string[] { "hello", "hi@EN-US" });
-        antecedentResults.AddRow(new string[] { "http://example.org/", "http://example.org/hello" });
-        antecedentResults.AddRow(new string[] { "hello@EN-US", "hi@EN-US" });
+        antecedentResults.AddRow(["hello", "hi"]);
+        antecedentResults.AddRow(["hello", "hi@EN-US"]);
+        antecedentResults.AddRow(["http://example.org/", "http://example.org/hello"]);
+        antecedentResults.AddRow(["hello@EN-US", "hi@EN-US"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.LangMatches(
             new SWRLVariableArgument(new RDFVariable("?X")),

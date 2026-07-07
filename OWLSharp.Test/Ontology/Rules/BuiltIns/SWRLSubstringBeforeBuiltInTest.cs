@@ -98,8 +98,8 @@ public class SWRLSubstringBeforeBuiltInTest
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
-        antecedentResults.AddRow(new string[] { "t", "tattoo", "attoo" });
-        antecedentResults.AddRow(new string[] { "http://example.org/", "http://example.org/test", "test" });
+        antecedentResults.AddRow(["t", "tattoo", "attoo"]);
+        antecedentResults.AddRow(["http://example.org/", "http://example.org/test", "test"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.SubstringBefore(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -164,8 +164,8 @@ public class SWRLSubstringBeforeBuiltInTest
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Z");
-        antecedentResults.AddRow(new string[] { "t", "attoo" });
-        antecedentResults.AddRow(new string[] { "", "tat" });
+        antecedentResults.AddRow(["t", "attoo"]);
+        antecedentResults.AddRow(["", "tat"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.SubstringBefore(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -189,8 +189,8 @@ public class SWRLSubstringBeforeBuiltInTest
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Z");
-        antecedentResults.AddRow(new string[] { "", "attoo" });
-        antecedentResults.AddRow(new string[] { "tattoo", "tat" });
+        antecedentResults.AddRow(["", "attoo"]);
+        antecedentResults.AddRow(["tattoo", "tat"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.SubstringBefore(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -212,8 +212,8 @@ public class SWRLSubstringBeforeBuiltInTest
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow(new string[] { "t", "tattoo" });
-        antecedentResults.AddRow(new string[] { "http://example.org", "http://tattoo.org/test" });
+        antecedentResults.AddRow(["t", "tattoo"]);
+        antecedentResults.AddRow(["http://example.org", "http://tattoo.org/test"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.SubstringBefore(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -235,8 +235,8 @@ public class SWRLSubstringBeforeBuiltInTest
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow(new string[] { "", "tattoo" });
-        antecedentResults.AddRow(new string[] { "http://example.org", "http://tattoo.org/test" });
+        antecedentResults.AddRow(["", "tattoo"]);
+        antecedentResults.AddRow(["http://example.org", "http://tattoo.org/test"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.SubstringBefore(
             new SWRLVariableArgument(new RDFVariable("?X")),

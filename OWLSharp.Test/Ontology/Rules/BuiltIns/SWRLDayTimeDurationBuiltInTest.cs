@@ -112,16 +112,20 @@ public class SWRLDayTimeDurationBuiltInTest
         antecedentResults.AddColumn("?Z");
         antecedentResults.AddColumn("?Q");
         antecedentResults.AddColumn("?U");
-        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+        antecedentResults.AddRow([
+            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "1^^http://www.w3.org/2001/XMLSchema#int",
             "7^^http://www.w3.org/2001/XMLSchema#int",
             "6^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+            "12^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow([
+            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "1^^http://www.w3.org/2001/XMLSchema#int",
             "7^^http://www.w3.org/2001/XMLSchema#int",
             "8^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int" });
+            "12^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DayTimeDuration(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -215,14 +219,18 @@ public class SWRLDayTimeDurationBuiltInTest
         antecedentResults.AddColumn("?Z");
         antecedentResults.AddColumn("?Q");
         antecedentResults.AddColumn("?U");
-        antecedentResults.AddRow(new string[] { "1^^http://www.w3.org/2001/XMLSchema#int",
+        antecedentResults.AddRow([
+            "1^^http://www.w3.org/2001/XMLSchema#int",
             "7^^http://www.w3.org/2001/XMLSchema#int",
             "6^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "1^^http://www.w3.org/2001/XMLSchema#int",
+            "12^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow([
+            "1^^http://www.w3.org/2001/XMLSchema#int",
             "7^^http://www.w3.org/2001/XMLSchema#int",
             "9^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int" });
+            "12^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DayTimeDuration(
             new SWRLLiteralArgument(new RDFTypedLiteral("P1DT7H6M12S", RDFModelEnums.RDFDatatypes.XSD_DURATION)),
@@ -250,14 +258,18 @@ public class SWRLDayTimeDurationBuiltInTest
         antecedentResults.AddColumn("?Z");
         antecedentResults.AddColumn("?Q");
         antecedentResults.AddColumn("?U");
-        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+        antecedentResults.AddRow([
+            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "7^^http://www.w3.org/2001/XMLSchema#int",
             "6^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+            "12^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow([
+            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "7^^http://www.w3.org/2001/XMLSchema#int",
             "9^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int" });
+            "12^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DayTimeDuration(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -285,14 +297,18 @@ public class SWRLDayTimeDurationBuiltInTest
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Q");
         antecedentResults.AddColumn("?U");
-        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+        antecedentResults.AddRow([
+            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "1^^http://www.w3.org/2001/XMLSchema#int",
             "6^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+            "12^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow([
+            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "1^^http://www.w3.org/2001/XMLSchema#int",
             "9^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int" });
+            "12^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DayTimeDuration(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -320,14 +336,18 @@ public class SWRLDayTimeDurationBuiltInTest
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
         antecedentResults.AddColumn("?U");
-        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+        antecedentResults.AddRow([
+            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "1^^http://www.w3.org/2001/XMLSchema#int",
             "7^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+            "12^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow([
+            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "1^^http://www.w3.org/2001/XMLSchema#int",
             "9^^http://www.w3.org/2001/XMLSchema#int",
-            "12^^http://www.w3.org/2001/XMLSchema#int" });
+            "12^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DayTimeDuration(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -355,14 +375,18 @@ public class SWRLDayTimeDurationBuiltInTest
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
         antecedentResults.AddColumn("?Q");
-        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+        antecedentResults.AddRow([
+            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "1^^http://www.w3.org/2001/XMLSchema#int",
             "7^^http://www.w3.org/2001/XMLSchema#int",
-            "6^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+            "6^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow([
+            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
             "1^^http://www.w3.org/2001/XMLSchema#int",
             "9^^http://www.w3.org/2001/XMLSchema#int",
-            "6^^http://www.w3.org/2001/XMLSchema#int" });
+            "6^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DayTimeDuration(
             new SWRLVariableArgument(new RDFVariable("?X")),

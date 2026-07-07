@@ -130,18 +130,20 @@ public class SWRLNormalizeSpaceBuiltInTest
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow(new string[] { " hel lo ", " hel   lo " });
-        antecedentResults.AddRow(new string[] { "hello@EN-US", "EN-US" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { null, "-2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", null });
-        antecedentResults.AddRow(new string[] { null, null });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { "hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello" });
-        antecedentResults.AddRow(new string[] { "hello", "-2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN" });
-        antecedentResults.AddRow(new string[] { "hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int" });
+        antecedentResults.AddRow([" hel lo ", " hel   lo "]);
+        antecedentResults.AddRow(["hello@EN-US", "EN-US"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow([null, "-2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", null]);
+        antecedentResults.AddRow([null, null]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string"
+        ]);
+        antecedentResults.AddRow(["hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int"
+        ]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello"]);
+        antecedentResults.AddRow(["hello", "-2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN"]);
+        antecedentResults.AddRow(["hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.NormalizeSpace(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -200,15 +202,15 @@ public class SWRLNormalizeSpaceBuiltInTest
     {
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow(new string[] { " hel    lo  " });
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "7^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2.0^^http://www.w3.org/2001/XMLSchema#float" });
-        antecedentResults.AddRow(new string[] { null });
-        antecedentResults.AddRow(new string[] { " hel  lo ^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { " hel    lo " });
-        antecedentResults.AddRow(new string[] { "heLlo" });
-        antecedentResults.AddRow(new string[] { "     hel lo @EN" });
+        antecedentResults.AddRow([" hel    lo  "]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["7^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2.0^^http://www.w3.org/2001/XMLSchema#float"]);
+        antecedentResults.AddRow([null]);
+        antecedentResults.AddRow([" hel  lo ^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow([" hel    lo "]);
+        antecedentResults.AddRow(["heLlo"]);
+        antecedentResults.AddRow(["     hel lo @EN"]);
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -235,15 +237,15 @@ public class SWRLNormalizeSpaceBuiltInTest
     {
         OWLTable antecedentResults = new OWLTable();
         antecedentResults.AddColumn("?X");
-        antecedentResults.AddRow(new string[] { "2^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "7^^http://www.w3.org/2001/XMLSchema#int" });
-        antecedentResults.AddRow(new string[] { "2.0^^http://www.w3.org/2001/XMLSchema#float" });
-        antecedentResults.AddRow(new string[] { null });
-        antecedentResults.AddRow(new string[] { " h e l lo ^^http://www.w3.org/2001/XMLSchema#string" });
-        antecedentResults.AddRow(new string[] { " h e l lo " });
-        antecedentResults.AddRow(new string[] { " h e L lo " });
-        antecedentResults.AddRow(new string[] { " h e l lo @EN" });
-        antecedentResults.AddRow(new string[] { "http://example.org/hello" });
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["7^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["2.0^^http://www.w3.org/2001/XMLSchema#float"]);
+        antecedentResults.AddRow([null]);
+        antecedentResults.AddRow([" h e l lo ^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow([" h e l lo "]);
+        antecedentResults.AddRow([" h e L lo "]);
+        antecedentResults.AddRow([" h e l lo @EN"]);
+        antecedentResults.AddRow(["http://example.org/hello"]);
 
         SWRLBuiltIn builtin = new SWRLBuiltIn
         {
@@ -262,6 +264,24 @@ public class SWRLNormalizeSpaceBuiltInTest
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), " h e l lo ^^http://www.w3.org/2001/XMLSchema#string"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), " h e l lo "));
         Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), " h e l lo @EN"));
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateNormalizeSpaceBuiltInWithIndividualArguments()
+    {
+        OWLTable antecedentResults = new OWLTable();
+        antecedentResults.AddColumn("?dummy");
+        antecedentResults.AddRow(["dummy"]);
+
+        //An IRI has no whitespace runs to collapse, so normalizing it is a no-op: it equals itself
+        SWRLBuiltIn builtin = SWRLBuiltIn.NormalizeSpace(
+            new SWRLIndividualArgument(new RDFResource("http://example.org/hello")),
+            new SWRLIndividualArgument(new RDFResource("http://example.org/hello")));
+
+        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+        Assert.IsNotNull(builtinResults);
+        Assert.HasCount(1, builtinResults.Rows);
     }
     #endregion
 }

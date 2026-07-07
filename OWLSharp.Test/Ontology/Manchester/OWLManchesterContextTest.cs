@@ -28,7 +28,7 @@ public class OWLManchesterContextTest
     [TestMethod]
     public void ShouldCreateContext()
     {
-        OWLManchesterContext context = new OWLManchesterContext(new List<OWLPrefix>());
+        OWLManchesterContext context = new OWLManchesterContext([]);
 
         Assert.IsNotNull(context);
     }
@@ -144,7 +144,7 @@ public class OWLManchesterContextTest
     [TestMethod]
     public void ShouldRenderAxiomAnnotationsAsEmptyStringWhenNone()
     {
-        OWLManchesterContext context = new OWLManchesterContext(new List<OWLPrefix>());
+        OWLManchesterContext context = new OWLManchesterContext([]);
 
         Assert.AreEqual(string.Empty, context.RenderAxiomAnnotations(null));
         Assert.AreEqual(string.Empty, context.RenderAxiomAnnotations([]));
