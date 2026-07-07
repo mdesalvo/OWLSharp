@@ -480,6 +480,11 @@ namespace OWLSharp.Ontology
                                 using (StreamReader streamReader = new StreamReader(inputStream, RDFModelUtilities.UTF8_NoBOM))
                                     return OWLSerializer.DeserializeOntology(streamReader.ReadToEnd());
                             }
+                            case OWLEnums.OWLFormats.OWL2MANCHESTER:
+                            {
+                                using (StreamReader streamReader = new StreamReader(inputStream, RDFModelUtilities.UTF8_NoBOM))
+                                    return OWLManchesterParser.DeserializeOntology(streamReader.ReadToEnd());
+                            }
                             default: throw new NotSupportedException($"{owlFormat} format is not supported");
                         }
                     }

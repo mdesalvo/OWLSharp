@@ -1800,6 +1800,118 @@ public class OWLOntologyTest
         => await Assert.ThrowsExactlyAsync<OWLException>(async() => await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2XML, null));
 
     [TestMethod]
+    public async Task ShouldWriteOntologyToStreamAsManchesterAsync()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"), new Uri("http://example.org/pz/1.0"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        OWLClass pizza = new OWLClass(new RDFResource("http://example.org/pz#Pizza"));
+        OWLClass topping = new OWLClass(new RDFResource("http://example.org/pz#Topping"));
+        OWLObjectProperty hasTopping = new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
+        OWLNamedIndividual margherita = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Margherita"));
+        ontology.DeclarationAxioms.AddRange(
+        [ new OWLDeclaration(pizza), new OWLDeclaration(topping), new OWLDeclaration(hasTopping), new OWLDeclaration(margherita) ]);
+        ontology.ClassAxioms.Add(new OWLSubClassOf(pizza, new OWLObjectSomeValuesFrom(hasTopping, topping)));
+        ontology.ObjectPropertyAxioms.Add(new OWLObjectPropertyDomain(hasTopping, pizza));
+        ontology.AssertionAxioms.Add(new OWLClassAssertion(pizza, margherita));
+
+        MemoryStream stream = new MemoryStream();
+        await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, stream);
+
+        string manchesterContent;
+        using (StreamReader reader = new StreamReader(new MemoryStream(stream.ToArray())))
+            manchesterContent = await reader.ReadToEndAsync(TestContext.CancellationToken);
+
+        Assert.IsTrue(manchesterContent.Contains("Ontology: <http://example.org/pz> <http://example.org/pz/1.0>", StringComparison.Ordinal));
+        Assert.IsTrue(manchesterContent.Contains("Class: pz:Pizza", StringComparison.Ordinal));
+    }
+
+    [TestMethod]
+    public async Task ShouldReadOntologyFromStreamAsManchesterAsync()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"), new Uri("http://example.org/pz/1.0"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        OWLClass pizza = new OWLClass(new RDFResource("http://example.org/pz#Pizza"));
+        OWLClass topping = new OWLClass(new RDFResource("http://example.org/pz#Topping"));
+        OWLObjectProperty hasTopping = new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
+        OWLNamedIndividual margherita = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Margherita"));
+        ontology.DeclarationAxioms.AddRange(
+        [ new OWLDeclaration(pizza), new OWLDeclaration(topping), new OWLDeclaration(hasTopping), new OWLDeclaration(margherita) ]);
+        ontology.ClassAxioms.Add(new OWLSubClassOf(pizza, new OWLObjectSomeValuesFrom(hasTopping, topping)));
+        ontology.ObjectPropertyAxioms.Add(new OWLObjectPropertyDomain(hasTopping, pizza));
+        ontology.AssertionAxioms.Add(new OWLClassAssertion(pizza, margherita));
+
+        MemoryStream stream = new MemoryStream();
+        await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, stream);
+
+        OWLOntology ontology2 = await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, new MemoryStream(stream.ToArray()));
+
+        Assert.IsNotNull(ontology2);
+        Assert.IsTrue(string.Equals(ontology2.IRI, "http://example.org/pz", StringComparison.Ordinal));
+        Assert.IsTrue(string.Equals(ontology2.VersionIRI, "http://example.org/pz/1.0", StringComparison.Ordinal));
+        Assert.HasCount(4, ontology2.DeclarationAxioms);
+        Assert.HasCount(1, ontology2.ClassAxioms);
+        Assert.HasCount(1, ontology2.ObjectPropertyAxioms);
+        Assert.HasCount(1, ontology2.AssertionAxioms);
+    }
+
+    [TestMethod]
+    public async Task ShouldThrowExceptionOnReadingOntologyFromStreamAsManchesterBecauseNullStreamAsync()
+        => await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, null));
+
+    [TestMethod]
+    public async Task ShouldThrowExceptionOnReadingMalformedOntologyFromStreamAsManchesterAsync()
+    {
+        MemoryStream stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes("Class: pz:Pizza SubClassOf:"));
+
+        await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, stream));
+    }
+
+    [TestMethod]
+    public async Task ShouldWriteAndReadOntologyToAndFromFileAsManchesterAsync()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        OWLClass pizza = new OWLClass(new RDFResource("http://example.org/pz#Pizza"));
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(pizza));
+        string filePath = Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteAndReadOntologyToAndFromFileAsManchesterAsync.omn");
+
+        await ontology.ToFileAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, filePath);
+        Assert.IsTrue(File.Exists(filePath));
+
+        OWLOntology ontology2 = await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, filePath);
+
+        Assert.IsTrue(string.Equals(ontology2.IRI, "http://example.org/pz", StringComparison.Ordinal));
+        Assert.HasCount(1, ontology2.DeclarationAxioms);
+    }
+
+    [TestMethod]
+    public async Task ShouldThrowExceptionOnReadingOntologyFromFileAsManchesterBecauseNullPathAsync()
+        => await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, null));
+
+    [TestMethod]
+    public async Task ShouldThrowExceptionOnReadingOntologyFromFileAsManchesterBecauseUnexistingPathAsync()
+        => await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, "test/test.omn"));
+
+    [TestMethod]
+    public async Task ShouldExcludeInferredAxiomsWhenWritingOntologyAsManchesterWithIncludeInferencesFalseAsync()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass(new RDFResource("http://example.org/pz#Pizza"))));
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass(new RDFResource("http://example.org/pz#InferredClass"))) { IsInference = true });
+
+        MemoryStream streamWithInferences = new MemoryStream();
+        await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, streamWithInferences);
+        OWLOntology reparsedWithInferences = await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, new MemoryStream(streamWithInferences.ToArray()));
+        Assert.HasCount(2, reparsedWithInferences.DeclarationAxioms);
+
+        MemoryStream streamWithoutInferences = new MemoryStream();
+        await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, streamWithoutInferences, false);
+        OWLOntology reparsedWithoutInferences = await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, new MemoryStream(streamWithoutInferences.ToArray()));
+        Assert.HasCount(1, reparsedWithoutInferences.DeclarationAxioms);
+    }
+
+    [TestMethod]
     public async Task ShouldThrowExceptionOnReadingOntologyFromGraphBecauseNullGraphAsync()
         => await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromRDFGraphAsync(null));
 
