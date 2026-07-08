@@ -442,6 +442,8 @@ namespace OWLSharp.Ontology
                         {
                             List<OWLObjectPropertyExpression> keyObjectProperties = new List<OWLObjectPropertyExpression>();
                             List<OWLDataProperty> keyDataProperties = new List<OWLDataProperty>();
+                            //HasKey's member list has no comma separators between properties: each property is
+                            //recognized by starting a new IRI/"inverse" token, so the loop keeps consuming until neither matches
                             while (CurrentIsEntityIRI() || CurrentIsName("inverse"))
                             {
                                 if (CurrentIsName("inverse"))
@@ -450,6 +452,8 @@ namespace OWLSharp.Ontology
                                 {
                                     string keyPropertyIRI = ParseEntityIRI("HasKey");
                                     symbols.TryGetValue(keyPropertyIRI, out OWLManchesterFrameKind keyPropertyKind);
+                                    //Only a symbol table hit for DataProperty routes to the data list; anything else
+                                    //(including undeclared properties) defaults to object property
                                     if (keyPropertyKind == OWLManchesterFrameKind.DataProperty)
                                         keyDataProperties.Add(new OWLDataProperty(new RDFResource(keyPropertyIRI)));
                                     else
@@ -713,6 +717,8 @@ namespace OWLSharp.Ontology
                         ParseAnnotatedList(annotations =>
                         {
                             OWLClassExpression clsExpr = ParseDescription();
+                            //OWLClassAssertion is overloaded on the individual's concrete type (named vs
+                            //anonymous), so the frame's own individual is downcast accordingly here
                             OWLClassAssertion clsAsn = idvExpr is OWLNamedIndividual named
                                 ? new OWLClassAssertion(clsExpr, named)
                                 : new OWLClassAssertion(clsExpr, (OWLAnonymousIndividual)idvExpr);
@@ -756,6 +762,8 @@ namespace OWLSharp.Ontology
             }
 
             string propertyIRI = ParseEntityIRI("Facts");
+            //The property kind, looked up in the symbol table, decides whether what follows is an individual
+            //(object property fact) or a literal (data property fact): the grammar itself is ambiguous here
             symbols.TryGetValue(propertyIRI, out OWLManchesterFrameKind propertyKind);
             switch (propertyKind)
             {
@@ -773,6 +781,8 @@ namespace OWLSharp.Ontology
                 {
                     OWLDataProperty dtProp = new OWLDataProperty(new RDFResource(propertyIRI));
                     OWLLiteral targetLiteral = ParseLiteral();
+                    //Assertion/NegativeAssertion axioms are typed on the subject individual's own class
+                    //(OWLNamedIndividual vs OWLAnonymousIndividual), hence the two-way branch on both axes
                     OWLAssertionAxiom dtAsn = idvExpr is OWLNamedIndividual named
                         ? negative ? (OWLAssertionAxiom)new OWLNegativeDataPropertyAssertion(dtProp, named, targetLiteral)
                                    : new OWLDataPropertyAssertion(dtProp, named, targetLiteral)
@@ -824,9 +834,14 @@ namespace OWLSharp.Ontology
                 members.Add((isInverse, ParseEntityIRI("EquivalentProperties/DisjointProperties")));
             } while (TryConsumeComma());
 
+            //The section is untyped in the grammar (unlike EquivalentProperties/DisjointProperties frames, which
+            //are nested under a typed property frame), so the variant is inferred from any member's symbol table
+            //kind: an "inverse" member forces the object variant outright, since data properties have no inverse
             bool isObjectVariant = members.Any(member => member.IsInverse
                 || (symbols.TryGetValue(member.IRI, out OWLManchesterFrameKind memberKind) && memberKind == OWLManchesterFrameKind.ObjectProperty));
             bool isDataVariant = members.Any(member => symbols.TryGetValue(member.IRI, out OWLManchesterFrameKind memberKind) && memberKind == OWLManchesterFrameKind.DataProperty);
+            //Fails both when no member resolves to a known kind and when members mix incompatible kinds
+            //(both booleans false or both true)
             if (isObjectVariant == isDataVariant)
                 throw new OWLException($"Cannot parse OWL2/Manchester document: cannot determine whether members of section {sectionToken} are object or data properties");
 
@@ -916,6 +931,8 @@ namespace OWLSharp.Ontology
         private OWLAnnotation ParseAnnotation()
         {
             OWLAnnotationProperty annProp = new OWLAnnotationProperty(new RDFResource(ParseEntityIRI("annotation")));
+            //annotationValue := iri | nodeID | literal: the token type alone tells which of the three
+            //OWLAnnotation.Value* overloads applies, so no further lookahead is needed here
             switch (Current.Type)
             {
                 case OWLManchesterTokenType.FullIRI:
@@ -1108,6 +1125,9 @@ namespace OWLSharp.Ontology
                 case "exactly":
                 {
                     uint cardinality = ParseCardinality();
+                    //The qualifying primary is optional in the grammar: IsPrimaryStart() peeks at the current
+                    //token to tell a qualified restriction ("min 2 hasTopping Pizza") from an unqualified one
+                    //("min 2 hasTopping") without unconditionally consuming a token
                     OWLClassExpression qualifier = IsPrimaryStart() ? ParsePrimary() : null;
                     switch (keywordToken.Value)
                     {
@@ -1138,6 +1158,7 @@ namespace OWLSharp.Ontology
                 case "exactly":
                 {
                     uint cardinality = ParseCardinality();
+                    //Same optional-qualifier pattern as the object restriction counterpart above
                     OWLDataRangeExpression qualifier = IsPrimaryStart() ? ParseDataPrimary() : null;
                     switch (keywordToken.Value)
                     {

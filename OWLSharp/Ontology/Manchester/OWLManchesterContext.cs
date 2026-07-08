@@ -43,18 +43,19 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Bidirectional mapping between OWL2 facet IRIs and their Manchester keywords/symbols
         /// </summary>
-        internal static readonly Dictionary<string, string> FacetSymbols = new Dictionary<string, string>
-        {
-            { RDFVocabulary.XSD.LENGTH.ToString(), "length" },
-            { RDFVocabulary.XSD.MIN_LENGTH.ToString(), "minLength" },
-            { RDFVocabulary.XSD.MAX_LENGTH.ToString(), "maxLength" },
-            { RDFVocabulary.XSD.PATTERN.ToString(), "pattern" },
-            { RDFVocabulary.RDF.LANG_RANGE.ToString(), "langRange" },
-            { RDFVocabulary.XSD.MIN_INCLUSIVE.ToString(), ">=" },
-            { RDFVocabulary.XSD.MIN_EXCLUSIVE.ToString(), ">" },
-            { RDFVocabulary.XSD.MAX_INCLUSIVE.ToString(), "<=" },
-            { RDFVocabulary.XSD.MAX_EXCLUSIVE.ToString(), "<" }
-        };
+        internal static readonly Dictionary<string, string> FacetSymbols =
+            new Dictionary<string, string>
+            {
+                { RDFVocabulary.XSD.LENGTH.ToString(), "length" },
+                { RDFVocabulary.XSD.MIN_LENGTH.ToString(), "minLength" },
+                { RDFVocabulary.XSD.MAX_LENGTH.ToString(), "maxLength" },
+                { RDFVocabulary.XSD.PATTERN.ToString(), "pattern" },
+                { RDFVocabulary.RDF.LANG_RANGE.ToString(), "langRange" },
+                { RDFVocabulary.XSD.MIN_INCLUSIVE.ToString(), ">=" },
+                { RDFVocabulary.XSD.MIN_EXCLUSIVE.ToString(), ">" },
+                { RDFVocabulary.XSD.MAX_INCLUSIVE.ToString(), "<=" },
+                { RDFVocabulary.XSD.MAX_EXCLUSIVE.ToString(), "<" }
+            };
         #endregion
 
         #region Ctors
@@ -90,6 +91,7 @@ namespace OWLSharp.Ontology
                 if (localName.Length > 0 && LocalNameRegex.IsMatch(localName))
                     return $"{bestPrefix.Name}:{localName}";
             }
+
             return $"<{iriString}>";
         }
 
@@ -120,6 +122,7 @@ namespace OWLSharp.Ontology
         internal string RenderAnnotation(OWLAnnotation annotation)
         {
             StringBuilder sb = new StringBuilder();
+
             if (annotation.Annotation != null)
                 sb.Append($"Annotations: {RenderAnnotation(annotation.Annotation)} ");
             sb.Append(annotation.AnnotationProperty.ToManchesterString(this));
@@ -132,6 +135,7 @@ namespace OWLSharp.Ontology
                 sb.Append(annotation.ValueAnonymousIndividual.ToManchesterString(this));
             else if (annotation.ValueLiteral != null)
                 sb.Append(annotation.ValueLiteral.ToManchesterString(this));
+
             return sb.ToString();
         }
 
@@ -146,6 +150,7 @@ namespace OWLSharp.Ontology
         #endregion
     }
 
+    #region ManchesterFrame
     /// <summary>
     /// OWLManchesterFrameKind enumerates the kinds of Manchester frame an axiom can contribute to
     /// </summary>
@@ -191,4 +196,5 @@ namespace OWLSharp.Ontology
         internal string ItemText { get; set; }
         #endregion
     }
+    #endregion
 }

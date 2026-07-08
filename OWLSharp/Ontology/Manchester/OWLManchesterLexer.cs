@@ -20,63 +20,6 @@ using System.Text;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// OWLManchesterTokenType enumerates the kinds of token emitted by the Manchester lexer
-    /// </summary>
-    internal enum OWLManchesterTokenType
-    {
-        /* IRI enclosed in angular brackets (value carries the IRI without brackets) */
-        FullIRI = 1,
-        /* Prefixed name, e.g: "pz:Pizza" (value carries the whole "prefix:local" form) */
-        PrefixedName = 2,
-        /* Anonymous individual, e.g: "_:idv1" (value carries the local part without "_:") */
-        NodeID = 3,
-        /* Word ending with ':' followed by a non-name character, e.g: "Class:", "SubClassOf:" */
-        SectionKeyword = 4,
-        /* Bare word, e.g: "some", "and", "Functional", "o" (interpreted contextually by the parser) */
-        Name = 5,
-        /* Quoted string (value carries the unescaped content without quotes) */
-        QuotedString = 6,
-        IntegerNumber = 7,
-        DecimalNumber = 8,
-        FloatNumber = 9,
-        /* Language tag, e.g: "@it" (value carries the tag without '@') */
-        LanguageTag = 10,
-        /* Datatype suffix separator "^^" */
-        DoubleCaret = 11,
-        Comma = 12,
-        OpenParenthesis = 13,
-        CloseParenthesis = 14,
-        OpenBrace = 15,
-        CloseBrace = 16,
-        OpenBracket = 17,
-        CloseBracket = 18,
-        /* Facet comparators */
-        LessOrEqual = 19,
-        GreaterOrEqual = 20,
-        LessThan = 21,
-        GreaterThan = 22,
-        EndOfDocument = 23
-    }
-
-    /// <summary>
-    /// OWLManchesterToken is a lexical unit of an OWL2/Manchester document, carrying its position for error reporting
-    /// </summary>
-    internal sealed class OWLManchesterToken
-    {
-        #region Properties
-        internal OWLManchesterTokenType Type { get; set; }
-        internal string Value { get; set; }
-        internal int Line { get; set; }
-        internal int Column { get; set; }
-        #endregion
-
-        #region Methods
-        public override string ToString()
-            => $"'{Value}' ({Type}) at line {Line}, column {Column}";
-        #endregion
-    }
-
-    /// <summary>
     /// OWLManchesterLexer turns an OWL2/Manchester document into the flat sequence of tokens
     /// consumed by OWLManchesterParser (https://www.w3.org/TR/owl2-manchester-syntax/)
     /// </summary>
@@ -113,7 +56,7 @@ namespace OWLSharp.Ontology
             }
 
             //Appends a token to the result sequence, anchored at the given (pre-Move) position
-            void Emit(OWLManchesterTokenType type, string value, int tokLine, int tokCol)
+            void EmitToken(OWLManchesterTokenType type, string value, int tokLine, int tokCol)
                 => tokens.Add(new OWLManchesterToken { Type = type, Value = value, Line = tokLine, Column = tokCol });
 
             //Tells if the given character can start a bare word, prefix name or local name
@@ -149,13 +92,13 @@ namespace OWLSharp.Ontology
                 switch (c)
                 {
                     //Punctuation
-                    case ',': Emit(OWLManchesterTokenType.Comma, ",", tokLine, tokCol); Move(); continue;
-                    case '(': Emit(OWLManchesterTokenType.OpenParenthesis, "(", tokLine, tokCol); Move(); continue;
-                    case ')': Emit(OWLManchesterTokenType.CloseParenthesis, ")", tokLine, tokCol); Move(); continue;
-                    case '{': Emit(OWLManchesterTokenType.OpenBrace, "{", tokLine, tokCol); Move(); continue;
-                    case '}': Emit(OWLManchesterTokenType.CloseBrace, "}", tokLine, tokCol); Move(); continue;
-                    case '[': Emit(OWLManchesterTokenType.OpenBracket, "[", tokLine, tokCol); Move(); continue;
-                    case ']': Emit(OWLManchesterTokenType.CloseBracket, "]", tokLine, tokCol); Move(); continue;
+                    case ',': EmitToken(OWLManchesterTokenType.Comma, ",", tokLine, tokCol); Move(); continue;
+                    case '(': EmitToken(OWLManchesterTokenType.OpenParenthesis, "(", tokLine, tokCol); Move(); continue;
+                    case ')': EmitToken(OWLManchesterTokenType.CloseParenthesis, ")", tokLine, tokCol); Move(); continue;
+                    case '{': EmitToken(OWLManchesterTokenType.OpenBrace, "{", tokLine, tokCol); Move(); continue;
+                    case '}': EmitToken(OWLManchesterTokenType.CloseBrace, "}", tokLine, tokCol); Move(); continue;
+                    case '[': EmitToken(OWLManchesterTokenType.OpenBracket, "[", tokLine, tokCol); Move(); continue;
+                    case ']': EmitToken(OWLManchesterTokenType.CloseBracket, "]", tokLine, tokCol); Move(); continue;
 
                     //Full IRI or facet comparator "<="/"<"
                     case '<':
@@ -165,17 +108,17 @@ namespace OWLSharp.Ontology
                             scan++;
                         if (scan < doc.Length && doc[scan] == '>')
                         {
-                            Emit(OWLManchesterTokenType.FullIRI, doc.Substring(pos + 1, scan - pos - 1), tokLine, tokCol);
+                            EmitToken(OWLManchesterTokenType.FullIRI, doc.Substring(pos + 1, scan - pos - 1), tokLine, tokCol);
                             Move(scan - pos + 1);
                         }
                         else if (pos + 1 < doc.Length && doc[pos + 1] == '=')
                         {
-                            Emit(OWLManchesterTokenType.LessOrEqual, "<=", tokLine, tokCol);
+                            EmitToken(OWLManchesterTokenType.LessOrEqual, "<=", tokLine, tokCol);
                             Move(2);
                         }
                         else
                         {
-                            Emit(OWLManchesterTokenType.LessThan, "<", tokLine, tokCol);
+                            EmitToken(OWLManchesterTokenType.LessThan, "<", tokLine, tokCol);
                             Move();
                         }
                         continue;
@@ -185,12 +128,12 @@ namespace OWLSharp.Ontology
                     case '>':
                         if (pos + 1 < doc.Length && doc[pos + 1] == '=')
                         {
-                            Emit(OWLManchesterTokenType.GreaterOrEqual, ">=", tokLine, tokCol);
+                            EmitToken(OWLManchesterTokenType.GreaterOrEqual, ">=", tokLine, tokCol);
                             Move(2);
                         }
                         else
                         {
-                            Emit(OWLManchesterTokenType.GreaterThan, ">", tokLine, tokCol);
+                            EmitToken(OWLManchesterTokenType.GreaterThan, ">", tokLine, tokCol);
                             Move();
                         }
                         continue;
@@ -222,7 +165,7 @@ namespace OWLSharp.Ontology
                         }
                         if (!closed)
                             throw new OWLException($"Cannot tokenize OWL2/Manchester document: unterminated string literal at line {tokLine}, column {tokCol}");
-                        Emit(OWLManchesterTokenType.QuotedString, sb.ToString(), tokLine, tokCol);
+                        EmitToken(OWLManchesterTokenType.QuotedString, sb.ToString(), tokLine, tokCol);
                         continue;
                     }
 
@@ -230,7 +173,7 @@ namespace OWLSharp.Ontology
                     case '^':
                         if (pos + 1 < doc.Length && doc[pos + 1] == '^')
                         {
-                            Emit(OWLManchesterTokenType.DoubleCaret, "^^", tokLine, tokCol);
+                            EmitToken(OWLManchesterTokenType.DoubleCaret, "^^", tokLine, tokCol);
                             Move(2);
                             continue;
                         }
@@ -248,7 +191,7 @@ namespace OWLSharp.Ontology
                         }
                         if (sb.Length == 0)
                             throw new OWLException($"Cannot tokenize OWL2/Manchester document: empty language tag at line {tokLine}, column {tokCol}");
-                        Emit(OWLManchesterTokenType.LanguageTag, sb.ToString(), tokLine, tokCol);
+                        EmitToken(OWLManchesterTokenType.LanguageTag, sb.ToString(), tokLine, tokCol);
                         continue;
                     }
 
@@ -264,10 +207,10 @@ namespace OWLSharp.Ontology
                                 sb.Append(doc[pos]);
                                 Move();
                             }
-                            Emit(OWLManchesterTokenType.PrefixedName, sb.ToString(), tokLine, tokCol);
+                            EmitToken(OWLManchesterTokenType.PrefixedName, sb.ToString(), tokLine, tokCol);
                         }
                         else
-                            Emit(OWLManchesterTokenType.SectionKeyword, ":", tokLine, tokCol);
+                            EmitToken(OWLManchesterTokenType.SectionKeyword, ":", tokLine, tokCol);
                         continue;
                     }
                 }
@@ -284,7 +227,7 @@ namespace OWLSharp.Ontology
                     }
                     if (sb.Length == 0)
                         throw new OWLException($"Cannot tokenize OWL2/Manchester document: empty anonymous individual at line {tokLine}, column {tokCol}");
-                    Emit(OWLManchesterTokenType.NodeID, sb.ToString(), tokLine, tokCol);
+                    EmitToken(OWLManchesterTokenType.NodeID, sb.ToString(), tokLine, tokCol);
                     continue;
                 }
 
@@ -335,10 +278,9 @@ namespace OWLSharp.Ontology
                         hasFloatSuffix = true;
                         Move();
                     }
-                    Emit(hasExponent || hasFloatSuffix ? OWLManchesterTokenType.FloatNumber
-                            : hasDot ? OWLManchesterTokenType.DecimalNumber
-                            : OWLManchesterTokenType.IntegerNumber,
-                         sb.ToString(), tokLine, tokCol);
+                    EmitToken(hasExponent || hasFloatSuffix ? OWLManchesterTokenType.FloatNumber
+                                                            : hasDot ? OWLManchesterTokenType.DecimalNumber
+                                                                     : OWLManchesterTokenType.IntegerNumber, sb.ToString(), tokLine, tokCol);
                     continue;
                 }
 
@@ -362,22 +304,99 @@ namespace OWLSharp.Ontology
                                 sb.Append(doc[pos]);
                                 Move();
                             }
-                            Emit(OWLManchesterTokenType.PrefixedName, sb.ToString(), tokLine, tokCol);
+                            EmitToken(OWLManchesterTokenType.PrefixedName, sb.ToString(), tokLine, tokCol);
                         }
                         else
-                            Emit(OWLManchesterTokenType.SectionKeyword, $"{sb}:", tokLine, tokCol);
+                            EmitToken(OWLManchesterTokenType.SectionKeyword, $"{sb}:", tokLine, tokCol);
                     }
                     else
-                        Emit(OWLManchesterTokenType.Name, sb.ToString(), tokLine, tokCol);
+                        EmitToken(OWLManchesterTokenType.Name, sb.ToString(), tokLine, tokCol);
                     continue;
                 }
 
                 throw new OWLException($"Cannot tokenize OWL2/Manchester document: unexpected character '{c}' at line {tokLine}, column {tokCol}");
             }
 
-            Emit(OWLManchesterTokenType.EndOfDocument, string.Empty, line, col);
+            EmitToken(OWLManchesterTokenType.EndOfDocument, string.Empty, line, col);
             return tokens;
         }
         #endregion
     }
+
+    #region ManchesterToken
+    /// <summary>
+    /// OWLManchesterTokenType enumerates the kinds of token emitted by the Manchester lexer
+    /// </summary>
+    internal enum OWLManchesterTokenType
+    {
+        /* IRI enclosed in angular brackets (value carries the IRI without brackets) */
+        FullIRI = 1,
+        /* Prefixed name, e.g: "pz:Pizza" (value carries the whole "prefix:local" form) */
+        PrefixedName = 2,
+        /* Anonymous individual, e.g: "_:idv1" (value carries the local part without "_:") */
+        NodeID = 3,
+        /* Word ending with ':' followed by a non-name character, e.g: "Class:", "SubClassOf:" */
+        SectionKeyword = 4,
+        /* Bare word, e.g: "some", "and", "Functional", "o" (interpreted contextually by the parser) */
+        Name = 5,
+        /* Quoted string (value carries the unescaped content without quotes) */
+        QuotedString = 6,
+        IntegerNumber = 7,
+        DecimalNumber = 8,
+        FloatNumber = 9,
+        /* Language tag, e.g: "@it" (value carries the tag without '@') */
+        LanguageTag = 10,
+        /* Datatype suffix separator "^^" */
+        DoubleCaret = 11,
+        Comma = 12,
+        OpenParenthesis = 13,
+        CloseParenthesis = 14,
+        OpenBrace = 15,
+        CloseBrace = 16,
+        OpenBracket = 17,
+        CloseBracket = 18,
+        /* Facet comparators */
+        LessOrEqual = 19,
+        GreaterOrEqual = 20,
+        LessThan = 21,
+        GreaterThan = 22,
+        EndOfDocument = 23
+    }
+
+    /// <summary>
+    /// OWLManchesterToken is a lexical unit of an OWL2/Manchester document, carrying its position for error reporting
+    /// </summary>
+    internal sealed class OWLManchesterToken
+    {
+        #region Properties
+        /// <summary>
+        /// Kind of this token
+        /// </summary>
+        internal OWLManchesterTokenType Type { get; set; }
+
+        /// <summary>
+        /// Textual payload of this token (meaning depends on <see cref="Type"/>: see OWLManchesterTokenType members)
+        /// </summary>
+        internal string Value { get; set; }
+
+        /// <summary>
+        /// 1-based line where this token starts in the source document
+        /// </summary>
+        internal int Line { get; set; }
+
+        /// <summary>
+        /// 1-based column where this token starts in the source document
+        /// </summary>
+        internal int Column { get; set; }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Builds a diagnostic representation of this token, used in parser error messages
+        /// </summary>
+        public override string ToString()
+            => $"'{Value}' ({Type}) at line {Line}, column {Column}";
+        #endregion
+    }
+    #endregion
 }
