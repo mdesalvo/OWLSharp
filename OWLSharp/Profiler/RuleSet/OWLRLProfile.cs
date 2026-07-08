@@ -83,21 +83,18 @@ namespace OWLSharp.Profiler
                 CheckClassExpression(axiom, classExpression, position, violations);
 
             //...plus the class expressions embedded in property domain/range axioms (not enumerated by
-            //OWLClassAxiomWalker, whose scope is ClassAxioms only). Structurally, ObjectPropertyDomain(OP,C) is
-            //equivalent to SubClassOf(ObjectSomeValuesFrom(OP,owl:Thing),C) and ObjectPropertyRange(OP,C) to
-            //SubClassOf(ObjectSomeValuesFrom(ObjectInverseOf(OP),owl:Thing),C): in both cases C plays the
-            //SUPERclass role, never the subclass one.
-            foreach (OWLObjectPropertyDomain domain in ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyDomain>())
-                CheckClassExpression(domain, domain.ClassExpression, OWLEnums.OWLClassExpressionPosition.SuperClass, violations);
-            foreach (OWLObjectPropertyRange range in ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyRange>())
-                CheckClassExpression(range, range.ClassExpression, OWLEnums.OWLClassExpressionPosition.SuperClass, violations);
-            foreach (OWLDataPropertyDomain domain in ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyDomain>())
-                CheckClassExpression(domain, domain.ClassExpression, OWLEnums.OWLClassExpressionPosition.SuperClass, violations);
+            //OWLClassAxiomWalker, whose scope is ClassAxioms only), via the shared OWLPropertyAxiomWalker.
+            //Structurally, ObjectPropertyDomain(OP,C) is equivalent to SubClassOf(ObjectSomeValuesFrom(OP,owl:Thing),C)
+            //and ObjectPropertyRange(OP,C) to SubClassOf(ObjectSomeValuesFrom(ObjectInverseOf(OP),owl:Thing),C):
+            //in both cases C plays the SUPERclass role, never the subclass one — the walker itself stays
+            //position-agnostic (see its XML-doc), so RL supplies SuperClass explicitly here at the call site.
+            foreach ((OWLAxiom axiom, OWLClassExpression classExpression) in OWLPropertyAxiomWalker.WalkPropertyDomainRangeClassExpressions(ontology))
+                CheckClassExpression(axiom, classExpression, OWLEnums.OWLClassExpressionPosition.SuperClass, violations);
 
             //§4.2.4 DataRange grammar, for DataPropertyRange(DP,DR), which states its range directly as a DR
             //rather than reaching one through a class expression (see OWLELProfile for the identical rationale).
-            foreach (OWLDataPropertyRange range in ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyRange>())
-                CheckDataRange(range, range.DataRangeExpression, violations);
+            foreach ((OWLAxiom axiom, OWLDataRangeExpression dataRange) in OWLPropertyAxiomWalker.WalkPropertyRangeDataRanges(ontology))
+                CheckDataRange(axiom, dataRange, violations);
 
             //§4.2.5 allowed axiom types, independent of grammar shape.
             CheckClassAxiomTypes(ontology, violations);
@@ -393,27 +390,44 @@ namespace OWLSharp.Profiler
         /// <summary>
         /// §4.2.5: RL admits SubDataPropertyOf, EquivalentDataProperties, DisjointDataProperties, DataPropertyDomain,
         /// DataPropertyRange and FunctionalDataProperty — which is the complete set of OWLDataPropertyAxiom subtypes
-        /// that exist today, so this check cannot currently fire. It exists as a forward guard: if a new
-        /// OWLDataPropertyAxiom subtype is ever added to the model without being added to RL's grammar too,
-        /// it will default to "excluded" here rather than silently passing as compliant.
+        /// that exist today, so the violation branch below cannot currently fire through this method's own call
+        /// path (every real axiom that could end up in ontology.DataPropertyAxioms is admitted). It exists as a
+        /// forward guard: if a new OWLDataPropertyAxiom subtype is ever added to the model without being added to
+        /// RL's grammar too, it will default to "excluded" here rather than silently passing as compliant.
         /// </summary>
         private static void CheckDataPropertyAxiomTypes(OWLOntology ontology, List<OWLProfileViolation> violations)
         {
             foreach (OWLDataPropertyAxiom axiom in ontology.DataPropertyAxioms ?? new List<OWLDataPropertyAxiom>())
             {
-                bool isAdmitted = axiom is OWLSubDataPropertyOf
-                                   || axiom is OWLEquivalentDataProperties
-                                   || axiom is OWLDisjointDataProperties
-                                   || axiom is OWLDataPropertyDomain
-                                   || axiom is OWLDataPropertyRange
-                                   || axiom is OWLFunctionalDataProperty;
-
-                if (!isAdmitted)
+                //This AddViolation call itself cannot be reached through this loop with any real axiom today
+                //(see IsAdmittedDataPropertyAxiomType's own tests, which cover both sides of that predicate
+                //directly and in isolation from serialization). It is left inline rather than removed: the
+                //call is identical in shape to every other AddViolation call in this file (all independently
+                //covered elsewhere), and it is what actually fires the day a new OWLDataPropertyAxiom subtype
+                //is added without updating the predicate above.
+                if (!IsAdmittedDataPropertyAxiomType(axiom))
                     AddViolation(violations, DataPropertyAxiomTypeRule, axiom,
                         $"Data property axiom type '{axiom.GetType().Name}' is not admitted by the RL profile (§4.2.5)",
                         "Remove this axiom, or restrict the ontology to SubDataPropertyOf, EquivalentDataProperties, DisjointDataProperties, DataPropertyDomain, DataPropertyRange and FunctionalDataProperty");
             }
         }
+
+        /// <summary>
+        /// The admission predicate itself, factored out of CheckDataPropertyAxiomTypes as its own testable unit:
+        /// the loop above always reaches AddViolation -> OWLAxiom.GetXML() -> XmlSerializer when this returns
+        /// false, and XmlSerializer's polymorphic serialization can only handle axiom types registered via
+        /// [XmlInclude] on OWLAxiom — which by construction excludes any hypothetical "unwired future subtype"
+        /// a test would need to invent to exercise the false branch. Extracting the boolean check on its own lets
+        /// a test call it directly with such a stand-in type, verifying the "unknown type defaults to excluded"
+        /// behavior in isolation, without going anywhere near serialization.
+        /// </summary>
+        internal static bool IsAdmittedDataPropertyAxiomType(OWLDataPropertyAxiom axiom)
+            => axiom is OWLSubDataPropertyOf
+               || axiom is OWLEquivalentDataProperties
+               || axiom is OWLDisjointDataProperties
+               || axiom is OWLDataPropertyDomain
+               || axiom is OWLDataPropertyRange
+               || axiom is OWLFunctionalDataProperty;
 
         //Shared by every "the filler must be owl:Thing OR a subCE" check above (ObjectSomeValuesFrom in
         //CheckSubClassExpression, ObjectMaxCardinality's optional qualifying class in CheckSuperClassExpression):

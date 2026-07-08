@@ -70,17 +70,16 @@ namespace OWLSharp.Profiler
             //does not enumerate (its documented scope is ClassAxioms only). As in OWLRLProfile, the domain/range
             //class of a property axiom plays the SUPERclass role (ObjectPropertyDomain(OP,C) is structurally
             //SubClassOf(∃OP.owl:Thing,C), i.e. C is the consequent).
-            foreach (OWLObjectPropertyDomain domain in ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyDomain>())
-                CheckClassExpression(domain, domain.ClassExpression, OWLEnums.OWLClassExpressionPosition.SuperClass, violations);
-            foreach (OWLObjectPropertyRange range in ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyRange>())
-                CheckClassExpression(range, range.ClassExpression, OWLEnums.OWLClassExpressionPosition.SuperClass, violations);
-            foreach (OWLDataPropertyDomain domain in ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyDomain>())
-                CheckClassExpression(domain, domain.ClassExpression, OWLEnums.OWLClassExpressionPosition.SuperClass, violations);
+            //Delegated to the shared OWLPropertyAxiomWalker (see OWLRLProfile for the identical structural
+            //"domain/range class always plays the superclass role" rationale, and the walker's own XML-doc for
+            //why it stays position-agnostic and lets each profiler apply SuperClass at the call site).
+            foreach ((OWLAxiom axiom, OWLClassExpression classExpression) in OWLPropertyAxiomWalker.WalkPropertyDomainRangeClassExpressions(ontology))
+                CheckClassExpression(axiom, classExpression, OWLEnums.OWLClassExpressionPosition.SuperClass, violations);
 
             //§3.2.4 DataRange grammar, for DataPropertyRange(DP,DR), which states its range directly as a DR
             //rather than reaching one through a class expression (identical rationale to OWLELProfile/OWLRLProfile).
-            foreach (OWLDataPropertyRange range in ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyRange>())
-                CheckDataRange(range, range.DataRangeExpression, violations);
+            foreach ((OWLAxiom axiom, OWLDataRangeExpression dataRange) in OWLPropertyAxiomWalker.WalkPropertyRangeDataRanges(ontology))
+                CheckDataRange(axiom, dataRange, violations);
 
             //§3.2.5 allowed axiom types, independent of grammar shape.
             CheckClassAxiomTypes(ontology, violations);

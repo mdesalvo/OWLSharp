@@ -287,6 +287,56 @@ public class OWLELProfileTest
         Assert.Contains("2 individuals", violations[0].Description);
     }
 
+    //ObjectHasValue, ObjectHasSelf and DataHasValue are all "leaf" constructs (no nested class/data range
+    //expression to recurse into): admitted as-is by §2.2.3, but until now only ever exercised as the FILLER of
+    //an ObjectSomeValuesFrom in the recursion tests below, never standalone. Confirming each compiles to zero
+    //violations on its own closes that gap.
+    [TestMethod]
+    public async Task ShouldAllowStandaloneObjectHasValueAsync()
+    {
+        OWLClass parisOffice = new OWLClass(new RDFResource("http://biomed.org/ParisOffice"));
+        OWLObjectProperty locatedIn = new OWLObjectProperty(new RDFResource("http://biomed.org/locatedIn"));
+        OWLNamedIndividual paris = new OWLNamedIndividual(new RDFResource("http://biomed.org/Paris"));
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [new OWLSubClassOf(parisOffice, new OWLObjectHasValue(locatedIn, paris))]
+        };
+
+        List<OWLProfileViolation> violations = await OWLELProfile.ExecuteRuleAsync(ontology);
+
+        Assert.IsEmpty(violations);
+    }
+
+    [TestMethod]
+    public async Task ShouldAllowStandaloneObjectHasSelfAsync()
+    {
+        OWLClass selfCaringPatient = new OWLClass(new RDFResource("http://biomed.org/SelfCaringPatient"));
+        OWLObjectProperty caresFor = new OWLObjectProperty(new RDFResource("http://biomed.org/caresFor"));
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [new OWLSubClassOf(selfCaringPatient, new OWLObjectHasSelf(caresFor))]
+        };
+
+        List<OWLProfileViolation> violations = await OWLELProfile.ExecuteRuleAsync(ontology);
+
+        Assert.IsEmpty(violations);
+    }
+
+    [TestMethod]
+    public async Task ShouldAllowStandaloneDataHasValueAsync()
+    {
+        OWLClass bloodTypeOPatient = new OWLClass(new RDFResource("http://biomed.org/BloodTypeOPatient"));
+        OWLDataProperty hasBloodType = new OWLDataProperty(new RDFResource("http://biomed.org/hasBloodType"));
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [new OWLSubClassOf(bloodTypeOPatient, new OWLDataHasValue(hasBloodType, new OWLLiteral(new RDFPlainLiteral("O"))))]
+        };
+
+        List<OWLProfileViolation> violations = await OWLELProfile.ExecuteRuleAsync(ontology);
+
+        Assert.IsEmpty(violations);
+    }
+
     //--- Recursion: a disallowed construct nested inside an otherwise-admitted one --------------------------------
 
     //A subtle, easy-to-miss corner case: ObjectSomeValuesFrom itself is EL's flagship construct and is perfectly

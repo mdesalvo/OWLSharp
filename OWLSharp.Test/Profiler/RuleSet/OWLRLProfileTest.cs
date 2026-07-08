@@ -24,6 +24,17 @@ namespace OWLSharp.Test.Profiler.RuleSet;
 [TestClass]
 public class OWLRLProfileTest
 {
+    //A test-only stand-in for "some future OWLDataPropertyAxiom subtype not yet wired into RL's grammar".
+    //Reachable here only because OWLDataPropertyAxiom's constructor is internal and InternalsVisibleTo grants
+    //OWLSharp.Test access to OWLSharp's internals — the same mechanism this whole test project relies on to
+    //reach the RuleSet classes. Used ONLY against OWLRLProfile.IsAdmittedDataPropertyAxiomType directly (never
+    //through ExecuteRuleAsync's full pipeline): going through AddViolation would call GetXML(), whose
+    //XmlSerializer requires every polymorphically-serialized type to be registered via [XmlInclude] on
+    //OWLAxiom — a registration this fictitious type deliberately has none of, and rightly so (adding a
+    //test-only type to OWLAxiom's real XmlInclude list just to satisfy this one test would pollute production
+    //serialization for no benefit). Testing the extracted predicate directly sidesteps that entirely.
+    private sealed class FutureDataPropertyAxiom : OWLDataPropertyAxiom { }
+
     #region Tests
 
     //RL's textbook realm is rule-engine-friendly business data (order fulfillment, e-commerce): scalable
@@ -518,6 +529,282 @@ public class OWLRLProfileTest
 
         Assert.HasCount(1, violations);
         Assert.Contains("ObjectMinCardinality", violations[0].Description);
+    }
+
+    //ObjectPropertyDomain/Range are reached via OWLPropertyAxiomWalker.WalkPropertyDomainRangeClassExpressions,
+    //DataPropertyDomain via the same walker method, and DataPropertyRange via WalkPropertyRangeDataRanges — the
+    //ObjectPropertyDomain case above already covers that walker's first branch; these two cover the remaining ones.
+    [TestMethod]
+    public async Task ShouldFlagDisallowedClassExpressionInDataPropertyDomainAsync()
+    {
+        OWLDataProperty hasDiscountCode = new OWLDataProperty(new RDFResource("http://shop.org/hasDiscountCode"));
+        OWLObjectProperty contains = new OWLObjectProperty(new RDFResource("http://shop.org/contains"));
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [],
+            DataPropertyAxioms = [new OWLDataPropertyDomain(hasDiscountCode, new OWLObjectExactCardinality(contains, 2))]
+        };
+
+        List<OWLProfileViolation> violations = await OWLRLProfile.ExecuteRuleAsync(ontology);
+
+        Assert.HasCount(1, violations);
+        Assert.Contains("ObjectExactCardinality", violations[0].Description);
+    }
+
+    [TestMethod]
+    public async Task ShouldFlagDisallowedDataRangeInDataPropertyRangeAsync()
+    {
+        OWLDataProperty hasDiscountCode = new OWLDataProperty(new RDFResource("http://shop.org/hasDiscountCode"));
+        OWLOntology ontology = new OWLOntology
+        {
+            //owl:real is excluded from RL's datatype map (§4.2.1) even though the "Datatype" construct itself is fine.
+            DataPropertyAxioms = [new OWLDataPropertyRange(hasDiscountCode, new OWLDatatype(new RDFResource($"{RDFVocabulary.OWL.BASE_URI}real")))]
+        };
+
+        List<OWLProfileViolation> violations = await OWLRLProfile.ExecuteRuleAsync(ontology);
+
+        Assert.HasCount(1, violations);
+        Assert.IsTrue(violations[0].RuleName.EndsWith(".Datatype"));
+    }
+
+    //--- Standalone coverage for constructs so far only ever exercised as a nested filler/member --------------------
+    //--- (recursion tests confirm a construct is checked correctly WHEN nested, but never exercised it as the -------
+    //--- direct, top-level construct of an axiom on its own — closing that gap here). -----------------------------
+
+    [TestMethod]
+    public async Task ShouldAllowStandaloneObjectIntersectionOfInSubClassPositionAsync()
+    {
+        OWLClass giftOrder = new OWLClass(new RDFResource("http://shop.org/GiftOrder"));
+        OWLClass onlineOrder = new OWLClass(new RDFResource("http://shop.org/OnlineOrder"));
+        OWLClass wrapped = new OWLClass(new RDFResource("http://shop.org/Wrapped"));
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [new OWLSubClassOf(new OWLObjectIntersectionOf([onlineOrder, wrapped]), giftOrder)]
+        };
+
+        List<OWLProfileViolation> violations = await OWLRLProfile.ExecuteRuleAsync(ontology);
+
+        Assert.IsEmpty(violations);
+    }
+
+    [TestMethod]
+    public async Task ShouldAllowStandaloneObjectIntersectionOfInSuperClassPositionAsync()
+    {
+        OWLClass priorityOrder = new OWLClass(new RDFResource("http://shop.org/PriorityOrder"));
+        OWLClass order = new OWLClass(new RDFResource("http://shop.org/Order"));
+        OWLClass expedited = new OWLClass(new RDFResource("http://shop.org/Expedited"));
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [new OWLSubClassOf(priorityOrder, new OWLObjectIntersectionOf([order, expedited]))]
+        };
+
+        List<OWLProfileViolation> violations = await OWLRLProfile.ExecuteRuleAsync(ontology);
+
+        Assert.IsEmpty(violations);
+    }
+
+    [TestMethod]
+    public async Task ShouldAllowStandaloneObjectHasValueInSubClassPositionAsync()
+    {
+        OWLClass domesticOrder = new OWLClass(new RDFResource("http://shop.org/DomesticOrder"));
+        OWLObjectProperty shipsTo = new OWLObjectProperty(new RDFResource("http://shop.org/shipsTo"));
+        OWLNamedIndividual homeCountry = new OWLNamedIndividual(new RDFResource("http://shop.org/HomeCountry"));
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [new OWLSubClassOf(new OWLObjectHasValue(shipsTo, homeCountry), domesticOrder)]
+        };
+
+        List<OWLProfileViolation> violations = await OWLRLProfile.ExecuteRuleAsync(ontology);
+
+        Assert.IsEmpty(violations);
+    }
+
+    [TestMethod]
+    public async Task ShouldAllowStandaloneObjectHasValueInSuperClassPositionAsync()
+    {
+        OWLClass domesticOrder = new OWLClass(new RDFResource("http://shop.org/DomesticOrder"));
+        OWLObjectProperty shipsTo = new OWLObjectProperty(new RDFResource("http://shop.org/shipsTo"));
+        OWLNamedIndividual homeCountry = new OWLNamedIndividual(new RDFResource("http://shop.org/HomeCountry"));
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [new OWLSubClassOf(domesticOrder, new OWLObjectHasValue(shipsTo, homeCountry))]
+        };
+
+        List<OWLProfileViolation> violations = await OWLRLProfile.ExecuteRuleAsync(ontology);
+
+        Assert.IsEmpty(violations);
+    }
+
+    [TestMethod]
+    public async Task ShouldAllowStandaloneObjectAllValuesFromInSuperClassPositionAsync()
+    {
+        OWLClass exclusivelyDigitalOrder = new OWLClass(new RDFResource("http://shop.org/ExclusivelyDigitalOrder"));
+        OWLClass digitalProduct = new OWLClass(new RDFResource("http://shop.org/DigitalProduct"));
+        OWLObjectProperty contains = new OWLObjectProperty(new RDFResource("http://shop.org/contains"));
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [new OWLSubClassOf(exclusivelyDigitalOrder, new OWLObjectAllValuesFrom(contains, digitalProduct))]
+        };
+
+        List<OWLProfileViolation> violations = await OWLRLProfile.ExecuteRuleAsync(ontology);
+
+        Assert.IsEmpty(violations);
+    }
+
+    //Exercises the recursion branch where ObjectMaxCardinality carries a qualifying class expression that is
+    //NEITHER absent NOR owl:Thing: a genuine atomic subCE filler, which must itself pass CheckSubClassExpression.
+    [TestMethod]
+    public async Task ShouldAllowObjectMaxCardinalityWithAtomicSubClassFillerAsync()
+    {
+        OWLClass singleGiftOrder = new OWLClass(new RDFResource("http://shop.org/SingleGiftOrder"));
+        OWLClass giftItem = new OWLClass(new RDFResource("http://shop.org/GiftItem"));
+        OWLObjectProperty contains = new OWLObjectProperty(new RDFResource("http://shop.org/contains"));
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [new OWLSubClassOf(singleGiftOrder, new OWLObjectMaxCardinality(contains, 1, giftItem))]
+        };
+
+        List<OWLProfileViolation> violations = await OWLRLProfile.ExecuteRuleAsync(ontology);
+
+        Assert.IsEmpty(violations);
+    }
+
+    [TestMethod]
+    public async Task ShouldAllowStandaloneDataAllValuesFromAsync()
+    {
+        OWLClass domesticOrder = new OWLClass(new RDFResource("http://shop.org/DomesticOrder"));
+        OWLDataProperty hasCurrency = new OWLDataProperty(new RDFResource("http://shop.org/hasCurrency"));
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [new OWLSubClassOf(domesticOrder, new OWLDataAllValuesFrom(hasCurrency, new OWLDatatype(RDFVocabulary.XSD.STRING)))]
+        };
+
+        List<OWLProfileViolation> violations = await OWLRLProfile.ExecuteRuleAsync(ontology);
+
+        Assert.IsEmpty(violations);
+    }
+
+    [TestMethod]
+    public async Task ShouldFlagDataMaxCardinalityGreaterThanOneAsync()
+    {
+        OWLClass bulkOrder = new OWLClass(new RDFResource("http://shop.org/BulkOrder"));
+        OWLDataProperty hasNote = new OWLDataProperty(new RDFResource("http://shop.org/hasNote"));
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [new OWLSubClassOf(bulkOrder, new OWLDataMaxCardinality(hasNote, 3))]
+        };
+
+        List<OWLProfileViolation> violations = await OWLRLProfile.ExecuteRuleAsync(ontology);
+
+        Assert.HasCount(1, violations);
+        Assert.Contains("DataMaxCardinality(3)", violations[0].Description);
+    }
+
+    [TestMethod]
+    public async Task ShouldAllowDataMaxCardinalityZeroOrOneWithQualifyingRangeAsync()
+    {
+        OWLClass singleNoteOrder = new OWLClass(new RDFResource("http://shop.org/SingleNoteOrder"));
+        OWLDataProperty hasNote = new OWLDataProperty(new RDFResource("http://shop.org/hasNote"));
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [new OWLSubClassOf(singleNoteOrder, new OWLDataMaxCardinality(hasNote, 1, new OWLDatatype(RDFVocabulary.XSD.STRING)))]
+        };
+
+        List<OWLProfileViolation> violations = await OWLRLProfile.ExecuteRuleAsync(ontology);
+
+        Assert.IsEmpty(violations);
+    }
+
+    [TestMethod]
+    public async Task ShouldAllowStandaloneObjectHasValueAndDataHasValueInEquivalentClassesAsync()
+    {
+        OWLClass giftForMom = new OWLClass(new RDFResource("http://shop.org/GiftForMom"));
+        OWLObjectProperty recipient = new OWLObjectProperty(new RDFResource("http://shop.org/recipient"));
+        OWLNamedIndividual mom = new OWLNamedIndividual(new RDFResource("http://shop.org/Mom"));
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [new OWLEquivalentClasses([giftForMom, new OWLObjectHasValue(recipient, mom)])]
+        };
+
+        List<OWLProfileViolation> violations = await OWLRLProfile.ExecuteRuleAsync(ontology);
+
+        Assert.IsEmpty(violations);
+    }
+
+    [TestMethod]
+    public async Task ShouldAllowStandaloneDataIntersectionOfInDataRangeAsync()
+    {
+        OWLClass order = new OWLClass(new RDFResource("http://shop.org/Order"));
+        OWLDataProperty hasTrackingCode = new OWLDataProperty(new RDFResource("http://shop.org/hasTrackingCode"));
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [
+                new OWLSubClassOf(new OWLDataSomeValuesFrom(hasTrackingCode,
+                    new OWLDataIntersectionOf([new OWLDatatype(RDFVocabulary.XSD.STRING), new OWLDatatype(RDFVocabulary.XSD.TOKEN)])), order)
+            ]
+        };
+
+        List<OWLProfileViolation> violations = await OWLRLProfile.ExecuteRuleAsync(ontology);
+
+        Assert.IsEmpty(violations);
+    }
+
+    //CheckDataPropertyAxiomTypes' loop body (the "isAdmitted" check) never runs unless the ontology actually has
+    //at least one DataPropertyAxiom: every other RL test either omits DataPropertyAxioms entirely or (rarely)
+    //adds one that violates a DIFFERENT check first. This exercises the loop with axioms that are, today,
+    //ALL admitted (see the method's XML-doc: RL's DataPropertyAxiom allowlist currently covers every subtype
+    //that exists), so the expected outcome is zero violations — a compliance confirmation of a check that can
+    //never currently fire, not a no-op test.
+    [TestMethod]
+    public async Task ShouldAllowEveryCurrentDataPropertyAxiomTypeAsync()
+    {
+        OWLDataProperty hasTrackingCode = new OWLDataProperty(new RDFResource("http://shop.org/hasTrackingCode"));
+        OWLDataProperty hasCarrierCode = new OWLDataProperty(new RDFResource("http://shop.org/hasCarrierCode"));
+        OWLClass order = new OWLClass(new RDFResource("http://shop.org/Order"));
+        OWLOntology ontology = new OWLOntology
+        {
+            DataPropertyAxioms = [
+                new OWLSubDataPropertyOf(hasTrackingCode, hasCarrierCode),
+                new OWLEquivalentDataProperties([hasTrackingCode, hasCarrierCode]),
+                new OWLDisjointDataProperties([hasTrackingCode, hasCarrierCode]),
+                new OWLDataPropertyDomain(hasTrackingCode, order),
+                new OWLDataPropertyRange(hasTrackingCode, new OWLDatatype(RDFVocabulary.XSD.STRING)),
+                new OWLFunctionalDataProperty(hasTrackingCode)
+            ]
+        };
+
+        List<OWLProfileViolation> violations = await OWLRLProfile.ExecuteRuleAsync(ontology);
+
+        Assert.IsEmpty(violations);
+    }
+
+    //Every REAL OWLDataPropertyAxiom subtype existing today is admitted by RL (confirmed above, via
+    //ShouldAllowEveryCurrentDataPropertyAxiomTypeAsync going through the full pipeline): this pins down the
+    //FALSE side of the predicate, which no real axiom type can reach, by calling the extracted predicate
+    //directly with the test-only FutureDataPropertyAxiom stand-in — confirming an unrecognized subtype
+    //correctly defaults to "not admitted" rather than silently passing, without needing GetXML/serialization.
+    [TestMethod]
+    public void ShouldNotAdmitUnrecognizedDataPropertyAxiomType()
+        => Assert.IsFalse(OWLRLProfile.IsAdmittedDataPropertyAxiomType(new FutureDataPropertyAxiom()));
+
+    [TestMethod]
+    public void ShouldAdmitEveryCurrentDataPropertyAxiomTypeDirectly()
+    {
+        OWLDataProperty dp1 = new OWLDataProperty(new RDFResource("http://shop.org/dp1"));
+        OWLDataProperty dp2 = new OWLDataProperty(new RDFResource("http://shop.org/dp2"));
+        OWLClass order = new OWLClass(new RDFResource("http://shop.org/Order"));
+        OWLDataPropertyAxiom[] admittedAxioms =
+        [
+            new OWLSubDataPropertyOf(dp1, dp2),
+            new OWLEquivalentDataProperties([dp1, dp2]),
+            new OWLDisjointDataProperties([dp1, dp2]),
+            new OWLDataPropertyDomain(dp1, order),
+            new OWLDataPropertyRange(dp1, new OWLDatatype(RDFVocabulary.XSD.STRING)),
+            new OWLFunctionalDataProperty(dp1)
+        ];
+
+        foreach (OWLDataPropertyAxiom axiom in admittedAxioms)
+            Assert.IsTrue(OWLRLProfile.IsAdmittedDataPropertyAxiomType(axiom), $"expected {axiom.GetType().Name} to be admitted");
     }
 
     //--- Cross-cutting corner cases ---------------------------------------------------------------------------

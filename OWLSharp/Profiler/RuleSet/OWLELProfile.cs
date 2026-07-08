@@ -72,19 +72,16 @@ namespace OWLSharp.Profiler
 
             //...plus the class expressions embedded in property domain/range axioms, which are NOT enumerated by
             //OWLClassAxiomWalker (that walker's documented scope is ClassAxioms only) but still carry a class
-            //expression that must conform to the same §2.2.3 grammar.
-            foreach (OWLObjectPropertyDomain domain in ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyDomain>())
-                CheckClassExpression(domain, domain.ClassExpression, violations);
-            foreach (OWLObjectPropertyRange range in ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyRange>())
-                CheckClassExpression(range, range.ClassExpression, violations);
-            foreach (OWLDataPropertyDomain domain in ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyDomain>())
-                CheckClassExpression(domain, domain.ClassExpression, violations);
+            //expression that must conform to the same §2.2.3 grammar. Delegated to OWLPropertyAxiomWalker so this
+            //iteration is written once and shared by OWLRLProfile/OWLQLProfile instead of being re-hand-rolled here.
+            foreach ((OWLAxiom axiom, OWLClassExpression classExpression) in OWLPropertyAxiomWalker.WalkPropertyDomainRangeClassExpressions(ontology))
+                CheckClassExpression(axiom, classExpression, violations);
 
             //§2.2.4 DataRange grammar, for the one axiom family that carries a data range without going through
             //a class expression first (DataPropertyRange(DP,DR) states the range of DP directly as a DR, unlike
             //DataSomeValuesFrom/DataHasValue whose data range is reached via CheckClassExpression's recursion).
-            foreach (OWLDataPropertyRange range in ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyRange>())
-                CheckDataRange(range, range.DataRangeExpression, violations);
+            foreach ((OWLAxiom axiom, OWLDataRangeExpression dataRange) in OWLPropertyAxiomWalker.WalkPropertyRangeDataRanges(ontology))
+                CheckDataRange(axiom, dataRange, violations);
 
             //§2.2.5 allowed axiom types, checked independently of grammar shape: an axiom can use only
             //EL-admitted class/data expressions internally (checked above) AND still be of a type EL disallows

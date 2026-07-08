@@ -758,6 +758,68 @@ public class OWLQLProfileTest
         Assert.Contains("HasKey", violations[0].Description);
     }
 
+    //--- Standalone coverage for expressions so far only exercised in the OTHER position -----------------------
+
+    //DataSomeValuesFrom is admitted in BOTH sub and super position with the same shape (unlike the object
+    //existential's qualification asymmetry) — every other DataSomeValuesFrom test in this file used it in
+    //subclass position (e.g. ShouldAllowDataIntersectionOfAsync), so this closes the superclass-position gap.
+    [TestMethod]
+    public async Task ShouldAllowDataSomeValuesFromInSuperClassPositionAsync()
+    {
+        OWLClass employee = new OWLClass(new RDFResource("http://corp.org/Employee"));
+        OWLDataProperty hasBadgeCode = new OWLDataProperty(new RDFResource("http://corp.org/hasBadgeCode"));
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [new OWLSubClassOf(employee, new OWLDataSomeValuesFrom(hasBadgeCode, new OWLDatatype(RDFVocabulary.XSD.STRING)))]
+        };
+
+        List<OWLProfileViolation> violations = await OWLQLProfile.ExecuteRuleAsync(ontology);
+
+        Assert.IsEmpty(violations);
+    }
+
+    //--- Class/data expressions embedded in property domain/range axioms (the walker's other two branches) -----
+    //--- (ObjectPropertyDomain/Range are already exercised by the qualification tests above via SubClassOf; -----
+    //--- these two specifically pin down DataPropertyDomain and DataPropertyRange, reached via the SAME shared ---
+    //--- OWLPropertyAxiomWalker but never yet exercised for QL specifically.) ------------------------------------
+
+    [TestMethod]
+    public async Task ShouldFlagDisallowedClassExpressionInDataPropertyDomainAsync()
+    {
+        OWLDataProperty hasBadgeCode = new OWLDataProperty(new RDFResource("http://corp.org/hasBadgeCode"));
+        OWLObjectProperty worksFor = new OWLObjectProperty(new RDFResource("http://corp.org/worksFor"));
+        OWLClass department = new OWLClass(new RDFResource("http://corp.org/Department"));
+        OWLClass remoteFriendly = new OWLClass(new RDFResource("http://corp.org/RemoteFriendly"));
+        OWLOntology ontology = new OWLOntology
+        {
+            //A qualified ObjectSomeValuesFrom with a composite filler is out of grammar wherever it appears,
+            //including as a property's domain class.
+            DataPropertyAxioms = [new OWLDataPropertyDomain(hasBadgeCode, new OWLObjectSomeValuesFrom(worksFor, new OWLObjectIntersectionOf([department, remoteFriendly])))]
+        };
+
+        List<OWLProfileViolation> violations = await OWLQLProfile.ExecuteRuleAsync(ontology);
+
+        Assert.HasCount(1, violations);
+        Assert.Contains("single atomic Class", violations[0].Description);
+    }
+
+    [TestMethod]
+    public async Task ShouldFlagDisallowedDataRangeInDataPropertyRangeAsync()
+    {
+        OWLDataProperty hasBadgeCode = new OWLDataProperty(new RDFResource("http://corp.org/hasBadgeCode"));
+        OWLOntology ontology = new OWLOntology
+        {
+            DataPropertyAxioms = [
+                new OWLDataPropertyRange(hasBadgeCode, new OWLDataOneOf([new OWLLiteral(new RDFPlainLiteral("A")), new OWLLiteral(new RDFPlainLiteral("B"))]))
+            ]
+        };
+
+        List<OWLProfileViolation> violations = await OWLQLProfile.ExecuteRuleAsync(ontology);
+
+        Assert.HasCount(1, violations);
+        Assert.IsTrue(violations[0].RuleName.EndsWith(".DataRange"));
+    }
+
     //--- Cross-cutting corner cases ---------------------------------------------------------------------------
 
     [TestMethod]
