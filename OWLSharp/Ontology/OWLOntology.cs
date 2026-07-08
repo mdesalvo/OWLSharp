@@ -514,7 +514,7 @@ namespace OWLSharp.Ontology
                 webRequest.MaximumAutomaticRedirections = 3;
                 webRequest.AllowAutoRedirect = true;
                 webRequest.Timeout = timeoutMilliseconds;
-                webRequest.Accept = "application/owl+xml,application/rdf+xml,text/turtle,application/turtle,application/x-turtle,application/n-triples";
+                webRequest.Accept = "application/owl+xml,text/owl-manchester,application/rdf+xml,text/turtle,application/turtle,application/x-turtle,application/n-triples";
 
                 WebResponse webResponse = await webRequest.GetResponseAsync();
                 if (webRequest.HaveResponse)
@@ -531,6 +531,10 @@ namespace OWLSharp.Ontology
                     //OWL2/XML
                     if (responseContentType.Contains("application/owl+xml"))
                         return await FromStreamAsync(OWLEnums.OWLFormats.OWL2XML, webResponse.GetResponseStream());
+
+                    //OWL2/Manchester
+                    if (responseContentType.Contains("text/owl-manchester"))
+                        return await FromStreamAsync(OWLEnums.OWLFormats.OWL2Manchester, webResponse.GetResponseStream());
 
                     //RDF/XML
                     if (responseContentType.Contains("application/rdf+xml"))
