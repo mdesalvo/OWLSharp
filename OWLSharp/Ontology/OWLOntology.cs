@@ -426,7 +426,7 @@ namespace OWLSharp.Ontology
                                 using (StreamWriter streamWriter = new StreamWriter(outputStream, RDFModelUtilities.UTF8_NoBOM))
                                     streamWriter.Write(OWLSerializer.SerializeOntology(exportOntology));
                                 break;
-                            case OWLEnums.OWLFormats.OWL2MANCHESTER:
+                            case OWLEnums.OWLFormats.OWL2Manchester:
                                 using (StreamWriter streamWriter = new StreamWriter(outputStream, RDFModelUtilities.UTF8_NoBOM))
                                     streamWriter.Write(OWLManchesterSerializer.SerializeOntology(exportOntology));
                                 break;
@@ -480,7 +480,7 @@ namespace OWLSharp.Ontology
                                 using (StreamReader streamReader = new StreamReader(inputStream, RDFModelUtilities.UTF8_NoBOM))
                                     return OWLSerializer.DeserializeOntology(streamReader.ReadToEnd());
                             }
-                            case OWLEnums.OWLFormats.OWL2MANCHESTER:
+                            case OWLEnums.OWLFormats.OWL2Manchester:
                             {
                                 using (StreamReader streamReader = new StreamReader(inputStream, RDFModelUtilities.UTF8_NoBOM))
                                     return OWLManchesterParser.DeserializeOntology(streamReader.ReadToEnd());

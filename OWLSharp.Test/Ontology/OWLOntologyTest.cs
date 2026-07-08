@@ -15,6 +15,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -1815,7 +1816,7 @@ public class OWLOntologyTest
         ontology.AssertionAxioms.Add(new OWLClassAssertion(pizza, margherita));
 
         MemoryStream stream = new MemoryStream();
-        await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, stream);
+        await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2Manchester, stream);
 
         string manchesterContent;
         using (StreamReader reader = new StreamReader(new MemoryStream(stream.ToArray())))
@@ -1841,9 +1842,9 @@ public class OWLOntologyTest
         ontology.AssertionAxioms.Add(new OWLClassAssertion(pizza, margherita));
 
         MemoryStream stream = new MemoryStream();
-        await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, stream);
+        await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2Manchester, stream);
 
-        OWLOntology ontology2 = await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, new MemoryStream(stream.ToArray()));
+        OWLOntology ontology2 = await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2Manchester, new MemoryStream(stream.ToArray()));
 
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "http://example.org/pz", StringComparison.Ordinal));
@@ -1856,14 +1857,14 @@ public class OWLOntologyTest
 
     [TestMethod]
     public async Task ShouldThrowExceptionOnReadingOntologyFromStreamAsManchesterBecauseNullStreamAsync()
-        => await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, null));
+        => await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2Manchester, null));
 
     [TestMethod]
     public async Task ShouldThrowExceptionOnReadingMalformedOntologyFromStreamAsManchesterAsync()
     {
         MemoryStream stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes("Class: pz:Pizza SubClassOf:"));
 
-        await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, stream));
+        await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2Manchester, stream));
     }
 
     [TestMethod]
@@ -1875,10 +1876,10 @@ public class OWLOntologyTest
         ontology.DeclarationAxioms.Add(new OWLDeclaration(pizza));
         string filePath = Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteAndReadOntologyToAndFromFileAsManchesterAsync.omn");
 
-        await ontology.ToFileAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, filePath);
+        await ontology.ToFileAsync(OWLEnums.OWLFormats.OWL2Manchester, filePath);
         Assert.IsTrue(File.Exists(filePath));
 
-        OWLOntology ontology2 = await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, filePath);
+        OWLOntology ontology2 = await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2Manchester, filePath);
 
         Assert.IsTrue(string.Equals(ontology2.IRI, "http://example.org/pz", StringComparison.Ordinal));
         Assert.HasCount(1, ontology2.DeclarationAxioms);
@@ -1886,11 +1887,11 @@ public class OWLOntologyTest
 
     [TestMethod]
     public async Task ShouldThrowExceptionOnReadingOntologyFromFileAsManchesterBecauseNullPathAsync()
-        => await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, null));
+        => await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2Manchester, null));
 
     [TestMethod]
     public async Task ShouldThrowExceptionOnReadingOntologyFromFileAsManchesterBecauseUnexistingPathAsync()
-        => await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, "test/test.omn"));
+        => await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2Manchester, "test/test.omn"));
 
     [TestMethod]
     public async Task ShouldExcludeInferredAxiomsWhenWritingOntologyAsManchesterWithIncludeInferencesFalseAsync()
@@ -1901,13 +1902,13 @@ public class OWLOntologyTest
         ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass(new RDFResource("http://example.org/pz#InferredClass"))) { IsInference = true });
 
         MemoryStream streamWithInferences = new MemoryStream();
-        await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, streamWithInferences);
-        OWLOntology reparsedWithInferences = await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, new MemoryStream(streamWithInferences.ToArray()));
+        await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2Manchester, streamWithInferences);
+        OWLOntology reparsedWithInferences = await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2Manchester, new MemoryStream(streamWithInferences.ToArray()));
         Assert.HasCount(2, reparsedWithInferences.DeclarationAxioms);
 
         MemoryStream streamWithoutInferences = new MemoryStream();
-        await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, streamWithoutInferences, false);
-        OWLOntology reparsedWithoutInferences = await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2MANCHESTER, new MemoryStream(streamWithoutInferences.ToArray()));
+        await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2Manchester, streamWithoutInferences, false);
+        OWLOntology reparsedWithoutInferences = await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2Manchester, new MemoryStream(streamWithoutInferences.ToArray()));
         Assert.HasCount(1, reparsedWithoutInferences.DeclarationAxioms);
     }
 
@@ -5822,6 +5823,124 @@ public class OWLOntologyTest
     [TestMethod]
     public async Task ShouldThrowExceptionOnReadingOntologyFromUriBecauseNotOntologyUriAsync()
         => await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromUriAsync(new Uri("http://localhost"), 2000));
+    #endregion
+
+    #region Tests (format interoperability)
+    //Builds a small but varied ontology, touching one axiom of every major kind shared by OWL2/XML and
+    //OWL2/Manchester, so the round-trip tests below have something non-trivial to lose in translation
+    private static OWLOntology BuildInteropSampleOntology()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+
+        OWLClass pizza = new OWLClass(new RDFResource("http://example.org/pz#Pizza"));
+        OWLClass topping = new OWLClass(new RDFResource("http://example.org/pz#Topping"));
+        OWLObjectProperty hasTopping = new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
+        OWLDataProperty hasCalories = new OWLDataProperty(new RDFResource("http://example.org/pz#hasCalories"));
+        OWLAnnotationProperty note = new OWLAnnotationProperty(new RDFResource("http://example.org/pz#note"));
+        OWLAnnotationProperty source = new OWLAnnotationProperty(new RDFResource("http://example.org/pz#source"));
+        OWLDatatype positiveInteger = new OWLDatatype(new RDFResource("http://example.org/pz#PositiveInteger"));
+        OWLNamedIndividual margherita = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Margherita"));
+        OWLNamedIndividual mozzarella = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Mozzarella"));
+
+        //One declaration per entity, spanning every declarable kind
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(pizza));
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(topping));
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(hasTopping));
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(hasCalories));
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(note));
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(source));
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(positiveInteger));
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(margherita));
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(mozzarella));
+
+        //One axiom per remaining category, so the fingerprint below has a non-zero count to compare on each of them
+        ontology.ClassAxioms.Add(new OWLSubClassOf(pizza, new OWLObjectSomeValuesFrom(hasTopping, topping)));
+        ontology.ObjectPropertyAxioms.Add(new OWLObjectPropertyDomain(hasTopping, pizza));
+        ontology.DataPropertyAxioms.Add(new OWLDataPropertyRange(hasCalories, new OWLDatatype(new RDFResource(RDFVocabulary.XSD.INTEGER.ToString()))));
+        ontology.DatatypeDefinitionAxioms.Add(new OWLDatatypeDefinition(positiveInteger, new OWLDatatype(new RDFResource(RDFVocabulary.XSD.INTEGER.ToString()))));
+        ontology.KeyAxioms.Add(new OWLHasKey(pizza, new List<OWLObjectPropertyExpression> { hasTopping }));
+        ontology.AssertionAxioms.Add(new OWLClassAssertion(pizza, margherita));
+        ontology.AssertionAxioms.Add(new OWLClassAssertion(topping, mozzarella));
+        ontology.AssertionAxioms.Add(new OWLObjectPropertyAssertion(hasTopping, margherita, mozzarella));
+        ontology.AssertionAxioms.Add(new OWLDataPropertyAssertion(hasCalories, margherita, new OWLLiteral { Value = "800", DatatypeIRI = RDFVocabulary.XSD.INTEGER.ToString() }));
+        ontology.AnnotationAxioms.Add(new OWLAnnotationAssertion(note, pizza.GetIRI(), new OWLLiteral { Value = "A tasty dish" }));
+
+        //A nested (meta-)annotation on an ontology-level annotation: annotating an annotation with provenance
+        //information is common practice in real-world ontologies, and its own grammar production
+        //("Annotations: Annotations: ..." in Manchester, nested <Annotation> in OWL2/XML) deserves coverage here
+        OWLAnnotation versionInfo = new OWLAnnotation(note, new OWLLiteral { Value = "1.0.0" })
+        {
+            Annotation = new OWLAnnotation(source, new OWLLiteral { Value = "curated by the pz team" })
+        };
+        ontology.Annotations.Add(versionInfo);
+
+        return ontology;
+    }
+
+    //A lightweight fingerprint of axiom counts per category: identical fingerprints prove that round-tripping
+    //an ontology through a different serialization format neither gained nor lost any axiom, of any kind
+    //(OntologyAnnotation covers the nested-annotation pair added above, since a lossy round-trip could drop
+    //the whole ontology-level annotation, not just its nested part)
+    private static string AxiomCountFingerprint(OWLOntology ontology)
+        => $"Declaration={ontology.DeclarationAxioms.Count}"
+         + $";Class={ontology.ClassAxioms.Count}"
+         + $";ObjectProperty={ontology.ObjectPropertyAxioms.Count}"
+         + $";DataProperty={ontology.DataPropertyAxioms.Count}"
+         + $";DatatypeDefinition={ontology.DatatypeDefinitionAxioms.Count}"
+         + $";Key={ontology.KeyAxioms.Count}"
+         + $";Assertion={ontology.AssertionAxioms.Count}"
+         + $";Annotation={ontology.AnnotationAxioms.Count}"
+         + $";OntologyAnnotation={ontology.Annotations.Count}";
+
+    //Counts alone wouldn't catch a round-trip that keeps the top-level annotation but silently drops (or
+    //flattens) its nested one, so the nested annotation's own value is asserted here on top of the fingerprint
+    private static void AssertNestedOntologyAnnotationSurvived(OWLOntology ontology)
+    {
+        OWLAnnotation versionInfo = ontology.Annotations.Single(ann => string.Equals(ann.AnnotationProperty.GetIRI().ToString(), "http://example.org/pz#note", StringComparison.Ordinal));
+        Assert.AreEqual("1.0.0", versionInfo.ValueLiteral.Value);
+        Assert.IsNotNull(versionInfo.Annotation);
+        Assert.AreEqual("http://example.org/pz#source", versionInfo.Annotation.AnnotationProperty.GetIRI().ToString());
+        Assert.AreEqual("curated by the pz team", versionInfo.Annotation.ValueLiteral.Value);
+    }
+
+    [TestMethod]
+    public void ShouldPreserveAxiomCountsRoundTrippingFromOWL2XMLToManchester()
+    {
+        //Start point: an actual OWL2/XML document (obtained by serializing the sample ontology, exactly as
+        //a real .owx file would look), parsed into the first in-memory ontology
+        string owlXmlDocument = OWLSerializer.SerializeOntology(BuildInteropSampleOntology());
+        OWLOntology fromXml = OWLSerializer.DeserializeOntology(owlXmlDocument);
+        string fingerprintFromXml = AxiomCountFingerprint(fromXml);
+        AssertNestedOntologyAnnotationSurvived(fromXml);
+
+        //Inverse step: export that very ontology to OWL2/Manchester, then parse it back into a second ontology
+        string manchesterDocument = OWLManchesterSerializer.SerializeOntology(fromXml);
+        OWLOntology fromManchester = OWLManchesterParser.DeserializeOntology(manchesterDocument);
+        string fingerprintFromManchester = AxiomCountFingerprint(fromManchester);
+        AssertNestedOntologyAnnotationSurvived(fromManchester);
+
+        //Crossing from OWL2/XML to OWL2/Manchester and back to an in-memory model must not gain or lose axioms
+        Assert.AreEqual(fingerprintFromXml, fingerprintFromManchester);
+    }
+
+    [TestMethod]
+    public void ShouldPreserveAxiomCountsRoundTrippingFromManchesterToOWL2XML()
+    {
+        //Same interoperability check as above, but with the start/end formats swapped: OWL2/Manchester first,
+        //OWL2/XML as the inverse step
+        string manchesterDocument = OWLManchesterSerializer.SerializeOntology(BuildInteropSampleOntology());
+        OWLOntology fromManchester = OWLManchesterParser.DeserializeOntology(manchesterDocument);
+        string fingerprintFromManchester = AxiomCountFingerprint(fromManchester);
+        AssertNestedOntologyAnnotationSurvived(fromManchester);
+
+        string owlXmlDocument = OWLSerializer.SerializeOntology(fromManchester);
+        OWLOntology fromXml = OWLSerializer.DeserializeOntology(owlXmlDocument);
+        string fingerprintFromXml = AxiomCountFingerprint(fromXml);
+        AssertNestedOntologyAnnotationSurvived(fromXml);
+
+        Assert.AreEqual(fingerprintFromManchester, fingerprintFromXml);
+    }
     #endregion
 
     [TestCleanup]
