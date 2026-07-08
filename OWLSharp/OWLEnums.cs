@@ -367,5 +367,50 @@ namespace OWLSharp
             /// </summary>
             Error = 2
         }
+
+        /// <summary>
+        /// OWLProfiles represents an enumeration for the syntactic OWL2 profiles defined at https://www.w3.org/TR/owl2-profiles/
+        /// </summary>
+        public enum OWLProfiles
+        {
+            /// <summary>
+            /// OWL 2 EL profile (https://www.w3.org/TR/owl2-profiles/#OWL_2_EL), tailored for ontologies with large TBoxes
+            /// dominated by existential quantification, guaranteeing polynomial-time reasoning
+            /// </summary>
+            EL = 1,
+            /// <summary>
+            /// OWL 2 QL profile (https://www.w3.org/TR/owl2-profiles/#OWL_2_QL), tailored for ontologies with large ABoxes
+            /// where query answering is the most important reasoning task, enabling conjunctive query answering via query rewriting
+            /// </summary>
+            QL = 2,
+            /// <summary>
+            /// OWL 2 RL profile (https://www.w3.org/TR/owl2-profiles/#OWL_2_RL), tailored for applications requiring scalable
+            /// reasoning without sacrificing too much expressive power, implementable using rule-based reasoning engines
+            /// </summary>
+            RL = 3
+        }
+
+        /// <summary>
+        /// OWLClassExpressionPosition represents the syntactic slot occupied by a class expression within an axiom,
+        /// as distinguished by the OWL2 QL and RL grammars (subClassExpression, superClassExpression, equivClassExpression
+        /// at https://www.w3.org/TR/owl2-profiles/). OWL2 EL does not distinguish positions (its ClassExpression grammar
+        /// is unique), so EL checks ignore this dimension.
+        /// </summary>
+        internal enum OWLClassExpressionPosition
+        {
+            /// <summary>
+            /// The class expression occupies a "subClassExpression" slot (e.g: the LHS of SubClassOf, or a DisjointClasses member)
+            /// </summary>
+            SubClass = 1,
+            /// <summary>
+            /// The class expression occupies a "superClassExpression" slot (e.g: the RHS of SubClassOf, or a property's domain/range)
+            /// </summary>
+            SuperClass = 2,
+            /// <summary>
+            /// The class expression occupies an "equivClassExpression" slot (e.g: an EquivalentClasses member in OWL2 RL),
+            /// which is stricter than both subClassExpression and superClassExpression and is not reducible to either
+            /// </summary>
+            EquivalentClass = 3
+        }
     }
 }
