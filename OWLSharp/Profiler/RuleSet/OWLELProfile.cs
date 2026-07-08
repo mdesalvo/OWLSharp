@@ -33,18 +33,25 @@ namespace OWLSharp.Profiler
         private const string DataPropertyAxiomTypeRule = nameof(OWLEnums.OWLProfiles.EL) + ".DataPropertyAxiomType";     //§2.2.5
         private const string DatatypeRule = nameof(OWLEnums.OWLProfiles.EL) + ".Datatype";                               //§2.2.1
 
+        //RDFVocabulary.OWL only ships a constant for owl:real (OWL.REAL); owl:rational has no equivalent constant
+        //anywhere in RDFSharp (verified against RDFSharp's own source — there is no "rational" member at all).
+        //Built here the exact same way RDFVocabulary itself builds its own constants internally (e.g.
+        //REAL = new RDFResource($"{BASE_URI}real")): by concatenating the OWL namespace base URI with the local
+        //name. Exposed as its own `internal` field (like AllowedDatatypeIRIs below) so OWLRLProfile's Except(...)
+        //call can reuse this exact value instead of re-deriving an equal-but-separately-constructed RDFResource
+        //that could silently diverge from this one if OWL.BASE_URI or the local name spelling ever changes.
+        internal static readonly string OwlRationalDatatypeIRI = new RDFResource($"{RDFVocabulary.OWL.BASE_URI}rational").ToString();
+
         //§2.2.1: the exact datatype allowlist transcribed from the spec extract (see owl2_profiles_w3c_spec memory
         //note). Matched against OWLDatatype.GetIRI().ToString(), i.e. the full absolute IRI, not a prefixed name,
         //so it is agnostic to how the ontology chose to abbreviate the datatype in its own serialization.
-        //owl:rational has no RDFVocabulary.OWL constant in RDFSharp (unlike owl:real), so it is built manually
-        //from OWL.BASE_URI instead of a named constant.
-        private static readonly HashSet<string> AllowedDatatypeIRIs = new HashSet<string>
+        internal static readonly HashSet<string> AllowedDatatypeIRIs = new HashSet<string>
         {
             RDFVocabulary.RDF.PLAIN_LITERAL.ToString(),
             RDFVocabulary.RDF.XML_LITERAL.ToString(),
             RDFVocabulary.RDFS.LITERAL.ToString(),
             RDFVocabulary.OWL.REAL.ToString(),
-            new RDFResource($"{RDFVocabulary.OWL.BASE_URI}rational").ToString(),
+            OwlRationalDatatypeIRI,
             RDFVocabulary.XSD.DECIMAL.ToString(),
             RDFVocabulary.XSD.INTEGER.ToString(),
             RDFVocabulary.XSD.NON_NEGATIVE_INTEGER.ToString(),

@@ -12,6 +12,7 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using OWLSharp.Ontology;
 using OWLSharp.Profiler.Walkers;
@@ -35,45 +36,44 @@ namespace OWLSharp.Profiler
         private const string DataPropertyAxiomTypeRule = nameof(OWLEnums.OWLProfiles.RL) + ".DataPropertyAxiomType";     //§4.2.5
         private const string DatatypeRule = nameof(OWLEnums.OWLProfiles.RL) + ".Datatype";                               //§4.2.1
 
-        //§4.2.1: RL's datatype allowlist is a DIFFERENT set from EL's (see OWLELProfile.AllowedDatatypeIRIs): it
-        //excludes owl:real/owl:rational entirely, but in exchange admits the full signed/unsigned XSD integer
-        //family plus xsd:float/xsd:double/xsd:boolean/xsd:language, none of which EL allows. The two lists must
-        //NOT be shared/reused between the two profilers, precisely because they genuinely differ.
-        private static readonly HashSet<string> AllowedDatatypeIRIs = new HashSet<string>
-        {
-            RDFVocabulary.RDF.PLAIN_LITERAL.ToString(),
-            RDFVocabulary.RDF.XML_LITERAL.ToString(),
-            RDFVocabulary.RDFS.LITERAL.ToString(),
-            RDFVocabulary.XSD.DECIMAL.ToString(),
-            RDFVocabulary.XSD.INTEGER.ToString(),
-            RDFVocabulary.XSD.NON_NEGATIVE_INTEGER.ToString(),
-            RDFVocabulary.XSD.NON_POSITIVE_INTEGER.ToString(),
-            RDFVocabulary.XSD.POSITIVE_INTEGER.ToString(),
-            RDFVocabulary.XSD.NEGATIVE_INTEGER.ToString(),
-            RDFVocabulary.XSD.LONG.ToString(),
-            RDFVocabulary.XSD.INT.ToString(),
-            RDFVocabulary.XSD.SHORT.ToString(),
-            RDFVocabulary.XSD.BYTE.ToString(),
-            RDFVocabulary.XSD.UNSIGNED_LONG.ToString(),
-            RDFVocabulary.XSD.UNSIGNED_INT.ToString(),
-            RDFVocabulary.XSD.UNSIGNED_SHORT.ToString(),
-            RDFVocabulary.XSD.UNSIGNED_BYTE.ToString(),
-            RDFVocabulary.XSD.FLOAT.ToString(),
-            RDFVocabulary.XSD.DOUBLE.ToString(),
-            RDFVocabulary.XSD.STRING.ToString(),
-            RDFVocabulary.XSD.NORMALIZED_STRING.ToString(),
-            RDFVocabulary.XSD.TOKEN.ToString(),
-            RDFVocabulary.XSD.LANGUAGE.ToString(),
-            RDFVocabulary.XSD.NAME.ToString(),
-            RDFVocabulary.XSD.NCNAME.ToString(),
-            RDFVocabulary.XSD.NMTOKEN.ToString(),
-            RDFVocabulary.XSD.BOOLEAN.ToString(),
-            RDFVocabulary.XSD.HEX_BINARY.ToString(),
-            RDFVocabulary.XSD.BASE64_BINARY.ToString(),
-            RDFVocabulary.XSD.ANY_URI.ToString(),
-            RDFVocabulary.XSD.DATETIME.ToString(),
-            RDFVocabulary.XSD.DATETIMESTAMP.ToString()
-        };
+        //§4.2.1: RL's datatype allowlist DERIVES from EL's shared base (OWLELProfile.AllowedDatatypeIRIs) rather
+        //than being re-declared from scratch: the two sets actually share ~17 of EL's 19 entries verbatim (every
+        //XSD/RDF/RDFS datatype EL admits), so spelling out that shared core a second time here would just be a
+        //second place for it to silently drift out of sync with EL's. Only the genuine DELTA is written out below:
+        //  - Except(...): the two entries EL admits that RL does NOT (owl:real, owl:rational — RL has no
+        //    equivalent of OWL2's abstract numeric datatypes, only concrete XSD ones);
+        //  - Concat(...): the entries RL admits that EL does NOT (the full signed/unsigned XSD integer family,
+        //    plus xsd:float/xsd:double/xsd:boolean/xsd:language — RL's rule-based semantics have no trouble with
+        //    these concrete numeric/textual types, unlike EL's tractability-driven restriction to a narrower set).
+        //If a future spec erratum changes the ~17-entry shared core, only OWLELProfile.AllowedDatatypeIRIs needs
+        //editing; if it changes RL's own delta, only the two collections below need editing.
+        private static readonly HashSet<string> AllowedDatatypeIRIs = new HashSet<string>(
+            OWLELProfile.AllowedDatatypeIRIs
+                //Both values reused from OWLELProfile (RDFVocabulary.OWL.REAL directly, and the manually-built
+                //OwlRationalDatatypeIRI — see its declaration in OWLELProfile for why owl:rational needs one),
+                //rather than each being re-derived here, so this Except(...) can never silently target a
+                //differently-constructed-but-equal-looking RDFResource than the one actually inside EL's set.
+                .Except(new[] {
+                    RDFVocabulary.OWL.REAL.ToString(),
+                    OWLELProfile.OwlRationalDatatypeIRI
+                })
+                .Concat(new[] {
+                    RDFVocabulary.XSD.NON_POSITIVE_INTEGER.ToString(),
+                    RDFVocabulary.XSD.POSITIVE_INTEGER.ToString(),
+                    RDFVocabulary.XSD.NEGATIVE_INTEGER.ToString(),
+                    RDFVocabulary.XSD.LONG.ToString(),
+                    RDFVocabulary.XSD.INT.ToString(),
+                    RDFVocabulary.XSD.SHORT.ToString(),
+                    RDFVocabulary.XSD.BYTE.ToString(),
+                    RDFVocabulary.XSD.UNSIGNED_LONG.ToString(),
+                    RDFVocabulary.XSD.UNSIGNED_INT.ToString(),
+                    RDFVocabulary.XSD.UNSIGNED_SHORT.ToString(),
+                    RDFVocabulary.XSD.UNSIGNED_BYTE.ToString(),
+                    RDFVocabulary.XSD.FLOAT.ToString(),
+                    RDFVocabulary.XSD.DOUBLE.ToString(),
+                    RDFVocabulary.XSD.LANGUAGE.ToString(),
+                    RDFVocabulary.XSD.BOOLEAN.ToString()
+                }));
 
         //See OWLProfiler.ExecuteProfileRuleAsync / feedback_genuine_async: Task-returning end-to-end.
         internal static Task<List<OWLProfileViolation>> ExecuteRuleAsync(OWLOntology ontology)
