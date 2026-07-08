@@ -133,6 +133,12 @@ namespace OWLSharp.Ontology
         /// The index of the next token to be consumed from the token sequence
         /// </summary>
         private int pos;
+
+        /// <summary>
+        /// The current depth of nested-expression recursion, guarded by EnterRecursion/ExitRecursion against
+        /// stack exhaustion from adversarially deep-nested OWL2/Manchester documents
+        /// </summary>
+        private int recursionDepth;
         #endregion
 
         #region Ctors
@@ -160,6 +166,27 @@ namespace OWLSharp.Ontology
             parser.ParseDocument();
             return parser.ontology;
         }
+        #endregion
+
+        #region Recursion guard
+        /// <summary>
+        /// Enters a nested-expression production (class/data range primary, or nested annotations block), failing
+        /// fast once the maximum allowed recursion depth (25) is exceeded: protects against stack exhaustion
+        /// from adversarially deep-nested documents (e.g: long "not"/parenthesized chains, or "p some p some ..."
+        /// property restriction chains), which would otherwise recurse as deep as the input allows
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
+        private void EnterRecursion(string production)
+        {
+            if (++recursionDepth > 25)
+                throw new OWLException($"Cannot parse OWL2/Manchester document: exceeded the maximum allowed nesting depth (25) while parsing {production}");
+        }
+
+        /// <summary>
+        /// Leaves a nested-expression production entered via EnterRecursion
+        /// </summary>
+        private void ExitRecursion()
+            => recursionDepth--;
         #endregion
 
         #region Token utilities
@@ -909,20 +936,28 @@ namespace OWLSharp.Ontology
             if (!CurrentIsSection("Annotations:"))
                 return annotations;
 
-            Advance();
-            while (true)
+            EnterRecursion("nested annotations block");
+            try
             {
-                List<OWLAnnotation> nestedAnnotations = TryParseAnnotationBlock();
-                annotations.Add(NestAnnotations(ParseAnnotation(), nestedAnnotations));
+                Advance();
+                while (true)
+                {
+                    List<OWLAnnotation> nestedAnnotations = TryParseAnnotationBlock();
+                    annotations.Add(NestAnnotations(ParseAnnotation(), nestedAnnotations));
 
-                //The comma is consumed only if what follows still parses as an annotation: this resolves the
-                //grammar ambiguity between "next annotation of this block" and "next item of the enclosing list"
-                if (Current.Type == OWLManchesterTokenType.Comma && IsAnnotationStart(Peek(1), Peek(2)))
-                    Advance();
-                else
-                    break;
+                    //The comma is consumed only if what follows still parses as an annotation: this resolves the
+                    //grammar ambiguity between "next annotation of this block" and "next item of the enclosing list"
+                    if (Current.Type == OWLManchesterTokenType.Comma && IsAnnotationStart(Peek(1), Peek(2)))
+                        Advance();
+                    else
+                        break;
+                }
+                return annotations;
             }
-            return annotations;
+            finally
+            {
+                ExitRecursion();
+            }
         }
 
         /// <summary>
@@ -1006,18 +1041,26 @@ namespace OWLSharp.Ontology
         /// </summary>
         private OWLClassExpression ParseDescription()
         {
-            OWLClassExpression clsExpr = ParseConjunction();
-            if (CurrentIsName("or"))
+            EnterRecursion("class description");
+            try
             {
-                List<OWLClassExpression> unionMembers = new List<OWLClassExpression> { clsExpr };
-                while (CurrentIsName("or"))
+                OWLClassExpression clsExpr = ParseConjunction();
+                if (CurrentIsName("or"))
                 {
-                    Advance();
-                    unionMembers.Add(ParseConjunction());
+                    List<OWLClassExpression> unionMembers = new List<OWLClassExpression> { clsExpr };
+                    while (CurrentIsName("or"))
+                    {
+                        Advance();
+                        unionMembers.Add(ParseConjunction());
+                    }
+                    return new OWLObjectUnionOf(unionMembers);
                 }
-                return new OWLObjectUnionOf(unionMembers);
+                return clsExpr;
             }
-            return clsExpr;
+            finally
+            {
+                ExitRecursion();
+            }
         }
 
         /// <summary>
@@ -1044,66 +1087,74 @@ namespace OWLSharp.Ontology
         /// </summary>
         private OWLClassExpression ParsePrimary()
         {
-            if (CurrentIsName("not"))
+            EnterRecursion("class expression");
+            try
             {
-                Advance();
-                return new OWLObjectComplementOf(ParsePrimary());
-            }
-
-            switch (Current.Type)
-            {
-                //'(' description ')'
-                case OWLManchesterTokenType.OpenParenthesis:
+                if (CurrentIsName("not"))
                 {
                     Advance();
-                    OWLClassExpression clsExpr = ParseDescription();
-                    Expect(OWLManchesterTokenType.CloseParenthesis, "parenthesized description");
-                    return clsExpr;
+                    return new OWLObjectComplementOf(ParsePrimary());
                 }
 
-                //'{' individualList '}'
-                case OWLManchesterTokenType.OpenBrace:
+                switch (Current.Type)
                 {
-                    Advance();
-                    List<OWLIndividualExpression> idvExprs = new List<OWLIndividualExpression>();
-                    do
+                    //'(' description ')'
+                    case OWLManchesterTokenType.OpenParenthesis:
                     {
-                        idvExprs.Add(ParseIndividual());
-                    } while (TryConsumeComma());
-                    Expect(OWLManchesterTokenType.CloseBrace, "individual enumeration");
-                    return new OWLObjectOneOf(idvExprs);
-                }
-
-                //'inverse' objectPropertyIRI restriction
-                case OWLManchesterTokenType.Name when CurrentIsName("inverse"):
-                    return ParseObjectRestriction(ParseObjectPropertyExpression());
-
-                //classIRI, or property restriction (disambiguated via lookahead + symbol table)
-                case OWLManchesterTokenType.FullIRI:
-                case OWLManchesterTokenType.PrefixedName:
-                case OWLManchesterTokenType.Name when IsEntityToken(Current):
-                {
-                    if (Peek(1).Type == OWLManchesterTokenType.Name && RestrictionKeywords.Contains(Peek(1).Value))
-                    {
-                        string propertyIRI = ResolveIRI(Current);
-                        symbols.TryGetValue(propertyIRI, out OWLManchesterFrameKind propertyKind);
-                        switch (propertyKind)
-                        {
-                            case OWLManchesterFrameKind.ObjectProperty:
-                                Advance();
-                                return ParseObjectRestriction(new OWLObjectProperty(new RDFResource(propertyIRI)));
-                            case OWLManchesterFrameKind.DataProperty:
-                                Advance();
-                                return ParseDataRestriction(new OWLDataProperty(new RDFResource(propertyIRI)));
-                            default:
-                                throw new OWLException($"Cannot parse OWL2/Manchester document: restriction on <{propertyIRI}> requires it to be declared as object or data property ({Current})");
-                        }
+                        Advance();
+                        OWLClassExpression clsExpr = ParseDescription();
+                        Expect(OWLManchesterTokenType.CloseParenthesis, "parenthesized description");
+                        return clsExpr;
                     }
-                    return new OWLClass(new RDFResource(ResolveIRI(Advance())));
-                }
 
-                default:
-                    throw new OWLException($"Cannot parse OWL2/Manchester document: expected class expression, found {Current}");
+                    //'{' individualList '}'
+                    case OWLManchesterTokenType.OpenBrace:
+                    {
+                        Advance();
+                        List<OWLIndividualExpression> idvExprs = new List<OWLIndividualExpression>();
+                        do
+                        {
+                            idvExprs.Add(ParseIndividual());
+                        } while (TryConsumeComma());
+                        Expect(OWLManchesterTokenType.CloseBrace, "individual enumeration");
+                        return new OWLObjectOneOf(idvExprs);
+                    }
+
+                    //'inverse' objectPropertyIRI restriction
+                    case OWLManchesterTokenType.Name when CurrentIsName("inverse"):
+                        return ParseObjectRestriction(ParseObjectPropertyExpression());
+
+                    //classIRI, or property restriction (disambiguated via lookahead + symbol table)
+                    case OWLManchesterTokenType.FullIRI:
+                    case OWLManchesterTokenType.PrefixedName:
+                    case OWLManchesterTokenType.Name when IsEntityToken(Current):
+                    {
+                        if (Peek(1).Type == OWLManchesterTokenType.Name && RestrictionKeywords.Contains(Peek(1).Value))
+                        {
+                            string propertyIRI = ResolveIRI(Current);
+                            symbols.TryGetValue(propertyIRI, out OWLManchesterFrameKind propertyKind);
+                            switch (propertyKind)
+                            {
+                                case OWLManchesterFrameKind.ObjectProperty:
+                                    Advance();
+                                    return ParseObjectRestriction(new OWLObjectProperty(new RDFResource(propertyIRI)));
+                                case OWLManchesterFrameKind.DataProperty:
+                                    Advance();
+                                    return ParseDataRestriction(new OWLDataProperty(new RDFResource(propertyIRI)));
+                                default:
+                                    throw new OWLException($"Cannot parse OWL2/Manchester document: restriction on <{propertyIRI}> requires it to be declared as object or data property ({Current})");
+                            }
+                        }
+                        return new OWLClass(new RDFResource(ResolveIRI(Advance())));
+                    }
+
+                    default:
+                        throw new OWLException($"Cannot parse OWL2/Manchester document: expected class expression, found {Current}");
+                }
+            }
+            finally
+            {
+                ExitRecursion();
             }
         }
 
@@ -1162,9 +1213,9 @@ namespace OWLSharp.Ontology
                     OWLDataRangeExpression qualifier = IsPrimaryStart() ? ParseDataPrimary() : null;
                     switch (keywordToken.Value)
                     {
-                        case "min": return qualifier == null ? new OWLDataMinCardinality(dtProp, cardinality) : new OWLDataMinCardinality(dtProp, cardinality, qualifier);
-                        case "max": return qualifier == null ? new OWLDataMaxCardinality(dtProp, cardinality) : new OWLDataMaxCardinality(dtProp, cardinality, qualifier);
-                        default: return qualifier == null ? new OWLDataExactCardinality(dtProp, cardinality) : new OWLDataExactCardinality(dtProp, cardinality, qualifier);
+                        case "min": return qualifier == null ? new OWLDataMinCardinality(dtProp, cardinality)   : new OWLDataMinCardinality(dtProp, cardinality, qualifier);
+                        case "max": return qualifier == null ? new OWLDataMaxCardinality(dtProp, cardinality)   : new OWLDataMaxCardinality(dtProp, cardinality, qualifier);
+                        default:    return qualifier == null ? new OWLDataExactCardinality(dtProp, cardinality) : new OWLDataExactCardinality(dtProp, cardinality, qualifier);
                     }
                 }
                 default:
@@ -1209,18 +1260,26 @@ namespace OWLSharp.Ontology
         /// </summary>
         private OWLDataRangeExpression ParseDataRange()
         {
-            OWLDataRangeExpression drExpr = ParseDataConjunction();
-            if (CurrentIsName("or"))
+            EnterRecursion("data range");
+            try
             {
-                List<OWLDataRangeExpression> unionMembers = new List<OWLDataRangeExpression> { drExpr };
-                while (CurrentIsName("or"))
+                OWLDataRangeExpression drExpr = ParseDataConjunction();
+                if (CurrentIsName("or"))
                 {
-                    Advance();
-                    unionMembers.Add(ParseDataConjunction());
+                    List<OWLDataRangeExpression> unionMembers = new List<OWLDataRangeExpression> { drExpr };
+                    while (CurrentIsName("or"))
+                    {
+                        Advance();
+                        unionMembers.Add(ParseDataConjunction());
+                    }
+                    return new OWLDataUnionOf(unionMembers);
                 }
-                return new OWLDataUnionOf(unionMembers);
+                return drExpr;
             }
-            return drExpr;
+            finally
+            {
+                ExitRecursion();
+            }
         }
 
         /// <summary>
@@ -1247,12 +1306,20 @@ namespace OWLSharp.Ontology
         /// </summary>
         private OWLDataRangeExpression ParseDataPrimary()
         {
-            if (CurrentIsName("not"))
+            EnterRecursion("data range expression");
+            try
             {
-                Advance();
-                return new OWLDataComplementOf(ParseDataPrimary());
+                if (CurrentIsName("not"))
+                {
+                    Advance();
+                    return new OWLDataComplementOf(ParseDataPrimary());
+                }
+                return ParseDataAtomic();
             }
-            return ParseDataAtomic();
+            finally
+            {
+                ExitRecursion();
+            }
         }
 
         /// <summary>

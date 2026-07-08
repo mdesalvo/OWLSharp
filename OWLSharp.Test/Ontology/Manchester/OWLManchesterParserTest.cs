@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
@@ -38,6 +39,28 @@ public class OWLManchesterParserTest
         => OWLManchesterParser.DeserializeOntology(
             "Prefix: pz: <http://example.org/pz#>\nPrefix: : <http://example.org/pz#>\n"
             + "Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nOntology: <http://example.org/pz>\n" + body);
+
+    //Builds a "not"-chain of the given depth, terminated by the given atom (exercises ParsePrimary/ParseDataPrimary recursion)
+    private static string BuildNotChain(int depth, string atom)
+        => string.Concat(Enumerable.Repeat("not ", depth)) + atom;
+
+    //Builds a parenthesized chain of the given depth, wrapping the given atom (exercises ParseDescription/ParseDataRange recursion)
+    private static string BuildParenChain(int depth, string atom)
+        => new string('(', depth) + atom + new string(')', depth);
+
+    //Builds an object property restriction chain of the given depth ("p some p some ... atom"),
+    //exercising ParsePrimary recursion through ParseObjectRestriction
+    private static string BuildRestrictionChain(int depth, string property, string atom)
+        => string.Concat(Enumerable.Repeat($"{property} some ", depth)) + atom;
+
+    //Builds a chain of "totalAnnotationsTokens" consecutive "Annotations:" section keywords, followed by that
+    //many annotation pairs (one is consumed by each recursive TryParseAnnotationBlock unwind, the last one by
+    //the ParseAnnotation() call of whichever production owns the section, e.g: ParseEntityAnnotationsSection).
+    //The first "Annotations:" token is always consumed by the owning section itself (not by the recursion), so
+    //this exercises TryParseAnnotationBlock recursion to a depth of (totalAnnotationsTokens - 1)
+    private static string BuildNestedAnnotationsChain(int totalAnnotationsTokens, string annotationPair)
+        => string.Concat(Enumerable.Repeat("Annotations: ", totalAnnotationsTokens))
+            + string.Join(" ", Enumerable.Repeat(annotationPair, totalAnnotationsTokens));
     #endregion
 
     #region Tests (document header)
@@ -1145,6 +1168,106 @@ public class OWLManchesterParserTest
     public void ShouldThrowExceptionOnMalformedCardinality()
         => Assert.ThrowsExactly<OWLException>(() => Parse(
             "ObjectProperty: pz:hasTopping\nClass: pz:X\n    SubClassOf: pz:hasTopping min two"));
+    #endregion
+
+    #region Tests (recursion depth guard)
+    //Each pair below targets one of the 5 methods guarded by EnterRecursion/ExitRecursion (ParseDescription,
+    //ParsePrimary, ParseDataRange, ParseDataPrimary, TryParseAnnotationBlock), proving both that ordinary,
+    //shallow documents keep parsing correctly under a tight cap (safety OK) and that adversarially deep-nested
+    //documents fail fast with OWLException instead of exhausting the stack (safety KO)
+
+    [TestMethod]
+    public void ShouldParseShallowClassNotChainWithinRecursionDepthCap()
+    {
+        OWLOntology ontology = Parse(
+            $"Class: pz:X\nClass: pz:Y\n    SubClassOf: {BuildNotChain(2, "pz:X")}");
+
+        Assert.HasCount(1, ontology.ClassAxioms);
+        Assert.IsInstanceOfType<OWLObjectComplementOf>(((OWLSubClassOf)ontology.ClassAxioms[0]).SuperClassExpression);
+    }
+
+    [TestMethod]
+    public void ShouldRejectDeepClassNotChainExceedingRecursionDepthCap()
+        => Assert.ThrowsExactly<OWLException>(() => Parse(
+            $"Class: pz:X\nClass: pz:Y\n    SubClassOf: {BuildNotChain(50, "pz:X")}"));
+
+    [TestMethod]
+    public void ShouldParseShallowParenthesizedClassDescriptionWithinRecursionDepthCap()
+    {
+        OWLOntology ontology = Parse(
+            $"Class: pz:X\nClass: pz:Y\n    SubClassOf: {BuildParenChain(1, "pz:X")}");
+
+        Assert.HasCount(1, ontology.ClassAxioms);
+    }
+
+    [TestMethod]
+    public void ShouldRejectDeeplyParenthesizedClassDescriptionExceedingRecursionDepthCap()
+        => Assert.ThrowsExactly<OWLException>(() => Parse(
+            $"Class: pz:X\nClass: pz:Y\n    SubClassOf: {BuildParenChain(50, "pz:X")}"));
+
+    [TestMethod]
+    public void ShouldParseShallowObjectRestrictionChainWithinRecursionDepthCap()
+    {
+        OWLOntology ontology = Parse(
+            "ObjectProperty: pz:hasTopping\nClass: pz:X\nClass: pz:Y\n    SubClassOf: "
+            + BuildRestrictionChain(2, "pz:hasTopping", "pz:X"));
+
+        Assert.HasCount(1, ontology.ClassAxioms);
+        Assert.IsInstanceOfType<OWLObjectSomeValuesFrom>(((OWLSubClassOf)ontology.ClassAxioms[0]).SuperClassExpression);
+    }
+
+    [TestMethod]
+    public void ShouldRejectDeepObjectRestrictionChainExceedingRecursionDepthCap()
+        => Assert.ThrowsExactly<OWLException>(() => Parse(
+            "ObjectProperty: pz:hasTopping\nClass: pz:X\nClass: pz:Y\n    SubClassOf: "
+            + BuildRestrictionChain(50, "pz:hasTopping", "pz:X")));
+
+    [TestMethod]
+    public void ShouldParseShallowDataRangeNotChainWithinRecursionDepthCap()
+    {
+        OWLOntology ontology = Parse(
+            $"DataProperty: pz:p\nClass: pz:X\n    SubClassOf: pz:p some {BuildNotChain(2, "xsd:integer")}");
+
+        Assert.HasCount(1, ontology.ClassAxioms);
+    }
+
+    [TestMethod]
+    public void ShouldRejectDeepDataRangeNotChainExceedingRecursionDepthCap()
+        => Assert.ThrowsExactly<OWLException>(() => Parse(
+            $"DataProperty: pz:p\nClass: pz:X\n    SubClassOf: pz:p some {BuildNotChain(50, "xsd:integer")}"));
+
+    [TestMethod]
+    public void ShouldParseShallowParenthesizedDataRangeWithinRecursionDepthCap()
+    {
+        OWLOntology ontology = Parse(
+            $"DataProperty: pz:p\nClass: pz:X\n    SubClassOf: pz:p some {BuildParenChain(1, "xsd:integer")}");
+
+        Assert.HasCount(1, ontology.ClassAxioms);
+    }
+
+    [TestMethod]
+    public void ShouldRejectDeeplyParenthesizedDataRangeExceedingRecursionDepthCap()
+        => Assert.ThrowsExactly<OWLException>(() => Parse(
+            $"DataProperty: pz:p\nClass: pz:X\n    SubClassOf: pz:p some {BuildParenChain(50, "xsd:integer")}"));
+
+    [TestMethod]
+    public void ShouldParseShallowNestedAnnotationsBlockWithinRecursionDepthCap()
+    {
+        OWLOntology ontology = ParseWithRdfs(
+            $"Class: pz:X\n    {BuildNestedAnnotationsChain(3, "rdfs:comment \"leaf\"")}");
+
+        Assert.HasCount(1, ontology.AnnotationAxioms);
+    }
+
+    [TestMethod]
+    public void ShouldRejectDeeplyNestedAnnotationsBlockExceedingRecursionDepthCap()
+        => Assert.ThrowsExactly<OWLException>(() => ParseWithRdfs(
+            $"Class: pz:X\n    {BuildNestedAnnotationsChain(50, "rdfs:comment \"leaf\"")}"));
+
+    [TestMethod]
+    public void ShouldParseModeratelyNestedClassDescriptionWithDefaultRecursionDepthCap()
+        => Assert.HasCount(1, Parse(
+            $"Class: pz:X\nClass: pz:Y\n    SubClassOf: {BuildParenChain(5, "pz:X")}").ClassAxioms);
     #endregion
 
     #region Tests (round-trip via serializer)
