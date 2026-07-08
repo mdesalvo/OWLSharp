@@ -20,7 +20,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 
-namespace OWLSharp.Test.Ontology.Manchester;
+namespace OWLSharp.Test.Ontology;
 
 [TestClass]
 public class OWLManchesterLexerTest

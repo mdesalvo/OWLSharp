@@ -20,7 +20,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Ontology.Manchester;
+namespace OWLSharp.Test.Ontology;
 
 /// <summary>
 /// Exercises OWLManchesterSerializer.SerializeOntology directly: document structure (prefixes, header,
@@ -154,7 +154,7 @@ public class OWLManchesterSerializerTest
 
         string document = OWLManchesterSerializer.SerializeOntology(ontology);
 
-        Assert.IsTrue(document.Contains("Class: pz:Pizza\n    Annotations: rdfs:label \"Pizza\"", StringComparison.Ordinal));
+        Assert.IsTrue(document.Contains("Class: pz:Pizza" + Environment.NewLine + "    Annotations: rdfs:label \"Pizza\"", StringComparison.Ordinal));
     }
 
     [TestMethod]

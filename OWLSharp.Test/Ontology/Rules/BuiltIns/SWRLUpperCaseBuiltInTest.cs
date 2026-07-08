@@ -273,7 +273,10 @@ public class SWRLUpperCaseBuiltInTest
         antecedentResults.AddColumn("?dummy");
         antecedentResults.AddRow(["dummy"]);
 
-        //Same already-uppercase resource on both sides: ToUpper() on the right is a no-op, so it equals the left
+        //RDFResource always normalizes the scheme/authority of a Uri to lowercase (standard .NET Uri behavior),
+        //so its ToString() is never fully uppercase even when constructed from an uppercase IRI: the left side
+        //keeps "http://example.org/HELLO", while ToUpper() on the right always yields "HTTP://EXAMPLE.ORG/HELLO",
+        //so they can never match when the resource has an alphabetic scheme
         SWRLBuiltIn builtin = SWRLBuiltIn.UpperCase(
             new SWRLIndividualArgument(new RDFResource("HTTP://EXAMPLE.ORG/HELLO")),
             new SWRLIndividualArgument(new RDFResource("HTTP://EXAMPLE.ORG/HELLO")));
@@ -281,7 +284,7 @@ public class SWRLUpperCaseBuiltInTest
         OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
-        Assert.HasCount(1, builtinResults.Rows);
+        Assert.IsEmpty(builtinResults.Rows);
     }
     #endregion
 }
