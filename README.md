@@ -5,7 +5,7 @@ OWLSharp is a .NET library built atop <a href="https://github.com/mdesalvo/RDFSh
 <b><a href="https://github.com/mdesalvo/OWLSharp/releases/download/v4.23.0/OWLSharp.Ontology-4.23.pdf">Modeling</a></b>
 <ul>
     <li>Create and manage <b>OWL2 ontologies</b> (classes, properties, individuals, expressions, axioms, rules, ...)</li>
-    <li>Exchange them using standard <b>OWL2 formats</b> (OWL2/XML)</li>
+    <li>Exchange them using standard <b>OWL2 formats</b> (OWL2/XML, OWL2/Manchester)</li>
 </ul>
 
 <b><a href="https://github.com/mdesalvo/OWLSharp/releases/download/v4.23.0/OWLSharp.Reasoner-4.23.pdf">Reasoning</a></b>
