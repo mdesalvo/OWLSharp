@@ -49,13 +49,9 @@ namespace OWLSharp.Profiler
         //editing; if it changes RL's own delta, only the two collections below need editing.
         private static readonly HashSet<string> AllowedDatatypeIRIs = new HashSet<string>(
             OWLELProfile.AllowedDatatypeIRIs
-                //Both values reused from OWLELProfile (RDFVocabulary.OWL.REAL directly, and the manually-built
-                //OwlRationalDatatypeIRI — see its declaration in OWLELProfile for why owl:rational needs one),
-                //rather than each being re-derived here, so this Except(...) can never silently target a
-                //differently-constructed-but-equal-looking RDFResource than the one actually inside EL's set.
                 .Except(new[] {
                     RDFVocabulary.OWL.REAL.ToString(),
-                    OWLELProfile.OwlRationalDatatypeIRI
+                    $"{RDFVocabulary.OWL.BASE_URI}rational"
                 })
                 .Concat(new[] {
                     RDFVocabulary.XSD.NON_POSITIVE_INTEGER.ToString(),
