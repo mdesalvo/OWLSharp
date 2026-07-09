@@ -16,7 +16,7 @@ OWLSharp is a .NET library built atop <a href="https://github.com/mdesalvo/RDFSh
 
 <b><a href="https://github.com/mdesalvo/OWLSharp/releases/download/v5.0.0/OWLSharp.Profiler-5.0.pdf">Profiling</a></b>
 <ul>
-    <li>Check ontology compliance against <b>OWL2 profiles</b> (EL, RL, QL)</li>
+    <li>Check grammar compliance against <b>OWL2 profiles</b> (EL, RL, QL)</li>
 </ul>
 
 <b><a href="https://github.com/mdesalvo/OWLSharp/releases/download/v5.0.0/OWLSharp.Validator-5.0.pdf">Validation</a></b>
