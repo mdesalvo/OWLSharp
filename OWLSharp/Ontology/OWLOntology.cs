@@ -514,7 +514,7 @@ namespace OWLSharp.Ontology
                 webRequest.MaximumAutomaticRedirections = 3;
                 webRequest.AllowAutoRedirect = true;
                 webRequest.Timeout = timeoutMilliseconds;
-                webRequest.Accept = "application/owl+xml,text/owl-manchester,application/rdf+xml,text/turtle,application/turtle,application/x-turtle,application/n-triples";
+                webRequest.Accept = "application/owl+xml,text/owl-manchester,application/rdf+xml,text/turtle,application/turtle,application/x-turtle";
 
                 WebResponse webResponse = await webRequest.GetResponseAsync();
                 if (webRequest.HaveResponse)
@@ -545,10 +545,6 @@ namespace OWLSharp.Ontology
                         || responseContentType.Contains("application/turtle")
                         || responseContentType.Contains("application/x-turtle"))
                         return await FromRDFGraphAsync(await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.Turtle, webResponse.GetResponseStream(), true));
-
-                    //N-TRIPLES
-                    if (responseContentType.Contains("application/n-triples"))
-                        return await FromRDFGraphAsync(await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.NTriples, webResponse.GetResponseStream(), true));
                 }
             }
             catch (Exception ex)
