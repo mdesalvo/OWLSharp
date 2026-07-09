@@ -24,6 +24,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 using RDFSharp.Query;
+using WireMock.RequestBuilders;
+using WireMock.ResponseBuilders;
+using WireMock.Server;
 
 namespace OWLSharp.Test.Ontology;
 
@@ -5940,6 +5943,94 @@ public class OWLOntologyTest
         AssertNestedOntologyAnnotationSurvived(fromXml);
 
         Assert.AreEqual(fingerprintFromManchester, fingerprintFromXml);
+    }
+
+    [TestMethod]
+    public async Task ShouldReadOntologyFromUriAsOWL2XMLAsync()
+    {
+        using WireMockServer server = WireMockServer.Start();
+        server
+            .Given(Request.Create().WithPath("/ontology").UsingGet())
+            .RespondWith(Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/owl+xml")
+                .WithBody("""
+                          <?xml version="1.0" encoding="utf-8"?>
+                          <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:wiremock">
+                            <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                            <Declaration><Class IRI="ex:Person" /></Declaration>
+                          </Ontology>
+                          """));
+
+        OWLOntology ontology = await OWLOntology.FromUriAsync(new Uri($"{server.Urls[0]}/ontology"));
+
+        Assert.IsNotNull(ontology);
+        Assert.IsTrue(string.Equals(ontology.IRI, "ex:wiremock", StringComparison.Ordinal));
+        Assert.HasCount(1, ontology.DeclarationAxioms);
+    }
+
+    [TestMethod]
+    public async Task ShouldReadOntologyFromUriAsOWL2ManchesterAsync()
+    {
+        using WireMockServer server = WireMockServer.Start();
+        server
+            .Given(Request.Create().WithPath("/ontology").UsingGet())
+            .RespondWith(Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "text/owl-manchester")
+                .WithBody("Prefix: : <ex:>\nOntology: <ex:wiremock>\nClass: :Person"));
+
+        OWLOntology ontology = await OWLOntology.FromUriAsync(new Uri($"{server.Urls[0]}/ontology"));
+
+        Assert.IsNotNull(ontology);
+        Assert.IsTrue(string.Equals(ontology.IRI, "ex:wiremock", StringComparison.Ordinal));
+        Assert.HasCount(1, ontology.DeclarationAxioms);
+    }
+
+    [TestMethod]
+    public async Task ShouldReadOntologyFromUriAsRDFXMLAsync()
+    {
+        using WireMockServer server = WireMockServer.Start();
+        server
+            .Given(Request.Create().WithPath("/ontology").UsingGet())
+            .RespondWith(Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/rdf+xml")
+                .WithBody("""
+                          <?xml version="1.0" encoding="utf-8"?>
+                          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:owl="http://www.w3.org/2002/07/owl#">
+                            <owl:Ontology rdf:about="ex:wiremock" />
+                            <owl:Class rdf:about="ex:Person" />
+                          </rdf:RDF>
+                          """));
+
+        OWLOntology ontology = await OWLOntology.FromUriAsync(new Uri($"{server.Urls[0]}/ontology"));
+
+        Assert.IsNotNull(ontology);
+        Assert.IsTrue(string.Equals(ontology.IRI, "ex:wiremock", StringComparison.Ordinal));
+        Assert.HasCount(1, ontology.DeclarationAxioms);
+    }
+
+    [TestMethod]
+    public async Task ShouldReadOntologyFromUriAsTurtleAsync()
+    {
+        using WireMockServer server = WireMockServer.Start();
+        server
+            .Given(Request.Create().WithPath("/ontology").UsingGet())
+            .RespondWith(Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "text/turtle")
+                .WithBody("""
+                          @prefix owl: <http://www.w3.org/2002/07/owl#> .
+                          <ex:wiremock> a owl:Ontology .
+                          <ex:Person> a owl:Class .
+                          """));
+
+        OWLOntology ontology = await OWLOntology.FromUriAsync(new Uri($"{server.Urls[0]}/ontology"));
+
+        Assert.IsNotNull(ontology);
+        Assert.IsTrue(string.Equals(ontology.IRI, "ex:wiremock", StringComparison.Ordinal));
+        Assert.HasCount(1, ontology.DeclarationAxioms);
     }
     #endregion
 

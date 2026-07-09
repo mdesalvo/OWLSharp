@@ -475,17 +475,22 @@ namespace OWLSharp.Ontology
                     {
                         switch (owlFormat)
                         {
+                            // OWL2/XML
                             case OWLEnums.OWLFormats.OWL2XML:
                             {
                                 using (StreamReader streamReader = new StreamReader(inputStream, RDFModelUtilities.UTF8_NoBOM))
                                     return OWLSerializer.DeserializeOntology(streamReader.ReadToEnd());
                             }
+
+                            // OWL2/Manchester
                             case OWLEnums.OWLFormats.OWL2Manchester:
                             {
                                 using (StreamReader streamReader = new StreamReader(inputStream, RDFModelUtilities.UTF8_NoBOM))
                                     return OWLManchesterParser.DeserializeOntology(streamReader.ReadToEnd());
                             }
-                            default: throw new NotSupportedException($"{owlFormat} format is not supported");
+
+                            default:
+                                throw new NotSupportedException($"{owlFormat} format is not supported");
                         }
                     }
                     catch (Exception ex)
