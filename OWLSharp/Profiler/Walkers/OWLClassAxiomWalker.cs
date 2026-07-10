@@ -14,7 +14,7 @@
 using System.Collections.Generic;
 using OWLSharp.Ontology;
 
-namespace OWLSharp.Profiler.Walkers
+namespace OWLSharp.Profiler
 {
     /// <summary>
     /// OWLClassAxiomWalker enumerates every top-level class expression "slot" found in an ontology's class axioms

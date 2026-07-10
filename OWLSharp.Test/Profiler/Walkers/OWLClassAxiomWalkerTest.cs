@@ -16,7 +16,6 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using OWLSharp.Profiler;
-using OWLSharp.Profiler.Walkers;
 using RDFSharp.Model;
 
 namespace OWLSharp.Test.Profiler.Walkers;

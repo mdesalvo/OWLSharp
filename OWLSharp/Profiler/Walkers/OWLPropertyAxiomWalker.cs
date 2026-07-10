@@ -14,7 +14,7 @@
 using System.Collections.Generic;
 using OWLSharp.Ontology;
 
-namespace OWLSharp.Profiler.Walkers
+namespace OWLSharp.Profiler
 {
     /// <summary>
     /// OWLPropertyAxiomWalker enumerates the class/data range expressions embedded in property domain/range axioms

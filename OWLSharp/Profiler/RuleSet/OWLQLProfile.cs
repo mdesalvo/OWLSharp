@@ -14,7 +14,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using OWLSharp.Ontology;
-using OWLSharp.Profiler.Walkers;
 using RDFSharp.Model;
 
 namespace OWLSharp.Profiler
