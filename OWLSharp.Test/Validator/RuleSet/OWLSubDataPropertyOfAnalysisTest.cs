@@ -24,8 +24,10 @@ public class OWLSubDataPropertyOfAnalysisTest
 {
     #region Tests
     [TestMethod]
-    public void ShouldAnalyzeSubDataPropertyOfSubDataPropertyOfCase()
+    public void ShouldNotAnalyzeSubDataPropertyOfMutualSubDataPropertyOfCase()
     {
+        //Mutual SubDataPropertyOf is a common, deliberate idiom for expressing property equivalence without an
+        //explicit EquivalentDataProperties axiom: it is redundant, not contradictory, so it must not be flagged at all
         OWLOntology ontology = new OWLOntology
         {
             DataPropertyAxioms = [
@@ -44,15 +46,13 @@ public class OWLSubDataPropertyOfAnalysisTest
         List<OWLIssue> issues = OWLSubDataPropertyOfAnalysis.ExecuteRule(ontology);
 
         Assert.IsNotNull(issues);
-        Assert.HasCount(2, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubDataPropertyOfAnalysis.rulename)));
-        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubDataPropertyOfAnalysis.rulesugg)));
+        Assert.IsEmpty(issues);
     }
 
     [TestMethod]
-    public void ShouldAnalyzeSubDataPropertyOfEquivalentDataPropertiesCase()
+    public void ShouldNotAnalyzeSubDataPropertyOfEquivalentDataPropertiesCase()
     {
+        //SubDataPropertyOf restating one direction of an already-declared EquivalentDataProperties is redundant, not contradictory
         OWLOntology ontology = new OWLOntology
         {
             DataPropertyAxioms = [
@@ -71,10 +71,7 @@ public class OWLSubDataPropertyOfAnalysisTest
         List<OWLIssue> issues = OWLSubDataPropertyOfAnalysis.ExecuteRule(ontology);
 
         Assert.IsNotNull(issues);
-        Assert.HasCount(1, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubDataPropertyOfAnalysis.rulename)));
-        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubDataPropertyOfAnalysis.rulesugg)));
+        Assert.IsEmpty(issues);
     }
 
     [TestMethod]
@@ -99,7 +96,7 @@ public class OWLSubDataPropertyOfAnalysisTest
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubDataPropertyOfAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubDataPropertyOfAnalysis.rulesugg)));
     }

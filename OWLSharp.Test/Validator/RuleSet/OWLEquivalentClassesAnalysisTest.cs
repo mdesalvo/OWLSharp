@@ -24,8 +24,9 @@ public class OWLEquivalentClassesAnalysisTest
 {
     #region Tests
     [TestMethod]
-    public void ShouldAnalyzeEquivalentClassesSubClassOfCase()
+    public void ShouldNotAnalyzeEquivalentClassesSubClassOfCase()
     {
+        //SubClassOf restating one direction of an already-declared EquivalentClasses is redundant, not contradictory
         OWLOntology ontology = new OWLOntology
         {
             ClassAxioms = [
@@ -43,10 +44,7 @@ public class OWLEquivalentClassesAnalysisTest
         List<OWLIssue> issues = OWLEquivalentClassesAnalysis.ExecuteRule(ontology);
 
         Assert.IsNotNull(issues);
-        Assert.HasCount(1, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLEquivalentClassesAnalysis.rulename)));
-        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLEquivalentClassesAnalysis.rulesugg)));
+        Assert.IsEmpty(issues);
     }
 
     [TestMethod]
@@ -70,7 +68,7 @@ public class OWLEquivalentClassesAnalysisTest
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLEquivalentClassesAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLEquivalentClassesAnalysis.rulesugg)));
     }

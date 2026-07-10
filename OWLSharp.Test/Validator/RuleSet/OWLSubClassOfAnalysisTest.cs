@@ -24,8 +24,10 @@ public class OWLSubClassOfAnalysisTest
 {
     #region Tests
     [TestMethod]
-    public void ShouldAnalyzeSubClassOfSubClassOfCase()
+    public void ShouldNotAnalyzeSubClassOfMutualSubClassOfCase()
     {
+        //Mutual SubClassOf is a common, deliberate idiom for expressing class equivalence without an explicit
+        //EquivalentClasses axiom: it is redundant, not contradictory, so it must not be flagged at all
         OWLOntology ontology = new OWLOntology
         {
             ClassAxioms = [
@@ -44,15 +46,13 @@ public class OWLSubClassOfAnalysisTest
         List<OWLIssue> issues = OWLSubClassOfAnalysis.ExecuteRule(ontology);
 
         Assert.IsNotNull(issues);
-        Assert.HasCount(2, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubClassOfAnalysis.rulename)));
-        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubClassOfAnalysis.rulesugg1)));
+        Assert.IsEmpty(issues);
     }
 
     [TestMethod]
-    public void ShouldAnalyzeSubClassOfEquivalentClassesCase()
+    public void ShouldNotAnalyzeSubClassOfEquivalentClassesCase()
     {
+        //SubClassOf restating one direction of an already-declared EquivalentClasses is redundant, not contradictory
         OWLOntology ontology = new OWLOntology
         {
             ClassAxioms = [
@@ -72,10 +72,7 @@ public class OWLSubClassOfAnalysisTest
         List<OWLIssue> issues = OWLSubClassOfAnalysis.ExecuteRule(ontology);
 
         Assert.IsNotNull(issues);
-        Assert.HasCount(1, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubClassOfAnalysis.rulename)));
-        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubClassOfAnalysis.rulesugg1)));
+        Assert.IsEmpty(issues);
     }
 
     [TestMethod]
@@ -100,7 +97,7 @@ public class OWLSubClassOfAnalysisTest
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubClassOfAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubClassOfAnalysis.rulesugg1)));
     }

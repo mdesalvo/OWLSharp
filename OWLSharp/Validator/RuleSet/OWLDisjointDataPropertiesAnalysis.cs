@@ -22,13 +22,15 @@ namespace OWLSharp.Validator
     /// axiom are flattened into a single list and then grouped by (individual,literal) pair: any group with more than one assertion means at least two
     /// distinct members ?pi/?pj (i != j) of the (possibly n-ary) disjoint set relate the same individual to the same literal, which is exactly the prp-adp
     /// pattern (AllDisjointProperties), so no separate rule was needed for the n-ary case (see ShouldAnalyzeDisjointDataProperties test, which already
-    /// exercises a 3-member disjoint list with a non-adjacent clash). The T-Box overlap check against SubDataPropertyOf/EquivalentDataProperties is an OWLSharp extension</para>
+    /// exercises a 3-member disjoint list with a non-adjacent clash). The T-Box overlap check against SubDataPropertyOf/EquivalentDataProperties is an
+    /// OWLSharp extension (Warning, not Error: the clash only forces the involved properties to be equivalent to owl:bottomDataProperty, which is a
+    /// modeling smell rather than an ontology-level inconsistency -- unlike the A-Box check above, which is a genuine one)</para>
     /// </summary>
     internal static class OWLDisjointDataPropertiesAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.DisjointDataPropertiesAnalysis);
         internal const string rulesugg = "There should not be disjoint data properties linking the same individual to the same literal within DataPropertyAssertion axioms!";
-        internal const string rulesugg2 = "There should not be data properties belonging at the same time to DisjointDataProperties and SubDataPropertyOf/EquivalentDataProperties axioms!";
+        internal const string rulesugg2 = "Data properties should not belong at the same time to DisjointDataProperties and SubDataPropertyOf/EquivalentDataProperties axioms: this forces them to be equivalent to owl:bottomDataProperty!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
@@ -67,9 +69,9 @@ namespace OWLSharp.Validator
                                           rulesugg));
                                   });
 
-                    //DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP1,DP2) -> ERROR
-                    //DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP2,DP1) -> ERROR
-                    //DisjointDataProperties(DP1,DP2) ^ EquivalentDataProperties(DP1,DP2) -> ERROR
+                    //DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP1,DP2) -> WARNING
+                    //DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP2,DP1) -> WARNING
+                    //DisjointDataProperties(DP1,DP2) ^ EquivalentDataProperties(DP1,DP2) -> WARNING
                     if (disjDtProps.DataProperties.Any(outerDP =>
                           disjDtProps.DataProperties.Any(innerDP => !outerDP.GetIRI().Equals(innerDP.GetIRI())
                                                                       && (ontology.CheckIsSubDataPropertyOf(outerDP, innerDP)
@@ -77,7 +79,7 @@ namespace OWLSharp.Validator
                                                                            || ontology.CheckAreEquivalentDataProperties(outerDP, innerDP)))))
                     {
                         issues.Add(new OWLIssue(
-                            OWLEnums.OWLIssueSeverity.Error,
+                            OWLEnums.OWLIssueSeverity.Warning,
                             rulename,
                             $"Violated DisjointDataProperties axiom with signature: '{disjDtProps.GetXML()}'",
                             rulesugg2));

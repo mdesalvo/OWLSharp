@@ -19,12 +19,14 @@ using System.Linq;
 namespace OWLSharp.Validator
 {
     /// <summary>
-    /// <para>W3C OWL2 RL/RDF: cax-dw (A-Box shared-ClassAssertion check). The T-Box overlap check against SubClassOf/EquivalentClasses is an OWLSharp extension</para>
+    /// <para>W3C OWL2 RL/RDF: cax-dw (A-Box shared-ClassAssertion check, Error: a genuine ontology inconsistency). The T-Box overlap check
+    /// against SubClassOf/EquivalentClasses is an OWLSharp extension (Warning, not Error: the clash only forces the involved classes to
+    /// be equivalent to owl:Nothing, which is a modeling smell rather than an ontology-level inconsistency by itself)</para>
     /// </summary>
     internal static class OWLDisjointClassesAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.DisjointClassesAnalysis);
-        internal const string rulesugg = "There should not be class expressions belonging at the same time to DisjointClasses and SubClassOf/EquivalentClasses axioms!";
+        internal const string rulesugg = "Class expressions should not belong at the same time to DisjointClasses and SubClassOf/EquivalentClasses axioms: this forces them to be equivalent to owl:Nothing!";
         internal const string rulesugg2 = "There should not be class expressions belonging to a DisjointClasses axiom and having a class assertion on the same individual!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
@@ -47,9 +49,12 @@ namespace OWLSharp.Validator
                 {
                     List<OWLClassExpression> classExpressions = disjClasses.ClassExpressions.ToList();
 
-                    //DisjointClasses(CLS1,CLS2) ^ SubClassOf(CLS1,CLS2) -> ERROR
-                    //DisjointClasses(CLS1,CLS2) ^ SubClassOf(CLS2,CLS1) -> ERROR
-                    //DisjointClasses(CLS1,CLS2) ^ EquivalentClasses(CLS1,CLS2) -> ERROR
+                    //DisjointClasses(CLS1,CLS2) ^ SubClassOf(CLS1,CLS2) -> WARNING
+                    //DisjointClasses(CLS1,CLS2) ^ SubClassOf(CLS2,CLS1) -> WARNING
+                    //DisjointClasses(CLS1,CLS2) ^ EquivalentClasses(CLS1,CLS2) -> WARNING
+                    //Warning, not Error: this combination only forces the involved classes to be equivalent to owl:Nothing (an
+                    //unsatisfiable-class modeling smell), not an ontology-level inconsistency -- that only follows if some individual
+                    //is actually (or entailed to be) a member of one of them, which is exactly what the A-BOX Analysis below checks.
                     //violatesTBox is checked in the outer loop condition purely as a short-circuit: once one violating pair is found
                     //within this axiom, there is no need to keep scanning the remaining CLS combinations (one issue per axiom is enough)
                     #region T-BOX Analysis
@@ -67,7 +72,7 @@ namespace OWLSharp.Validator
                             {
                                 violatesTBox = true;
                                 issues.Add(new OWLIssue(
-                                    OWLEnums.OWLIssueSeverity.Error,
+                                    OWLEnums.OWLIssueSeverity.Warning,
                                     rulename,
                                     $"Violated DisjointClasses axiom (T-BOX) with signature: '{disjClasses.GetXML()}'",
                                     rulesugg));

@@ -44,7 +44,7 @@ public class OWLDisjointClassesAnalysisTest
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointClassesAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointClassesAnalysis.rulesugg)));
     }
@@ -70,7 +70,7 @@ public class OWLDisjointClassesAnalysisTest
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointClassesAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointClassesAnalysis.rulesugg)));
     }
@@ -96,7 +96,7 @@ public class OWLDisjointClassesAnalysisTest
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointClassesAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointClassesAnalysis.rulesugg)));
     }
@@ -183,9 +183,10 @@ public class OWLDisjointClassesAnalysisTest
 
         Assert.IsNotNull(issues);
         Assert.HasCount(2, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-        Assert.IsTrue(issues.Exists(iss => iss.Description.Contains("(T-BOX)")));
-        Assert.IsTrue(issues.Exists(iss => iss.Description.Contains("(A-BOX)")));
+        //T-BOX overlap is a modeling smell (forces classes equivalent to owl:Nothing), not an ontology-level inconsistency
+        Assert.IsTrue(issues.Exists(iss => iss.Description.Contains("(T-BOX)") && iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
+        //A-BOX shared ClassAssertion on disjoint classes is a genuine ontology-level inconsistency
+        Assert.IsTrue(issues.Exists(iss => iss.Description.Contains("(A-BOX)") && iss.Severity == OWLEnums.OWLIssueSeverity.Error));
     }
     #endregion
 }

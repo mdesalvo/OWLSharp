@@ -17,27 +17,28 @@ using System.Collections.Generic;
 namespace OWLSharp.Validator
 {
     /// <summary>
-    /// <para>OWLSharp extension: T-Box overlap check (SubDataPropertyOf vs EquivalentDataProperties/DisjointDataProperties), no direct RL/RDF correspondent</para>
+    /// <para>OWLSharp extension: T-Box overlap check (SubDataPropertyOf vs DisjointDataProperties), no direct RL/RDF correspondent.
+    /// Warning, not Error: the clash only forces the involved properties to be equivalent to owl:bottomDataProperty, which is a
+    /// modeling smell rather than an ontology-level inconsistency</para>
     /// </summary>
     internal static class OWLSubDataPropertyOfAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.SubDataPropertyOfAnalysis);
-        internal const string rulesugg = "There should not be data properties belonging at the same time to SubDataPropertyOf and EquivalentDataProperties/DisjointDataProperties axioms!";
+        internal const string rulesugg = "A data property should not be asserted as SubDataPropertyOf a property it is also stated DisjointDataProperties with: this forces the sub-property to be equivalent to owl:bottomDataProperty!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //SubDataPropertyOf(DP1,DP2) ^ SubDataPropertyOf(DP2,DP1) -> ERROR
-            //SubDataPropertyOf(DP1,DP2) ^ EquivalentDataProperties(DP1,DP2) -> ERROR
-            //SubDataPropertyOf(DP1,DP2) ^ DisjointDataProperties(DP1,DP2) -> ERROR
+            //SubDataPropertyOf(DP1,DP2) ^ DisjointDataProperties(DP1,DP2) -> WARNING
+            //NOTE: SubDataPropertyOf(DP1,DP2) combined with the mutual SubDataPropertyOf(DP2,DP1) or with
+            //EquivalentDataProperties(DP1,DP2) is NOT flagged: both are just redundant (not contradictory) restatements of DP1=DP2,
+            //and mutual SubDataPropertyOf in particular is a common, deliberate idiom for expressing property equivalence
             foreach (OWLSubDataPropertyOf subDataPropertyOf in ontology.GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>())
-                if (ontology.CheckIsSubDataPropertyOf(subDataPropertyOf.SuperDataProperty, subDataPropertyOf.SubDataProperty)
-                     || ontology.CheckAreEquivalentDataProperties(subDataPropertyOf.SubDataProperty, subDataPropertyOf.SuperDataProperty)
-                     || ontology.CheckAreDisjointDataProperties(subDataPropertyOf.SubDataProperty, subDataPropertyOf.SuperDataProperty))
+                if (ontology.CheckAreDisjointDataProperties(subDataPropertyOf.SubDataProperty, subDataPropertyOf.SuperDataProperty))
                 {
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error,
+                        OWLEnums.OWLIssueSeverity.Warning,
                         rulename,
                         $"Violated SubDataPropertyOf axiom with signature: '{subDataPropertyOf.GetXML()}'",
                         rulesugg));

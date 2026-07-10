@@ -24,8 +24,9 @@ public class OWLEquivalentDataPropertiesAnalysisTest
 {
     #region Tests
     [TestMethod]
-    public void ShouldAnalyzeEquivalentDataPropertiesSubDataPropertyOfCase()
+    public void ShouldNotAnalyzeEquivalentDataPropertiesSubDataPropertyOfCase()
     {
+        //SubDataPropertyOf restating one direction of an already-declared EquivalentDataProperties is redundant, not contradictory
         OWLOntology ontology = new OWLOntology
         {
             DataPropertyAxioms = [
@@ -44,10 +45,7 @@ public class OWLEquivalentDataPropertiesAnalysisTest
         List<OWLIssue> issues = OWLEquivalentDataPropertiesAnalysis.ExecuteRule(ontology);
 
         Assert.IsNotNull(issues);
-        Assert.HasCount(1, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLEquivalentDataPropertiesAnalysis.rulename)));
-        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLEquivalentDataPropertiesAnalysis.rulesugg)));
+        Assert.IsEmpty(issues);
     }
 
     [TestMethod]
@@ -74,7 +72,7 @@ public class OWLEquivalentDataPropertiesAnalysisTest
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLEquivalentDataPropertiesAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLEquivalentDataPropertiesAnalysis.rulesugg)));
     }

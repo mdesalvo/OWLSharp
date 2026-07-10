@@ -21,13 +21,15 @@ namespace OWLSharp.Validator
     /// <para>W3C OWL2 RL/RDF: prp-pdw, prp-adp (A-Box shared-assertion check). The assertions of ALL member properties of the DisjointObjectProperties
     /// axiom are flattened into a single list and then grouped by (source,target) pair: any group with more than one assertion means at least two
     /// distinct members ?pi/?pj (i != j) of the (possibly n-ary) disjoint set relate the same ?u,?v pair, which is exactly the prp-adp pattern
-    /// (AllDisjointProperties), so no separate rule was needed for the n-ary case. The T-Box overlap check against SubObjectPropertyOf/EquivalentObjectProperties is an OWLSharp extension</para>
+    /// (AllDisjointProperties), so no separate rule was needed for the n-ary case. The T-Box overlap check against SubObjectPropertyOf/EquivalentObjectProperties
+    /// is an OWLSharp extension (Warning, not Error: the clash only forces the involved properties to be equivalent to owl:bottomObjectProperty,
+    /// which is a modeling smell rather than an ontology-level inconsistency -- unlike the A-Box check above, which is a genuine one)</para>
     /// </summary>
     internal static class OWLDisjointObjectPropertiesAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.DisjointObjectPropertiesAnalysis);
         internal const string rulesugg = "There should not be disjoint object properties linking the same source and target individual pairs within ObjectPropertyAssertion axioms!";
-        internal const string rulesugg2 = "There should not be object properties belonging at the same time to DisjointObjectProperties and SubObjectPropertyOf/EquivalentObjectProperties axioms!";
+        internal const string rulesugg2 = "Object properties should not belong at the same time to DisjointObjectProperties and SubObjectPropertyOf/EquivalentObjectProperties axioms: this forces them to be equivalent to owl:bottomObjectProperty!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
@@ -66,9 +68,9 @@ namespace OWLSharp.Validator
                                           rulesugg));
                                   });
 
-                    //DisjointObjectProperties(OP1,OP2) ^ SubDataPropertyOf(OP1,OP2) -> ERROR
-                    //DisjointObjectProperties(OP1,OP2) ^ SubDataPropertyOf(OP2,OP1) -> ERROR
-                    //DisjointObjectProperties(OP1,OP2) ^ EquivalentDataProperties(OP1,OP2) -> ERROR
+                    //DisjointObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP1,OP2) -> WARNING
+                    //DisjointObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP2,OP1) -> WARNING
+                    //DisjointObjectProperties(OP1,OP2) ^ EquivalentObjectProperties(OP1,OP2) -> WARNING
                     if (disjObProps.ObjectPropertyExpressions.Any(outerOP =>
                           disjObProps.ObjectPropertyExpressions.Any(innerOP => !outerOP.GetIRI().Equals(innerOP.GetIRI())
                                                                                    && (ontology.CheckIsSubObjectPropertyOf(outerOP, innerOP)
@@ -76,7 +78,7 @@ namespace OWLSharp.Validator
                                                                                         || ontology.CheckAreEquivalentObjectProperties(outerOP, innerOP)))))
                     {
                         issues.Add(new OWLIssue(
-                            OWLEnums.OWLIssueSeverity.Error,
+                            OWLEnums.OWLIssueSeverity.Warning,
                             rulename,
                             $"Violated DisjointObjectProperties axiom with signature: '{disjObProps.GetXML()}'",
                             rulesugg2));

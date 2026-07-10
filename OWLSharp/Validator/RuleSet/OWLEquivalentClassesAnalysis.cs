@@ -18,31 +18,31 @@ using System.Linq;
 namespace OWLSharp.Validator
 {
     /// <summary>
-    /// <para>OWLSharp extension: T-Box overlap check (EquivalentClasses vs SubClassOf/DisjointClasses); the RL/RDF ruleset assumes consistent T-Box input rather than flagging redundant/contradictory axiom combinations</para>
+    /// <para>OWLSharp extension: T-Box overlap check (EquivalentClasses vs DisjointClasses); the RL/RDF ruleset assumes consistent T-Box
+    /// input rather than flagging redundant/contradictory axiom combinations. Warning, not Error: the clash only forces the involved
+    /// classes to be equivalent to owl:Nothing, which is a modeling smell rather than an ontology-level inconsistency</para>
     /// </summary>
     internal static class OWLEquivalentClassesAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.EquivalentClassesAnalysis);
-        internal const string rulesugg = "There should not be class expressions belonging at the same time to EquivalentClasses and SubClassOf/DisjointClasses axioms!";
+        internal const string rulesugg = "Classes should not be asserted as EquivalentClasses if they are also stated DisjointClasses: this forces them to be equivalent to owl:Nothing!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //EquivalentClasses(CLS1,CLS2) ^ SubClassOf(CLS1,CLS2) -> ERROR
-            //EquivalentClasses(CLS1,CLS2) ^ SubClassOf(CLS2,CLS1) -> ERROR
-            //EquivalentClasses(CLS1,CLS2) ^ DisjointClasses(CLS1,CLS2) -> ERROR
+            //EquivalentClasses(CLS1,CLS2) ^ DisjointClasses(CLS1,CLS2) -> WARNING
             //Any/Any scan across the whole n-ary member list (not just adjacent pairs): equivalence is stated for the whole
-            //group at once, so a single pairwise SubClassOf/DisjointClasses clash anywhere in the set is enough to be a contradiction
+            //group at once, so a single pairwise DisjointClasses clash anywhere in the set is enough to flag the axiom.
+            //NOTE: EquivalentClasses(CLS1,CLS2) combined with SubClassOf(CLS1,CLS2) or SubClassOf(CLS2,CLS1) is NOT flagged: an
+            //explicit SubClassOf restating one direction of an already-declared equivalence is redundant, not contradictory
             foreach (OWLEquivalentClasses equivClasses in ontology.GetClassAxiomsOfType<OWLEquivalentClasses>())
                 if (equivClasses.ClassExpressions.Any(outerClass =>
                       equivClasses.ClassExpressions.Any(innerClass => !outerClass.GetIRI().Equals(innerClass.GetIRI())
-                                                                          && (ontology.CheckIsSubClassOf(outerClass, innerClass)
-                                                                             || ontology.CheckIsSubClassOf(innerClass, outerClass)
-                                                                             || ontology.CheckAreDisjointClasses(outerClass, innerClass)))))
+                                                                          && ontology.CheckAreDisjointClasses(outerClass, innerClass))))
                 {
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error,
+                        OWLEnums.OWLIssueSeverity.Warning,
                         rulename,
                         $"Violated EquivalentClasses axiom with signature: '{equivClasses.GetXML()}'",
                         rulesugg));

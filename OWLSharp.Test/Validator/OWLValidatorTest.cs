@@ -403,7 +403,7 @@ public class OWLValidatorTest
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointClassesAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointClassesAnalysis.rulesugg)));
     }
@@ -440,14 +440,17 @@ public class OWLValidatorTest
     [TestMethod]
     public async Task ShouldAnalyzeEquivalentClassesAsync()
     {
+        //EquivalentClasses+SubClassOf on the same pair is intentionally NOT flagged (redundant, not contradictory) --
+        //this fixture instead exercises the still-flagged EquivalentClasses+DisjointClasses combination (Warning: forces
+        //the involved classes to be equivalent to owl:Nothing)
         OWLOntology ontology = new OWLOntology
         {
             ClassAxioms = [
                 new OWLEquivalentClasses([
                     new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]),
-                new OWLSubClassOf(
+                new OWLDisjointClasses([
                     new OWLClass(RDFVocabulary.FOAF.PERSON),
-                    new OWLClass(RDFVocabulary.FOAF.ORGANIZATION))
+                    new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ])
             ],
             DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
@@ -459,7 +462,7 @@ public class OWLValidatorTest
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLEquivalentClassesAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLEquivalentClassesAnalysis.rulesugg)));
     }
@@ -467,15 +470,18 @@ public class OWLValidatorTest
     [TestMethod]
     public async Task ShouldAnalyzeSubClassOfSubClassAsync()
     {
+        //Mutual SubClassOf on the same pair is intentionally NOT flagged (redundant, not contradictory) -- this fixture
+        //instead exercises the still-flagged SubClassOf+DisjointClasses combination (Warning: forces the subclass to be
+        //equivalent to owl:Nothing)
         OWLOntology ontology = new OWLOntology
         {
             ClassAxioms = [
                 new OWLSubClassOf(
                     new OWLClass(RDFVocabulary.FOAF.PERSON),
                     new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)),
-                new OWLSubClassOf(
-                    new OWLClass(RDFVocabulary.FOAF.ORGANIZATION),
-                    new OWLClass(RDFVocabulary.FOAF.PERSON))
+                new OWLDisjointClasses([
+                    new OWLClass(RDFVocabulary.FOAF.PERSON),
+                    new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ])
             ],
             DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
@@ -486,8 +492,8 @@ public class OWLValidatorTest
         List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
-        Assert.HasCount(2, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.HasCount(1, issues);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubClassOfAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubClassOfAnalysis.rulesugg1)));
     }
@@ -602,15 +608,18 @@ public class OWLValidatorTest
     [TestMethod]
     public async Task ShouldAnalyzeEquivalentDataPropertiesAsync()
     {
+        //EquivalentDataProperties+SubDataPropertyOf on the same pair is intentionally NOT flagged (redundant, not
+        //contradictory) -- this fixture instead exercises the still-flagged EquivalentDataProperties+DisjointDataProperties
+        //combination (Warning: forces the involved properties to be equivalent to owl:bottomDataProperty)
         OWLOntology ontology = new OWLOntology
         {
             DataPropertyAxioms = [
                 new OWLEquivalentDataProperties([
                     new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                     new OWLDataProperty(new RDFResource("ex:age")) ]),
-                new OWLSubDataPropertyOf(
+                new OWLDisjointDataProperties([
                     new OWLDataProperty(RDFVocabulary.FOAF.AGE),
-                    new OWLDataProperty(new RDFResource("ex:age")))
+                    new OWLDataProperty(new RDFResource("ex:age")) ])
             ],
             DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
@@ -622,7 +631,7 @@ public class OWLValidatorTest
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLEquivalentDataPropertiesAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLEquivalentDataPropertiesAnalysis.rulesugg)));
     }
@@ -630,15 +639,18 @@ public class OWLValidatorTest
     [TestMethod]
     public async Task ShouldAnalyzeEquivalentObjectPropertiesAsync()
     {
+        //EquivalentObjectProperties+SubObjectPropertyOf on the same pair is intentionally NOT flagged (redundant, not
+        //contradictory) -- this fixture instead exercises the still-flagged EquivalentObjectProperties+DisjointObjectProperties
+        //combination (Warning: forces the involved properties to be equivalent to owl:bottomObjectProperty)
         OWLOntology ontology = new OWLOntology
         {
             ObjectPropertyAxioms = [
                 new OWLEquivalentObjectProperties([
                     new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                     new OWLObjectProperty(new RDFResource("ex:knows")) ]),
-                new OWLSubObjectPropertyOf(
+                new OWLDisjointObjectProperties([
                     new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
-                    new OWLObjectProperty(new RDFResource("ex:knows")))
+                    new OWLObjectProperty(new RDFResource("ex:knows")) ])
             ],
             DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -650,7 +662,7 @@ public class OWLValidatorTest
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLEquivalentObjectPropertiesAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLEquivalentObjectPropertiesAnalysis.rulesugg)));
     }
@@ -658,15 +670,18 @@ public class OWLValidatorTest
     [TestMethod]
     public async Task ShouldAnalyzeSubDataPropertyOfAsync()
     {
+        //Mutual SubDataPropertyOf on the same pair is intentionally NOT flagged (redundant, not contradictory) -- this
+        //fixture instead exercises the still-flagged SubDataPropertyOf+DisjointDataProperties combination (Warning:
+        //forces the sub-property to be equivalent to owl:bottomDataProperty)
         OWLOntology ontology = new OWLOntology
         {
             DataPropertyAxioms = [
                 new OWLSubDataPropertyOf(
                     new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                     new OWLDataProperty(new RDFResource("ex:age")) ),
-                new OWLSubDataPropertyOf(
-                    new OWLDataProperty(new RDFResource("ex:age")),
-                    new OWLDataProperty(RDFVocabulary.FOAF.AGE))
+                new OWLDisjointDataProperties([
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                    new OWLDataProperty(new RDFResource("ex:age")) ])
             ],
             DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
@@ -677,8 +692,8 @@ public class OWLValidatorTest
         List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
-        Assert.HasCount(2, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.HasCount(1, issues);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubDataPropertyOfAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubDataPropertyOfAnalysis.rulesugg)));
     }
@@ -686,15 +701,18 @@ public class OWLValidatorTest
     [TestMethod]
     public async Task ShouldAnalyzeSubObjectPropertyOfAsync()
     {
+        //Mutual SubObjectPropertyOf on the same pair is intentionally NOT flagged (redundant, not contradictory) -- this
+        //fixture instead exercises the still-flagged SubObjectPropertyOf+DisjointObjectProperties combination (Warning:
+        //forces the sub-property to be equivalent to owl:bottomObjectProperty)
         OWLOntology ontology = new OWLOntology
         {
             ObjectPropertyAxioms = [
                 new OWLSubObjectPropertyOf(
                     new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                     new OWLObjectProperty(new RDFResource("ex:knows")) ),
-                new OWLSubObjectPropertyOf(
-                    new OWLObjectProperty(new RDFResource("ex:knows")),
-                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
+                new OWLDisjointObjectProperties([
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
+                    new OWLObjectProperty(new RDFResource("ex:knows")) ])
             ],
             DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -705,8 +723,8 @@ public class OWLValidatorTest
         List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
-        Assert.HasCount(2, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.HasCount(1, issues);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubObjectPropertyOfAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubObjectPropertyOfAnalysis.rulesugg)));
     }

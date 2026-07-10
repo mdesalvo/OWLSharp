@@ -18,31 +18,31 @@ using System.Linq;
 namespace OWLSharp.Validator
 {
     /// <summary>
-    /// <para>OWLSharp extension: T-Box overlap check (EquivalentDataProperties vs SubDataPropertyOf/DisjointDataProperties), no direct RL/RDF correspondent</para>
+    /// <para>OWLSharp extension: T-Box overlap check (EquivalentDataProperties vs DisjointDataProperties), no direct RL/RDF
+    /// correspondent. Warning, not Error: the clash only forces the involved properties to be equivalent to owl:bottomDataProperty,
+    /// which is a modeling smell rather than an ontology-level inconsistency</para>
     /// </summary>
     internal static class OWLEquivalentDataPropertiesAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.EquivalentDataPropertiesAnalysis);
-        internal const string rulesugg = "There should not be data properties belonging at the same time to EquivalentDataProperties and SubDataPropertyOf/DisjointDataProperties axioms!";
+        internal const string rulesugg = "Data properties should not be asserted as EquivalentDataProperties if they are also stated DisjointDataProperties: this forces them to be equivalent to owl:bottomDataProperty!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //EquivalentDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP1,DP2) -> ERROR
-            //EquivalentDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP2,DP1) -> ERROR
-            //EquivalentDataProperties(DP1,DP2) ^ DisjointDataProperties(DP1,DP2) -> ERROR
+            //EquivalentDataProperties(DP1,DP2) ^ DisjointDataProperties(DP1,DP2) -> WARNING
             //Any/Any scan across the whole n-ary member list (not just adjacent pairs): equivalence is stated for the whole
-            //group at once, so a single pairwise SubDataPropertyOf/DisjointDataProperties clash anywhere in the set is enough to be a contradiction
+            //group at once, so a single pairwise DisjointDataProperties clash anywhere in the set is enough to flag the axiom.
+            //NOTE: EquivalentDataProperties(DP1,DP2) combined with SubDataPropertyOf(DP1,DP2) or SubDataPropertyOf(DP2,DP1) is NOT
+            //flagged: an explicit SubDataPropertyOf restating one direction of an already-declared equivalence is redundant, not contradictory
             foreach (OWLEquivalentDataProperties equivDataProps in ontology.GetDataPropertyAxiomsOfType<OWLEquivalentDataProperties>())
                 if (equivDataProps.DataProperties.Any(outerDP =>
                       equivDataProps.DataProperties.Any(innerDP => !outerDP.GetIRI().Equals(innerDP.GetIRI())
-                                                                    && (ontology.CheckIsSubDataPropertyOf(outerDP, innerDP)
-                                                                        || ontology.CheckIsSubDataPropertyOf(innerDP, outerDP)
-                                                                        || ontology.CheckAreDisjointDataProperties(outerDP, innerDP)))))
+                                                                    && ontology.CheckAreDisjointDataProperties(outerDP, innerDP))))
                 {
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error,
+                        OWLEnums.OWLIssueSeverity.Warning,
                         rulename,
                         $"Violated EquivalentDataProperties axiom with signature: '{equivDataProps.GetXML()}'",
                         rulesugg));

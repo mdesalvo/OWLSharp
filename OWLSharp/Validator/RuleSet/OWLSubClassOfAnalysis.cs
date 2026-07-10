@@ -18,12 +18,12 @@ using System.Collections.Generic;
 namespace OWLSharp.Validator
 {
     /// <summary>
-    /// <para>W3C OWL2 RL/RDF: cls-maxc1, cls-maxc2, cls-maxqc1, cls-maxqc2, cls-maxqc3, cls-maxqc4 (cardinality-violation checks, qualified and unqualified). The SubClassOf vs EquivalentClasses/DisjointClasses overlap check is an OWLSharp extension</para>
+    /// <para>W3C OWL2 RL/RDF: cls-maxc1, cls-maxc2, cls-maxqc1, cls-maxqc2, cls-maxqc3, cls-maxqc4 (cardinality-violation checks, qualified and unqualified). The SubClassOf vs DisjointClasses overlap check is an OWLSharp extension (Warning: it forces the subclass to be equivalent to owl:Nothing, which is a modeling smell rather than an ontology-level inconsistency)</para>
     /// </summary>
     internal static class OWLSubClassOfAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.SubClassOfAnalysis);
-        internal const string rulesugg1 = "There should not be class expressions belonging at the same time to SubClassOf and EquivalentClasses/DisjointClasses axioms!";
+        internal const string rulesugg1 = "A class should not be asserted as SubClassOf a class it is also stated DisjointClasses with: this forces the subclass to be equivalent to owl:Nothing!";
         internal const string rulesugg2 = "There should not be individuals violating ObjectExactCardinality or ObjectMaxCardinality constraints!";
         internal const string rulesugg3 = "There should not be individuals violating DataExactCardinality or DataMaxCardinality constraints!";
 
@@ -39,15 +39,14 @@ namespace OWLSharp.Validator
 
             foreach (OWLSubClassOf subClassOf in ontology.GetClassAxiomsOfType<OWLSubClassOf>())
             {
-                //SubClassOf(CLS1,CLS2) ^ SubClassOf(CLS2,CLS1) -> ERROR
-                //SubClassOf(CLS1,CLS2) ^ EquivalentClasses(CLS1,CLS2) -> ERROR
-                //SubClassOf(CLS1,CLS2) ^ DisjointClasses(CLS1,CLS2) -> ERROR
-                if (ontology.CheckIsSubClassOf(subClassOf.SuperClassExpression, subClassOf.SubClassExpression)
-                     || ontology.CheckAreEquivalentClasses(subClassOf.SubClassExpression, subClassOf.SuperClassExpression)
-                     || ontology.CheckAreDisjointClasses(subClassOf.SubClassExpression, subClassOf.SuperClassExpression))
+                //SubClassOf(CLS1,CLS2) ^ DisjointClasses(CLS1,CLS2) -> WARNING
+                //NOTE: SubClassOf(CLS1,CLS2) combined with the mutual SubClassOf(CLS2,CLS1) or with EquivalentClasses(CLS1,CLS2) is NOT
+                //flagged: both are just redundant (not contradictory) restatements of CLS1=CLS2, and mutual SubClassOf in particular is a
+                //common, deliberate idiom for expressing class equivalence without an explicit EquivalentClasses axiom
+                if (ontology.CheckAreDisjointClasses(subClassOf.SubClassExpression, subClassOf.SuperClassExpression))
                 {
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error,
+                        OWLEnums.OWLIssueSeverity.Warning,
                         rulename,
                         $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'",
                         rulesugg1));

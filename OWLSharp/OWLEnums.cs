@@ -293,22 +293,6 @@ namespace OWLSharp
 
         /// <summary>
         /// OWLValidatorRules represents an enumeration for supported RDFS/OWL2 validator rules
-        /// <para>
-        /// W3C OWL2 RL/RDF traceability (5.0-beta3): covers the "-> false/ERROR" violation-detection rules of the table, in their
-        /// consistency-check form: eq-diff1, eq-diff2, eq-diff3 (DifferentIndividualsAnalysis already tests every pair within the n-ary
-        /// AllDifferent member list against transitive owl:sameAs, so no separate rule was needed for the eq-diff2/eq-diff3 n-ary case),
-        /// prp-asyp, prp-irp, prp-npa1, prp-npa2, prp-dom, prp-rng, prp-fp, prp-ifp, prp-key, prp-pdw, prp-adp (DisjointObjectPropertiesAnalysis/
-        /// DisjointDataPropertiesAnalysis already flag any two assertions sharing a source/target pair across the whole n-ary AllDisjointProperties
-        /// member list, which is exactly the prp-adp pattern), dt-not-type (LiteralDatatypeAnalysis), cls-com, cax-dw, cax-adc, cls-maxc1/maxc2/maxqc1-4,
-        /// cls-nothing1/nothing2, cls-thing (partial cls-*/cax-*, no cls-int1/2/uni/svf1/2/avf/hv1/2/oo). Does NOT cover: eq-ref/eq-rep-*, most of scm-*
-        /// — these remain gap-filling targets. Several rules are OWLSharp extensions with no direct RL/RDF correspondent (T-Box "axioms should not overlap"
-        /// pitfall checks: EquivalentClassesAnalysis, EquivalentDataPropertiesAnalysis, EquivalentObjectPropertiesAnalysis, SubDataPropertyOfAnalysis,
-        /// SubObjectPropertyOfAnalysis; OWL2 DL well-formedness checks: ObjectPropertyChainAnalysis and the transitive-property restriction branches of
-        /// FunctionalObjectPropertyAnalysis/InverseFunctionalObjectPropertyAnalysis; annotation-level pragmas: TermsDeprecationAnalysis, TermsDisjointnessAnalysis).
-        /// TopBottomAnalysis mixes both: its T1/T2/B1/B2 branches (top/bottom property mispositioned via SubObjectPropertyOf/SubDataPropertyOf) are a stylistic
-        /// pitfall check (Warning, mirroring ThingNothingAnalysis' T1/N1), while its B3/B4 branches (an actual assertion using owl:bottomObjectProperty/
-        /// owl:bottomDataProperty) are a genuine contradiction since the bottom property is defined to be always empty (Error, mirroring ThingNothingAnalysis' N2).
-        /// </para>
         /// </summary>
         public enum OWLValidatorRules
         {
@@ -342,31 +326,35 @@ namespace OWLSharp
             /// </summary>
             DifferentIndividualsAnalysis = 5,
             /// <summary>
-            /// DisjointClasses(C1,C2) ^ SubClassOf(C1,C2) -> ERROR<br/>
-            /// DisjointClasses(C1,C2) ^ SubClassOf(C2,C1) -> ERROR<br/>
-            /// DisjointClasses(C1,C2) ^ EquivalentClasses(C1,C2) -> ERROR<br/>
+            /// DisjointClasses(C1,C2) ^ SubClassOf(C1,C2) -> WARNING<br/>
+            /// DisjointClasses(C1,C2) ^ SubClassOf(C2,C1) -> WARNING<br/>
+            /// DisjointClasses(C1,C2) ^ EquivalentClasses(C1,C2) -> WARNING<br/>
             /// DisjointClasses(C1,C2) ^ ClassAssertion(C1,I) ^ ClassAssertion(C2,I) -> ERROR
-            /// <para>W3C OWL2 RL/RDF: cax-dw (A-Box shared-ClassAssertion check). The T-Box overlap check against SubClassOf/EquivalentClasses is an OWLSharp extension</para>
+            /// <para>W3C OWL2 RL/RDF: cax-dw (A-Box shared-ClassAssertion check, Error: a genuine ontology inconsistency). The T-Box overlap check
+            /// against SubClassOf/EquivalentClasses is an OWLSharp extension (Warning: it only forces the involved classes to be equivalent to
+            /// owl:Nothing, a modeling smell rather than an ontology-level inconsistency by itself)</para>
             /// </summary>
             DisjointClassesAnalysis = 6,
             /// <summary>
-            /// DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP1,DP2) -> ERROR<br/>
-            /// DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP2,DP1) -> ERROR<br/>
-            /// DisjointDataProperties(DP1,DP2) ^ EquivalentDataProperties(DP1,DP2) -> ERROR<br/>
+            /// DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP1,DP2) -> WARNING<br/>
+            /// DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP2,DP1) -> WARNING<br/>
+            /// DisjointDataProperties(DP1,DP2) ^ EquivalentDataProperties(DP1,DP2) -> WARNING<br/>
             /// AllDisjointDataProperties(DP1,...,DPN) ^ DataPropertyAssertion(DPi,I,LIT) ^ DataPropertyAssertion(DPj,I,LIT), i != j -> ERROR
             /// <para>W3C OWL2 RL/RDF: prp-pdw, prp-adp (A-Box shared-assertion check; the flattened-then-grouped scan already covers any two distinct members of the
-            /// n-ary AllDisjointProperties list sharing the same (individual,literal) pair, which is the prp-adp case). The T-Box overlap check against
-            /// SubDataPropertyOf/EquivalentDataProperties is an OWLSharp extension</para>
+            /// n-ary AllDisjointProperties list sharing the same (individual,literal) pair, which is the prp-adp case; Error, a genuine ontology inconsistency).
+            /// The T-Box overlap check against SubDataPropertyOf/EquivalentDataProperties is an OWLSharp extension (Warning: it only forces the involved
+            /// properties to be equivalent to owl:bottomDataProperty, a modeling smell rather than an ontology-level inconsistency by itself)</para>
             /// </summary>
             DisjointDataPropertiesAnalysis = 7,
             /// <summary>
-            /// DisjointObjectProperties(OP1,OP2) ^ SubDataPropertyOf(OP1,OP2) -> ERROR<br/>
-            /// DisjointObjectProperties(OP1,OP2) ^ SubDataPropertyOf(OP2,OP1) -> ERROR<br/>
-            /// DisjointObjectProperties(OP1,OP2) ^ EquivalentDataProperties(OP1,OP2) -> ERROR<br/>
+            /// DisjointObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP1,OP2) -> WARNING<br/>
+            /// DisjointObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP2,OP1) -> WARNING<br/>
+            /// DisjointObjectProperties(OP1,OP2) ^ EquivalentObjectProperties(OP1,OP2) -> WARNING<br/>
             /// AllDisjointObjectProperties(OP1,...,OPN) ^ ObjectPropertyAssertion(OPi,I1,I2) ^ ObjectPropertyAssertion(OPj,I1,I2), i != j -> ERROR
             /// <para>W3C OWL2 RL/RDF: prp-pdw, prp-adp (A-Box shared-assertion check; the flattened-then-grouped scan already covers any two distinct members of the
-            /// n-ary AllDisjointProperties list sharing the same (source,target) pair, which is the prp-adp case). The T-Box overlap check against
-            /// SubObjectPropertyOf/EquivalentObjectProperties is an OWLSharp extension</para>
+            /// n-ary AllDisjointProperties list sharing the same (source,target) pair, which is the prp-adp case; Error, a genuine ontology inconsistency).
+            /// The T-Box overlap check against SubObjectPropertyOf/EquivalentObjectProperties is an OWLSharp extension (Warning: it only forces the involved
+            /// properties to be equivalent to owl:bottomObjectProperty, a modeling smell rather than an ontology-level inconsistency by itself)</para>
             /// </summary>
             DisjointObjectPropertiesAnalysis = 8,
             /// <summary>
@@ -375,24 +363,28 @@ namespace OWLSharp
             /// </summary>
             DisjointUnionAnalysis = 9,
             /// <summary>
-            /// EquivalentClasses(C1,C2) ^ SubClassOf(C1,C2) -> ERROR<br/>
-            /// EquivalentClasses(C1,C2) ^ SubClassOf(C2,C1) -> ERROR<br/>
-            /// EquivalentClasses(C1,C2) ^ DisjointClasses(C1,C2) -> ERROR
-            /// <para>OWLSharp extension: T-Box overlap check (EquivalentClasses vs SubClassOf/DisjointClasses); the RL/RDF ruleset assumes consistent T-Box input rather than flagging redundant/contradictory axiom combinations</para>
+            /// EquivalentClasses(C1,C2) ^ DisjointClasses(C1,C2) -> WARNING
+            /// <para>OWLSharp extension: T-Box overlap check (EquivalentClasses vs DisjointClasses); the RL/RDF ruleset assumes consistent T-Box input
+            /// rather than flagging redundant/contradictory axiom combinations. Warning, not Error: the clash only forces the involved classes to be
+            /// equivalent to owl:Nothing, a modeling smell rather than an ontology-level inconsistency by itself. NOTE: EquivalentClasses combined with
+            /// SubClassOf in either direction on the same pair is NOT flagged at all (removed, not merely downgraded): it is redundant, not contradictory
+            /// -- explicitly restating one direction of an already-declared equivalence via SubClassOf is a common, deliberate modeling idiom</para>
             /// </summary>
             EquivalentClassesAnalysis = 10,
             /// <summary>
-            /// EquivalentDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP1,DP2) -> ERROR<br/>
-            /// EquivalentDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP2,DP1) -> ERROR<br/>
-            /// EquivalentDataProperties(DP1,DP2) ^ DisjointDataProperties(DP1,DP2) -> ERROR
-            /// <para>OWLSharp extension: T-Box overlap check (EquivalentDataProperties vs SubDataPropertyOf/DisjointDataProperties), no direct RL/RDF correspondent</para>
+            /// EquivalentDataProperties(DP1,DP2) ^ DisjointDataProperties(DP1,DP2) -> WARNING
+            /// <para>OWLSharp extension: T-Box overlap check (EquivalentDataProperties vs DisjointDataProperties), no direct RL/RDF correspondent.
+            /// Warning, not Error: the clash only forces the involved properties to be equivalent to owl:bottomDataProperty, a modeling smell rather
+            /// than an ontology-level inconsistency by itself. NOTE: EquivalentDataProperties combined with SubDataPropertyOf in either direction on
+            /// the same pair is NOT flagged at all (removed, not merely downgraded): it is redundant, not contradictory</para>
             /// </summary>
             EquivalentDataPropertiesAnalysis = 11,
             /// <summary>
-            /// EquivalentObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP1,OP2) -> ERROR<br/>
-            /// EquivalentObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP2,OP1) -> ERROR<br/>
-            /// EquivalentObjectProperties(OP1,OP2) ^ DisjointObjectProperties(OP1,OP2) -> ERROR
-            /// <para>OWLSharp extension: T-Box overlap check (EquivalentObjectProperties vs SubObjectPropertyOf/DisjointObjectProperties), no direct RL/RDF correspondent</para>
+            /// EquivalentObjectProperties(OP1,OP2) ^ DisjointObjectProperties(OP1,OP2) -> WARNING
+            /// <para>OWLSharp extension: T-Box overlap check (EquivalentObjectProperties vs DisjointObjectProperties), no direct RL/RDF correspondent.
+            /// Warning, not Error: the clash only forces the involved properties to be equivalent to owl:bottomObjectProperty, a modeling smell rather
+            /// than an ontology-level inconsistency by itself. NOTE: EquivalentObjectProperties combined with SubObjectPropertyOf in either direction on
+            /// the same pair is NOT flagged at all (removed, not merely downgraded): it is redundant, not contradictory</para>
             /// </summary>
             EquivalentObjectPropertiesAnalysis = 12,
             /// <summary>
@@ -462,25 +454,32 @@ namespace OWLSharp
             /// </summary>
             ObjectPropertyRangeAnalysis = 23,
             /// <summary>
-            /// SubClassOf(C1,C2) ^ SubClassOf(C2,C1) -> ERROR<br/>
-            /// SubClassOf(C1,C2) ^ EquivalentClasses(C1,C2) -> ERROR<br/>
-            /// SubClassOf(C1,C2) ^ DisjointClasses(C1,C2) -> ERROR<br/>
+            /// SubClassOf(C1,C2) ^ DisjointClasses(C1,C2) -> WARNING<br/>
             /// SubClassOf(C,[Object|Data][Exact|Max]Cardinality(P,N) -> ERROR (ON ASSERTION'S CARDINALITY VIOLATION)
-            /// <para>W3C OWL2 RL/RDF: cls-maxc1, cls-maxc2, cls-maxqc1, cls-maxqc2, cls-maxqc3, cls-maxqc4 (cardinality-violation checks, qualified and unqualified). The SubClassOf vs EquivalentClasses/DisjointClasses overlap check is an OWLSharp extension</para>
+            /// <para>W3C OWL2 RL/RDF: cls-maxc1, cls-maxc2, cls-maxqc1, cls-maxqc2, cls-maxqc3, cls-maxqc4 (cardinality-violation checks, qualified and
+            /// unqualified; Error, a genuine A-Box violation). The SubClassOf vs DisjointClasses overlap check is an OWLSharp extension (Warning: it only
+            /// forces the subclass to be equivalent to owl:Nothing, a modeling smell rather than an ontology-level inconsistency by itself). NOTE:
+            /// SubClassOf combined with the mutual SubClassOf in the other direction, or with EquivalentClasses on the same pair, is NOT flagged at all
+            /// (removed, not merely downgraded): both are just redundant restatements of class equivalence, and mutual SubClassOf in particular is a
+            /// common, deliberate idiom for expressing it without an explicit EquivalentClasses axiom</para>
             /// </summary>
             SubClassOfAnalysis = 24,
             /// <summary>
-            /// SubDataPropertyOf(DP1,DP2) ^ SubDataPropertyOf(DP2,DP1) -> ERROR<br/>
-            /// SubDataPropertyOf(DP1,DP2) ^ EquivalentDataProperties(DP1,DP2) -> ERROR<br/>
-            /// SubDataPropertyOf(DP1,DP2) ^ DisjointDataProperties(DP1,DP2) -> ERROR
-            /// <para>OWLSharp extension: T-Box overlap check (SubDataPropertyOf vs EquivalentDataProperties/DisjointDataProperties), no direct RL/RDF correspondent</para>
+            /// SubDataPropertyOf(DP1,DP2) ^ DisjointDataProperties(DP1,DP2) -> WARNING
+            /// <para>OWLSharp extension: T-Box overlap check (SubDataPropertyOf vs DisjointDataProperties), no direct RL/RDF correspondent. Warning, not
+            /// Error: the clash only forces the sub-property to be equivalent to owl:bottomDataProperty, a modeling smell rather than an ontology-level
+            /// inconsistency by itself. NOTE: SubDataPropertyOf combined with the mutual SubDataPropertyOf in the other direction, or with
+            /// EquivalentDataProperties on the same pair, is NOT flagged at all (removed, not merely downgraded): both are just redundant restatements
+            /// of property equivalence</para>
             /// </summary>
             SubDataPropertyOfAnalysis = 25,
             /// <summary>
-            /// SubObjectPropertyOf(OP1,OP2) ^ SubObjectPropertyOf(OP2,OP1) -> ERROR<br/>
-            /// SubObjectPropertyOf(OP1,OP2) ^ EquivalentObjectProperties(OP1,OP2) -> ERROR<br/>
-            /// SubObjectPropertyOf(OP1,OP2) ^ DisjointObjectProperties(OP1,OP2) -> ERROR
-            /// <para>OWLSharp extension: T-Box overlap check (SubObjectPropertyOf vs EquivalentObjectProperties/DisjointObjectProperties), no direct RL/RDF correspondent</para>
+            /// SubObjectPropertyOf(OP1,OP2) ^ DisjointObjectProperties(OP1,OP2) -> WARNING
+            /// <para>OWLSharp extension: T-Box overlap check (SubObjectPropertyOf vs DisjointObjectProperties), no direct RL/RDF correspondent. Warning,
+            /// not Error: the clash only forces the sub-property to be equivalent to owl:bottomObjectProperty, a modeling smell rather than an
+            /// ontology-level inconsistency by itself. NOTE: SubObjectPropertyOf combined with the mutual SubObjectPropertyOf in the other direction, or
+            /// with EquivalentObjectProperties on the same pair, is NOT flagged at all (removed, not merely downgraded): both are just redundant
+            /// restatements of property equivalence</para>
             /// </summary>
             SubObjectPropertyOfAnalysis = 26,
             /// <summary>
@@ -526,12 +525,7 @@ namespace OWLSharp
             /// ObjectPropertyAssertion(owl:bottomObjectProperty,I1,I2) -> ERROR<br/>
             /// DataPropertyAssertion(owl:bottomDataProperty,I,LIT) -> ERROR
             /// <para>OWLSharp extension: no direct W3C RL/RDF correspondent for owl:top/bottomObjectProperty and owl:top/bottomDataProperty root/bottom-position checks
-            /// (analogous in spirit to cls-thing/cls-nothing1, but the property-level axiomatic triples are not part of the given RL/RDF table). The T1/T2/B1/B2
-            /// mispositioning checks (top/bottom property appearing on the wrong side of a SubObjectPropertyOf/SubDataPropertyOf axiom) are a stylistic pitfall,
-            /// same as ThingNothingAnalysis' T1/N1: Warning is correct there. The B3/B4 checks are different in kind: an actual ObjectPropertyAssertion/
-            /// DataPropertyAssertion using owl:bottomObjectProperty/owl:bottomDataProperty as predicate is a genuine logical contradiction, because the bottom
-            /// property is defined to always be empty (mirrors ThingNothingAnalysis' N2, which is also Error). RESOLUTION (beta3 gap-filling): the code was
-            /// already correct for B3/B4 (Error) but wrong for T1/T2/B1/B2 (was Error, should be Warning); the code has been fixed to match this documentation</para>
+            /// (analogous in spirit to cls-thing/cls-nothing1, but the property-level axiomatic triples are not part of the given RL/RDF table)</para>
             /// </summary>
             TopBottomAnalysis = 30
         }
