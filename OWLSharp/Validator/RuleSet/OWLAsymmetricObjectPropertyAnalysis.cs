@@ -18,6 +18,9 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: prp-asyp (assertion-pair violation check). The AsymmetricObjectProperty+SymmetricObjectProperty overlap check is an OWLSharp extension</para>
+    /// </summary>
     internal static class OWLAsymmetricObjectPropertyAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis);
@@ -52,6 +55,8 @@ namespace OWLSharp.Validator
             //AsymmetricObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV2,IDV1) -> ERROR
             foreach (OWLAsymmetricObjectProperty asymObjProp in asymObjProps)
             {
+                //AsymmetricObjectProperty(ObjectInverseOf(OP)) is legal OWL2: the axiom is really about OP itself (seen from the
+                //opposite direction), so the assertions to check must be OP's, not the inverse expression's
                 OWLObjectProperty asymObjPropInvOfValue = (asymObjProp.ObjectPropertyExpression as OWLObjectInverseOf)?.ObjectProperty;
 
                 #region Recalibration
@@ -65,9 +70,13 @@ namespace OWLSharp.Validator
                         asymObjPropAsn.ObjectPropertyExpression = asymObjPropInvOfValue;
                     }
                 }
+                //Swapping source/target above can make two previously-distinct assertions collapse into duplicates: dedupe before the pairing check below
                 asymObjPropAsns = OWLAxiomHelper.RemoveDuplicates(asymObjPropAsns);
                 #endregion
 
+                //Asymmetry is violated only by a genuine pair of opposite-direction assertions (IDV1->IDV2 and IDV2->IDV1) under
+                //the SAME property; a reflexive self-assertion (IDV1->IDV1) would match both outer/inner as itself, but that
+                //case is out of scope here (covered separately by ReflexiveObjectPropertyAnalysis/IrreflexiveObjectPropertyAnalysis)
                 if (asymObjPropAsns.Any(outerAsn =>
                         asymObjPropAsns.Any(innerAsn => innerAsn.SourceIndividualExpression.GetIRI().Equals(outerAsn.TargetIndividualExpression.GetIRI())
                                                          && innerAsn.TargetIndividualExpression.GetIRI().Equals(outerAsn.SourceIndividualExpression.GetIRI()))))

@@ -16,6 +16,9 @@ using System.Collections.Generic;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>OWLSharp extension: T-Box overlap check (SubDataPropertyOf vs EquivalentDataProperties/DisjointDataProperties), no direct RL/RDF correspondent</para>
+    /// </summary>
     internal static class OWLSubDataPropertyOfAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.SubDataPropertyOfAnalysis);

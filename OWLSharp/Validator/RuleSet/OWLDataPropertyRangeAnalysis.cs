@@ -16,6 +16,9 @@ using System.Collections.Generic;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: prp-rng / dt-not-type (consistency-check form for datatype-constrained ranges)</para>
+    /// </summary>
     internal static class OWLDataPropertyRangeAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.DataPropertyRangeAnalysis);
@@ -31,6 +34,10 @@ namespace OWLSharp.Validator
                 //Temporary working variables
                 List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
 
+                //DataPropertyAssertion(DP,IDV,LIT) ^ DataPropertyRange(DP,DR) ^ !dt-not-type(LIT,DR) -> ERROR
+                //Unlike LiteralDatatypeAnalysis (which only checks a literal's lexical form against ITS OWN declared datatype),
+                //this checks the literal against the data range declared for the property it is asserted with (e.g. a facet-restricted
+                //range like xsd:integer[>=0]), so a well-formed literal can still violate a stricter property-level range
                 foreach (OWLDataPropertyRange dpRange in dpRanges)
                     foreach (OWLDataPropertyAssertion dpAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, dpRange.DataProperty))
                     {

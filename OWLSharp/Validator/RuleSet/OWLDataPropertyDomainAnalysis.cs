@@ -16,6 +16,9 @@ using System.Collections.Generic;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: prp-dom (consistency-check form: flags when the domain inference would contradict an explicit negative ClassAssertion)</para>
+    /// </summary>
     internal static class OWLDataPropertyDomainAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.DataPropertyDomainAnalysis);
@@ -33,6 +36,9 @@ namespace OWLSharp.Validator
                 List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
 
                 //DataPropertyAssertion(DP,IDV,LIT) ^ DataPropertyDomain(DP,C) ^ ClassAssertion(ObjectComplementOf(C),IDV) -> ERROR
+                //Note: this rule does NOT flag "individual simply lacks an explicit ClassAssertion(C,IDV)" -- domain membership
+                //would just be inferred by the reasoner in that case. It only flags an explicit contradiction, i.e. the individual
+                //is asserted to belong to ObjectComplementOf(C), which can never be reconciled with the inferred domain class
                 foreach (OWLDataPropertyDomain dpDomain in dpDomains)
                     foreach (OWLDataPropertyAssertion dpAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, dpDomain.DataProperty))
                     {

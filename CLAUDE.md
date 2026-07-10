@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-OWLSharp is a .NET library built atop [RDFSharp](https://github.com/mdesalvo/RDFSharp) for OWL2 ontology **modeling** (OWL2/XML), **reasoning** (26 RDFS/OWL2 entailment rules + SWRL rules), and **validation** (29 analysis rules for pitfalls/inconsistencies). Extensions for LinkedData ontologies live in the separate `OWLSharp.Extensions` repo.
+OWLSharp is a .NET library built atop [RDFSharp](https://github.com/mdesalvo/RDFSharp) for OWL2 ontology **modeling** (OWL2/XML), **reasoning** (42 RDFS/OWL2 entailment rules + SWRL rules), and **validation** (30 analysis rules for pitfalls/inconsistencies). Extensions for LinkedData ontologies live in the separate `OWLSharp.Extensions` repo.
 
 ## Commands
 
@@ -16,10 +16,10 @@ dotnet build -c Release
 dotnet test -c Release
 
 # Run a single test class
-dotnet test --filter "FullyQualifiedName~OWLHasSelfEntailmentTest"
+dotnet test --filter "FullyQualifiedName~OWLFactHasSelfEntailmentTest"
 
 # Run a single test method
-dotnet test --filter "FullyQualifiedName~OWLHasSelfEntailmentTest.ShouldEntailHasSelf"
+dotnet test --filter "FullyQualifiedName~OWLFactHasSelfEntailmentTest.ShouldEntailHasSelf"
 
 # With coverage (as done in CI)
 dotnet test -c Release --collect:"XPlat Code Coverage"
@@ -33,13 +33,17 @@ CI (`.github/workflows/linux.yml`, `windows.yml`) builds+tests on push to `main`
 
 Both `OWLReasoner` (`Reasoner/OWLReasoner.cs`) and `OWLValidator` (`Validator/OWLValidator.cs`) work the same way and adding a rule to either touches **three places**:
 
-1. An enum value in `OWLEnums.OWLReasonerRules` / `OWLEnums.OWLValidatorRules` (`OWLEnums.cs`), with the rule's logic documented in XML-doc as a `Antecedent -> Consequent` style comment.
-2. A rule class in `Reasoner/RuleSet/` / `Validator/RuleSet/`: an `internal static class` with a `rulename` constant (`nameof(...)` of the enum value) and a static `ExecuteRule(OWLOntology ontology)` method returning `List<OWLInference>` / `List<OWLIssue>`.
-3. A `case` in the big `Parallel.ForEach(Rules, ...)` switch inside `OWLReasoner.ApplyToOntologyAsync` / `OWLValidator.ApplyToOntologyAsync` that calls it and stores the result in the registry dictionary keyed by rule name.
+1. An enum value in `OWLEnums.OWLReasonerRules` / `OWLEnums.OWLValidatorRules` (`OWLEnums.cs`), with the rule's logic documented in XML-doc as an `Antecedent -> Consequent` style comment, plus a `<para>W3C OWL2 RL/RDF: ...</para>` classification tag (or `OWLSharp extension` if there's no normative correspondent) and, for Reasoner rules, a `<para>Tier: Schema|Fact</para>` tag. **This enum XML-doc is the single source of truth for the classification** — rule classes themselves no longer duplicate it in their own doc-comments, to avoid the two copies drifting apart.
+2. A rule class in `Reasoner/RuleSet/Schema/` or `Reasoner/RuleSet/Fact/` (matching the enum value's `Schema*`/`Fact*` prefix) / `Validator/RuleSet/`: an `internal static class` with a `rulename` constant (`nameof(...)` of the enum value) and a static `ExecuteRule(OWLOntology ontology)` method returning `List<OWLInference>` / `List<OWLIssue>`. Namespace stays flat (`OWLSharp.Reasoner` / `OWLSharp.Validator`) regardless of the subfolder.
+3. A `case` in the `Parallel.ForEach(owl2Rules, ...)` switch inside the shared `OWLReasoner.ExecuteRulesAsync` / a `case` inside `OWLValidator.ApplyToOntologyAsync` that calls it and stores the result in the registry dictionary keyed by rule name.
 
-Rules run in parallel and independently; the reasoner deduplicates resulting inferences against axioms already asserted in the ontology (per-axiom-type `HashSet<string>` of `GetXML()`), and — unless `OWLReasonerOptions.EnableIterativeReasoning` is disabled — feeds new inferences back into the ontology and re-runs itself up to `MaxAllowedIterations` times (default 3) until fixpoint or the cap is hit.
+**Reasoner rules are classified into two tiers**, discerned at runtime directly from the enum value's own name (`rule.ToString().StartsWith("Schema"/"Fact")` — no separate list to keep in sync with the enum):
+- **Schema tier**: T-Box -> T-Box rules, no individuals involved (e.g. `SchemaSubClassOfEntailment`).
+- **Fact tier**: assertion/individual-level propagation rules (e.g. `FactClassAssertionEntailment`), plus SWRL rules (`ontology.Rules`, executed alongside Fact-tier rules via `SWRLRule.ApplyToOntologyAsync`).
 
-SWRL rules (`ontology.Rules`, of type `SWRLRule`) are executed by the reasoner alongside the OWL2 rules above, via `SWRLRule.ApplyToOntologyAsync`, and participate in the same inference registry/deduplication/iteration.
+`OWLReasoner.ApplyToOntologyAsync` runs these as two sequential phases: the **Schema phase** runs once, looping internally to a real (uncapped) fixpoint — no Reasoner rule derives a T-Box axiom from an A-Box fact, so this tier is acyclic with respect to the Fact tier and never needs revisiting once closed; the **Fact phase** then runs against the now-schema-stable ontology under the existing iterative/capped loop (`OWLReasonerOptions.EnableIterativeReasoning`, `MaxAllowedIterations`, default 3, unless `OWLReasonerOptions.ForceRLFixpointConvergence` is opted into and the ontology is verified OWL2-RL-compliant, in which case the cap is relaxed to run to genuine convergence). Both phases deduplicate produced inferences against axioms already asserted in the ontology (per-axiom-type `HashSet<string>` of `GetXML()`).
+
+`ApplyToOntologyAsync` returns `Task<OWLReasonerReport>` (`Inferences`, `IterationsPerformed`/`ReachedFixpoint` scoped to the Fact phase, `SchemaClosureRounds`) for the Reasoner, and `Task<OWLValidatorReport>` (`Issues`, `IsConsistent` — true iff no `Error`-severity issue) for the Validator — mirroring the `OWLProfileReport` pattern already used by the Profiler (`Profiler/OWLProfiler.cs`).
 
 ### SWRL engine and the OWLShims layer
 
@@ -55,4 +59,4 @@ Those RDFSharp types are `internal sealed` and only friend-visible to the `OWLSh
 
 ### Test project layout
 
-`OWLSharp.Test` mirrors `OWLSharp`'s folder structure 1:1 (e.g. `Reasoner/RuleSet/OWLHasSelfEntailmentTest.cs` tests `Reasoner/RuleSet/OWLHasSelfEntailment.cs`). It targets `net10.0` only (vs. the library's `netstandard2.0`/`net8.0`) and depends on the `InternalsVisibleTo` grant from `OWLSharp/Properties/AssemblyInfo.cs` to reach internal rule/helper classes directly.
+`OWLSharp.Test` mirrors `OWLSharp`'s folder structure 1:1, including the Reasoner's `Schema`/`Fact` subfolders (e.g. `Reasoner/RuleSet/Fact/OWLFactHasSelfEntailmentTest.cs` tests `Reasoner/RuleSet/Fact/OWLFactHasSelfEntailment.cs`). It targets `net10.0` only (vs. the library's `netstandard2.0`/`net8.0`) and depends on the `InternalsVisibleTo` grant from `OWLSharp/Properties/AssemblyInfo.cs` to reach internal rule/helper classes directly.

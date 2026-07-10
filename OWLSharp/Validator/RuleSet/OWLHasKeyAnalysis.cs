@@ -19,6 +19,9 @@ using System.Text;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: prp-key (consistency-check form: flags when the sameAs inference would contradict an explicit DifferentIndividuals)</para>
+    /// </summary>
     internal static class OWLHasKeyAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.HasKeyAnalysis);
@@ -63,6 +66,10 @@ namespace OWLSharp.Validator
                 RDFResource idvExprIRI = idvExpr.GetIRI();
 
                 #region Object Keys
+                //Object and data keys are computed and matched independently: a HasKey axiom combining both kinds of
+                //properties will flag a collision if EITHER the object-key signature OR the data-key signature collides,
+                //not necessarily both together (this mirrors the OWL2 HasKey semantics, which are just a conjunction of
+                //per-property equalities, not a single combined tuple)
                 if (hasKeyAxiom.ObjectPropertyExpressions.Any(opex => opex is OWLObjectProperty || opex is OWLObjectInverseOf))
                 {
                     //Calculate the object key values of the current individual
@@ -127,6 +134,8 @@ namespace OWLSharp.Validator
             foreach (List<OWLIndividualExpression> collisionObjKeyValueRegister in objectKeyValueRegister.Where(kvr => kvr.Value.Count > 1)
                                                                                                          .Select(kv => kv.Value))
             {
+                //Same key value shared by 2+ individuals is fine on its own (they could just be the same individual under
+                //different names); it only becomes a violation if at least one pair among them is explicitly asserted DifferentFrom
                 if (collisionObjKeyValueRegister.Any(outerIDV =>
                       collisionObjKeyValueRegister.Any(innerIDV => !outerIDV.GetIRI().Equals(innerIDV.GetIRI())
                                                                      && ontology.CheckAreDifferentIndividuals(outerIDV, innerIDV))))

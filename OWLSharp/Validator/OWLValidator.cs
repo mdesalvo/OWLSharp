@@ -55,8 +55,8 @@ namespace OWLSharp.Validator
         /// <summary>
         /// Applies the validator on the given ontology
         /// </summary>
-        /// <returns>The list of detected issues</returns>
-        public Task<List<OWLIssue>> ApplyToOntologyAsync(OWLOntology ontology)
+        /// <returns>The report collecting the detected issues</returns>
+        public Task<OWLValidatorReport> ApplyToOntologyAsync(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
@@ -131,6 +131,9 @@ namespace OWLSharp.Validator
                         case OWLEnums.OWLValidatorRules.IrreflexiveObjectPropertyAnalysis:
                             issueRegistry[OWLIrreflexiveObjectPropertyAnalysis.rulename] = OWLIrreflexiveObjectPropertyAnalysis.ExecuteRule(ontology);
                             break;
+                        case OWLEnums.OWLValidatorRules.LiteralDatatypeAnalysis:
+                            issueRegistry[OWLLiteralDatatypeAnalysis.rulename] = OWLLiteralDatatypeAnalysis.ExecuteRule(ontology);
+                            break;
                         case OWLEnums.OWLValidatorRules.NegativeDataAssertionsAnalysis:
                             issueRegistry[OWLNegativeDataAssertionsAnalysis.rulename] = OWLNegativeDataAssertionsAnalysis.ExecuteRule(ontology);
                             break;
@@ -182,7 +185,7 @@ namespace OWLSharp.Validator
                 OWLEvents.RaiseInfo($"Completed validator on ontology {ontology.IRI} => {issues.Count} issues");
             }
 
-            return Task.FromResult(issues);
+            return Task.FromResult(new OWLValidatorReport { Issues = issues });
         }
         #endregion
     }

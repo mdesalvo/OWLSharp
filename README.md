@@ -10,7 +10,7 @@ OWLSharp is a .NET library built atop <a href="https://github.com/mdesalvo/RDFSh
 
 <b><a href="https://github.com/mdesalvo/OWLSharp/releases/download/v5.0.0/OWLSharp.Reasoner-5.0.pdf">Reasoning</a></b>
 <ul>
-    <li>Apply forward-chain inference to derive knowledge that is entailed but not stated (<b>26 rules</b>)</li>
+    <li>Apply forward-chain inference to derive knowledge that is entailed but not stated (<b>42 rules</b>)</li>
     <li>Create, exchange and execute <b>SWRL rules</b> encoding domain-specific logic deductions</li>
 </ul>
 
@@ -21,7 +21,7 @@ OWLSharp is a .NET library built atop <a href="https://github.com/mdesalvo/RDFSh
 
 <b><a href="https://github.com/mdesalvo/OWLSharp/releases/download/v5.0.0/OWLSharp.Validator-5.0.pdf">Validation</a></b>
 <ul>
-    <li>Detect pitfalls, structural inconsistencies and constraint violations (<b>29 rules</b>)</li>
+    <li>Detect pitfalls, structural inconsistencies and constraint violations (<b>30 rules</b>)</li>
 </ul>
 <hr />
 

@@ -17,6 +17,9 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: prp-ifp (consistency-check form: flags when the sameAs inference would contradict an explicit DifferentIndividuals). The InverseFunctionalObjectProperty+TransitiveObjectProperty restriction check is an OWLSharp extension (OWL2 DL simple-role restriction, unrelated to RL/RDF)</para>
+    /// </summary>
     internal static class OWLInverseFunctionalObjectPropertyAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.InverseFunctionalObjectPropertyAnalysis);
@@ -50,6 +53,9 @@ namespace OWLSharp.Validator
                     #endregion
 
                     //InverseFunctionalObjectProperty(IFOP) ^ ObjectPropertyAssertion(IFOP,IDV1,IDV2) ^ ObjectPropertyAssertion(IFOP,IDV3,IDV2) ^ DifferentIndividuals(IDV1,IDV3) -> ERROR
+                    //Group assertions by their common target: for an inverse-functional property, all sources pointing at the
+                    //same target should denote the same individual, so the violation is any pair of sources in a group that is
+                    //explicitly asserted DifferentFrom (sharing a target alone is not an error, just a sameAs candidate)
                     ifopAsns.GroupBy(opex => opex.TargetIndividualExpression.GetIRI().ToString())
                             .Select(grp => new
                             {

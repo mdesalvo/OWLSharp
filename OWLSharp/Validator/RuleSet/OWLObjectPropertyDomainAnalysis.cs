@@ -16,6 +16,9 @@ using System.Collections.Generic;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: prp-dom (consistency-check form: flags when the domain inference would contradict an explicit negative ClassAssertion)</para>
+    /// </summary>
     internal static class OWLObjectPropertyDomainAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.ObjectPropertyDomainAnalysis);
@@ -35,6 +38,8 @@ namespace OWLSharp.Validator
                 //ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyDomain(OP,C) ^ ClassAssertion(ObjectComplementOf(C),IDV1) -> ERROR
                 foreach (OWLObjectPropertyDomain opDomain in opDomains)
                 {
+                    //opAsns is already calibrated (inverse assertions swapped), so when the domain is stated on an inverse
+                    //property expression, the individual playing the "domain" role is the assertion's target, not its source
                     bool isObjectInverseOf = opDomain.ObjectPropertyExpression is OWLObjectInverseOf;
                     foreach (OWLObjectPropertyAssertion opDomainAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, opDomain.ObjectPropertyExpression))
                         if (ontology.CheckIsNegativeIndividualOf(opDomain.ClassExpression,

@@ -18,6 +18,9 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: prp-npa2</para>
+    /// </summary>
     internal static class OWLNegativeDataAssertionsAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.NegativeDataAssertionsAnalysis);

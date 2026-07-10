@@ -66,7 +66,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [ OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis, OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis ] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -105,7 +105,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [ OWLEnums.OWLValidatorRules.IrreflexiveObjectPropertyAnalysis ] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -131,7 +131,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [ OWLEnums.OWLValidatorRules.TermsDeprecationAnalysis ] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -139,6 +139,32 @@ public class OWLValidatorTest
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLTermsDeprecationAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected presence of deprecated class with IRI: 'http://xmlns.com/foaf/0.1/Person'")));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLTermsDeprecationAnalysis.rulesugg)));
+    }
+
+    [TestMethod]
+    public async Task ShouldBeConsistentWithOnlyWarningIssuesAsync()
+    {
+        //A report carrying exclusively Warning-severity issues (no Error) must still be considered consistent
+        OWLOntology ontology = new OWLOntology
+        {
+            AnnotationAxioms = [
+                new OWLAnnotationAssertion(
+                    new OWLAnnotationProperty(RDFVocabulary.OWL.DEPRECATED),
+                    new RDFResource("http://xmlns.com/foaf/0.1/Person"),
+                    new OWLLiteral(RDFTypedLiteral.True))
+            ],
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Organization")))
+            ]
+        };
+        OWLValidator validator = new OWLValidator { Rules = [ OWLEnums.OWLValidatorRules.TermsDeprecationAnalysis ] };
+        OWLValidatorReport report = await validator.ApplyToOntologyAsync(ontology);
+
+        Assert.IsNotNull(report);
+        Assert.IsTrue(report.Issues.Count > 0);
+        Assert.IsTrue(report.Issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
+        Assert.IsTrue(report.IsConsistent);
     }
 
     [TestMethod]
@@ -152,7 +178,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [ OWLEnums.OWLValidatorRules.TermsDisjointnessAnalysis ] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -178,7 +204,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.ThingNothingAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -204,11 +230,11 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.TopBottomAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
-        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLTopBottomAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected object property axioms causing reserved owl:topObjectProperty property to not be the root object property of the ontology")));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLTopBottomAnalysis.rulesuggT1)));
@@ -237,7 +263,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.DifferentIndividualsAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -272,7 +298,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.NegativeDataAssertionsAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -308,7 +334,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.NegativeObjectAssertionsAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -346,7 +372,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.DisjointUnionAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -373,7 +399,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.DisjointClassesAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -402,7 +428,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.ObjectPropertyChainAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -429,7 +455,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.EquivalentClassesAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -457,7 +483,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.SubClassOfAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(2, issues);
@@ -513,7 +539,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.DisjointDataPropertiesAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -564,7 +590,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.DisjointObjectPropertiesAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -592,7 +618,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.EquivalentDataPropertiesAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -620,7 +646,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.EquivalentObjectPropertiesAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -648,7 +674,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.SubDataPropertyOfAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(2, issues);
@@ -676,7 +702,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.SubObjectPropertyOfAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(2, issues);
@@ -744,7 +770,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.HasKeyAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -783,7 +809,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.ClassAssertionAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -831,7 +857,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.FunctionalDataPropertyAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -883,7 +909,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.FunctionalObjectPropertyAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -935,7 +961,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.InverseFunctionalObjectPropertyAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -993,7 +1019,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.DataPropertyDomainAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -1043,7 +1069,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.DataPropertyRangeAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -1102,7 +1128,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.ObjectPropertyDomainAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);
@@ -1161,7 +1187,7 @@ public class OWLValidatorTest
             ]
         };
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.ObjectPropertyRangeAnalysis] };
-        List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
 
         Assert.IsNotNull(issues);
         Assert.HasCount(1, issues);

@@ -18,6 +18,9 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: cax-dw (A-Box shared-ClassAssertion check). The T-Box overlap check against SubClassOf/EquivalentClasses is an OWLSharp extension</para>
+    /// </summary>
     internal static class OWLDisjointClassesAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.DisjointClassesAnalysis);
@@ -33,7 +36,11 @@ namespace OWLSharp.Validator
             {
                 //Temporary working variables
                 List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
+                //idvsCache memoizes GetIndividualsOf(classExpr) across DisjointClasses axioms sharing the same class expression
+                //(expensive per-class scan of clsAsns), keyed by RDFResource.PatternMemberID for O(1) lookup instead of IRI string compare
                 Dictionary<long, List<OWLIndividualExpression>> idvsCache = new Dictionary<long, List<OWLIndividualExpression>>();
+                //idvsCounter tallies, within the current DisjointClasses axiom only, how many of its member classes each individual
+                //belongs to: a count > 1 means the same individual was asserted into two classes stated disjoint -> A-Box contradiction
                 Dictionary<long, long> idvsCounter = new Dictionary<long, long>();
 
                 foreach (OWLDisjointClasses disjClasses in ontology.GetClassAxiomsOfType<OWLDisjointClasses>())
@@ -43,6 +50,8 @@ namespace OWLSharp.Validator
                     //DisjointClasses(CLS1,CLS2) ^ SubClassOf(CLS1,CLS2) -> ERROR
                     //DisjointClasses(CLS1,CLS2) ^ SubClassOf(CLS2,CLS1) -> ERROR
                     //DisjointClasses(CLS1,CLS2) ^ EquivalentClasses(CLS1,CLS2) -> ERROR
+                    //violatesTBox is checked in the outer loop condition purely as a short-circuit: once one violating pair is found
+                    //within this axiom, there is no need to keep scanning the remaining CLS combinations (one issue per axiom is enough)
                     #region T-BOX Analysis
                     bool violatesTBox = false;
                     for (int i = 0; i < classExpressions.Count && !violatesTBox; i++)

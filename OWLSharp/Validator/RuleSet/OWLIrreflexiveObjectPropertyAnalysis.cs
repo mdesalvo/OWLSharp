@@ -18,6 +18,9 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: prp-irp (reflexive-assertion violation check). The Irreflexive+Reflexive overlap check is an OWLSharp extension</para>
+    /// </summary>
     internal static class OWLIrreflexiveObjectPropertyAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.IrreflexiveObjectPropertyAnalysis);
@@ -50,6 +53,8 @@ namespace OWLSharp.Validator
             }
 
             //IrreflexiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV1) -> ERROR
+            //opAsns was already calibrated (inverse assertions swapped source/target) above, so a self-loop here is genuinely
+            //asserted regardless of whether the irreflexive property was declared directly or via its inverse
             foreach (OWLIrreflexiveObjectProperty irrefObjProp in irrefObjProps)
             {
                 List <OWLObjectPropertyAssertion> irrefObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, irrefObjProp.ObjectPropertyExpression);

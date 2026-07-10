@@ -18,6 +18,13 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: eq-diff1, eq-diff2, eq-diff3 (SameIndividual+DifferentIndividuals overlap check). The first check below is an Any/Any scan across the
+    /// WHOLE n-ary member list of the axiom (not just adjacent pairs), combined with CheckIsSameIndividual's transitive closure over owl:sameAs -- this already
+    /// covers eq-diff2/eq-diff3 (a clash between any two members ?zi/?zj, i != j, of an n-ary AllDifferent), so no separate rule was needed for those.
+    /// OWLSharp does not distinguish an AllDifferent's owl:members vs owl:distinctMembers RDF-level encoding: both collapse onto OWLDifferentIndividuals.IndividualExpressions
+    /// in the structural model. The DifferentIndividuals(I,I) self-difference check is an OWLSharp extension</para>
+    /// </summary>
     internal static class OWLDifferentIndividualsAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.DifferentIndividualsAnalysis);
@@ -46,6 +53,9 @@ namespace OWLSharp.Validator
                     }
 
                     //DifferentIndividuals(IDV1,IDV1) -> ERROR
+                    //Nested i/j loop (j starting at i+1) instead of an Any/Any scan like the check above: here we want each
+                    //duplicate pair reported only once, whereas the SameIndividual clash above intentionally allows re-scanning
+                    //both directions since it stops at the first hit anyway (bool short-circuit via Any)
                     for (int i=0; i<diffIdvsAxiom.IndividualExpressions.Count-1; i++)
                     {
                         RDFResource outerIdvIRI = diffIdvsAxiom.IndividualExpressions[i].GetIRI();

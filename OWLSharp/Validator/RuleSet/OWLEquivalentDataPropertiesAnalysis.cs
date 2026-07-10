@@ -17,6 +17,9 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>OWLSharp extension: T-Box overlap check (EquivalentDataProperties vs SubDataPropertyOf/DisjointDataProperties), no direct RL/RDF correspondent</para>
+    /// </summary>
     internal static class OWLEquivalentDataPropertiesAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.EquivalentDataPropertiesAnalysis);
@@ -29,6 +32,8 @@ namespace OWLSharp.Validator
             //EquivalentDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP1,DP2) -> ERROR
             //EquivalentDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP2,DP1) -> ERROR
             //EquivalentDataProperties(DP1,DP2) ^ DisjointDataProperties(DP1,DP2) -> ERROR
+            //Any/Any scan across the whole n-ary member list (not just adjacent pairs): equivalence is stated for the whole
+            //group at once, so a single pairwise SubDataPropertyOf/DisjointDataProperties clash anywhere in the set is enough to be a contradiction
             foreach (OWLEquivalentDataProperties equivDataProps in ontology.GetDataPropertyAxiomsOfType<OWLEquivalentDataProperties>())
                 if (equivDataProps.DataProperties.Any(outerDP =>
                       equivDataProps.DataProperties.Any(innerDP => !outerDP.GetIRI().Equals(innerDP.GetIRI())

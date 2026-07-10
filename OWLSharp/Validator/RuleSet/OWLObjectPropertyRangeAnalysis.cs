@@ -16,6 +16,9 @@ using System.Collections.Generic;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: prp-rng (consistency-check form: flags when the range inference would contradict an explicit negative ClassAssertion)</para>
+    /// </summary>
     internal static class OWLObjectPropertyRangeAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.ObjectPropertyRangeAnalysis);
@@ -35,6 +38,8 @@ namespace OWLSharp.Validator
                 //ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyRange(OP,C) ^ ClassAssertion(ObjectComplementOf(C),IDV2) -> ERROR
                 foreach (OWLObjectPropertyRange opRange in opRanges)
                 {
+                    //opAsns is already calibrated (inverse assertions swapped), so when the range is stated on an inverse
+                    //property expression, the individual playing the "range" role is the assertion's source, not its target
                     bool isObjectInverseOf = opRange.ObjectPropertyExpression is OWLObjectInverseOf;
                     foreach (OWLObjectPropertyAssertion opRangeAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, opRange.ObjectPropertyExpression))
                         if (ontology.CheckIsNegativeIndividualOf(opRange.ClassExpression, isObjectInverseOf ? opRangeAsn.SourceIndividualExpression : opRangeAsn.TargetIndividualExpression, clsAsns))

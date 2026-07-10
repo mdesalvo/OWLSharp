@@ -74,6 +74,47 @@ public class OWLDisjointObjectPropertiesAnalysisTest
     }
 
     [TestMethod]
+    public void ShouldAnalyzeDisjointObjectPropertiesNaryCase()
+    {
+        //Regression test for the prp-adp gap-filling pass (beta3): AllDisjointProperties with 3 members, where the
+        //clash is between the 1st and 3rd member (foaf:knows / foaf:based_near) rather than the first pairwise
+        //combination -- proves the n-ary member list is checked as a whole, not just position-adjacent pairs
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
+                    new OWLNamedIndividual(new RDFResource("ex:Mark")),
+                    new OWLNamedIndividual(new RDFResource("ex:John"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.FOAF.BASED_NEAR),
+                    new OWLNamedIndividual(new RDFResource("ex:Mark")),
+                    new OWLNamedIndividual(new RDFResource("ex:John"))) //conflicts with foaf:knows via the 3-member disjoint list
+            ],
+            ObjectPropertyAxioms = [
+                new OWLDisjointObjectProperties([
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
+                    new OWLObjectProperty(RDFVocabulary.FOAF.AGENT),
+                    new OWLObjectProperty(RDFVocabulary.FOAF.BASED_NEAR) ])
+            ],
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.AGENT)),
+                new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.BASED_NEAR)),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
+            ]
+        };
+        List<OWLIssue> issues = OWLDisjointObjectPropertiesAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.HasCount(1, issues);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointObjectPropertiesAnalysis.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointObjectPropertiesAnalysis.rulesugg)));
+    }
+
+    [TestMethod]
     public void ShouldAnalyzeDisjointObjectPropertiesObjectInverseCase()
     {
         OWLOntology ontology = new OWLOntology

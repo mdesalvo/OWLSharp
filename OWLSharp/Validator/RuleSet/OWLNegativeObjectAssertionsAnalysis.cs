@@ -18,6 +18,9 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: prp-npa1</para>
+    /// </summary>
     internal static class OWLNegativeObjectAssertionsAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.NegativeObjectAssertionsAnalysis);
@@ -27,6 +30,8 @@ namespace OWLSharp.Validator
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
+            //CalibrateNegativeObjectAssertions normalizes any NegativeObjectPropertyAssertion expressed via OWLObjectInverseOf
+            //(swapping source/target and unwrapping to the base property) so the comparison below only has to deal with direct properties
             List<OWLNegativeObjectPropertyAssertion> nopAxms = OWLAssertionAxiomHelper.CalibrateNegativeObjectAssertions(ontology);
             if (nopAxms.Count > 0)
             {

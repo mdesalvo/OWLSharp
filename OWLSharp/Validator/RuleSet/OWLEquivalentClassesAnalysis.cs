@@ -17,6 +17,9 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>OWLSharp extension: T-Box overlap check (EquivalentClasses vs SubClassOf/DisjointClasses); the RL/RDF ruleset assumes consistent T-Box input rather than flagging redundant/contradictory axiom combinations</para>
+    /// </summary>
     internal static class OWLEquivalentClassesAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.EquivalentClassesAnalysis);
@@ -29,6 +32,8 @@ namespace OWLSharp.Validator
             //EquivalentClasses(CLS1,CLS2) ^ SubClassOf(CLS1,CLS2) -> ERROR
             //EquivalentClasses(CLS1,CLS2) ^ SubClassOf(CLS2,CLS1) -> ERROR
             //EquivalentClasses(CLS1,CLS2) ^ DisjointClasses(CLS1,CLS2) -> ERROR
+            //Any/Any scan across the whole n-ary member list (not just adjacent pairs): equivalence is stated for the whole
+            //group at once, so a single pairwise SubClassOf/DisjointClasses clash anywhere in the set is enough to be a contradiction
             foreach (OWLEquivalentClasses equivClasses in ontology.GetClassAxiomsOfType<OWLEquivalentClasses>())
                 if (equivClasses.ClassExpressions.Any(outerClass =>
                       equivClasses.ClassExpressions.Any(innerClass => !outerClass.GetIRI().Equals(innerClass.GetIRI())

@@ -17,6 +17,9 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>OWLSharp extension: stylistic discouragement of punning across entity kinds, with no formal RL/RDF semantics</para>
+    /// </summary>
     internal static class OWLTermsDisjointnessAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.TermsDisjointnessAnalysis);
@@ -34,6 +37,9 @@ namespace OWLSharp.Validator
             List<string> declaredAnnotationProperties = ontology.GetDeclaredEntitiesOfType<OWLAnnotationProperty>().Select(anp => anp.GetIRI().ToString()).Distinct().ToList();
             List<string> declaredNamedIndividuals = ontology.GetDeclaredEntitiesOfType<OWLNamedIndividual>().Select(idv => idv.GetIRI().ToString()).Distinct().ToList();
 
+            //Each entity kind is only compared against the kinds listed after it (classes vs datatypes/dataProp/objProp/
+            //annProp/individuals, then datatypes vs dataProp/objProp/annProp/individuals, and so on): this triangular
+            //pattern still covers every unordered pair exactly once without reporting the same clash twice from both sides
             foreach (string clashingClass in declaredClasses.Where(cls => declaredDatatypes.Contains(cls)
                                                                             || declaredDataProperties.Contains(cls)
                                                                             || declaredObjectProperties.Contains(cls)

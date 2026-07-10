@@ -18,6 +18,9 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: cax-adc</para>
+    /// </summary>
     internal static class OWLDisjointUnionAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.DisjointUnionAnalysis);
@@ -32,6 +35,8 @@ namespace OWLSharp.Validator
             {
                 //Temporary working variables
                 List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
+                //Keyed by individual PatternMemberID -> set of DisjointUnion member-class PatternMemberIDs the individual belongs to;
+                //a set with more than one entry means the same individual was found in >=2 of the (supposedly disjoint) union members
                 Dictionary<long, HashSet<long>> idvsCache = new Dictionary<long, HashSet<long>>();
 
                 //DisjointUnion(CLS,(CLS1,CLS2)) ^ ClassAssertion(CLS1,IDV) ^ ClassAssertion(CLS2,IDV) -> ERROR
@@ -48,6 +53,7 @@ namespace OWLSharp.Validator
                         }
 
                     //Analyze individuals cache to detect if there are individuals shared between the class expression members
+                    //(HashSet, not List, dedupes repeated ClassAssertion axioms for the same member so they don't inflate the count)
                     if (idvsCache.Any(idvc => idvc.Value.Count > 1))
                     {
                         issues.Add(new OWLIssue(

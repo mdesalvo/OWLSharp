@@ -13,6 +13,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
+using OWLSharp.Profiler;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
@@ -35,7 +36,7 @@ public class OWLReasonerTest
         Assert.IsNotNull(reasoner);
         Assert.IsEmpty(reasoner.Rules);
 
-        reasoner.AddRule(OWLEnums.OWLReasonerRules.ClassAssertionEntailment);
+        reasoner.AddRule(OWLEnums.OWLReasonerRules.FactClassAssertionEntailment);
         Assert.HasCount(1, reasoner.Rules);
     }
 
@@ -64,13 +65,13 @@ public class OWLReasonerTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Felix")))
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [ OWLEnums.OWLReasonerRules.ClassAssertionEntailment, OWLEnums.OWLReasonerRules.ClassAssertionEntailment ] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [ OWLEnums.OWLReasonerRules.FactClassAssertionEntailment, OWLEnums.OWLReasonerRules.FactClassAssertionEntailment ] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.IsNotNull(inferences);
         Assert.HasCount(2, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLClassAssertionEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFactClassAssertionEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLClassAssertion inf
                                           && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Animal")
                                           && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Felix")));
@@ -102,12 +103,12 @@ public class OWLReasonerTest
                 )
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.DataPropertyDomainEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactDataPropertyDomainEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLDataPropertyDomainEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFactDataPropertyDomainEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLClassAssertion inf
                                           && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Human")
                                           && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Kelly")));
@@ -132,12 +133,12 @@ public class OWLReasonerTest
                 ])
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.DifferentIndividualsEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactDifferentIndividualsEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(6, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLDifferentIndividualsEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFactDifferentIndividualsEntailment.rulename)));
     }
 
     [TestMethod]
@@ -167,12 +168,12 @@ public class OWLReasonerTest
                 ])
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.DisjointClassesEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology, new OWLReasonerOptions() { EnableIterativeReasoning=false });
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SchemaDisjointClassesEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology, new OWLReasonerOptions() { EnableIterativeReasoning=false })).Inferences;
 
         Assert.HasCount(5, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLDisjointClassesEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSchemaDisjointClassesEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointClasses inf
                                           && string.Equals(inf.ClassExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Vegetal")
                                           && string.Equals(inf.ClassExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Animal")));
@@ -217,12 +218,12 @@ public class OWLReasonerTest
                 ])
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.DisjointClassesEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SchemaDisjointClassesEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(7, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLDisjointClassesEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSchemaDisjointClassesEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointClasses inf
                                           && string.Equals(inf.ClassExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Vegetal")
                                           && string.Equals(inf.ClassExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Animal")));
@@ -261,12 +262,12 @@ public class OWLReasonerTest
                     new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasName"))])
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.DisjointDataPropertiesEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SchemaDisjointDataPropertiesEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLDisjointDataPropertiesEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSchemaDisjointDataPropertiesEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointDataProperties inf
                                           && string.Equals(inf.DataProperties[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasName")
                                           && string.Equals(inf.DataProperties[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasAge")));
@@ -291,12 +292,12 @@ public class OWLReasonerTest
                     new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/avoids"))])
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.DisjointObjectPropertiesEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SchemaDisjointObjectPropertiesEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLDisjointObjectPropertiesEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSchemaDisjointObjectPropertiesEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointObjectProperties inf
                                           && string.Equals(inf.ObjectPropertyExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/avoids")
                                           && string.Equals(inf.ObjectPropertyExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/knows")));
@@ -321,12 +322,12 @@ public class OWLReasonerTest
                     new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/EarthMan"))])
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.EquivalentClassesEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SchemaEquivalentClassesEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(4, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLEquivalentClassesEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSchemaEquivalentClassesEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentClasses inf
                                           && string.Equals(inf.ClassExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mankind")
                                           && string.Equals(inf.ClassExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/EarthMan")));
@@ -367,12 +368,12 @@ public class OWLReasonerTest
                     new OWLLiteral(new RDFTypedLiteral("26", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.EquivalentDataPropertiesEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SchemaEquivalentDataPropertiesEntailment, OWLEnums.OWLReasonerRules.FactEquivalentDataPropertiesEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(6, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLEquivalentDataPropertiesEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSchemaEquivalentDataPropertiesEntailment.rulename) || string.Equals(inf.RuleName, OWLFactEquivalentDataPropertiesEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentDataProperties inf
                                           && string.Equals(inf.DataProperties[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/isOld")
                                           && string.Equals(inf.DataProperties[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/wasBornNYearsAgo")));
@@ -422,12 +423,12 @@ public class OWLReasonerTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Olly")))
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.EquivalentObjectPropertiesEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SchemaEquivalentObjectPropertiesEntailment, OWLEnums.OWLReasonerRules.FactEquivalentObjectPropertiesEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(6, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLEquivalentObjectPropertiesEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSchemaEquivalentObjectPropertiesEntailment.rulename) || string.Equals(inf.RuleName, OWLFactEquivalentObjectPropertiesEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentObjectProperties inf
                                           && string.Equals(inf.ObjectPropertyExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/helps")
                                           && string.Equals(inf.ObjectPropertyExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/supports")));
@@ -479,12 +480,12 @@ public class OWLReasonerTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")))
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FunctionalObjectPropertyEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactFunctionalObjectPropertyEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFunctionalObjectPropertyEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFactFunctionalObjectPropertyEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf
                                           && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/John")
                                           && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Stiv")));
@@ -538,12 +539,12 @@ public class OWLReasonerTest
                 )
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.HasKeyEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactHasKeyEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLHasKeyEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFactHasKeyEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf
                                           && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glen")
                                           && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glener")));
@@ -570,16 +571,24 @@ public class OWLReasonerTest
                     new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny")))
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.HasSelfEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactHasSelfEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
-        Assert.HasCount(1, inferences);
+        //FactHasSelfEntailment now merges both the forward (SubClassOf-driven) and reverse (reflexive-assertion-driven)
+        //ObjectHasSelf branches into a single rule: the forward branch produces the ObjectPropertyAssertion in the first
+        //iteration, which iterative reasoning then feeds back into the ontology, letting the reverse branch classify it
+        //as ObjectHasSelf in the second iteration
+        Assert.HasCount(2, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLHasSelfEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFactHasSelfEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion inf
                                           && string.Equals(inf.ObjectPropertyExpression.GetIRI().ToString(), "http://frede.gat/stuff#propHas")
                                           && string.Equals(inf.SourceIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemAny")
                                           && string.Equals(inf.TargetIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemAny")));
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLClassAssertion clsAsn
+                                          && clsAsn.ClassExpression is OWLObjectHasSelf ohs
+                                          && string.Equals(ohs.ObjectPropertyExpression.GetIRI().ToString(), "http://frede.gat/stuff#propHas")
+                                          && string.Equals(clsAsn.IndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemAny")));
     }
 
     [TestMethod]
@@ -605,11 +614,11 @@ public class OWLReasonerTest
                     new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.HasValueEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactHasValueEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLHasValueEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFactHasValueEntailment.rulename)));
         //Forward (cls-hv1): ClassAssertion(C, I) ^ SubClassOf(C, DataHasValue(DP,44)) -> DataPropertyAssertion(DP, I, 44)
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDataPropertyAssertion inf
                                           && string.Equals(inf.DataProperty.GetIRI().ToString(), "http://frede.gat/stuff#propData")
@@ -652,12 +661,12 @@ public class OWLReasonerTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")))
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.InverseFunctionalObjectPropertyEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactInverseFunctionalObjectPropertyEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLInverseFunctionalObjectPropertyEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFactInverseFunctionalObjectPropertyEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf
                                           && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mark")
                                           && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Stiv")));
@@ -690,12 +699,12 @@ public class OWLReasonerTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")))
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.InverseObjectPropertiesEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactInverseObjectPropertiesEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(2, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLInverseObjectPropertiesEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFactInverseObjectPropertiesEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion inf
                                           && string.Equals(inf.ObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/isKnownBy")
                                           && string.Equals(inf.SourceIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/John")
@@ -745,12 +754,12 @@ public class OWLReasonerTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Fritz")))
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.ObjectPropertyChainEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactObjectPropertyChainEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(2, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLObjectPropertyChainEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFactObjectPropertyChainEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion inf
                                           && string.Equals(inf.ObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasUncle")
                                           && string.Equals(inf.SourceIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Aebe")
@@ -785,12 +794,12 @@ public class OWLReasonerTest
                 )
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.ObjectPropertyDomainEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactObjectPropertyDomainEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLObjectPropertyDomainEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFactObjectPropertyDomainEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLClassAssertion inf
                                           && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Human")
                                           && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Kelly")));
@@ -820,12 +829,12 @@ public class OWLReasonerTest
                 )
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.ObjectPropertyRangeEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactObjectPropertyRangeEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLObjectPropertyRangeEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFactObjectPropertyRangeEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLClassAssertion inf
                                           && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Human")
                                           && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Janine")));
@@ -860,12 +869,12 @@ public class OWLReasonerTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.ObjectRestrictionEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactObjectSomeValuesFromEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLObjectRestrictionEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFactObjectSomeValuesFromEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLClassAssertion inf
                                            && inf.ClassExpression is OWLObjectSomeValuesFrom svf
                                            && string.Equals(svf.ObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasChild")
@@ -898,12 +907,12 @@ public class OWLReasonerTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")))
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.ReflexiveObjectPropertyEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactReflexiveObjectPropertyEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(2, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLReflexiveObjectPropertyEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFactReflexiveObjectPropertyEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion inf
                                           && string.Equals(inf.ObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/knows")
                                           && string.Equals(inf.SourceIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mark")
@@ -936,12 +945,12 @@ public class OWLReasonerTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SameIndividualEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactSameIndividualEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(2, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSameIndividualEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFactSameIndividualEntailment.rulename)));
         Assert.IsTrue(inferences.Any(inf => inf.Axiom is OWLSameIndividual));
         Assert.IsTrue(inferences.Any(inf => inf.Axiom is OWLObjectPropertyAssertion opAsn
                                             && string.Equals(opAsn.ObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/knows")
@@ -973,12 +982,12 @@ public class OWLReasonerTest
                 ])
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SubClassOfEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SchemaSubClassOfEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(3, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSubClassOfEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSchemaSubClassOfEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubClassOf inf
                                           && string.Equals(inf.SubClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mammifero")
                                           && string.Equals(inf.SuperClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Animal")));
@@ -1020,12 +1029,12 @@ public class OWLReasonerTest
                     new OWLLiteral(new RDFTypedLiteral("26", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SubDataPropertyOfEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SchemaSubDataPropertyOfEntailment, OWLEnums.OWLReasonerRules.FactSubDataPropertyOfEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(6, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSubDataPropertyOfEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSchemaSubDataPropertyOfEntailment.rulename) || string.Equals(inf.RuleName, OWLFactSubDataPropertyOfEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubDataPropertyOf inf
                                           && string.Equals(inf.SubDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasTemporalCharacteristic")
                                           && string.Equals(inf.SuperDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasCharacteristic")));
@@ -1080,12 +1089,12 @@ public class OWLReasonerTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Olly")))
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SubObjectPropertyOfEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SchemaSubObjectPropertyOfEntailment, OWLEnums.OWLReasonerRules.FactSubObjectPropertyOfEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(5, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSubObjectPropertyOfEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSchemaSubObjectPropertyOfEntailment.rulename) || string.Equals(inf.RuleName, OWLFactSubObjectPropertyOfEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubObjectPropertyOf inf
                                           && string.Equals(inf.SubObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasBestFriend")
                                           && string.Equals(inf.SuperObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/knows")));
@@ -1130,12 +1139,12 @@ public class OWLReasonerTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")))
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SymmetricObjectPropertyEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactSymmetricObjectPropertyEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(2, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSymmetricObjectPropertyEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFactSymmetricObjectPropertyEntailment.rulename)));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion inf
                                           && string.Equals(inf.ObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/knows")
                                           && string.Equals(inf.SourceIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/John")
@@ -1181,12 +1190,12 @@ public class OWLReasonerTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen")))
             ]
         };
-        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.TransitiveObjectPropertyEntailment] };
-        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactTransitiveObjectPropertyEntailment] };
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.HasCount(6, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLTransitiveObjectPropertyEntailment.rulename)));
+        Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFactTransitiveObjectPropertyEntailment.rulename)));
     }
 
     [TestMethod]
@@ -1226,7 +1235,7 @@ public class OWLReasonerTest
                     })
             ]
         };
-        List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+        List<OWLInference> inferences = (await new OWLReasoner().ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.IsNotNull(inferences);
         Assert.HasCount(1, inferences);
@@ -1289,7 +1298,7 @@ public class OWLReasonerTest
                     })
             ]
         };
-        List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+        List<OWLInference> inferences = (await new OWLReasoner().ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.IsNotNull(inferences);
         Assert.HasCount(1, inferences);
@@ -1340,7 +1349,7 @@ public class OWLReasonerTest
                     })
             ]
         };
-        List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+        List<OWLInference> inferences = (await new OWLReasoner().ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.IsNotNull(inferences);
         Assert.HasCount(1, inferences);
@@ -1386,7 +1395,7 @@ public class OWLReasonerTest
                     })
             ]
         };
-        List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+        List<OWLInference> inferences = (await new OWLReasoner().ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.IsNotNull(inferences);
         Assert.HasCount(1, inferences);
@@ -1437,7 +1446,7 @@ public class OWLReasonerTest
                     })
             ]
         };
-        List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+        List<OWLInference> inferences = (await new OWLReasoner().ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.IsNotNull(inferences);
         Assert.HasCount(3, inferences); // Alice>Bob, Alice>Carol, Bob>Carol
@@ -1501,7 +1510,7 @@ public class OWLReasonerTest
                     })
             ]
         };
-        List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+        List<OWLInference> inferences = (await new OWLReasoner().ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.IsNotNull(inferences);
         Assert.HasCount(1, inferences);
@@ -1552,7 +1561,7 @@ public class OWLReasonerTest
                     })
             ]
         };
-        List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+        List<OWLInference> inferences = (await new OWLReasoner().ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.Count >= 1);
@@ -1609,7 +1618,7 @@ public class OWLReasonerTest
                     })
             ]
         };
-        List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+        List<OWLInference> inferences = (await new OWLReasoner().ApplyToOntologyAsync(ontology)).Inferences;
 
         Assert.IsNotNull(inferences);
         Assert.HasCount(1, inferences);
@@ -1617,5 +1626,320 @@ public class OWLReasonerTest
                       && ca.ClassExpression.GetIRI().Equals(new RDFResource("ex:HighValuePremiumProduct"))
                       && ca.IndividualExpression.GetIRI().Equals(new RDFResource("ex:WatchA")));
     }
+
+    #region Tests (Two-phase Schema/Fact engine)
+
+    //Builds an ontology where a Schema-tier rule (SchemaPropertyDomainEntailment: ObjectPropertyDomain(OP,C1) ^
+    //SubClassOf(C1,C2) -> ObjectPropertyDomain(OP,C2)) must first materialize a NEW ObjectPropertyDomain(OP,C2)
+    //T-Box axiom before a Fact-tier rule (FactObjectPropertyDomainEntailment: ObjectPropertyDomain(OP,C) ^
+    //ObjectPropertyAssertion(OP,I1,I2) -> ClassAssertion(C,I1)) can use it to derive ClassAssertion(C2,I1) -- the
+    //Fact rule looks up ObjectPropertyDomain axioms directly off the ontology's own axiom list (no transitive-closure
+    //helper involved), so it genuinely cannot see C2 as a domain until the Schema rule's inference has been merged in.
+    //
+    //The Schema phase closes ObjectPropertyDomain(OP,C2) by itself first (not counted
+    //against the Fact iteration budget at all), so the Fact phase starts already seeing BOTH domains: its round 1
+    //produces both ClassAssertion(C1,I1) and ClassAssertion(C2,I1) together, and round 2 only needs to confirm the
+    //fixpoint -- 2 Fact iterations, empirically verified below.
+    private static OWLOntology BuildSchemaThenFactDomainPropagationOntology()
+        => new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:hasPart"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Engine"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Machine"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Car1"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Engine1")))
+            ],
+            ClassAxioms = [
+                new OWLSubClassOf(
+                    new OWLClass(new RDFResource("ex:Engine")),
+                    new OWLClass(new RDFResource("ex:Machine")))
+            ],
+            ObjectPropertyAxioms = [
+                new OWLObjectPropertyDomain(
+                    new OWLObjectProperty(new RDFResource("ex:hasPart")),
+                    new OWLClass(new RDFResource("ex:Engine")))
+            ],
+            AssertionAxioms = [
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:hasPart")),
+                    new OWLNamedIndividual(new RDFResource("ex:Car1")),
+                    new OWLNamedIndividual(new RDFResource("ex:Engine1")))
+            ]
+        };
+
+    [TestMethod]
+    public async Task ShouldClosetSchemaPhaseOnceThenNeedFewerFactIterationsAsync()
+    {
+        OWLOntology ontology = BuildSchemaThenFactDomainPropagationOntology();
+        OWLReasoner reasoner = new OWLReasoner { Rules = [
+            OWLEnums.OWLReasonerRules.SchemaPropertyDomainEntailment,
+            OWLEnums.OWLReasonerRules.FactObjectPropertyDomainEntailment ] };
+
+        OWLReasonerReport report = await reasoner.ApplyToOntologyAsync(ontology);
+
+        //Schema phase: round 1 materializes ObjectPropertyDomain(hasPart,Machine); round 2 finds nothing new
+        //(the candidate re-derivation of the same axiom gets deduplicated) and confirms the real fixpoint
+        Assert.AreEqual(2u, report.SchemaClosureRounds);
+
+        //Fact phase: round 1 already sees BOTH ObjectPropertyDomain(hasPart,Engine) and (hasPart,Machine) (the
+        //latter merged in by the Schema phase before the Fact phase even started), so it produces both
+        //ClassAssertion(Engine,Car1) and ClassAssertion(Machine,Car1) together; round 2 only confirms the fixpoint.
+        //This is fewer than the 3 combined iterations the pre-refactor flat single-tier loop needed for the same closure.
+        Assert.AreEqual(2u, report.IterationsPerformed);
+        Assert.IsTrue(report.ReachedFixpoint);
+
+        //Full closure: 1 Schema-tier T-Box inference + 2 Fact-tier A-Box inferences
+        Assert.HasCount(3, report.Inferences);
+        Assert.IsTrue(report.Inferences.Any(i => i.Axiom is OWLObjectPropertyDomain opd
+                                                 && string.Equals(opd.ObjectPropertyExpression.GetIRI().ToString(), "ex:hasPart")
+                                                 && string.Equals(opd.ClassExpression.GetIRI().ToString(), "ex:Machine")));
+        Assert.IsTrue(report.Inferences.Any(i => i.Axiom is OWLClassAssertion ca
+                                                 && string.Equals(ca.ClassExpression.GetIRI().ToString(), "ex:Engine")
+                                                 && string.Equals(ca.IndividualExpression.GetIRI().ToString(), "ex:Car1")));
+        Assert.IsTrue(report.Inferences.Any(i => i.Axiom is OWLClassAssertion ca1
+                                                 && string.Equals(ca1.ClassExpression.GetIRI().ToString(), "ex:Machine")
+                                                 && string.Equals(ca1.IndividualExpression.GetIRI().ToString(), "ex:Car1")));
+    }
+
+    [TestMethod]
+    public async Task ShouldSkipFactPhaseWhenOnlySchemaRulesAreSelectedAsync()
+    {
+        //If the caller explicitly restricts Rules to Schema-tier rules only, the Fact phase must be a true no-op
+        //(not just "produce zero inferences", but never even attempt an iteration)
+        OWLOntology ontology = BuildSchemaThenFactDomainPropagationOntology();
+        OWLReasoner reasoner = new OWLReasoner { Rules = [ OWLEnums.OWLReasonerRules.SchemaPropertyDomainEntailment ] };
+
+        OWLReasonerReport report = await reasoner.ApplyToOntologyAsync(ontology);
+
+        Assert.AreEqual(2u, report.SchemaClosureRounds);
+        Assert.AreEqual(0u, report.IterationsPerformed);
+        Assert.IsTrue(report.ReachedFixpoint);
+        Assert.HasCount(1, report.Inferences);
+        Assert.IsTrue(report.Inferences[0].Axiom is OWLObjectPropertyDomain);
+    }
+
+    [TestMethod]
+    public async Task ShouldSkipSchemaPhaseWhenOnlyFactRulesAreSelectedAsync()
+    {
+        //If the caller explicitly restricts Rules to Fact-tier rules only, the Schema phase must be a true no-op:
+        //SchemaClosureRounds stays 0, and the Fact rule only sees the originally asserted ObjectPropertyDomain(hasPart,Engine)
+        //(the Schema-derived ObjectPropertyDomain(hasPart,Machine) is never materialized), so only 1 ClassAssertion is entailed
+        OWLOntology ontology = BuildSchemaThenFactDomainPropagationOntology();
+        OWLReasoner reasoner = new OWLReasoner { Rules = [ OWLEnums.OWLReasonerRules.FactObjectPropertyDomainEntailment ] };
+
+        OWLReasonerReport report = await reasoner.ApplyToOntologyAsync(ontology);
+
+        Assert.AreEqual(0u, report.SchemaClosureRounds);
+        Assert.HasCount(1, report.Inferences);
+        Assert.IsTrue(report.Inferences[0].Axiom is OWLClassAssertion ca
+                      && string.Equals(ca.ClassExpression.GetIRI().ToString(), "ex:Engine")
+                      && string.Equals(ca.IndividualExpression.GetIRI().ToString(), "ex:Car1"));
+    }
+    #endregion
+
+    #region Tests (ForceRLFixpointConvergence)
+    //Builds an OWL2-RL-compliant ontology encoding a "composition" property chain (SubObjectPropertyOf(ObjectPropertyChain(P,P),P),
+    //i.e. transitivity of P expressed via prp-spo2 rather than a native TransitiveObjectProperty axiom), plus a linear chain of
+    //individuals I0-P->I1-P->I2-...-P->I(n-1). ObjectPropertyChainEntailment does NOT recurse internally the way most other rules
+    //do (it evaluates a fixed-length SPARQL property path over the object assertions known at call time), so each reasoner-level
+    //iteration only "doubles" the reachable span of the chain (round 1 reaches 2 hops, round 2 reaches ~4 hops, etc.): with n=16
+    //individuals, closing the chain into its full O(n^2) transitive closure genuinely requires 5 reasoner iterations, which is
+    //verified empirically below and exceeds OWLReasonerOptions' default MaxAllowedIterations of 3.
+    private static OWLOntology BuildRLCompliantChainOntologyRequiringManyIterations(int individualsCount)
+    {
+        List<OWLDeclaration> declarationAxioms = [ new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:P"))) ];
+        List<OWLObjectPropertyAxiom> objectPropertyAxioms = [
+            new OWLSubObjectPropertyOf(
+                new OWLObjectPropertyChain([new OWLObjectProperty(new RDFResource("ex:P")), new OWLObjectProperty(new RDFResource("ex:P"))]),
+                new OWLObjectProperty(new RDFResource("ex:P")))
+        ];
+        List<OWLAssertionAxiom> assertionAxioms = [];
+        for (int i = 0; i < individualsCount; i++)
+            declarationAxioms.Add(new OWLDeclaration(new OWLNamedIndividual(new RDFResource($"ex:I{i}"))));
+        for (int i = 0; i < individualsCount - 1; i++)
+            assertionAxioms.Add(new OWLObjectPropertyAssertion(new OWLObjectProperty(new RDFResource("ex:P")),
+                new OWLNamedIndividual(new RDFResource($"ex:I{i}")), new OWLNamedIndividual(new RDFResource($"ex:I{i + 1}"))));
+
+        return new OWLOntology { DeclarationAxioms = declarationAxioms, ObjectPropertyAxioms = objectPropertyAxioms, AssertionAxioms = assertionAxioms };
+    }
+
+    [TestMethod]
+    public async Task ShouldReachRealFixpointBeyondDefaultCapOnRLCompliantOntologyAsync()
+    {
+        const int individualsCount = 16;
+        OWLOntology ontology = BuildRLCompliantChainOntologyRequiringManyIterations(individualsCount);
+
+        //Sanity check: this ontology must actually be RL-compliant for the scenario to be meaningful
+        Assert.IsTrue((await ontology.CheckProfileAsync(OWLEnums.OWLProfiles.RL)).IsCompliant);
+
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactObjectPropertyChainEntailment] };
+        //ForceRLFixpointConvergence is opt-in (default: false), so it must be requested explicitly here;
+        //MaxAllowedIterations is left untouched at its default (3)
+        OWLReasonerOptions reasonerOptions = new OWLReasonerOptions { ForceRLFixpointConvergence = true };
+        OWLReasonerReport report = await reasoner.ApplyToOntologyAsync(ontology, reasonerOptions);
+
+        //The cap must have been transparently relaxed past 3 in order to let the chain close for real
+        Assert.IsGreaterThan(3u, report.IterationsPerformed);
+        Assert.IsTrue(report.ReachedFixpoint);
+        //Full transitive closure of a chain of 16 individuals has 16*15/2=120 ordered forward pairs; 15 of them are the
+        //originally asserted base assertions (not counted as inferences), leaving 105 genuinely new inferred assertions
+        Assert.HasCount(105, report.Inferences);
+    }
+
+    [TestMethod]
+    public async Task ShouldStopAtDefaultCapWhenRLFixpointGuaranteeIsDisabledAsync()
+    {
+        const int individualsCount = 16;
+        OWLOntology ontology = BuildRLCompliantChainOntologyRequiringManyIterations(individualsCount);
+
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactObjectPropertyChainEntailment] };
+        OWLReasonerOptions reasonerOptions = new OWLReasonerOptions { ForceRLFixpointConvergence = false };
+        OWLReasonerReport report = await reasoner.ApplyToOntologyAsync(ontology, reasonerOptions);
+
+        //With the guarantee disabled the cap is never touched, even though the ontology is RL-compliant
+        Assert.AreEqual(3u, reasonerOptions.MaxAllowedIterations);
+        Assert.AreEqual(3u, report.IterationsPerformed);
+        Assert.IsFalse(report.ReachedFixpoint);
+        //The closure is truncated: strictly fewer than the 105 inferences of the real fixpoint were produced
+        Assert.IsLessThan(105, report.Inferences.Count);
+    }
+
+    [TestMethod]
+    public async Task ShouldRespectExplicitlyCustomizedMaxAllowedIterationsEvenIfRLCompliantAsync()
+    {
+        const int individualsCount = 16;
+        OWLOntology ontology = BuildRLCompliantChainOntologyRequiringManyIterations(individualsCount);
+
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactObjectPropertyChainEntailment] };
+        //The caller explicitly customized MaxAllowedIterations away from the default (3): this is an intentional
+        //signal that must be honored as-is, even with ForceRLFixpointConvergence opted into and the ontology being
+        //RL-compliant (which would otherwise qualify for an automatically relaxed cap)
+        OWLReasonerOptions reasonerOptions = new OWLReasonerOptions { ForceRLFixpointConvergence = true, MaxAllowedIterations = 2 };
+        OWLReasonerReport report = await reasoner.ApplyToOntologyAsync(ontology, reasonerOptions);
+
+        Assert.AreEqual(2u, reasonerOptions.MaxAllowedIterations);
+        Assert.AreEqual(2u, report.IterationsPerformed);
+        Assert.IsFalse(report.ReachedFixpoint);
+        Assert.IsLessThan(105, report.Inferences.Count);
+    }
+
+    [TestMethod]
+    public async Task ShouldStopAtDefaultCapOnNonRLCompliantOntologyAsync()
+    {
+        const int individualsCount = 16;
+        OWLOntology ontology = BuildRLCompliantChainOntologyRequiringManyIterations(individualsCount);
+        //Introduce a ReflexiveObjectProperty axiom on P: this is the only object property axiom type excluded by
+        //the RL profile (§4.2.5), so it makes the ontology non-RL-compliant without otherwise altering the chain
+        //that ObjectPropertyChainEntailment reasons on
+        ontology.ObjectPropertyAxioms.Add(new OWLReflexiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:P"))));
+
+        Assert.IsFalse((await ontology.CheckProfileAsync(OWLEnums.OWLProfiles.RL)).IsCompliant);
+
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactObjectPropertyChainEntailment] };
+        //ForceRLFixpointConvergence opted into, but since the ontology is not RL-compliant the cap must stay untouched
+        OWLReasonerOptions reasonerOptions = new OWLReasonerOptions { ForceRLFixpointConvergence = true };
+        OWLReasonerReport report = await reasoner.ApplyToOntologyAsync(ontology, reasonerOptions);
+
+        Assert.AreEqual(3u, reasonerOptions.MaxAllowedIterations);
+        Assert.AreEqual(3u, report.IterationsPerformed);
+        Assert.IsFalse(report.ReachedFixpoint);
+        Assert.IsLessThan(105, report.Inferences.Count);
+    }
+
+    [TestMethod]
+    public async Task ShouldNotCorruptReusedOptionsInstanceAcrossCallsAsync()
+    {
+        //Regression test: an OWLReasonerOptions instance reused across two ApplyToOntologyAsync calls must never
+        //have its MaxAllowedIterations mutated by a prior call's RL-cap relaxation, otherwise a caller's own
+        //explicit setting would be silently corrupted for every subsequent call sharing the same instance
+        const int individualsCount = 16;
+        OWLOntology rlCompliantOntology = BuildRLCompliantChainOntologyRequiringManyIterations(individualsCount);
+        OWLOntology otherOntology = BuildRLCompliantChainOntologyRequiringManyIterations(individualsCount);
+
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactObjectPropertyChainEntailment] };
+        //MaxAllowedIterations left at its default (3): the first call, being RL-compliant and forced, is exactly
+        //the scenario that relaxes the cap internally (to uint.MaxValue) -- the bug this test pins down is that
+        //relaxed value never being written back onto sharedOptions itself
+        OWLReasonerOptions sharedOptions = new OWLReasonerOptions { ForceRLFixpointConvergence = true };
+
+        await reasoner.ApplyToOntologyAsync(rlCompliantOntology, sharedOptions);
+        Assert.AreEqual(3u, sharedOptions.MaxAllowedIterations);
+
+        //Second call, same shared instance, ForceRLFixpointConvergence now turned off: MaxAllowedIterations must
+        //still read the untouched default 3 -- not a leaked uint.MaxValue from the first call's cap relaxation
+        sharedOptions.ForceRLFixpointConvergence = false;
+        OWLReasonerReport secondReport = await reasoner.ApplyToOntologyAsync(otherOntology, sharedOptions);
+        Assert.AreEqual(3u, sharedOptions.MaxAllowedIterations);
+        Assert.AreEqual(3u, secondReport.IterationsPerformed);
+    }
+
+    [TestMethod]
+    public async Task ShouldReCheckRLComplianceIndependentlyOnEachCallWithSameForcedOptionsAsync()
+    {
+        //Regression-adjacent test: ForceRLFixpointConvergence=true must trigger a fresh RL-compliance check (and,
+        //if compliant, a fresh cap relaxation) on EVERY call, not just the first one that happens to touch a given
+        //OWLReasonerOptions instance -- two independent RL-compliant ontologies must BOTH reach their real fixpoint
+        const int individualsCount = 16;
+        OWLOntology firstOntology = BuildRLCompliantChainOntologyRequiringManyIterations(individualsCount);
+        OWLOntology secondOntology = BuildRLCompliantChainOntologyRequiringManyIterations(individualsCount);
+
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactObjectPropertyChainEntailment] };
+        OWLReasonerOptions sharedOptions = new OWLReasonerOptions { ForceRLFixpointConvergence = true };
+
+        OWLReasonerReport firstReport = await reasoner.ApplyToOntologyAsync(firstOntology, sharedOptions);
+        Assert.IsGreaterThan(3u, firstReport.IterationsPerformed);
+        Assert.IsTrue(firstReport.ReachedFixpoint);
+        Assert.HasCount(105, firstReport.Inferences);
+
+        //Same shared options, still forced, against a second (independent) RL-compliant ontology: the relaxation
+        //must be re-derived from scratch, not skipped because "we already relaxed once"
+        OWLReasonerReport secondReport = await reasoner.ApplyToOntologyAsync(secondOntology, sharedOptions);
+        Assert.IsGreaterThan(3u, secondReport.IterationsPerformed);
+        Assert.IsTrue(secondReport.ReachedFixpoint);
+        Assert.HasCount(105, secondReport.Inferences);
+    }
+
+    [TestMethod]
+    public async Task ShouldStopAfterSingleRoundWhenIterativeReasoningIsDisabledEvenIfForcedAsync()
+    {
+        //Corner case: ForceRLFixpointConvergence=true still triggers the RL-compliance check and (uselessly) relaxes
+        //the cap to uint.MaxValue, but EnableIterativeReasoning=false is a stronger, independent switch that caps the
+        //Fact phase at a single round regardless of what MaxAllowedIterations resolves to
+        const int individualsCount = 16;
+        OWLOntology ontology = BuildRLCompliantChainOntologyRequiringManyIterations(individualsCount);
+        Assert.IsTrue((await ontology.CheckProfileAsync(OWLEnums.OWLProfiles.RL)).IsCompliant);
+
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactObjectPropertyChainEntailment] };
+        OWLReasonerOptions reasonerOptions = new OWLReasonerOptions { ForceRLFixpointConvergence = true, EnableIterativeReasoning = false };
+        OWLReasonerReport report = await reasoner.ApplyToOntologyAsync(ontology, reasonerOptions);
+
+        //Only one round ever ran, so the real (uncapped) fixpoint was never reached
+        Assert.AreEqual(1u, report.IterationsPerformed);
+        Assert.IsFalse(report.ReachedFixpoint);
+        Assert.IsLessThan(105, report.Inferences.Count);
+    }
+
+    [TestMethod]
+    public async Task ShouldReachRealFixpointWithExplicitCapLargeEnoughOnRLCompliantOntologyAsync()
+    {
+        //Corner case requested explicitly: an explicit MaxAllowedIterations that happens to be exactly sufficient
+        //(5, for this 16-individual chain) must reach the same practical outcome as the auto-relaxed uint.MaxValue
+        //case -- but for a different reason: the caller's own budget was enough, not because it was silently unset
+        const int individualsCount = 16;
+        OWLOntology ontology = BuildRLCompliantChainOntologyRequiringManyIterations(individualsCount);
+
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactObjectPropertyChainEntailment] };
+        OWLReasonerOptions reasonerOptions = new OWLReasonerOptions { ForceRLFixpointConvergence = true, MaxAllowedIterations = 5 };
+        OWLReasonerReport report = await reasoner.ApplyToOntologyAsync(ontology, reasonerOptions);
+
+        //The explicit cap of 5 must be left untouched (not overridden to uint.MaxValue), yet still be enough to
+        //let this specific chain close for real
+        Assert.AreEqual(5u, reasonerOptions.MaxAllowedIterations);
+        Assert.AreEqual(5u, report.IterationsPerformed);
+        Assert.IsTrue(report.ReachedFixpoint);
+        Assert.HasCount(105, report.Inferences);
+    }
+    #endregion
     #endregion
 }

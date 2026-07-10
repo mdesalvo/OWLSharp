@@ -17,6 +17,9 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: prp-fp (consistency-check form for data properties: literals cannot be merged via sameAs, so a functional data property linking one individual to two distinct literals is a direct violation)</para>
+    /// </summary>
     internal static class OWLFunctionalDataPropertyAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.FunctionalDataPropertyAnalysis);
@@ -33,6 +36,9 @@ namespace OWLSharp.Validator
                 List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
 
                 //FunctionalDataProperty(FDP) ^ DataPropertyAssertion(FDP,IDV,LIT1) ^ DataPropertyAssertion(FDP,IDV,LIT2) -> ERROR
+                //Group this property's assertions by individual, then RemoveDuplicates the per-individual literal set: literals can't be
+                //merged via sameAs (unlike individuals), so >1 DISTINCT literal for one individual is a direct, unrecoverable violation
+                //(repeating the identical literal twice, e.g. from redundant axioms, must not be flagged -- hence the dedup before the count check)
                 foreach (OWLFunctionalDataProperty fdp in fdpAxms)
                     OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, fdp.DataProperty)
                         .GroupBy(dpax => dpax.IndividualExpression.GetIRI().ToString())

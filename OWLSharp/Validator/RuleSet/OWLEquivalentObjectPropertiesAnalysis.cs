@@ -17,6 +17,9 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>OWLSharp extension: T-Box overlap check (EquivalentObjectProperties vs SubObjectPropertyOf/DisjointObjectProperties), no direct RL/RDF correspondent</para>
+    /// </summary>
     internal static class OWLEquivalentObjectPropertiesAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.EquivalentObjectPropertiesAnalysis);
@@ -29,6 +32,10 @@ namespace OWLSharp.Validator
             //EquivalentObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP1,OP2) -> ERROR
             //EquivalentObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP2,OP1) -> ERROR
             //EquivalentObjectProperties(OP1,OP2) ^ DisjointObjectProperties(OP1,OP2) -> ERROR
+            //Any/Any scan across the whole n-ary member list (not just adjacent pairs): equivalence is stated for the whole
+            //group at once, so a single pairwise SubObjectPropertyOf/DisjointObjectProperties clash anywhere in the set is enough to be a contradiction.
+            //No inverse-property recalibration is needed here (unlike e.g. AsymmetricObjectPropertyAnalysis): this check only compares
+            //property IDENTITIES via T-Box relations, it never inspects ObjectPropertyAssertion source/target individuals
             foreach (OWLEquivalentObjectProperties equivObjectProps in ontology.GetObjectPropertyAxiomsOfType<OWLEquivalentObjectProperties>())
                 if (equivObjectProps.ObjectPropertyExpressions.Any(outerOPEX =>
                       equivObjectProps.ObjectPropertyExpressions.Any(innerOPEX => !outerOPEX.GetIRI().Equals(innerOPEX.GetIRI())

@@ -17,6 +17,9 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>OWLSharp extension: enforces OWL2 DL property-chain regularity / simple-role restrictions (chain superproperty cannot be asymmetric/functional/inverse-functional/irreflexive; chain cannot be self-referential), which is outside the RL/RDF entailment table</para>
+    /// </summary>
     internal static class OWLObjectPropertyChainAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.ObjectPropertyChainAnalysis);

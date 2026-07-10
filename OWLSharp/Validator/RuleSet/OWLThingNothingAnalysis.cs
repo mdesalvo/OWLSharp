@@ -17,6 +17,9 @@ using System.Collections.Generic;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: cls-thing, cls-nothing1 (owl:Thing/owl:Nothing root/bottom-position checks), cls-nothing2 (individuals in owl:Nothing check)</para>
+    /// </summary>
     internal static class OWLThingNothingAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.ThingNothingAnalysis);

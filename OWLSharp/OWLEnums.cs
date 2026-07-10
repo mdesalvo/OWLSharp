@@ -37,167 +37,308 @@ namespace OWLSharp
         }
 
         /// <summary>
-        /// OWLReasonerRules represents an enumeration for supported RDFS/OWL2 reasoner rules
+        /// OWLReasonerRules represents an enumeration for supported RDFS/OWL2 reasoner rules, organized in two tiers:
+        /// <b>Schema</b> (T-Box -> T-Box, no individuals involved) and <b>Fact</b> (propagation at the assertion/individual level).
         /// </summary>
         public enum OWLReasonerRules
         {
             /// <summary>
-            /// ClassAssertion(C1,I) ^ SubClassOf(C1,C2) -> ClassAssertion(C2,I)<br/>
-            /// ClassAssertion(C1,I) ^ EquivalentClasses(C1,C2) -> ClassAssertion(C2,I)
+            /// Class(C) [declared] -> SubClassOf(C,C) ^ EquivalentClasses(C,C) ^ SubClassOf(C,owl:Thing) ^ SubClassOf(owl:Nothing,C)
+            /// <para>W3C OWL2 RL/RDF: scm-cls</para><para>Tier: Schema</para>
             /// </summary>
-            ClassAssertionEntailment = 1,
-            /// <summary>
-            /// DataPropertyDomain(DP,C) ^ DataPropertyAssertion(DP, I, LIT) -> ClassAssertion(C,I)
-            /// </summary>
-            DataPropertyDomainEntailment = 2,
-            /// <summary>
-            /// AllDifferent(I1,I2,...IN) -> DifferentIndividuals(I1,I2) ^ DifferentIndividuals(I1,IN) ^ ...
-            /// </summary>
-            DifferentIndividualsEntailment = 3,
+            SchemaClassEntailment = 1,
             /// <summary>
             /// EquivalentClasses(C1,C2) ^ DisjointClasses(C2,C3) -> DisjointClasses(C1,C3)<br/>
             /// SubClassOf(C1,C2) ^ DisjointClasses(C2,C3) -> DisjointClasses(C1,C3)<br/>
             /// DisjointUnion(C1,(C2 C3)) -> DisjointClasses(C2,C3)<br/>
             /// DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
+            /// <para>OWLSharp extension: T-Box propagation of class disjointness via SubClassOf/EquivalentClasses/DisjointUnion (not part of the RL/RDF entailment closure)</para><para>Tier: Schema</para>
             /// </summary>
-            DisjointClassesEntailment = 4,
+            SchemaDisjointClassesEntailment = 2,
             /// <summary>
             /// AllDisjointProperties(DP1,DP2,...DPN) -> DisjointDataProperties(DP1,DP2) ^ DisjointDataProperties(DP1,DPN) ^ ...
+            /// <para>OWLSharp extension: expands n-ary AllDisjointProperties into pairwise DisjointDataProperties (feeds prp-adp downstream, but is not itself a table rule)</para><para>Tier: Schema</para>
             /// </summary>
-            DisjointDataPropertiesEntailment = 5,
+            SchemaDisjointDataPropertiesEntailment = 3,
             /// <summary>
             /// AllDisjointProperties(OP1,OP2,...OPN) -> DisjointObjectProperties(OP1,OP2) ^ DisjointObjectProperties(OP1,OPN) ^ ...
+            /// <para>OWLSharp extension: expands n-ary AllDisjointProperties into pairwise DisjointObjectProperties (feeds prp-adp downstream, but is not itself a table rule)</para><para>Tier: Schema</para>
             /// </summary>
-            DisjointObjectPropertiesEntailment = 6,
+            SchemaDisjointObjectPropertiesEntailment = 4,
             /// <summary>
             /// EquivalentClasses(C1,C2) ^ EquivalentClasses(C2,C3) -> EquivalentClasses(C1,C3)
+            /// <para>W3C OWL2 RL/RDF: scm-eqc1, scm-eqc2</para><para>Tier: Schema</para>
             /// </summary>
-            EquivalentClassesEntailment = 7,
+            SchemaEquivalentClassesEntailment = 5,
             /// <summary>
-            /// EquivalentDataProperties(P1,P2) ^ EquivalentDataProperties(P2,P3) -> EquivalentDataProperties(P1,P3)<br/>
-            /// EquivalentDataProperties(P1,P2) ^ DataPropertyAssertion(P1,I,LIT) -> DataPropertyAssertion(P2,I,LIT)
+            /// EquivalentDataProperties(P1,P2) ^ EquivalentDataProperties(P2,P3) -> EquivalentDataProperties(P1,P3)
+            /// <para>OWLSharp extension: direct materialization of EquivalentDataProperties transitivity (derivable via scm-eqp1+scm-spo+scm-eqp2 composition, not itself a table rule)</para><para>Tier: Schema</para>
             /// </summary>
-            EquivalentDataPropertiesEntailment = 8,
+            SchemaEquivalentDataPropertiesEntailment = 6,
             /// <summary>
-            /// EquivalentObjectProperties(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> EquivalentObjectProperties(P1,P3)<br/>
-            /// EquivalentObjectProperties(P1,P2) ^ ObjectPropertyAssertion(P1,I1,I2) -> ObjectPropertyAssertion(P2,I1,I2)
+            /// EquivalentObjectProperties(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> EquivalentObjectProperties(P1,P3)
+            /// <para>OWLSharp extension: direct materialization of EquivalentObjectProperties transitivity (derivable via scm-eqp1+scm-spo+scm-eqp2 composition, not itself a table rule)</para><para>Tier: Schema</para>
             /// </summary>
-            EquivalentObjectPropertiesEntailment = 9,
+            SchemaEquivalentObjectPropertiesEntailment = 7,
             /// <summary>
-            /// FunctionalObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDVX,IDV1) ^ ObjectPropertyAssertion(OP,IDVX,IDV2) -> SameIndividual(IDV1,IDV2)
+            /// ObjectHasValue(OP1,I) [referenced] ^ ObjectHasValue(OP2,I) [referenced] ^ SubObjectPropertyOf(OP1,OP2) -> SubClassOf(ObjectHasValue(OP1,I),ObjectHasValue(OP2,I))<br/>
+            /// DataHasValue(DP1,LIT) [referenced] ^ DataHasValue(DP2,LIT) [referenced] ^ SubDataPropertyOf(DP1,DP2) -> SubClassOf(DataHasValue(DP1,LIT),DataHasValue(DP2,LIT))
+            /// <para>W3C OWL2 RL/RDF: scm-hv</para><para>Tier: Schema</para>
             /// </summary>
-            FunctionalObjectPropertyEntailment = 10,
+            SchemaHasValueEntailment = 8,
             /// <summary>
-            /// HasKey(C,OP) ^ ClassAssertion(C,I1) ^ ObjectPropertyAssertion(OP,I1,IX) ^ ClassAssertion(C,I2) ^ ObjectPropertyAssertion(OP,I2,IX) -> SameIndividual(I1,I2)<br/>
-            /// HasKey(C,DP) ^ ClassAssertion(C,I1) ^ DataPropertyAssertion(DP,I1,LIT)  ^ ClassAssertion(C,I2) ^ DataPropertyAssertion(DP,I2,LIT)  -> SameIndividual(I1,I2)
+            /// ObjectAllValuesFrom(OP,Y1) [referenced] ^ ObjectAllValuesFrom(OP,Y2) [referenced] ^ SubClassOf(Y1,Y2) -> SubClassOf(ObjectAllValuesFrom(OP,Y1),ObjectAllValuesFrom(OP,Y2))<br/>
+            /// ObjectAllValuesFrom(OP1,Y) [referenced] ^ ObjectAllValuesFrom(OP2,Y) [referenced] ^ SubObjectPropertyOf(OP1,OP2) -> SubClassOf(ObjectAllValuesFrom(OP2,Y),ObjectAllValuesFrom(OP1,Y))
+            /// <para>W3C OWL2 RL/RDF: scm-avf1, scm-avf2. NOTE the inverted polarity of scm-avf2 with respect to scm-svf2: the SubClassOf direction flips
+            /// because universal quantification is antitone in the property argument (a stricter/subsuming property yields a MORE permissive AllValuesFrom restriction)</para><para>Tier: Schema</para>
             /// </summary>
-            HasKeyEntailment = 11,
+            SchemaObjectAllValuesFromEntailment = 9,
             /// <summary>
-            /// SubClassOf(C,ObjectHasSelf(OP)) ^ ClassAssertion(C,I) -> ObjectPropertyAssertion(OP,I,I)
+            /// ObjectProperty(OP) [declared] -> SubObjectPropertyOf(OP,OP) ^ EquivalentObjectProperties(OP,OP)
+            /// <para>W3C OWL2 RL/RDF: scm-op</para><para>Tier: Schema</para>
             /// </summary>
-            HasSelfEntailment = 12,
+            SchemaObjectPropertyEntailment = 10,
             /// <summary>
-            /// SubClassOf(C,ObjectHasValue(OP,I2)) ^ ClassAssertion(C,I1) -> ObjectPropertyAssertion(OP,I1,I2)<br/>
-            /// SubClassOf(C,DataHasValue(DP,LIT)) ^ ClassAssertion(C,I) -> DataPropertyAssertion(DP,I,LIT)<br/>
-            /// ObjectPropertyAssertion(OP,I1,V) ^ ObjectHasValue(OP,V) [referenced] -> ClassAssertion(ObjectHasValue(OP,V),I1)<br/>
-            /// DataPropertyAssertion(DP,I,LIT) ^ DataHasValue(DP,LIT) [referenced] -> ClassAssertion(DataHasValue(DP,LIT),I)
+            /// ObjectSomeValuesFrom(OP,Y1) [referenced] ^ ObjectSomeValuesFrom(OP,Y2) [referenced] ^ SubClassOf(Y1,Y2) -> SubClassOf(ObjectSomeValuesFrom(OP,Y1),ObjectSomeValuesFrom(OP,Y2))<br/>
+            /// ObjectSomeValuesFrom(OP1,Y) [referenced] ^ ObjectSomeValuesFrom(OP2,Y) [referenced] ^ SubObjectPropertyOf(OP1,OP2) -> SubClassOf(ObjectSomeValuesFrom(OP1,Y),ObjectSomeValuesFrom(OP2,Y))
+            /// <para>W3C OWL2 RL/RDF: scm-svf1, scm-svf2</para><para>Tier: Schema</para>
             /// </summary>
-            HasValueEntailment = 13,
+            SchemaObjectSomeValuesFromEntailment = 11,
             /// <summary>
-            /// InverseFunctionalObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDVX) ^ ObjectPropertyAssertion(OP,IDV2,IDVX) -> SameIndividual(IDV1,IDV2)
+            /// ObjectUnionOf(C,(C1..CN)) [referenced] -> SubClassOf(C1,C) ^ ... ^ SubClassOf(CN,C)
+            /// <para>W3C OWL2 RL/RDF: scm-uni. Combined iteratively with FactClassAssertionEntailment (cax-sco), this also re-derives the A-Box cls-uni
+            /// entailment (ClassAssertion(Ci,I) -> ClassAssertion(ObjectUnionOf(...),I)) for ANY referenced union, including anonymous ones not
+            /// named via EquivalentClasses -- see remarks on FactObjectOneOfEntailment for why cls-oo instead needs its own dedicated A-Box rule</para><para>Tier: Schema</para>
             /// </summary>
-            InverseFunctionalObjectPropertyEntailment = 14,
+            SchemaObjectUnionOfEntailment = 12,
             /// <summary>
-            /// InverseObjectProperties(OP,IOP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ObjectPropertyAssertion(IOP,IDV2,IDV1)<br/>
-            /// InverseObjectProperties(OP,IOP) ^ EquivalentObjectProperties(IOP,IOP2)  -> InverseObjectProperties(OP,IOP2)<br/>
-            /// InverseObjectProperties(OP,IOP) ^ ObjectPropertyDomain(OP,C) -> ObjectPropertyRange(IOP,C)<br/>
-            /// InverseObjectProperties(OP,IOP) ^ ObjectPropertyRange(OP,C)  -> ObjectPropertyDomain(IOP,C)
+            /// ObjectPropertyDomain(OP,C1) ^ SubClassOf(C1,C2) -> ObjectPropertyDomain(OP,C2)<br/>
+            /// ObjectPropertyDomain(OP2,C) ^ SubObjectPropertyOf(OP1,OP2) -> ObjectPropertyDomain(OP1,C)<br/>
+            /// DataPropertyDomain(DP,C1) ^ SubClassOf(C1,C2) -> DataPropertyDomain(DP,C2)<br/>
+            /// DataPropertyDomain(DP2,C) ^ SubDataPropertyOf(DP1,DP2) -> DataPropertyDomain(DP1,C)
+            /// <para>W3C OWL2 RL/RDF: scm-dom1, scm-dom2 (both the ObjectProperty and DataProperty variants, since the table's ?p is generic over property kind)</para><para>Tier: Schema</para>
             /// </summary>
-            InverseObjectPropertiesEntailment = 15,
+            SchemaPropertyDomainEntailment = 13,
             /// <summary>
-            /// ObjectPropertyChain(PC,(OP1..OPN)) ^ SubObjectPropertyOf(PC,OP) -> ObjectPropertyAssertion(OP,OP1,OPN)
+            /// ObjectPropertyRange(OP,C1) ^ SubClassOf(C1,C2) -> ObjectPropertyRange(OP,C2)<br/>
+            /// ObjectPropertyRange(OP2,C) ^ SubObjectPropertyOf(OP1,OP2) -> ObjectPropertyRange(OP1,C)<br/>
+            /// DataPropertyRange(DP2,DR) ^ SubDataPropertyOf(DP1,DP2) -> DataPropertyRange(DP1,DR)
+            /// <para>W3C OWL2 RL/RDF: scm-rng1, scm-rng2. The DataPropertyRange side only implements the scm-rng2 (subPropertyOf) branch, since scm-rng1's
+            /// SubClassOf premise does not apply to datatype ranges (DataRangeExpression, not OWLClassExpression) in the OWLSharp model</para><para>Tier: Schema</para>
             /// </summary>
-            ObjectPropertyChainEntailment = 16,
+            SchemaPropertyRangeEntailment = 14,
             /// <summary>
-            /// ObjectPropertyDomain(OP,C) ^ ObjectPropertyAssertion(OP,I1,I2) -> ClassAssertion(C,I1)
+            /// DataProperty(DP) [declared] -> SubDataPropertyOf(DP,DP) ^ EquivalentDataProperties(DP,DP)
+            /// <para>W3C OWL2 RL/RDF: scm-dp</para><para>Tier: Schema</para>
             /// </summary>
-            ObjectPropertyDomainEntailment = 17,
-            /// <summary>
-            /// ObjectPropertyRange(OP,C) ^ ObjectPropertyAssertion(OP,I1,I2) -> ClassAssertion(C,I2)
-            /// </summary>
-            ObjectPropertyRangeEntailment = 18,
-            /// <summary>
-            /// ReflexiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ObjectPropertyAssertion(OP,IDV1,IDV1)
-            /// </summary>
-            ReflexiveObjectPropertyEntailment = 19,
-            /// <summary>
-            /// SameIndividual(I1,I2) ^ SameIndividual(I2,I3) -> SameIndividual(I1,I3)<br/>
-            /// SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I1,I3) -> ObjectPropertyAssertion(OP,I2,I3)<br/>
-            /// SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I2,I3) -> ObjectPropertyAssertion(OP,I1,I3)<br/>
-            /// SameIndividual(I1,I2) ^ ClassAssertion(C,I1) -> ClassAssertion(C,I2)
-            /// </summary>
-            SameIndividualEntailment = 20,
+            SchemaDataPropertyEntailment = 15,
             /// <summary>
             /// SubClassOf(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)<br/>
             /// SubClassOf(C1,C2) ^ EquivalentClasses(C2,C3) -> SubClassOf(C1,C3)<br/>
             /// EquivalentClasses(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)<br/>
             /// DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
+            /// <para>W3C OWL2 RL/RDF: scm-sco, scm-eqc1, scm-eqc2, scm-int</para><para>Tier: Schema</para>
             /// </summary>
-            SubClassOfEntailment = 21,
+            SchemaSubClassOfEntailment = 16,
             /// <summary>
             /// SubDataPropertyOf(P1,P2) ^ SubDataPropertyOf(P2,P3) -> SubDataPropertyOf(P1,P3)<br/>
-            /// SubDataPropertyOf(P1,P2) ^ EquivalentDataProperties(P2,P3) -> SubDataPropertyOf(P1,P3)<br/>
-            /// SubDataPropertyOf(P1,P2) ^ DataPropertyAssertion(P1,I,LIT) -> DataPropertyAssertion(P2,I,LIT)
+            /// SubDataPropertyOf(P1,P2) ^ EquivalentDataProperties(P2,P3) -> SubDataPropertyOf(P1,P3)
+            /// <para>W3C OWL2 RL/RDF: scm-spo</para><para>Tier: Schema</para>
             /// </summary>
-            SubDataPropertyOfEntailment = 22,
+            SchemaSubDataPropertyOfEntailment = 17,
             /// <summary>
             /// SubObjectPropertyOf(P1,P2) ^ SubObjectPropertyOf(P2,P3) -> SubObjectPropertyOf(P1,P3)<br/>
-            /// SubObjectPropertyOf(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> SubObjectPropertyOf(P1,P3)<br/>
-            /// SubObjectPropertyOf(P1,P2) ^ ObjectPropertyAssertion(P1,I1,I2) -> ObjectPropertyAssertion(P2,I1,I2)
+            /// SubObjectPropertyOf(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> SubObjectPropertyOf(P1,P3)
+            /// <para>W3C OWL2 RL/RDF: scm-spo</para><para>Tier: Schema</para>
             /// </summary>
-            SubObjectPropertyOfEntailment = 23,
+            SchemaSubObjectPropertyOfEntailment = 18,
             /// <summary>
-            /// SymmetricObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ObjectPropertyAssertion(OP,IDV2,IDV1)
+            /// ClassAssertion(C1,I) ^ SubClassOf(C1,C2) -> ClassAssertion(C2,I)<br/>
+            /// ClassAssertion(C1,I) ^ EquivalentClasses(C1,C2) -> ClassAssertion(C2,I)
+            /// <para>W3C OWL2 RL/RDF: cax-sco, cax-eqc1, cax-eqc2</para><para>Tier: Fact</para>
             /// </summary>
-            SymmetricObjectPropertyEntailment = 24,
+            FactClassAssertionEntailment = 19,
             /// <summary>
-            /// TransitiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV2,IDV3) -> ObjectPropertyAssertion(OP,IDV1,IDV3)
+            /// DataPropertyDomain(DP,C) ^ DataPropertyAssertion(DP, I, LIT) -> ClassAssertion(C,I)
+            /// <para>W3C OWL2 RL/RDF: prp-dom</para><para>Tier: Fact</para>
             /// </summary>
-            TransitiveObjectPropertyEntailment = 25,
+            FactDataPropertyDomainEntailment = 20,
+            /// <summary>
+            /// AllDifferent(I1,I2,...IN) -> DifferentIndividuals(I1,I2) ^ DifferentIndividuals(I1,IN) ^ ...
+            /// <para>OWLSharp extension: expands n-ary AllDifferent into pairwise DifferentIndividuals (feeds eq-diff1/eq-diff2/eq-diff3 downstream, but is not itself a table rule)</para><para>Tier: Fact</para>
+            /// </summary>
+            FactDifferentIndividualsEntailment = 21,
+            /// <summary>
+            /// EquivalentDataProperties(P1,P2) ^ DataPropertyAssertion(P1,I,LIT) -> DataPropertyAssertion(P2,I,LIT)
+            /// <para>W3C OWL2 RL/RDF: prp-eqp1, prp-eqp2</para><para>Tier: Fact</para>
+            /// </summary>
+            FactEquivalentDataPropertiesEntailment = 22,
+            /// <summary>
+            /// EquivalentObjectProperties(P1,P2) ^ ObjectPropertyAssertion(P1,I1,I2) -> ObjectPropertyAssertion(P2,I1,I2)
+            /// <para>W3C OWL2 RL/RDF: prp-eqp1, prp-eqp2</para><para>Tier: Fact</para>
+            /// </summary>
+            FactEquivalentObjectPropertiesEntailment = 23,
+            /// <summary>
+            /// FunctionalObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDVX,IDV1) ^ ObjectPropertyAssertion(OP,IDVX,IDV2) -> SameIndividual(IDV1,IDV2)
+            /// <para>W3C OWL2 RL/RDF: prp-fp</para><para>Tier: Fact</para>
+            /// </summary>
+            FactFunctionalObjectPropertyEntailment = 24,
+            /// <summary>
+            /// HasKey(C,OP) ^ ClassAssertion(C,I1) ^ ObjectPropertyAssertion(OP,I1,IX) ^ ClassAssertion(C,I2) ^ ObjectPropertyAssertion(OP,I2,IX) -> SameIndividual(I1,I2)<br/>
+            /// HasKey(C,DP) ^ ClassAssertion(C,I1) ^ DataPropertyAssertion(DP,I1,LIT)  ^ ClassAssertion(C,I2) ^ DataPropertyAssertion(DP,I2,LIT)  -> SameIndividual(I1,I2)
+            /// <para>W3C OWL2 RL/RDF: prp-key</para><para>Tier: Fact</para>
+            /// </summary>
+            FactHasKeyEntailment = 25,
+            /// <summary>
+            /// SubClassOf(C,ObjectHasSelf(OP)) ^ ClassAssertion(C,I) -> ObjectPropertyAssertion(OP,I,I)<br/>
+            /// ObjectPropertyAssertion(OP,I,I) ^ [ObjectHasSelf(OP) referenced] -> ClassAssertion(ObjectHasSelf(OP),I)
+            /// <para>OWLSharp extension: ObjectHasSelf is excluded from the OWL2 RL class-expression grammar, so both the forward (SubClassOf-driven) and
+            /// reverse (reflexive-assertion-driven) ObjectHasSelf entailment go beyond the RL/RDF ruleset</para><para>Tier: Fact</para>
+            /// </summary>
+            FactHasSelfEntailment = 26,
+            /// <summary>
+            /// SubClassOf(C,ObjectHasValue(OP,I2)) ^ ClassAssertion(C,I1) -> ObjectPropertyAssertion(OP,I1,I2)<br/>
+            /// SubClassOf(C,DataHasValue(DP,LIT)) ^ ClassAssertion(C,I) -> DataPropertyAssertion(DP,I,LIT)<br/>
+            /// ObjectPropertyAssertion(OP,I1,V) ^ ObjectHasValue(OP,V) [referenced] -> ClassAssertion(ObjectHasValue(OP,V),I1)<br/>
+            /// DataPropertyAssertion(DP,I,LIT) ^ DataHasValue(DP,LIT) [referenced] -> ClassAssertion(DataHasValue(DP,LIT),I)
+            /// <para>W3C OWL2 RL/RDF: cls-hv1, cls-hv2</para><para>Tier: Fact</para>
+            /// </summary>
+            FactHasValueEntailment = 27,
+            /// <summary>
+            /// InverseFunctionalObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDVX) ^ ObjectPropertyAssertion(OP,IDV2,IDVX) -> SameIndividual(IDV1,IDV2)
+            /// <para>W3C OWL2 RL/RDF: prp-ifp</para><para>Tier: Fact</para>
+            /// </summary>
+            FactInverseFunctionalObjectPropertyEntailment = 28,
+            /// <summary>
+            /// InverseObjectProperties(OP,IOP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ObjectPropertyAssertion(IOP,IDV2,IDV1)<br/>
+            /// InverseObjectProperties(OP,IOP) ^ EquivalentObjectProperties(IOP,IOP2)  -> InverseObjectProperties(OP,IOP2)<br/>
+            /// InverseObjectProperties(OP,IOP) ^ ObjectPropertyDomain(OP,C) -> ObjectPropertyRange(IOP,C)<br/>
+            /// InverseObjectProperties(OP,IOP) ^ ObjectPropertyRange(OP,C)  -> ObjectPropertyDomain(IOP,C)
+            /// <para>W3C OWL2 RL/RDF: prp-inv1, prp-inv2 (assertion propagation). Domain/range propagation across inverse properties is an OWLSharp extension beyond the table</para><para>Tier: Fact</para>
+            /// </summary>
+            FactInverseObjectPropertiesEntailment = 29,
+            /// <summary>
+            /// ObjectAllValuesFrom(OP,C) [class assertion] ^ ObjectPropertyAssertion(OP,I1,I2) -> ClassAssertion(C,I2)
+            /// <para>W3C OWL2 RL/RDF: cls-avf</para><para>Tier: Fact</para>
+            /// </summary>
+            FactObjectAllValuesFromEntailment = 30,
+            /// <summary>
+            /// SubClassOf(D,ObjectMaxCardinality(1,OP)) ^ ClassAssertion(D,I) ^ ObjectPropertyAssertion(OP,I,I1) ^ ObjectPropertyAssertion(OP,I,I2) -> SameIndividual(I1,I2)
+            /// <para>W3C OWL2 RL/RDF: cls-maxc2</para><para>Tier: Fact</para>
+            /// </summary>
+            FactObjectMaxCardinalityEntailment = 31,
+            /// <summary>
+            /// ObjectOneOf(C,(I1..IN)) [referenced] -> ClassAssertion(C,I1) ^ ... ^ ClassAssertion(C,IN)
+            /// <para>W3C OWL2 RL/RDF: cls-oo. Needed as a dedicated rule because GetIndividualsOf() only expands ObjectOneOf/ObjectUnionOf/ObjectIntersectionOf
+            /// membership when the composite expression is reached via an EquivalentClasses alias of a named class (not when referenced anonymously,
+            /// e.g. as the filler of a restriction) -- unlike scm-uni's SubClassOf materialization, an anonymous ObjectOneOf has no SubClassOf target
+            /// to piggyback on, so its ClassAssertion materialization must be produced directly here</para><para>Tier: Fact</para>
+            /// </summary>
+            FactObjectOneOfEntailment = 32,
+            /// <summary>
+            /// ObjectPropertyChain(PC,(OP1..OPN)) ^ SubObjectPropertyOf(PC,OP) -> ObjectPropertyAssertion(OP,OP1,OPN)
+            /// <para>W3C OWL2 RL/RDF: prp-spo2</para><para>Tier: Fact</para>
+            /// </summary>
+            FactObjectPropertyChainEntailment = 33,
+            /// <summary>
+            /// ObjectPropertyDomain(OP,C) ^ ObjectPropertyAssertion(OP,I1,I2) -> ClassAssertion(C,I1)
+            /// <para>W3C OWL2 RL/RDF: prp-dom</para><para>Tier: Fact</para>
+            /// </summary>
+            FactObjectPropertyDomainEntailment = 34,
+            /// <summary>
+            /// ObjectPropertyRange(OP,C) ^ ObjectPropertyAssertion(OP,I1,I2) -> ClassAssertion(C,I2)
+            /// <para>W3C OWL2 RL/RDF: prp-rng</para><para>Tier: Fact</para>
+            /// </summary>
+            FactObjectPropertyRangeEntailment = 35,
             /// <summary>
             /// ObjectSomeValuesFrom(OP,C) ^ ObjectPropertyAssertion(OP,I1,I2) ^ ClassAssertion(C,I2) -> ClassAssertion(ObjectSomeValuesFrom(OP,C),I1)<br/>
-            /// ClassAssertion(ObjectAllValuesFrom(OP,C),I1) ^ ObjectPropertyAssertion(OP,I1,I2) -> ClassAssertion(C,I2)<br/>
-            /// SubClassOf(D,ObjectMaxCardinality(1,OP)) ^ ClassAssertion(D,I) ^ ObjectPropertyAssertion(OP,I,I1) ^ ObjectPropertyAssertion(OP,I,I2) -> SameIndividual(I1,I2)<br/>
-            /// ObjectHasSelf(OP) [referenced] ^ ObjectPropertyAssertion(OP,I,I) -> ClassAssertion(ObjectHasSelf(OP),I)
+            /// ObjectSomeValuesFrom(OP,owl:Thing) ^ ObjectPropertyAssertion(OP,I1,I2) -> ClassAssertion(ObjectSomeValuesFrom(OP,owl:Thing),I1)
+            /// <para>W3C OWL2 RL/RDF: cls-svf1, cls-svf2</para><para>Tier: Fact</para>
             /// </summary>
-            ObjectRestrictionEntailment = 26
+            FactObjectSomeValuesFromEntailment = 36,
+            /// <summary>
+            /// ReflexiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ObjectPropertyAssertion(OP,IDV1,IDV1)
+            /// <para>OWLSharp extension: ReflexiveObjectProperty assertion-materialization is not part of the RL/RDF entailment table (reflexivity is used there only for consistency checking, not production)</para><para>Tier: Fact</para>
+            /// </summary>
+            FactReflexiveObjectPropertyEntailment = 37,
+            /// <summary>
+            /// SameIndividual(I1,I2) ^ SameIndividual(I2,I3) -> SameIndividual(I1,I3)<br/>
+            /// SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I1,I3) -> ObjectPropertyAssertion(OP,I2,I3)<br/>
+            /// SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I2,I3) -> ObjectPropertyAssertion(OP,I1,I3)<br/>
+            /// SameIndividual(I1,I2) ^ ClassAssertion(C,I1) -> ClassAssertion(C,I2)
+            /// <para>W3C OWL2 RL/RDF: eq-sym, eq-trans, eq-rep-s, eq-rep-o</para><para>Tier: Fact</para>
+            /// </summary>
+            FactSameIndividualEntailment = 38,
+            /// <summary>
+            /// SubDataPropertyOf(P1,P2) ^ DataPropertyAssertion(P1,I,LIT) -> DataPropertyAssertion(P2,I,LIT)
+            /// <para>W3C OWL2 RL/RDF: prp-spo1</para><para>Tier: Fact</para>
+            /// </summary>
+            FactSubDataPropertyOfEntailment = 39,
+            /// <summary>
+            /// SubObjectPropertyOf(P1,P2) ^ ObjectPropertyAssertion(P1,I1,I2) -> ObjectPropertyAssertion(P2,I1,I2)
+            /// <para>W3C OWL2 RL/RDF: prp-spo1</para><para>Tier: Fact</para>
+            /// </summary>
+            FactSubObjectPropertyOfEntailment = 40,
+            /// <summary>
+            /// SymmetricObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ObjectPropertyAssertion(OP,IDV2,IDV1)
+            /// <para>W3C OWL2 RL/RDF: prp-symp</para><para>Tier: Fact</para>
+            /// </summary>
+            FactSymmetricObjectPropertyEntailment = 41,
+            /// <summary>
+            /// TransitiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV2,IDV3) -> ObjectPropertyAssertion(OP,IDV1,IDV3)
+            /// <para>W3C OWL2 RL/RDF: prp-trp</para><para>Tier: Fact</para>
+            /// </summary>
+            FactTransitiveObjectPropertyEntailment = 42
         }
 
         /// <summary>
         /// OWLValidatorRules represents an enumeration for supported RDFS/OWL2 validator rules
+        /// <para>
+        /// W3C OWL2 RL/RDF traceability (5.0-beta3): covers the "-> false/ERROR" violation-detection rules of the table, in their
+        /// consistency-check form: eq-diff1, eq-diff2, eq-diff3 (DifferentIndividualsAnalysis already tests every pair within the n-ary
+        /// AllDifferent member list against transitive owl:sameAs, so no separate rule was needed for the eq-diff2/eq-diff3 n-ary case),
+        /// prp-asyp, prp-irp, prp-npa1, prp-npa2, prp-dom, prp-rng, prp-fp, prp-ifp, prp-key, prp-pdw, prp-adp (DisjointObjectPropertiesAnalysis/
+        /// DisjointDataPropertiesAnalysis already flag any two assertions sharing a source/target pair across the whole n-ary AllDisjointProperties
+        /// member list, which is exactly the prp-adp pattern), dt-not-type (LiteralDatatypeAnalysis), cls-com, cax-dw, cax-adc, cls-maxc1/maxc2/maxqc1-4,
+        /// cls-nothing1/nothing2, cls-thing (partial cls-*/cax-*, no cls-int1/2/uni/svf1/2/avf/hv1/2/oo). Does NOT cover: eq-ref/eq-rep-*, most of scm-*
+        /// — these remain gap-filling targets. Several rules are OWLSharp extensions with no direct RL/RDF correspondent (T-Box "axioms should not overlap"
+        /// pitfall checks: EquivalentClassesAnalysis, EquivalentDataPropertiesAnalysis, EquivalentObjectPropertiesAnalysis, SubDataPropertyOfAnalysis,
+        /// SubObjectPropertyOfAnalysis; OWL2 DL well-formedness checks: ObjectPropertyChainAnalysis and the transitive-property restriction branches of
+        /// FunctionalObjectPropertyAnalysis/InverseFunctionalObjectPropertyAnalysis; annotation-level pragmas: TermsDeprecationAnalysis, TermsDisjointnessAnalysis).
+        /// TopBottomAnalysis mixes both: its T1/T2/B1/B2 branches (top/bottom property mispositioned via SubObjectPropertyOf/SubDataPropertyOf) are a stylistic
+        /// pitfall check (Warning, mirroring ThingNothingAnalysis' T1/N1), while its B3/B4 branches (an actual assertion using owl:bottomObjectProperty/
+        /// owl:bottomDataProperty) are a genuine contradiction since the bottom property is defined to be always empty (Error, mirroring ThingNothingAnalysis' N2).
+        /// </para>
         /// </summary>
         public enum OWLValidatorRules
         {
             /// <summary>
             /// AsymmetricObjectProperty(OP) ^ SymmetricObjectProperty(OP) -> ERROR<br/>
             /// AsymmetricObjectProperty(OP) ^ ObjectPropertyAssertion(OP,I1,I2) ^ ObjectPropertyAssertion(OP,I2,I1) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: prp-asyp (assertion-pair violation check). The AsymmetricObjectProperty+SymmetricObjectProperty overlap check is an OWLSharp extension</para>
             /// </summary>
             AsymmetricObjectPropertyAnalysis = 1,
             /// <summary>
             /// ClassAssertion(C,I) ^ ClassAssertion(ObjectComplementOf(C),I) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: cls-com</para>
             /// </summary>
             ClassAssertionAnalysis = 2,
             /// <summary>
             /// DataPropertyAssertion(DP,I,LIT) ^ DataPropertyDomain(DP,C) ^ ClassAssertion(ObjectComplementOf(C),I) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: prp-dom (consistency-check form: flags when the domain inference would contradict an explicit negative ClassAssertion)</para>
             /// </summary>
             DataPropertyDomainAnalysis = 3,
             /// <summary>
             /// DataPropertyAssertion(DP,I,LIT) ^ DataPropertyRange(DP,DR) ^ swrl:equal(Datatype(LIT),DataComplementOf(DR)) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: prp-rng (consistency-check form for datatype-constrained ranges). Datatype value-space well-formedness of the literal itself (dt-not-type) is covered separately by LiteralDatatypeAnalysis</para>
             /// </summary>
             DataPropertyRangeAnalysis = 4,
             /// <summary>
-            /// DifferentIndividuals(I1,I2) ^ SameIndividual(I2,I1) -> ERROR<br/>
-            /// DifferentIndividuals(I,I) -> ERROR
+            /// DifferentIndividuals(I1,...,IN) ^ SameIndividual(IX,IY) for any X != Y among the N members (direct or transitive) -> ERROR<br/>
+            /// DifferentIndividuals(I,...,I) with a repeated member -> ERROR
+            /// <para>W3C OWL2 RL/RDF: eq-diff1, eq-diff2, eq-diff3 (SameIndividual+DifferentIndividuals overlap check; the pairwise scan already covers every combination
+            /// within the n-ary AllDifferent member list, which is the eq-diff2/eq-diff3 case -- OWLSharp does not distinguish an AllDifferent's owl:members
+            /// vs owl:distinctMembers encoding, both collapse onto OWLDifferentIndividuals.IndividualExpressions). The DifferentIndividuals(I,I) self-difference check is an OWLSharp extension</para>
             /// </summary>
             DifferentIndividualsAnalysis = 5,
             /// <summary>
@@ -205,121 +346,152 @@ namespace OWLSharp
             /// DisjointClasses(C1,C2) ^ SubClassOf(C2,C1) -> ERROR<br/>
             /// DisjointClasses(C1,C2) ^ EquivalentClasses(C1,C2) -> ERROR<br/>
             /// DisjointClasses(C1,C2) ^ ClassAssertion(C1,I) ^ ClassAssertion(C2,I) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: cax-dw (A-Box shared-ClassAssertion check). The T-Box overlap check against SubClassOf/EquivalentClasses is an OWLSharp extension</para>
             /// </summary>
             DisjointClassesAnalysis = 6,
             /// <summary>
             /// DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP1,DP2) -> ERROR<br/>
             /// DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP2,DP1) -> ERROR<br/>
             /// DisjointDataProperties(DP1,DP2) ^ EquivalentDataProperties(DP1,DP2) -> ERROR<br/>
-            /// DisjointDataProperties(DP1,DP2) ^ DataPropertyAssertion(DP1,I,LIT) ^ DataPropertyAssertion(DP2,I,LIT) -> ERROR
+            /// AllDisjointDataProperties(DP1,...,DPN) ^ DataPropertyAssertion(DPi,I,LIT) ^ DataPropertyAssertion(DPj,I,LIT), i != j -> ERROR
+            /// <para>W3C OWL2 RL/RDF: prp-pdw, prp-adp (A-Box shared-assertion check; the flattened-then-grouped scan already covers any two distinct members of the
+            /// n-ary AllDisjointProperties list sharing the same (individual,literal) pair, which is the prp-adp case). The T-Box overlap check against
+            /// SubDataPropertyOf/EquivalentDataProperties is an OWLSharp extension</para>
             /// </summary>
             DisjointDataPropertiesAnalysis = 7,
             /// <summary>
             /// DisjointObjectProperties(OP1,OP2) ^ SubDataPropertyOf(OP1,OP2) -> ERROR<br/>
             /// DisjointObjectProperties(OP1,OP2) ^ SubDataPropertyOf(OP2,OP1) -> ERROR<br/>
             /// DisjointObjectProperties(OP1,OP2) ^ EquivalentDataProperties(OP1,OP2) -> ERROR<br/>
-            /// DisjointObjectProperties(OP1,OP2) ^ ObjectPropertyAssertion(OP1,I1,I2) ^ ObjectPropertyAssertion(OP2,I1,I2) -> ERROR
+            /// AllDisjointObjectProperties(OP1,...,OPN) ^ ObjectPropertyAssertion(OPi,I1,I2) ^ ObjectPropertyAssertion(OPj,I1,I2), i != j -> ERROR
+            /// <para>W3C OWL2 RL/RDF: prp-pdw, prp-adp (A-Box shared-assertion check; the flattened-then-grouped scan already covers any two distinct members of the
+            /// n-ary AllDisjointProperties list sharing the same (source,target) pair, which is the prp-adp case). The T-Box overlap check against
+            /// SubObjectPropertyOf/EquivalentObjectProperties is an OWLSharp extension</para>
             /// </summary>
             DisjointObjectPropertiesAnalysis = 8,
             /// <summary>
             /// DisjointUnion(C,(C1,C2)) ^ ClassAssertion(C1,I) ^ ClassAssertion(C2,I) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: cax-adc</para>
             /// </summary>
             DisjointUnionAnalysis = 9,
             /// <summary>
             /// EquivalentClasses(C1,C2) ^ SubClassOf(C1,C2) -> ERROR<br/>
             /// EquivalentClasses(C1,C2) ^ SubClassOf(C2,C1) -> ERROR<br/>
             /// EquivalentClasses(C1,C2) ^ DisjointClasses(C1,C2) -> ERROR
+            /// <para>OWLSharp extension: T-Box overlap check (EquivalentClasses vs SubClassOf/DisjointClasses); the RL/RDF ruleset assumes consistent T-Box input rather than flagging redundant/contradictory axiom combinations</para>
             /// </summary>
             EquivalentClassesAnalysis = 10,
             /// <summary>
             /// EquivalentDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP1,DP2) -> ERROR<br/>
             /// EquivalentDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP2,DP1) -> ERROR<br/>
             /// EquivalentDataProperties(DP1,DP2) ^ DisjointDataProperties(DP1,DP2) -> ERROR
+            /// <para>OWLSharp extension: T-Box overlap check (EquivalentDataProperties vs SubDataPropertyOf/DisjointDataProperties), no direct RL/RDF correspondent</para>
             /// </summary>
             EquivalentDataPropertiesAnalysis = 11,
             /// <summary>
             /// EquivalentObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP1,OP2) -> ERROR<br/>
             /// EquivalentObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP2,OP1) -> ERROR<br/>
             /// EquivalentObjectProperties(OP1,OP2) ^ DisjointObjectProperties(OP1,OP2) -> ERROR
+            /// <para>OWLSharp extension: T-Box overlap check (EquivalentObjectProperties vs SubObjectPropertyOf/DisjointObjectProperties), no direct RL/RDF correspondent</para>
             /// </summary>
             EquivalentObjectPropertiesAnalysis = 12,
             /// <summary>
             /// FunctionalDataProperty(DP) ^ DataPropertyAssertion(DP,I,LIT1) ^ DataPropertyAssertion(DP,I,LIT2) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: prp-fp (consistency-check form for data properties: literals cannot be merged via sameAs, so a functional data property linking one individual to two distinct literals is a direct violation)</para>
             /// </summary>
             FunctionalDataPropertyAnalysis = 13,
             /// <summary>
             /// FunctionalObjectProperty(OP) ^ ObjectPropertyAssertion(OP,I1,I2) ^ ObjectPropertyAssertion(OP,I1,I3) ^ DifferentIndividuals(I2,I3) -> ERROR<br/>
             /// FunctionalObjectProperty(OP) ^ TransitiveObjectProperty(OP) -> ERROR<br/>
             /// FunctionalObjectProperty(OP) ^ SubObjectPropertyOf(OP,OP2) ^ TransitiveObjectProperty(OP2) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: prp-fp (consistency-check form: flags when the sameAs inference would contradict an explicit DifferentIndividuals). The FunctionalObjectProperty+TransitiveObjectProperty restriction check is an OWLSharp extension (OWL2 DL simple-role restriction, unrelated to RL/RDF)</para>
             /// </summary>
             FunctionalObjectPropertyAnalysis = 14,
             /// <summary>
             /// HasKey(C,OP) ^ ClassAssertion(C,I1) ^ ObjectPropertyAssertion(OP,I1,IX) ^ ClassAssertion(C,I2) ^ ObjectPropertyAssertion(OP,I2,IX) ^ DifferentIndividuals(I1,I2) -> ERROR<br/>
             /// HasKey(C,DP) ^ ClassAssertion(C,I1) ^ DataPropertyAssertion(DP,I1,LIT)  ^ ClassAssertion(C,I2) ^ DataPropertyAssertion(DP,I2,LIT)  ^ DifferentIndividuals(I1,I2) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: prp-key (consistency-check form: flags when the sameAs inference would contradict an explicit DifferentIndividuals)</para>
             /// </summary>
             HasKeyAnalysis = 15,
             /// <summary>
             /// InverseFunctionalObjectProperty(OP) ^ ObjectPropertyAssertion(OP,I1,I2) ^ ObjectPropertyAssertion(OP,I3,I2) ^ DifferentIndividuals(I1,I3) -> ERROR<br/>
             /// InverseFunctionalObjectProperty(OP) ^ TransitiveObjectProperty(OP) -> ERROR<br/>
             /// InverseFunctionalObjectProperty(OP) ^ SubObjectPropertyOf(OP,OP2) ^ TransitiveObjectProperty(OP2) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: prp-ifp (consistency-check form: flags when the sameAs inference would contradict an explicit DifferentIndividuals). The InverseFunctionalObjectProperty+TransitiveObjectProperty restriction check is an OWLSharp extension (OWL2 DL simple-role restriction, unrelated to RL/RDF)</para>
             /// </summary>
             InverseFunctionalObjectPropertyAnalysis = 16,
             /// <summary>
             /// IrreflexiveObjectProperty(OP) ^ ReflexiveObjectProperty(OP) -> ERROR<br/>
             /// IrreflexiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,I,I) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: prp-irp (reflexive-assertion violation check). The Irreflexive+Reflexive overlap check is an OWLSharp extension</para>
             /// </summary>
             IrreflexiveObjectPropertyAnalysis = 17,
             /// <summary>
-            /// NegativeDataPropertyAssertion(DP,I,LIT) ^ DataPropertyAssertion(DP,I,LIT) -> ERROR
+            /// DataPropertyAssertion(DP,I,LIT) ^ dt-not-type(LIT) -> ERROR<br/>
+            /// NegativeDataPropertyAssertion(DP,I,LIT) ^ dt-not-type(LIT) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: dt-not-type (typed literal value-space compatibility check, scoped to A-Box DataPropertyAssertion/NegativeDataPropertyAssertion literals)</para>
             /// </summary>
-            NegativeDataAssertionsAnalysis = 18,
+            LiteralDatatypeAnalysis = 18,
+            /// <summary>
+            /// NegativeDataPropertyAssertion(DP,I,LIT) ^ DataPropertyAssertion(DP,I,LIT) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: prp-npa2</para>
+            /// </summary>
+            NegativeDataAssertionsAnalysis = 19,
             /// <summary>
             /// NegativeObjectPropertyAssertion(OP,I1,I2) ^ ObjectPropertyAssertion(OP,I1,I2) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: prp-npa1</para>
             /// </summary>
-            NegativeObjectAssertionsAnalysis = 19,
+            NegativeObjectAssertionsAnalysis = 20,
             /// <summary>
             /// ObjectPropertyChain(PC,(OP1,OP2)) ^ SubObjectPropertyOf(PC,OP) ^ AsymmetricObjectProperty(OP) -> ERROR<br/>
             /// ObjectPropertyChain(PC,(OP1,OP2)) ^ SubObjectPropertyOf(PC,OP) ^ FunctionalObjectProperty(OP) -> ERROR<br/>
             /// ObjectPropertyChain(PC,(OP1,OP2)) ^ SubObjectPropertyOf(PC,OP) ^ InverseFunctionalObjectProperty(OP) -> ERROR<br/>
             /// ObjectPropertyChain(PC,(OP1,OP2)) ^ SubObjectPropertyOf(PC,OP) ^ IrreflexiveObjectProperty(OP) -> ERROR<br/>
             /// ObjectPropertyChain(PC,(OP1,OP2)) ^ SubObjectPropertyOf(PC,OP1) -> ERROR
+            /// <para>OWLSharp extension: enforces OWL2 DL property-chain regularity / simple-role restrictions (chain superproperty cannot be asymmetric/functional/inverse-functional/irreflexive; chain cannot be self-referential), which is outside the RL/RDF entailment table</para>
             /// </summary>
-            ObjectPropertyChainAnalysis = 20,
+            ObjectPropertyChainAnalysis = 21,
             /// <summary>
             /// ObjectPropertyAssertion(OP,I1,I2) ^ ObjectPropertyDomain(OP,C) ^ ClassAssertion(ObjectComplementOf(C),I1) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: prp-dom (consistency-check form: flags when the domain inference would contradict an explicit negative ClassAssertion)</para>
             /// </summary>
-            ObjectPropertyDomainAnalysis = 21,
+            ObjectPropertyDomainAnalysis = 22,
             /// <summary>
             /// ObjectPropertyAssertion(OP,I1,I2) ^ ObjectPropertyRange(OP,C) ^ ClassAssertion(ObjectComplementOf(C),I2) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: prp-rng (consistency-check form: flags when the range inference would contradict an explicit negative ClassAssertion)</para>
             /// </summary>
-            ObjectPropertyRangeAnalysis = 22,
+            ObjectPropertyRangeAnalysis = 23,
             /// <summary>
             /// SubClassOf(C1,C2) ^ SubClassOf(C2,C1) -> ERROR<br/>
             /// SubClassOf(C1,C2) ^ EquivalentClasses(C1,C2) -> ERROR<br/>
             /// SubClassOf(C1,C2) ^ DisjointClasses(C1,C2) -> ERROR<br/>
             /// SubClassOf(C,[Object|Data][Exact|Max]Cardinality(P,N) -> ERROR (ON ASSERTION'S CARDINALITY VIOLATION)
+            /// <para>W3C OWL2 RL/RDF: cls-maxc1, cls-maxc2, cls-maxqc1, cls-maxqc2, cls-maxqc3, cls-maxqc4 (cardinality-violation checks, qualified and unqualified). The SubClassOf vs EquivalentClasses/DisjointClasses overlap check is an OWLSharp extension</para>
             /// </summary>
-            SubClassOfAnalysis = 23,
+            SubClassOfAnalysis = 24,
             /// <summary>
             /// SubDataPropertyOf(DP1,DP2) ^ SubDataPropertyOf(DP2,DP1) -> ERROR<br/>
             /// SubDataPropertyOf(DP1,DP2) ^ EquivalentDataProperties(DP1,DP2) -> ERROR<br/>
             /// SubDataPropertyOf(DP1,DP2) ^ DisjointDataProperties(DP1,DP2) -> ERROR
+            /// <para>OWLSharp extension: T-Box overlap check (SubDataPropertyOf vs EquivalentDataProperties/DisjointDataProperties), no direct RL/RDF correspondent</para>
             /// </summary>
-            SubDataPropertyOfAnalysis = 24,
+            SubDataPropertyOfAnalysis = 25,
             /// <summary>
             /// SubObjectPropertyOf(OP1,OP2) ^ SubObjectPropertyOf(OP2,OP1) -> ERROR<br/>
             /// SubObjectPropertyOf(OP1,OP2) ^ EquivalentObjectProperties(OP1,OP2) -> ERROR<br/>
             /// SubObjectPropertyOf(OP1,OP2) ^ DisjointObjectProperties(OP1,OP2) -> ERROR
+            /// <para>OWLSharp extension: T-Box overlap check (SubObjectPropertyOf vs EquivalentObjectProperties/DisjointObjectProperties), no direct RL/RDF correspondent</para>
             /// </summary>
-            SubObjectPropertyOfAnalysis = 25,
+            SubObjectPropertyOfAnalysis = 26,
             /// <summary>
             /// Class(C) ^ AnnotationAssertion(owl:deprecated,C,true) -> WARNING<br/>
             /// Datatype(D) ^ AnnotationAssertion(owl:deprecated,D,true) -> WARNING<br/>
             /// DataProperty(DP) ^ AnnotationAssertion(owl:deprecated,DP,true) -> WARNING<br/>
             /// ObjectProperty(OP) ^ AnnotationAssertion(owl:deprecated,OP,true) -> WARNING<br/>
             /// AnnotationProperty(AP) ^ AnnotationAssertion(owl:deprecated,AP,true) -> WARNING
+            /// <para>OWLSharp extension: annotation-level pragma (owl:deprecated) with no formal RL/RDF semantics</para>
             /// </summary>
-            TermsDeprecationAnalysis = 26,
+            TermsDeprecationAnalysis = 27,
             /// <summary>
             /// Class(C) ^ Datatype(C) -> WARNING<br/>
             /// Class(C) ^ DataProperty(C) -> WARNING<br/>
@@ -336,21 +508,32 @@ namespace OWLSharp
             /// AnnotationProperty(AP) ^ Datatype(AP) -> WARNING<br/>
             /// AnnotationProperty(AP) ^ NamedIndividual(AP) -> WARNING<br/>
             /// Datatype(D) ^ NamedIndividual(D) -> WARNING
+            /// <para>OWLSharp extension: stylistic discouragement of punning across entity kinds, with no formal RL/RDF semantics</para>
             /// </summary>
-            TermsDisjointnessAnalysis = 27,
+            TermsDisjointnessAnalysis = 28,
             /// <summary>
             /// Class(C) ^ SubClassOf(owl:Thing,C) -> WARNING<br/>
             /// Class(C) ^ SubClassOf(C, owl:Nothing) -> WARNING<br/>
             /// ClassAssertion(owl:Nothing, I) -> WARNING
+            /// <para>W3C OWL2 RL/RDF: cls-thing, cls-nothing1 (owl:Thing/owl:Nothing root/bottom-position checks), cls-nothing2 (individuals in owl:Nothing check)</para>
             /// </summary>
-            ThingNothingAnalysis = 28,
+            ThingNothingAnalysis = 29,
             /// <summary>
             /// ObjectProperty(OP) ^ SubObjectPropertyOf(owl:topObjectProperty,OP) -> WARNING<br/>
             /// ObjectProperty(OP) ^ SubObjectPropertyOf(OP, owl:bottomObjectProperty) -> WARNING<br/>
             /// DataProperty(DP) ^ SubDataPropertyOf(owl:topDataProperty,DP) -> WARNING<br/>
-            /// DataProperty(DP) ^ SubDataPropertyOf(DP, owl:bottomDataProperty) -> WARNING
+            /// DataProperty(DP) ^ SubDataPropertyOf(DP, owl:bottomDataProperty) -> WARNING<br/>
+            /// ObjectPropertyAssertion(owl:bottomObjectProperty,I1,I2) -> ERROR<br/>
+            /// DataPropertyAssertion(owl:bottomDataProperty,I,LIT) -> ERROR
+            /// <para>OWLSharp extension: no direct W3C RL/RDF correspondent for owl:top/bottomObjectProperty and owl:top/bottomDataProperty root/bottom-position checks
+            /// (analogous in spirit to cls-thing/cls-nothing1, but the property-level axiomatic triples are not part of the given RL/RDF table). The T1/T2/B1/B2
+            /// mispositioning checks (top/bottom property appearing on the wrong side of a SubObjectPropertyOf/SubDataPropertyOf axiom) are a stylistic pitfall,
+            /// same as ThingNothingAnalysis' T1/N1: Warning is correct there. The B3/B4 checks are different in kind: an actual ObjectPropertyAssertion/
+            /// DataPropertyAssertion using owl:bottomObjectProperty/owl:bottomDataProperty as predicate is a genuine logical contradiction, because the bottom
+            /// property is defined to always be empty (mirrors ThingNothingAnalysis' N2, which is also Error). RESOLUTION (beta3 gap-filling): the code was
+            /// already correct for B3/B4 (Error) but wrong for T1/T2/B1/B2 (was Error, should be Warning); the code has been fixed to match this documentation</para>
             /// </summary>
-            TopBottomAnalysis = 29
+            TopBottomAnalysis = 30
         }
 
         /// <summary>

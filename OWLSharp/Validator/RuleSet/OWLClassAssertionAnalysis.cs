@@ -17,6 +17,9 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: cls-com</para>
+    /// </summary>
     internal static class OWLClassAssertionAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.ClassAssertionAnalysis);
@@ -30,9 +33,13 @@ namespace OWLSharp.Validator
             List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
 
             //ClassAssertion(CLS,IDV) ^ ClassAssertion(ObjectComplementOf(CLS),IDV) -> ERROR
+            //Group all ClassAssertion axioms by individual, so each individual's full set of asserted class expressions
+            //can be cross-checked against itself for a complement pair (an individual can be typed with many classes at once)
             foreach (var classAsnMap in clsAsns.GroupBy(clax => clax.IndividualExpression.GetIRI().ToString())
                                                .ToDictionary(grp => grp.Key, grp => grp.Select(g => g.ClassExpression)))
             {
+                //Look for a class expression CLS and, among the SAME individual's other class expressions, an ObjectComplementOf(CLS):
+                //asserting both means the individual is stated to belong and NOT belong to the same class, which is a contradiction
                 if (classAsnMap.Value.Any(outerClassExpr =>
                      classAsnMap.Value.Any(innerClassExpr => !outerClassExpr.GetIRI().Equals(innerClassExpr.GetIRI())
                                                                && outerClassExpr is OWLObjectComplementOf objectComplOf

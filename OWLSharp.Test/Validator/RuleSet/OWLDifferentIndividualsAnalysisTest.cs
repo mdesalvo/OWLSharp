@@ -85,6 +85,44 @@ public class OWLDifferentIndividualsAnalysisTest
     }
 
     [TestMethod]
+    public void ShouldAnalyzeDifferentIndividualsTransitiveSameAsAcrossNaryMembersCase()
+    {
+        //Regression test for the eq-diff2/eq-diff3 gap-filling pass (beta3): checks that the n-ary AllDifferent
+        //member list is validated against SameIndividual not just directly, but through transitive closure that
+        //goes OUTSIDE the DifferentIndividuals member list itself (Mark same-as Ghost, Ghost same-as Marco, with
+        //Ghost never appearing in the DifferentIndividuals axiom) -- this must still be caught as a clash between
+        //Mark and Marco, which are two arbitrary (non-adjacent) members of the n-ary list
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Ghost")))
+            ],
+            AssertionAxioms = [
+                new OWLDifferentIndividuals([
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco"))]),
+                new OWLSameIndividual([
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Ghost"))]),
+                new OWLSameIndividual([
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Ghost")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco"))])
+            ]
+        };
+        List<OWLIssue> issues = OWLDifferentIndividualsAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.HasCount(1, issues);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDifferentIndividualsAnalysis.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDifferentIndividualsAnalysis.rulesugg)));
+    }
+
+    [TestMethod]
     public void ShouldAnalyzeDifferentIndividualsSelfCase()
     {
         OWLOntology ontology = new OWLOntology

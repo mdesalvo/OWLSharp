@@ -17,6 +17,9 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: prp-fp (consistency-check form: flags when the sameAs inference would contradict an explicit DifferentIndividuals). The FunctionalObjectProperty+TransitiveObjectProperty restriction check is an OWLSharp extension (OWL2 DL simple-role restriction, unrelated to RL/RDF)</para>
+    /// </summary>
     internal static class OWLFunctionalObjectPropertyAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.FunctionalObjectPropertyAnalysis);
@@ -50,6 +53,9 @@ namespace OWLSharp.Validator
                     #endregion
 
                     //FunctionalObjectProperty(FOP) ^ ObjectPropertyAssertion(FOP,IDV1,IDV2) ^ ObjectPropertyAssertion(FOP,IDV1,IDV3) ^ DifferentIndividuals(IDV2,IDV3) -> ERROR
+                    //Group assertions by their common source: a functional property should link a source to a single target,
+                    //so the violation is any pair of targets in a group that is explicitly asserted DifferentFrom
+                    //(sharing a source alone is not an error, just a sameAs candidate for the targets)
                     fopAsns.GroupBy(opex => opex.SourceIndividualExpression.GetIRI().ToString())
                            .Select(grp => new
                            {

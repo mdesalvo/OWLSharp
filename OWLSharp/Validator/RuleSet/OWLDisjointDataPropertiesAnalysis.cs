@@ -17,6 +17,13 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: prp-pdw, prp-adp (A-Box shared-assertion check). The assertions of ALL member properties of the DisjointDataProperties
+    /// axiom are flattened into a single list and then grouped by (individual,literal) pair: any group with more than one assertion means at least two
+    /// distinct members ?pi/?pj (i != j) of the (possibly n-ary) disjoint set relate the same individual to the same literal, which is exactly the prp-adp
+    /// pattern (AllDisjointProperties), so no separate rule was needed for the n-ary case (see ShouldAnalyzeDisjointDataProperties test, which already
+    /// exercises a 3-member disjoint list with a non-adjacent clash). The T-Box overlap check against SubDataPropertyOf/EquivalentDataProperties is an OWLSharp extension</para>
+    /// </summary>
     internal static class OWLDisjointDataPropertiesAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.DisjointDataPropertiesAnalysis);
@@ -38,9 +45,14 @@ namespace OWLSharp.Validator
                 foreach (OWLDisjointDataProperties disjDtProps in disjDtPropsAxms)
                 {
                     disjDtPropAsns.Clear();
+                    //Flatten the assertions of ALL member data properties of this (possibly n-ary) disjoint set into one list,
+                    //losing track of which specific property each assertion came from -- irrelevant for this check, since any
+                    //two members relating the same (individual,literal) pair violate disjointness regardless of which pair it is
                     foreach (OWLDataProperty disjDtProp in disjDtProps.DataProperties)
                         disjDtPropAsns.AddRange(OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, disjDtProp));
 
+                    //Grouping by (individual,literal) and looking for groups with more than one assertion is what generalizes
+                    //the pairwise prp-adp check to the n-ary AllDisjointProperties case without an explicit nested property loop
                     disjDtPropAsns.GroupBy(dtAsn => new {
                                         Idv = dtAsn.IndividualExpression.GetIRI().ToString(),
                                         Lit = dtAsn.Literal.GetLiteral().ToString() })

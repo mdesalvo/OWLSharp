@@ -91,8 +91,8 @@ public class OWLOntologyHelperTest
         OWLReasoner reasoner = new OWLReasoner
         {
             Rules = [
-                OWLEnums.OWLReasonerRules.SubClassOfEntailment,
-                OWLEnums.OWLReasonerRules.ClassAssertionEntailment
+                OWLEnums.OWLReasonerRules.SchemaSubClassOfEntailment,
+                OWLEnums.OWLReasonerRules.FactClassAssertionEntailment
             ]
         };
         RDFAskQuery query = new RDFAskQuery()
@@ -167,8 +167,8 @@ public class OWLOntologyHelperTest
         OWLReasoner reasoner = new OWLReasoner
         {
             Rules = [
-                OWLEnums.OWLReasonerRules.SubClassOfEntailment,
-                OWLEnums.OWLReasonerRules.ClassAssertionEntailment
+                OWLEnums.OWLReasonerRules.SchemaSubClassOfEntailment,
+                OWLEnums.OWLReasonerRules.FactClassAssertionEntailment
             ]
         };
         RDFConstructQuery query = new RDFConstructQuery()
@@ -244,8 +244,8 @@ public class OWLOntologyHelperTest
         OWLReasoner reasoner = new OWLReasoner
         {
             Rules = [
-                OWLEnums.OWLReasonerRules.SubClassOfEntailment,
-                OWLEnums.OWLReasonerRules.ClassAssertionEntailment
+                OWLEnums.OWLReasonerRules.SchemaSubClassOfEntailment,
+                OWLEnums.OWLReasonerRules.FactClassAssertionEntailment
             ]
         };
         RDFDescribeQuery query = new RDFDescribeQuery()
@@ -321,8 +321,8 @@ public class OWLOntologyHelperTest
         OWLReasoner reasoner = new OWLReasoner
         {
             Rules = [
-                OWLEnums.OWLReasonerRules.SubClassOfEntailment,
-                OWLEnums.OWLReasonerRules.ClassAssertionEntailment
+                OWLEnums.OWLReasonerRules.SchemaSubClassOfEntailment,
+                OWLEnums.OWLReasonerRules.FactClassAssertionEntailment
             ]
         };
         RDFSelectQuery query = new RDFSelectQuery()

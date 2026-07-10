@@ -18,6 +18,9 @@ using System.Linq;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>OWLSharp extension: annotation-level pragma (owl:deprecated) with no formal RL/RDF semantics</para>
+    /// </summary>
     internal static class OWLTermsDeprecationAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.TermsDeprecationAnalysis);
@@ -34,10 +37,14 @@ namespace OWLSharp.Validator
             List<string> declaredObjectProperties = ontology.GetDeclaredEntitiesOfType<OWLObjectProperty>().Select(obp => obp.GetIRI().ToString()).Distinct().ToList();
             List<string> declaredAnnotationProperties = ontology.GetDeclaredEntitiesOfType<OWLAnnotationProperty>().Select(anp => anp.GetIRI().ToString()).Distinct().ToList();
 
+            //Only owl:deprecated annotations with literal value "true" count; a subject could carry multiple annotation
+            //assertions on owl:deprecated (including conflicting/duplicate ones), so we don't assume at most one per subject
             foreach (OWLAnnotationAssertion annAsn in ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
                                                               .Where(asn => asn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.DEPRECATED)
                                                                              && (asn.ValueLiteral?.GetLiteral().Equals(RDFTypedLiteral.True) ?? false)))
             {
+                //The subject IRI is checked against every declared-entity kind independently: thanks to punning it may
+                //legitimately match more than one, in which case a deprecation warning is raised for each kind it matches
                 if (declaredClasses.Any(cls => string.Equals(cls, annAsn.SubjectIRI)))
                     issues.Add(new OWLIssue(
                         OWLEnums.OWLIssueSeverity.Warning,

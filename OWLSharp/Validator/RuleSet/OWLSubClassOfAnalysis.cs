@@ -17,6 +17,9 @@ using System.Collections.Generic;
 
 namespace OWLSharp.Validator
 {
+    /// <summary>
+    /// <para>W3C OWL2 RL/RDF: cls-maxc1, cls-maxc2, cls-maxqc1, cls-maxqc2, cls-maxqc3, cls-maxqc4 (cardinality-violation checks, qualified and unqualified). The SubClassOf vs EquivalentClasses/DisjointClasses overlap check is an OWLSharp extension</para>
+    /// </summary>
     internal static class OWLSubClassOfAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.SubClassOfAnalysis);
@@ -56,7 +59,8 @@ namespace OWLSharp.Validator
                      || subClassOf.SuperClassExpression is OWLDataExactCardinality
                      || subClassOf.SuperClassExpression is OWLDataMaxCardinality)
                 {
-                    //Materialize individuals of the subclass
+                    //Materialize individuals of the subclass (cached because the same class can recur as subclass across
+                    //several SubClassOf axioms, and computing its individuals is expensive)
                     string subClassIRI = subClassOf.SubClassExpression.GetIRI().ToString();
                     if (!individualsCache.ContainsKey(subClassIRI))
                         individualsCache.Add(subClassIRI, ontology.GetIndividualsOf(subClassOf.SubClassExpression, clsAsns, false));
@@ -70,6 +74,8 @@ namespace OWLSharp.Validator
                             case OWLObjectExactCardinality objExactCardinality:
                             {
                                 #region Qualified
+                                //A qualified cardinality restriction (onClass present) only counts assertions whose target
+                                //individual belongs to that class; an unqualified one counts all assertions on the property
                                 string qClassIRI = objExactCardinality.ClassExpression?.GetIRI().ToString();
                                 bool isQualified = !string.IsNullOrEmpty(qClassIRI);
                                 if (isQualified)
@@ -84,6 +90,8 @@ namespace OWLSharp.Validator
                                 int assertionsCount = 0;
                                 foreach (OWLObjectPropertyAssertion opAsn in opAsns)
                                 {
+                                    //Only relevant when qualified: check whether this assertion's target is one of the
+                                    //individuals belonging to the restriction's onClass
                                     bool opAsnIdvFoundAsQualifiedTarget = false;
                                     if (isQualified)
                                     {
