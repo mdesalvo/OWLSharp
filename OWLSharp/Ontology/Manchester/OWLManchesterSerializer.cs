@@ -101,13 +101,13 @@ namespace OWLSharp.Ontology
 
             //Declarations are visited first, so that every declared entity owns a frame
             ontology.DeclarationAxioms.ForEach(CollectAxiom);
-            ontology.DatatypeDefinitionAxioms.ForEach(ax => CollectAxiom(ax));
-            ontology.ClassAxioms.ForEach(ax => CollectAxiom(ax));
-            ontology.ObjectPropertyAxioms.ForEach(ax => CollectAxiom(ax));
-            ontology.DataPropertyAxioms.ForEach(ax => CollectAxiom(ax));
-            ontology.KeyAxioms.ForEach(ax => CollectAxiom(ax));
-            ontology.AssertionAxioms.ForEach(ax => CollectAxiom(ax));
-            ontology.AnnotationAxioms.ForEach(ax => CollectAxiom(ax));
+            ontology.DatatypeDefinitionAxioms.ForEach(CollectAxiom);
+            ontology.ClassAxioms.ForEach(CollectAxiom);
+            ontology.ObjectPropertyAxioms.ForEach(CollectAxiom);
+            ontology.DataPropertyAxioms.ForEach(CollectAxiom);
+            ontology.KeyAxioms.ForEach(CollectAxiom);
+            ontology.AssertionAxioms.ForEach(CollectAxiom);
+            ontology.AnnotationAxioms.ForEach(CollectAxiom);
             ontology.Rules.ForEach(swrlRule =>
                 OWLEvents.RaiseWarning($"SWRL rule '{swrlRule}' is not representable in OWL2/Manchester syntax and has been skipped"));
 

@@ -15,7 +15,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -5862,7 +5861,7 @@ public class OWLOntologyTest
         ontology.ObjectPropertyAxioms.Add(new OWLObjectPropertyDomain(hasTopping, pizza));
         ontology.DataPropertyAxioms.Add(new OWLDataPropertyRange(hasCalories, new OWLDatatype(new RDFResource(RDFVocabulary.XSD.INTEGER.ToString()))));
         ontology.DatatypeDefinitionAxioms.Add(new OWLDatatypeDefinition(positiveInteger, new OWLDatatype(new RDFResource(RDFVocabulary.XSD.INTEGER.ToString()))));
-        ontology.KeyAxioms.Add(new OWLHasKey(pizza, new List<OWLObjectPropertyExpression> { hasTopping }));
+        ontology.KeyAxioms.Add(new OWLHasKey(pizza, [hasTopping]));
         ontology.AssertionAxioms.Add(new OWLClassAssertion(pizza, margherita));
         ontology.AssertionAxioms.Add(new OWLClassAssertion(topping, mozzarella));
         ontology.AssertionAxioms.Add(new OWLObjectPropertyAssertion(hasTopping, margherita, mozzarella));

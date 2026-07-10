@@ -11,7 +11,6 @@
   limitations under the License.
 */
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
@@ -79,7 +78,7 @@ public class OWLProfileReportTest
     {
         OWLProfileReport report = new OWLProfileReport(OWLEnums.OWLProfiles.EL)
         {
-            Violations = new List<OWLProfileViolation>()
+            Violations = []
         };
 
         Assert.IsTrue(report.IsCompliant);

@@ -14,12 +14,10 @@
    limitations under the License.
 */
 
-using System.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 using RDFSharp.Query;
-using OWLSharp;
 
 namespace OWLSharp.Test.Ontology;
 

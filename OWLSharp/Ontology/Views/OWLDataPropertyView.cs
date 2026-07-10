@@ -46,8 +46,8 @@ namespace OWLSharp.Ontology
         /// <exception cref="OWLException"></exception>
         public OWLDataPropertyView(OWLDataProperty dtp, OWLOntology ont)
         {
-            DataProperty = dtp ?? throw new OWLException($"Cannot create data property view because given '{dtp}' parameter is null");
-            Ontology = ont ?? throw new OWLException($"Cannot create data property view because given '{ont}' parameter is null");
+            DataProperty = dtp ?? throw new OWLException($"Cannot create data property view because given '{nameof(dtp)}' parameter is null");
+            Ontology = ont ?? throw new OWLException($"Cannot create data property view because given '{nameof(ont)}' parameter is null");
         }
         #endregion
 

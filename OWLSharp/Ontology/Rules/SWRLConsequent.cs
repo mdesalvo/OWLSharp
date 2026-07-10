@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
-using RDFSharp.Query;
 
 namespace OWLSharp.Ontology
 {

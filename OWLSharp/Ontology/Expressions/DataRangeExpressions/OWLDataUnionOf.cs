@@ -85,7 +85,7 @@ namespace OWLSharp.Ontology
         /// Gets the OWL2/Manchester representation of this OWLDataUnionOf expression
         /// </summary>
         public override string ToManchesterString(OWLManchesterContext manchesterContext)
-            => string.Join(" or ", DataRangeExpressions.Select(drExpr => manchesterContext.Nest(drExpr)));
+            => string.Join(" or ", DataRangeExpressions.Select(manchesterContext.Nest));
 
         /// <summary>
         /// Exports this OWLDataUnionOf expression to an equivalent RDFGraph object

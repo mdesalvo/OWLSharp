@@ -74,7 +74,7 @@ namespace OWLSharp.Ontology
         /// </summary>
         public override string ToManchesterString(OWLManchesterContext manchesterContext)
         {
-            string escapedValue = Value.Replace("\\", "\\\\").Replace("\"", "\\\"");
+            string escapedValue = Value.Replace("\\", @"\\").Replace("\"", "\\\"");
             if (DatatypeIRI != null)
                 return $"\"{escapedValue}\"^^{manchesterContext.Abbreviate(new RDFResource(DatatypeIRI))}";
             if (!string.IsNullOrEmpty(Language))

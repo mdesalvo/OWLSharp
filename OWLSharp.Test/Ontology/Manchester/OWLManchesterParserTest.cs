@@ -367,7 +367,7 @@ public class OWLManchesterParserTest
     [DataRow("Symmetric", typeof(OWLSymmetricObjectProperty))]
     [DataRow("Asymmetric", typeof(OWLAsymmetricObjectProperty))]
     [DataRow("Transitive", typeof(OWLTransitiveObjectProperty))]
-    public void ShouldParseEachObjectPropertyCharacteristic(string characteristic, System.Type expectedType)
+    public void ShouldParseEachObjectPropertyCharacteristic(string characteristic, Type expectedType)
     {
         OWLOntology ontology = Parse($"ObjectProperty: pz:hasTopping\n    Characteristics: {characteristic}");
 
@@ -534,7 +534,7 @@ public class OWLManchesterParserTest
         OWLOntology ontology = Parse(
             "Datatype: pz:PositiveInt\n    EquivalentTo: xsd:integer[>= \"0\"^^xsd:integer]");
 
-        OWLDatatypeDefinition def = (OWLDatatypeDefinition)ontology.DatatypeDefinitionAxioms[0];
+        OWLDatatypeDefinition def = ontology.DatatypeDefinitionAxioms[0];
         Assert.AreEqual("http://example.org/pz#PositiveInt", def.Datatype.GetIRI().ToString());
         Assert.IsInstanceOfType<OWLDatatypeRestriction>(def.DataRangeExpression);
     }

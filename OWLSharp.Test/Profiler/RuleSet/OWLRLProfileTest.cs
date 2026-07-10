@@ -33,7 +33,7 @@ public class OWLRLProfileTest
     //OWLAxiom — a registration this fictitious type deliberately has none of, and rightly so (adding a
     //test-only type to OWLAxiom's real XmlInclude list just to satisfy this one test would pollute production
     //serialization for no benefit). Testing the extracted predicate directly sidesteps that entirely.
-    private sealed class FutureDataPropertyAxiom : OWLDataPropertyAxiom { }
+    private sealed class FutureDataPropertyAxiom : OWLDataPropertyAxiom;
 
     #region Tests
 

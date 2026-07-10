@@ -169,7 +169,7 @@ public class OWLReasonerTest
             ]
         };
         OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SchemaDisjointClassesEntailment] };
-        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology, new OWLReasonerOptions() { EnableIterativeReasoning=false })).Inferences;
+        List<OWLInference> inferences = (await reasoner.ApplyToOntologyAsync(ontology, new OWLReasonerOptions { EnableIterativeReasoning=false })).Inferences;
 
         Assert.HasCount(5, inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));

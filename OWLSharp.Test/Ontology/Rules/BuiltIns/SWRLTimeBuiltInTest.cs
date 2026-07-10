@@ -18,8 +18,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 using RDFSharp.Query;
-using System.Data;
-using OWLSharp;
 
 namespace OWLSharp.Test.Ontology;
 

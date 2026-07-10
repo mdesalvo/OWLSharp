@@ -78,7 +78,7 @@ namespace OWLSharp.Validator
                     $"Detected clash on terms disjointness for object property with IRI: '{clashingObjectProperty}'",
                     rulesugg));
 
-            foreach (string clashingAnnotationProperty in declaredAnnotationProperties.Where(anp => declaredNamedIndividuals.Contains(anp)))
+            foreach (string clashingAnnotationProperty in declaredAnnotationProperties.Where(declaredNamedIndividuals.Contains))
                 issues.Add(new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Warning,
                     rulename,

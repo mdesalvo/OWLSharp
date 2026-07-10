@@ -16,7 +16,6 @@
 
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
-using RDFSharp.Query;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;

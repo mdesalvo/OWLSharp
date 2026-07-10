@@ -15,13 +15,11 @@
 */
 
 using System.Collections.Generic;
-using System.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
-using OWLSharp;
 
 namespace OWLSharp.Test.Ontology;
 

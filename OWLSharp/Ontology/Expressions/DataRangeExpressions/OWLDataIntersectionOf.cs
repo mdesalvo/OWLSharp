@@ -85,7 +85,7 @@ namespace OWLSharp.Ontology
         /// Gets the OWL2/Manchester representation of this OWLDataIntersectionOf expression
         /// </summary>
         public override string ToManchesterString(OWLManchesterContext manchesterContext)
-            => string.Join(" and ", DataRangeExpressions.Select(drExpr => manchesterContext.Nest(drExpr)));
+            => string.Join(" and ", DataRangeExpressions.Select(manchesterContext.Nest));
 
         /// <summary>
         /// Exports this OWLDataIntersectionOf expression to an equivalent RDFGraph object
