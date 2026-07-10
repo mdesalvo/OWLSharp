@@ -18,7 +18,7 @@ using OWLSharp.Ontology;
 using OWLSharp.Profiler;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Profiler.Walkers;
+namespace OWLSharp.Test.Profiler;
 
 [TestClass]
 public class OWLClassAxiomWalkerTest
