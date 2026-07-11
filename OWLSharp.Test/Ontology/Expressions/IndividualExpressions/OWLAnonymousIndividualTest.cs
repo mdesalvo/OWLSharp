@@ -92,4 +92,26 @@ public class OWLAnonymousIndividualTest
         Assert.IsTrue(representative.Equals(new RDFResource($"bnode:{anonIdv.NodeID}")));
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLAnonymousIndividual anonIdv = new OWLAnonymousIndividual("AnonIdv");
+        OWLManchesterContext manchesterContext = new OWLManchesterContext([]);
+
+        Assert.AreEqual("_:AnonIdv", anonIdv.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLAnonymousIndividual anonIdv = new OWLAnonymousIndividual("AnonIdv");
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext([]);
+
+        Assert.AreEqual("_:AnonIdv", anonIdv.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

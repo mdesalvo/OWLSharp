@@ -83,6 +83,23 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this literal
+        /// </summary>
+        public override string ToFunctionalString(OWLFunctionalContext functionalContext)
+        {
+            //Backslashes and double quotes are the only characters the quotedString production forbids
+            //appearing unescaped, so this mirrors the exact same escaping already used for Manchester
+            string escapedValue = Value.Replace("\\", @"\\").Replace("\"", "\\\"");
+            if (DatatypeIRI != null)
+                return $"\"{escapedValue}\"^^{functionalContext.Abbreviate(new RDFResource(DatatypeIRI))}";
+            if (!string.IsNullOrEmpty(Language))
+                return $"\"{escapedValue}\"@{Language}";
+            //A bare quotedString with neither datatype nor language tag is the legal abbreviation of
+            //stringLiteralNoLanguage: the grammar does not require an explicit "^^rdf:PlainLiteral" suffix
+            return $"\"{escapedValue}\"";
+        }
+
+        /// <summary>
         /// Gets the RDFLiteral representation of this literal
         /// </summary>
         public RDFLiteral GetLiteral()

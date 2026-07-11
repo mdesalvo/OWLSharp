@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
@@ -148,5 +149,43 @@ public class OWLFunctionalDataPropertyTest
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
     }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLDataProperty hasCalories = new OWLDataProperty(new RDFResource("http://example.org/pz#hasCalories"));
+        OWLFunctionalDataProperty axiom = new OWLFunctionalDataProperty(hasCalories);
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("FunctionalDataProperty( pz:hasCalories )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLDataProperty hasCalories = new OWLDataProperty(new RDFResource("http://example.org/pz#hasCalories"));
+        OWLFunctionalDataProperty axiom = new OWLFunctionalDataProperty(hasCalories);
+
+        OWLManchesterFrameItem frameItem = axiom.ToManchesterFrameItem(CreateManchesterContext());
+
+        Assert.IsNotNull(frameItem);
+        Assert.AreEqual(OWLManchesterFrameKind.DataProperty, frameItem.FrameKind);
+        Assert.AreEqual("pz:hasCalories", frameItem.EntityName);
+        Assert.AreEqual("Characteristics:", frameItem.SectionKeyword);
+        Assert.AreEqual("Functional", frameItem.ItemText);
+    }
+    #endregion
+
+    #region Utilities
+    private static OWLFunctionalContext CreateContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLFunctionalContext(ontology.Prefixes);
+    }
+
+    private static OWLManchesterContext CreateManchesterContext()
+        => new OWLManchesterContext(CreateContext().Prefixes);
     #endregion
 }

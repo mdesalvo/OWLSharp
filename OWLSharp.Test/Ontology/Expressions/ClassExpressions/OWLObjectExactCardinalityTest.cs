@@ -169,4 +169,48 @@ public class OWLObjectExactCardinalityTest
         Assert.AreEqual(1, graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeUnqualifiedToManchester()
+    {
+        OWLObjectExactCardinality objectExactCardinality = new OWLObjectExactCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1);
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")) ]);
+
+        Assert.AreEqual("foaf:knows exactly 1", objectExactCardinality.ToManchesterString(manchesterContext));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLObjectExactCardinality objectExactCardinality = new OWLObjectExactCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1, new OWLClass(RDFVocabulary.FOAF.PERSON));
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")) ]);
+
+        Assert.AreEqual("foaf:knows exactly 1 foaf:Person", objectExactCardinality.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeUnqualifiedToFunctional()
+    {
+        OWLObjectExactCardinality objectExactCardinality = new OWLObjectExactCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1);
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")) ]);
+
+        Assert.AreEqual("ObjectExactCardinality( 1 foaf:knows )", objectExactCardinality.ToFunctionalString(functionalContext));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLObjectExactCardinality objectExactCardinality = new OWLObjectExactCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1, new OWLClass(RDFVocabulary.FOAF.PERSON));
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")) ]);
+
+        Assert.AreEqual("ObjectExactCardinality( 1 foaf:knows foaf:Person )", objectExactCardinality.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

@@ -92,6 +92,17 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this AnnotationPropertyDomain axiom
+        /// (the domain is a bare IRI, not an expression, and may come from either the full IRI field or the
+        /// abbreviated xsd:QName field - only one of the two is ever set, mirroring the Manchester rendering)
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+        {
+            string domainIRI = IRI ?? (AbbreviatedIRI != null ? string.Concat(AbbreviatedIRI.Namespace, AbbreviatedIRI.Name) : null);
+            return $"AnnotationPropertyDomain( {functionalContext.RenderAxiomAnnotations(Annotations)}{AnnotationProperty.ToFunctionalString(functionalContext)} {functionalContext.Abbreviate(new RDFResource(domainIRI))} )";
+        }
+
+        /// <summary>
         /// Exports this OWLAnnotationPropertyDomain to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

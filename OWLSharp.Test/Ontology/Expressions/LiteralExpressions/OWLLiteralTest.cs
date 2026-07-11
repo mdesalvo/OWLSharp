@@ -205,4 +205,64 @@ public class OWLLiteralTest
                       && string.Equals(rdfLitTL.ToString(), "hello^^http://www.w3.org/2001/XMLSchema#string"));
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeTypedLiteralToManchester()
+    {
+        OWLLiteral lit = new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING));
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#")) ]);
+
+        Assert.AreEqual("\"hello\"^^xsd:string", lit.ToManchesterString(manchesterContext));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeLanguageLiteralToManchester()
+    {
+        OWLLiteral lit = new OWLLiteral(new RDFPlainLiteral("hello", "it"));
+        OWLManchesterContext manchesterContext = new OWLManchesterContext([]);
+
+        Assert.AreEqual("\"hello\"@IT", lit.ToManchesterString(manchesterContext));
+    }
+
+    [TestMethod]
+    public void ShouldSerializePlainLiteralToManchester()
+    {
+        OWLLiteral lit = new OWLLiteral(new RDFPlainLiteral("hello"));
+        OWLManchesterContext manchesterContext = new OWLManchesterContext([]);
+
+        Assert.AreEqual("\"hello\"", lit.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeTypedLiteralToFunctional()
+    {
+        OWLLiteral lit = new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING));
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#")) ]);
+
+        Assert.AreEqual("\"hello\"^^xsd:string", lit.ToFunctionalString(functionalContext));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeLanguageLiteralToFunctional()
+    {
+        OWLLiteral lit = new OWLLiteral(new RDFPlainLiteral("hello", "it"));
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext([]);
+
+        Assert.AreEqual("\"hello\"@IT", lit.ToFunctionalString(functionalContext));
+    }
+
+    [TestMethod]
+    public void ShouldSerializePlainLiteralToFunctional()
+    {
+        OWLLiteral lit = new OWLLiteral(new RDFPlainLiteral("hello"));
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext([]);
+
+        Assert.AreEqual("\"hello\"", lit.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

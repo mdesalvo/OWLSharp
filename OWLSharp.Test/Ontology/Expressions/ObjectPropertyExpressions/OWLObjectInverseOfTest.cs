@@ -94,4 +94,28 @@ public class OWLObjectInverseOfTest
         Assert.IsTrue(representative.IsBlank);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLObjectInverseOf objectInverseOf = new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")) ]);
+
+        Assert.AreEqual("inverse foaf:knows", objectInverseOf.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLObjectInverseOf objectInverseOf = new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")) ]);
+
+        Assert.AreEqual("ObjectInverseOf( foaf:knows )", objectInverseOf.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

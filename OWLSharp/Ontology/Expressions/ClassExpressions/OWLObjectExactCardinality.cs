@@ -116,6 +116,14 @@ namespace OWLSharp.Ontology
             => $"{ObjectPropertyExpression.ToManchesterString(manchesterContext)} exactly {Cardinality}{(ClassExpression != null ? $" {manchesterContext.Nest(ClassExpression)}" : string.Empty)}";
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this OWLObjectExactCardinality expression
+        /// </summary>
+        public override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            //The qualifying class expression is optional in the grammar (unqualified cardinality restriction),
+            //so it is only appended when present, mirroring the same conditional already used for Manchester
+            => $"ObjectExactCardinality( {Cardinality} {ObjectPropertyExpression.ToFunctionalString(functionalContext)}{(ClassExpression != null ? $" {ClassExpression.ToFunctionalString(functionalContext)}" : string.Empty)} )";
+
+        /// <summary>
         /// Exports this OWLObjectExactCardinality expression to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

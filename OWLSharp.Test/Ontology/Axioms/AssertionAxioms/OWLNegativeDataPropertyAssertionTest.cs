@@ -17,6 +17,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
+using System;
 using System.Linq;
 
 namespace OWLSharp.Test.Ontology;
@@ -24,6 +25,22 @@ namespace OWLSharp.Test.Ontology;
 [TestClass]
 public class OWLNegativeDataPropertyAssertionTest
 {
+    #region Utilities
+    private static OWLFunctionalContext CreateContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLFunctionalContext(ontology.Prefixes);
+    }
+
+    private static OWLManchesterContext CreateManchesterContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLManchesterContext(ontology.Prefixes);
+    }
+    #endregion
+
     #region Tests
     [TestMethod]
     public void ShouldCreateNamedIndividualNegativeDataPropertyAssertion()
@@ -304,6 +321,36 @@ public class OWLNegativeDataPropertyAssertionTest
         //Annotations
         Assert.AreEqual(1, graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLDataProperty hasCalories = new OWLDataProperty(new RDFResource("http://example.org/pz#hasCalories"));
+        OWLNamedIndividual margherita = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Margherita"));
+        OWLNegativeDataPropertyAssertion axiom = new OWLNegativeDataPropertyAssertion(hasCalories, margherita,
+            new OWLLiteral(new RDFTypedLiteral("0", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("NegativeDataPropertyAssertion( pz:hasCalories pz:Margherita \"0\"^^xsd:integer )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLDataProperty hasCalories = new OWLDataProperty(new RDFResource("http://example.org/pz#hasCalories"));
+        OWLNamedIndividual margherita = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Margherita"));
+        OWLNegativeDataPropertyAssertion axiom = new OWLNegativeDataPropertyAssertion(hasCalories, margherita,
+            new OWLLiteral(new RDFTypedLiteral("0", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+
+        OWLManchesterFrameItem frameItem = axiom.ToManchesterFrameItem(CreateManchesterContext());
+
+        Assert.IsNotNull(frameItem);
+        Assert.AreEqual(OWLManchesterFrameKind.Individual, frameItem.FrameKind);
+        Assert.AreEqual("pz:Margherita", frameItem.EntityName);
+        Assert.AreEqual("Facts:", frameItem.SectionKeyword);
+        Assert.AreEqual("not pz:hasCalories \"0\"^^xsd:integer", frameItem.ItemText);
     }
     #endregion
 }

@@ -17,6 +17,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
+using System;
 using System.Linq;
 
 namespace OWLSharp.Test.Ontology;
@@ -25,6 +26,33 @@ namespace OWLSharp.Test.Ontology;
 public class OWLSubAnnotationPropertyOfTest
 {
     #region Tests
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLAnnotationProperty note = new OWLAnnotationProperty(new RDFResource("http://example.org/pz#note"));
+        OWLAnnotationProperty comment = new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT);
+        OWLSubAnnotationPropertyOf axiom = new OWLSubAnnotationPropertyOf(note, comment);
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("SubAnnotationPropertyOf( pz:note rdfs:comment )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLAnnotationProperty note = new OWLAnnotationProperty(new RDFResource("http://example.org/pz#note"));
+        OWLAnnotationProperty comment = new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT);
+        OWLSubAnnotationPropertyOf axiom = new OWLSubAnnotationPropertyOf(note, comment);
+
+        OWLManchesterFrameItem frameItem = axiom.ToManchesterFrameItem(CreateManchesterContext());
+
+        Assert.IsNotNull(frameItem);
+        Assert.AreEqual(OWLManchesterFrameKind.AnnotationProperty, frameItem.FrameKind);
+        Assert.AreEqual("pz:note", frameItem.EntityName);
+        Assert.AreEqual("SubPropertyOf:", frameItem.SectionKeyword);
+        Assert.AreEqual("rdfs:comment", frameItem.ItemText);
+    }
     [TestMethod]
     public void ShouldCreateSubAnnotationPropertyOf()
     {
@@ -239,6 +267,22 @@ public class OWLSubAnnotationPropertyOfTest
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDFS.SUB_PROPERTY_OF, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.DC.TITLE, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
+    }
+    #endregion
+
+    #region Utilities
+    private static OWLFunctionalContext CreateContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLFunctionalContext(ontology.Prefixes);
+    }
+
+    private static OWLManchesterContext CreateManchesterContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLManchesterContext(ontology.Prefixes);
     }
     #endregion
 }

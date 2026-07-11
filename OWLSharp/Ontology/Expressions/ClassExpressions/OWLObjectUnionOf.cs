@@ -100,6 +100,12 @@ namespace OWLSharp.Ontology
             => string.Join(" or ", ClassExpressions.Select(manchesterContext.Nest));
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this OWLObjectUnionOf expression
+        /// </summary>
+        public override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"ObjectUnionOf( {string.Join(" ", ClassExpressions.Select(classExpression => classExpression.ToFunctionalString(functionalContext)))} )";
+
+        /// <summary>
         /// Exports this OWLObjectUnionOf expression to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

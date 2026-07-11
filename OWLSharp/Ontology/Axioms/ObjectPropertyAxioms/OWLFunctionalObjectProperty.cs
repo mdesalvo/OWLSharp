@@ -70,6 +70,12 @@ namespace OWLSharp.Ontology
                 : null;
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this FunctionalObjectProperty axiom
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"FunctionalObjectProperty( {functionalContext.RenderAxiomAnnotations(Annotations)}{ObjectPropertyExpression.ToFunctionalString(functionalContext)} )";
+
+        /// <summary>
         /// Exports this OWLFunctionalObjectProperty to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

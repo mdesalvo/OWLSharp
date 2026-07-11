@@ -100,6 +100,12 @@ namespace OWLSharp.Ontology
             => string.Join(" and ", ClassExpressions.Select(manchesterContext.Nest));
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this OWLObjectIntersectionOf expression
+        /// </summary>
+        public override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"ObjectIntersectionOf( {string.Join(" ", ClassExpressions.Select(classExpression => classExpression.ToFunctionalString(functionalContext)))} )";
+
+        /// <summary>
         /// Exports this OWLObjectIntersectionOf expression to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

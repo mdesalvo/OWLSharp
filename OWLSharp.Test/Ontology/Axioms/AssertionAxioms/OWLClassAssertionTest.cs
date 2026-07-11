@@ -17,6 +17,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
+using System;
 using System.Linq;
 
 namespace OWLSharp.Test.Ontology;
@@ -24,6 +25,22 @@ namespace OWLSharp.Test.Ontology;
 [TestClass]
 public class OWLClassAssertionTest
 {
+    #region Utilities
+    private static OWLFunctionalContext CreateContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLFunctionalContext(ontology.Prefixes);
+    }
+
+    private static OWLManchesterContext CreateManchesterContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLManchesterContext(ontology.Prefixes);
+    }
+    #endregion
+
     #region Tests
     [TestMethod]
     public void ShouldCreateClassAssertion()
@@ -205,6 +222,47 @@ public class OWLClassAssertionTest
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDF.TYPE, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.FOAF.AGENT, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLClass pizza = new OWLClass(new RDFResource("http://example.org/pz#Pizza"));
+        OWLNamedIndividual margherita = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Margherita"));
+        OWLClassAssertion axiom = new OWLClassAssertion(pizza, margherita);
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("ClassAssertion( pz:Pizza pz:Margherita )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctionalWithAxiomAnnotation()
+    {
+        OWLClass pizza = new OWLClass(new RDFResource("http://example.org/pz#Pizza"));
+        OWLNamedIndividual margherita = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Margherita"));
+        OWLClassAssertion axiom = new OWLClassAssertion(pizza, margherita);
+        axiom.Annotate(new OWLAnnotation(new OWLAnnotationProperty(new RDFResource("http://example.org/pz#note")), new RDFResource("http://example.org/pz#Topping")));
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("ClassAssertion( Annotation( pz:note pz:Topping ) pz:Pizza pz:Margherita )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLClass pizza = new OWLClass(new RDFResource("http://example.org/pz#Pizza"));
+        OWLNamedIndividual margherita = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Margherita"));
+        OWLClassAssertion axiom = new OWLClassAssertion(pizza, margherita);
+
+        OWLManchesterFrameItem frameItem = axiom.ToManchesterFrameItem(CreateManchesterContext());
+
+        Assert.IsNotNull(frameItem);
+        Assert.AreEqual(OWLManchesterFrameKind.Individual, frameItem.FrameKind);
+        Assert.AreEqual("pz:Margherita", frameItem.EntityName);
+        Assert.AreEqual("Types:", frameItem.SectionKeyword);
+        Assert.AreEqual("pz:Pizza", frameItem.ItemText);
     }
     #endregion
 }

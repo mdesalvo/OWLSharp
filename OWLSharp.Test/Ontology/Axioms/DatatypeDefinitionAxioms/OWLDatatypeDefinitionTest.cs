@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
@@ -240,5 +241,47 @@ public class OWLDatatypeDefinitionTest
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
     }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLDatatype positiveInt = new OWLDatatype(new RDFResource("http://example.org/pz#PositiveInt"));
+        OWLDatatypeDefinition axiom = new OWLDatatypeDefinition(positiveInt,
+            new OWLDatatypeRestriction(new OWLDatatype(RDFVocabulary.XSD.INTEGER),
+                [ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("0", RDFModelEnums.RDFDatatypes.XSD_INTEGER)), RDFVocabulary.XSD.MIN_INCLUSIVE) ]));
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("DatatypeDefinition( pz:PositiveInt DatatypeRestriction( xsd:integer xsd:minInclusive \"0\"^^xsd:integer ) )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLDatatype positiveInt = new OWLDatatype(new RDFResource("http://example.org/pz#PositiveInt"));
+        OWLDatatypeDefinition axiom = new OWLDatatypeDefinition(positiveInt,
+            new OWLDatatypeRestriction(new OWLDatatype(RDFVocabulary.XSD.INTEGER),
+                [ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("0", RDFModelEnums.RDFDatatypes.XSD_INTEGER)), RDFVocabulary.XSD.MIN_INCLUSIVE) ]));
+
+        OWLManchesterFrameItem frameItem = axiom.ToManchesterFrameItem(CreateManchesterContext());
+
+        Assert.IsNotNull(frameItem);
+        Assert.AreEqual(OWLManchesterFrameKind.Datatype, frameItem.FrameKind);
+        Assert.AreEqual("pz:PositiveInt", frameItem.EntityName);
+        Assert.AreEqual("EquivalentTo:", frameItem.SectionKeyword);
+        Assert.AreEqual("xsd:integer[>= \"0\"^^xsd:integer]", frameItem.ItemText);
+    }
+    #endregion
+
+    #region Utilities
+    private static OWLFunctionalContext CreateContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLFunctionalContext(ontology.Prefixes);
+    }
+
+    private static OWLManchesterContext CreateManchesterContext()
+        => new OWLManchesterContext(CreateContext().Prefixes);
     #endregion
 }

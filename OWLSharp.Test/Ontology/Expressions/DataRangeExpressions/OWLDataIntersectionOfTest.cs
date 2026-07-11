@@ -111,4 +111,30 @@ public class OWLDataIntersectionOfTest
         Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLDataIntersectionOf dataIntersectionOf = new OWLDataIntersectionOf(
+            [ new OWLDatatype(RDFVocabulary.XSD.STRING), new OWLDatatype(RDFVocabulary.XSD.ANY_URI) ]);
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#")) ]);
+
+        Assert.AreEqual("xsd:string and xsd:anyURI", dataIntersectionOf.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLDataIntersectionOf dataIntersectionOf = new OWLDataIntersectionOf(
+            [ new OWLDatatype(RDFVocabulary.XSD.STRING), new OWLDatatype(RDFVocabulary.XSD.ANY_URI) ]);
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#")) ]);
+
+        Assert.AreEqual("DataIntersectionOf( xsd:string xsd:anyURI )", dataIntersectionOf.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

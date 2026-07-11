@@ -169,4 +169,48 @@ public class OWLObjectMaxCardinalityTest
         Assert.AreEqual(1, graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeUnqualifiedToManchester()
+    {
+        OWLObjectMaxCardinality objectMaxCardinality = new OWLObjectMaxCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1);
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")) ]);
+
+        Assert.AreEqual("foaf:knows max 1", objectMaxCardinality.ToManchesterString(manchesterContext));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLObjectMaxCardinality objectMaxCardinality = new OWLObjectMaxCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1, new OWLClass(RDFVocabulary.FOAF.PERSON));
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")) ]);
+
+        Assert.AreEqual("foaf:knows max 1 foaf:Person", objectMaxCardinality.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeUnqualifiedToFunctional()
+    {
+        OWLObjectMaxCardinality objectMaxCardinality = new OWLObjectMaxCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1);
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")) ]);
+
+        Assert.AreEqual("ObjectMaxCardinality( 1 foaf:knows )", objectMaxCardinality.ToFunctionalString(functionalContext));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLObjectMaxCardinality objectMaxCardinality = new OWLObjectMaxCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1, new OWLClass(RDFVocabulary.FOAF.PERSON));
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")) ]);
+
+        Assert.AreEqual("ObjectMaxCardinality( 1 foaf:knows foaf:Person )", objectMaxCardinality.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

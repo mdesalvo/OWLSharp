@@ -71,6 +71,12 @@ namespace OWLSharp.Ontology
                 : null;
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this InverseFunctionalObjectProperty axiom
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"InverseFunctionalObjectProperty( {functionalContext.RenderAxiomAnnotations(Annotations)}{ObjectPropertyExpression.ToFunctionalString(functionalContext)} )";
+
+        /// <summary>
         /// Exports this OWLInverseFunctionalObjectProperty to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

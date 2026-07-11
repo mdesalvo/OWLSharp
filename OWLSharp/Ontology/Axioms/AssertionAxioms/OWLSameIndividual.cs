@@ -72,6 +72,12 @@ namespace OWLSharp.Ontology
                 ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{string.Join(", ", IndividualExpressions.Select(idvExpr => idvExpr.ToManchesterString(manchesterContext)))}" };
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this SameIndividual axiom
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"SameIndividual( {functionalContext.RenderAxiomAnnotations(Annotations)}{string.Join(" ", IndividualExpressions.Select(idvExpr => idvExpr.ToFunctionalString(functionalContext)))} )";
+
+        /// <summary>
         /// Exports this OWLSameIndividual to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

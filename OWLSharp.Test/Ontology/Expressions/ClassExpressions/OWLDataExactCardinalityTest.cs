@@ -167,4 +167,54 @@ public class OWLDataExactCardinalityTest
         Assert.AreEqual(1, graph[RDFVocabulary.XSD.STRING, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeUnqualifiedToManchester()
+    {
+        OWLDataExactCardinality dataExactCardinality = new OWLDataExactCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("dc", "http://purl.org/dc/elements/1.1/")) ]);
+
+        Assert.AreEqual("dc:description exactly 1", dataExactCardinality.ToManchesterString(manchesterContext));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLDataExactCardinality dataExactCardinality = new OWLDataExactCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING));
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+        [
+            new OWLPrefix(new RDFNamespace("dc", "http://purl.org/dc/elements/1.1/")),
+            new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#"))
+        ]);
+
+        Assert.AreEqual("dc:description exactly 1 xsd:string", dataExactCardinality.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeUnqualifiedToFunctional()
+    {
+        OWLDataExactCardinality dataExactCardinality = new OWLDataExactCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("dc", "http://purl.org/dc/elements/1.1/")) ]);
+
+        Assert.AreEqual("DataExactCardinality( 1 dc:description )", dataExactCardinality.ToFunctionalString(functionalContext));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLDataExactCardinality dataExactCardinality = new OWLDataExactCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING));
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+        [
+            new OWLPrefix(new RDFNamespace("dc", "http://purl.org/dc/elements/1.1/")),
+            new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#"))
+        ]);
+
+        Assert.AreEqual("DataExactCardinality( 1 dc:description xsd:string )", dataExactCardinality.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

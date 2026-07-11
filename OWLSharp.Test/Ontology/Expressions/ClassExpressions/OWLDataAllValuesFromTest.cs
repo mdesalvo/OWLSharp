@@ -108,4 +108,38 @@ public class OWLDataAllValuesFromTest
         Assert.AreEqual(1, graph[RDFVocabulary.XSD.STRING, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLDataAllValuesFrom dataAllValuesFrom = new OWLDataAllValuesFrom(
+            new OWLDataProperty(new RDFResource(RDFVocabulary.DC.CREATOR.ToString())),
+            new OWLDatatype(RDFVocabulary.XSD.STRING));
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+        [
+            new OWLPrefix(new RDFNamespace("dc", "http://purl.org/dc/elements/1.1/")),
+            new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#"))
+        ]);
+
+        Assert.AreEqual("dc:creator only xsd:string", dataAllValuesFrom.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLDataAllValuesFrom dataAllValuesFrom = new OWLDataAllValuesFrom(
+            new OWLDataProperty(new RDFResource(RDFVocabulary.DC.CREATOR.ToString())),
+            new OWLDatatype(RDFVocabulary.XSD.STRING));
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+        [
+            new OWLPrefix(new RDFNamespace("dc", "http://purl.org/dc/elements/1.1/")),
+            new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#"))
+        ]);
+
+        Assert.AreEqual("DataAllValuesFrom( dc:creator xsd:string )", dataAllValuesFrom.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

@@ -17,6 +17,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OWLSharp.Test.Ontology;
@@ -243,6 +245,51 @@ public class OWLInverseObjectPropertiesTest
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.OWL.INVERSE_OF, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, new RDFResource("ex:isWifeOf"), null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLObjectProperty hasTopping = new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
+        OWLObjectProperty isToppingOf = new OWLObjectProperty(new RDFResource("http://example.org/pz#isToppingOf"));
+        OWLInverseObjectProperties axiom = new OWLInverseObjectProperties(hasTopping, isToppingOf);
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("InverseObjectProperties( pz:hasTopping pz:isToppingOf )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLObjectProperty hasTopping = new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
+        OWLObjectProperty isToppingOf = new OWLObjectProperty(new RDFResource("http://example.org/pz#isToppingOf"));
+        OWLInverseObjectProperties axiom = new OWLInverseObjectProperties(hasTopping, isToppingOf);
+
+        OWLManchesterFrameItem frameItem = axiom.ToManchesterFrameItem(CreateManchesterContext());
+
+        Assert.IsNotNull(frameItem);
+        Assert.AreEqual(OWLManchesterFrameKind.ObjectProperty, frameItem.FrameKind);
+        Assert.AreEqual("pz:hasTopping", frameItem.EntityName);
+        Assert.AreEqual("InverseOf:", frameItem.SectionKeyword);
+        Assert.AreEqual("pz:isToppingOf", frameItem.ItemText);
+    }
+    #endregion
+
+    #endregion
+
+    #region Utilities
+    private static OWLFunctionalContext CreateContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLFunctionalContext(ontology.Prefixes);
+    }
+
+    private static OWLManchesterContext CreateManchesterContext()
+    {
+        List<OWLPrefix> prefixes = [ new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")) ];
+        return new OWLManchesterContext(prefixes);
     }
     #endregion
 }

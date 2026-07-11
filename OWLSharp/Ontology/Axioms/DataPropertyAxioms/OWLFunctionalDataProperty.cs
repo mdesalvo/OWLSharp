@@ -61,6 +61,12 @@ namespace OWLSharp.Ontology
                 ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}Functional" };
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this FunctionalDataProperty axiom
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"FunctionalDataProperty( {functionalContext.RenderAxiomAnnotations(Annotations)}{DataProperty.ToFunctionalString(functionalContext)} )";
+
+        /// <summary>
         /// Exports this OWLFunctionalDataProperty to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

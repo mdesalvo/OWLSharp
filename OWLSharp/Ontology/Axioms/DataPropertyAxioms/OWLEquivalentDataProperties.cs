@@ -72,6 +72,12 @@ namespace OWLSharp.Ontology
                 ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{string.Join(", ", DataProperties.Select(dtProp => dtProp.ToManchesterString(manchesterContext)))}" };
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this EquivalentDataProperties axiom
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"EquivalentDataProperties( {functionalContext.RenderAxiomAnnotations(Annotations)}{string.Join(" ", DataProperties.Select(dtProp => dtProp.ToFunctionalString(functionalContext)))} )";
+
+        /// <summary>
         /// Exports this OWLEquivalentDataProperties to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

@@ -108,6 +108,19 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this AnnotationAssertion axiom
+        /// (AnnotationSubject is always an IRI in this model - SubjectIRI - since anonymous individuals as
+        /// annotation subjects are not modeled here; AnnotationValue is mutually-exclusive IRI/Literal)
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+        {
+            string annotationValue = ValueIRI != null
+                ? functionalContext.Abbreviate(new RDFResource(ValueIRI))
+                : ValueLiteral.ToFunctionalString(functionalContext);
+            return $"AnnotationAssertion( {functionalContext.RenderAxiomAnnotations(Annotations)}{AnnotationProperty.ToFunctionalString(functionalContext)} {functionalContext.Abbreviate(new RDFResource(SubjectIRI))} {annotationValue} )";
+        }
+
+        /// <summary>
         /// Exports this OWLAnnotationAssertion to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

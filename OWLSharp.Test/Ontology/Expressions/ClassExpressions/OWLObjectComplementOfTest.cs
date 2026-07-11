@@ -92,4 +92,28 @@ public class OWLObjectComplementOfTest
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.COMPLEMENT_OF, RDFVocabulary.FOAF.AGENT, null].TriplesCount);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLObjectComplementOf objectComplementOf = new OWLObjectComplementOf(new OWLClass(RDFVocabulary.FOAF.AGENT));
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")) ]);
+
+        Assert.AreEqual("not foaf:Agent", objectComplementOf.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLObjectComplementOf objectComplementOf = new OWLObjectComplementOf(new OWLClass(RDFVocabulary.FOAF.AGENT));
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")) ]);
+
+        Assert.AreEqual("ObjectComplementOf( foaf:Agent )", objectComplementOf.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

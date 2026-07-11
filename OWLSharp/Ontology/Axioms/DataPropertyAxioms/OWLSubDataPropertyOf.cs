@@ -69,6 +69,12 @@ namespace OWLSharp.Ontology
                 ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{SuperDataProperty.ToManchesterString(manchesterContext)}" };
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this SubDataPropertyOf axiom
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"SubDataPropertyOf( {functionalContext.RenderAxiomAnnotations(Annotations)}{SubDataProperty.ToFunctionalString(functionalContext)} {SuperDataProperty.ToFunctionalString(functionalContext)} )";
+
+        /// <summary>
         /// Exports this OWLSubDataPropertyOf to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

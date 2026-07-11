@@ -84,6 +84,14 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this NegativeObjectPropertyAssertion axiom
+        /// (unlike Manchester rendering, the Functional-Style grammar allows ObjectInverseOf directly as the
+        /// property expression argument, so source/target individuals are emitted as-is, with no normalization)
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"NegativeObjectPropertyAssertion( {functionalContext.RenderAxiomAnnotations(Annotations)}{ObjectPropertyExpression.ToFunctionalString(functionalContext)} {SourceIndividualExpression.ToFunctionalString(functionalContext)} {TargetIndividualExpression.ToFunctionalString(functionalContext)} )";
+
+        /// <summary>
         /// Exports this OWLNegativeObjectPropertyAssertion to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

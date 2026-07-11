@@ -115,4 +115,30 @@ public class OWLDataUnionOfTest
         Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLDataUnionOf dataUnionOf = new OWLDataUnionOf(
+            [ new OWLDatatype(RDFVocabulary.XSD.STRING), new OWLDatatype(RDFVocabulary.XSD.ANY_URI) ]);
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#")) ]);
+
+        Assert.AreEqual("xsd:string or xsd:anyURI", dataUnionOf.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLDataUnionOf dataUnionOf = new OWLDataUnionOf(
+            [ new OWLDatatype(RDFVocabulary.XSD.STRING), new OWLDatatype(RDFVocabulary.XSD.ANY_URI) ]);
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#")) ]);
+
+        Assert.AreEqual("DataUnionOf( xsd:string xsd:anyURI )", dataUnionOf.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

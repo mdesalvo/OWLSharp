@@ -98,6 +98,12 @@ namespace OWLSharp.Ontology
             => $"{ObjectPropertyExpression.ToManchesterString(manchesterContext)} only {manchesterContext.Nest(ClassExpression)}";
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this OWLObjectAllValuesFrom expression
+        /// </summary>
+        public override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"ObjectAllValuesFrom( {ObjectPropertyExpression.ToFunctionalString(functionalContext)} {ClassExpression.ToFunctionalString(functionalContext)} )";
+
+        /// <summary>
         /// Exports this OWLObjectAllValuesFrom expression to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

@@ -97,6 +97,12 @@ namespace OWLSharp.Ontology
                 ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{string.Join(", ", ClassExpressions.Select(clsExpr => clsExpr.ToManchesterString(manchesterContext)))}" };
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this DisjointUnion axiom
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"DisjointUnion( {functionalContext.RenderAxiomAnnotations(Annotations)}{ClassIRI.ToFunctionalString(functionalContext)} {string.Join(" ", ClassExpressions.Select(clsExpr => clsExpr.ToFunctionalString(functionalContext)))} )";
+
+        /// <summary>
         /// Exports this OWLDisjointUnion to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

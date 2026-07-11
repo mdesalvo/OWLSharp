@@ -17,6 +17,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
+using System;
 using System.Linq;
 
 namespace OWLSharp.Test.Ontology;
@@ -25,6 +26,46 @@ namespace OWLSharp.Test.Ontology;
 public class OWLAnnotationAssertionTest
 {
     #region Tests
+    [TestMethod]
+    public void ShouldSerializeToFunctionalWithIRIValue()
+    {
+        OWLAnnotationProperty note = new OWLAnnotationProperty(new RDFResource("http://example.org/pz#note"));
+        OWLClass pizza = new OWLClass(new RDFResource("http://example.org/pz#Pizza"));
+        OWLClass topping = new OWLClass(new RDFResource("http://example.org/pz#Topping"));
+        OWLAnnotationAssertion axiom = new OWLAnnotationAssertion(note, pizza.GetIRI(), topping.GetIRI());
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("AnnotationAssertion( pz:note pz:Pizza pz:Topping )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctionalWithLiteralValue()
+    {
+        OWLClass pizza = new OWLClass(new RDFResource("http://example.org/pz#Pizza"));
+        OWLAnnotationAssertion axiom = new OWLAnnotationAssertion(
+            new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), pizza.GetIRI(), new OWLLiteral(new RDFPlainLiteral("A tasty dish")));
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("AnnotationAssertion( rdfs:comment pz:Pizza \"A tasty dish\" )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLAnnotationProperty note = new OWLAnnotationProperty(new RDFResource("http://example.org/pz#note"));
+        OWLClass pizza = new OWLClass(new RDFResource("http://example.org/pz#Pizza"));
+        OWLAnnotationAssertion axiom = new OWLAnnotationAssertion(note, pizza.GetIRI(), new OWLLiteral(new RDFPlainLiteral("A tasty dish")));
+
+        OWLManchesterFrameItem frameItem = axiom.ToManchesterFrameItem(CreateManchesterContext());
+
+        Assert.IsNotNull(frameItem);
+        Assert.AreEqual(OWLManchesterFrameKind.EntityAnnotation, frameItem.FrameKind);
+        Assert.AreEqual("pz:Pizza", frameItem.EntityName);
+        Assert.AreEqual("Annotations:", frameItem.SectionKeyword);
+        Assert.AreEqual("pz:note \"A tasty dish\"", frameItem.ItemText);
+    }
     [TestMethod]
     public void ShouldCreateAnnotationIRIAssertion()
     {
@@ -423,6 +464,22 @@ public class OWLAnnotationAssertionTest
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDFS.COMMENT, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, null, new RDFPlainLiteral("hello", "en--ltr")].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
+    }
+    #endregion
+
+    #region Utilities
+    private static OWLFunctionalContext CreateContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLFunctionalContext(ontology.Prefixes);
+    }
+
+    private static OWLManchesterContext CreateManchesterContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLManchesterContext(ontology.Prefixes);
     }
     #endregion
 }

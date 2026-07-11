@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -214,5 +215,71 @@ public class OWLHasKeyTest
         Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.DC.DCTERMS.TITLE, null, new RDFTypedLiteral("title", RDFModelEnums.RDFDatatypes.XSD_STRING)].TriplesCount);
     }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctionalWithEmptyObjectProperties()
+    {
+        OWLClass pizza = new OWLClass(new RDFResource("http://example.org/pz#Pizza"));
+        OWLDataProperty hasCalories = new OWLDataProperty(new RDFResource("http://example.org/pz#hasCalories"));
+        OWLHasKey axiom = new OWLHasKey(pizza, [ hasCalories ]);
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("HasKey( pz:Pizza (  ) ( pz:hasCalories ) )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctionalWithEmptyDataProperties()
+    {
+        OWLClass pizza = new OWLClass(new RDFResource("http://example.org/pz#Pizza"));
+        OWLObjectProperty hasTopping = new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
+        OWLHasKey axiom = new OWLHasKey(pizza, [ hasTopping ]);
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("HasKey( pz:Pizza ( pz:hasTopping ) (  ) )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctionalWithBothObjectAndDataProperties()
+    {
+        OWLClass pizza = new OWLClass(new RDFResource("http://example.org/pz#Pizza"));
+        OWLObjectProperty hasTopping = new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
+        OWLDataProperty hasCalories = new OWLDataProperty(new RDFResource("http://example.org/pz#hasCalories"));
+        OWLHasKey axiom = new OWLHasKey(pizza, [ hasTopping ]) { DataProperties = [ hasCalories ] };
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("HasKey( pz:Pizza ( pz:hasTopping ) ( pz:hasCalories ) )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchesterWithBothObjectAndDataProperties()
+    {
+        OWLClass pizza = new OWLClass(new RDFResource("http://example.org/pz#Pizza"));
+        OWLObjectProperty hasTopping = new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
+        OWLDataProperty hasCalories = new OWLDataProperty(new RDFResource("http://example.org/pz#hasCalories"));
+        OWLHasKey axiom = new OWLHasKey(pizza, [ hasTopping ]) { DataProperties = [ hasCalories ] };
+
+        OWLManchesterFrameItem frameItem = axiom.ToManchesterFrameItem(CreateManchesterContext());
+
+        Assert.IsNotNull(frameItem);
+        Assert.AreEqual(OWLManchesterFrameKind.Class, frameItem.FrameKind);
+        Assert.AreEqual("pz:Pizza", frameItem.EntityName);
+        Assert.AreEqual("HasKey:", frameItem.SectionKeyword);
+        Assert.AreEqual("pz:hasTopping pz:hasCalories", frameItem.ItemText);
+    }
+    #endregion
+
+    #region Utilities
+    private static OWLFunctionalContext CreateContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLFunctionalContext(ontology.Prefixes);
+    }
+
+    private static OWLManchesterContext CreateManchesterContext()
+        => new OWLManchesterContext(CreateContext().Prefixes);
     #endregion
 }

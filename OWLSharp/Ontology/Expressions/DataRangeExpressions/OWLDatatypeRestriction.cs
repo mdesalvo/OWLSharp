@@ -105,6 +105,29 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this datatype restriction
+        /// </summary>
+        public override string ToFunctionalString(OWLFunctionalContext functionalContext)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("DatatypeRestriction( ");
+            sb.Append(Datatype.ToFunctionalString(functionalContext));
+            if (FacetRestrictions?.Count > 0)
+            {
+                sb.Append(' ');
+                //Unlike Manchester (which prefers a compact symbol like ">=" from OWLManchesterContext.FacetSymbols
+                //when available), the Functional-Style grammar has no symbolic shorthand for facets: constrainingFacet
+                //is always a bare IRI production, so it is always abbreviated/rendered as such, never as a symbol
+                sb.Append(string.Join(" ", FacetRestrictions.Select(facetRestriction =>
+                    $"{functionalContext.Abbreviate(new RDFResource(facetRestriction.FacetIRI))} {facetRestriction.Literal.ToFunctionalString(functionalContext)}")));
+            }
+            sb.Append(" )");
+
+            return sb.ToString();
+        }
+
+        /// <summary>
         /// Exports this datatype restriction to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

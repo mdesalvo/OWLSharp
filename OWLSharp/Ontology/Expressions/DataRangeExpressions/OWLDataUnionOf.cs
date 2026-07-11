@@ -88,6 +88,12 @@ namespace OWLSharp.Ontology
             => string.Join(" or ", DataRangeExpressions.Select(manchesterContext.Nest));
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this OWLDataUnionOf expression
+        /// </summary>
+        public override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"DataUnionOf( {string.Join(" ", DataRangeExpressions.Select(dataRangeExpression => dataRangeExpression.ToFunctionalString(functionalContext)))} )";
+
+        /// <summary>
         /// Exports this OWLDataUnionOf expression to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

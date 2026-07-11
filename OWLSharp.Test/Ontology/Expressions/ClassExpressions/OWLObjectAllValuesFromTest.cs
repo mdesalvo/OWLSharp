@@ -110,4 +110,32 @@ public class OWLObjectAllValuesFromTest
         Assert.AreEqual(1, graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLObjectAllValuesFrom objectAllValuesFrom = new OWLObjectAllValuesFrom(
+            new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())),
+            new OWLClass(RDFVocabulary.FOAF.PERSON));
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")) ]);
+
+        Assert.AreEqual("foaf:knows only foaf:Person", objectAllValuesFrom.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLObjectAllValuesFrom objectAllValuesFrom = new OWLObjectAllValuesFrom(
+            new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())),
+            new OWLClass(RDFVocabulary.FOAF.PERSON));
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")) ]);
+
+        Assert.AreEqual("ObjectAllValuesFrom( foaf:knows foaf:Person )", objectAllValuesFrom.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

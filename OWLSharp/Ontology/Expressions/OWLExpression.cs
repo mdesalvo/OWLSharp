@@ -94,6 +94,19 @@ namespace OWLSharp.Ontology
             => manchesterContext.Abbreviate(GetIRI());
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this expression.
+        /// The default implementation covers every "bare IRI" entity production of the grammar
+        /// (Class, Datatype, ObjectProperty, DataProperty, AnnotationProperty, NamedIndividual: all
+        /// defined as "&lt;Entity&gt; := IRI" with no enclosing keyword when used inline as an argument
+        /// of another construct - the explicit "Class( ... )"/"Datatype( ... )"/... keyword wrapper
+        /// only appears inside a Declaration axiom, which renders it separately); composite expressions
+        /// (class expressions, data ranges, property expressions other than the plain named property)
+        /// override this to emit their own "Keyword( arg1 arg2 ... )" production
+        /// </summary>
+        public virtual string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => functionalContext.Abbreviate(GetIRI());
+
+        /// <summary>
         /// Exports this expression to an equivalent RDFGraph object
         /// </summary>
         internal virtual RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

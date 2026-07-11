@@ -88,6 +88,12 @@ namespace OWLSharp.Ontology
                 ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{string.Join(", ", ClassExpressions.Select(clsExpr => clsExpr.ToManchesterString(manchesterContext)))}" };
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this DisjointClasses axiom
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"DisjointClasses( {functionalContext.RenderAxiomAnnotations(Annotations)}{string.Join(" ", ClassExpressions.Select(clsExpr => clsExpr.ToFunctionalString(functionalContext)))} )";
+
+        /// <summary>
         /// Exports this OWLDisjointClasses to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

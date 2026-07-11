@@ -171,4 +171,59 @@ public class OWLDatatypeRestrictionTest
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.XSD.STRING, null].TriplesCount);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeWithOneFacetToManchester()
+    {
+        OWLDatatypeRestriction datatypeRestriction = new OWLDatatypeRestriction(
+            new OWLDatatype(RDFVocabulary.XSD.INTEGER),
+            [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("18", RDFModelEnums.RDFDatatypes.XSD_INTEGER)), RDFVocabulary.XSD.MIN_INCLUSIVE)]);
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#")) ]);
+
+        Assert.AreEqual("xsd:integer[>= \"18\"^^xsd:integer]", datatypeRestriction.ToManchesterString(manchesterContext));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeWithTwoFacetsToManchester()
+    {
+        OWLDatatypeRestriction length6to10Facet = new OWLDatatypeRestriction(
+            new OWLDatatype(RDFVocabulary.XSD.STRING),
+            [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)]);
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#")) ]);
+
+        Assert.AreEqual("xsd:string[minLength \"6\"^^xsd:int, maxLength \"10\"^^xsd:int]", length6to10Facet.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeWithOneFacetToFunctional()
+    {
+        OWLDatatypeRestriction datatypeRestriction = new OWLDatatypeRestriction(
+            new OWLDatatype(RDFVocabulary.XSD.INTEGER),
+            [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("18", RDFModelEnums.RDFDatatypes.XSD_INTEGER)), RDFVocabulary.XSD.MIN_INCLUSIVE)]);
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#")) ]);
+
+        //Unlike Manchester (which prefers the ">=" symbol), Functional-Style always renders the facet as a bare IRI
+        Assert.AreEqual("DatatypeRestriction( xsd:integer xsd:minInclusive \"18\"^^xsd:integer )", datatypeRestriction.ToFunctionalString(functionalContext));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeWithTwoFacetsToFunctional()
+    {
+        OWLDatatypeRestriction length6to10Facet = new OWLDatatypeRestriction(
+            new OWLDatatype(RDFVocabulary.XSD.STRING),
+            [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)]);
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#")) ]);
+
+        Assert.AreEqual("DatatypeRestriction( xsd:string xsd:minLength \"6\"^^xsd:int xsd:maxLength \"10\"^^xsd:int )", length6to10Facet.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

@@ -430,6 +430,10 @@ namespace OWLSharp.Ontology
                                 using (StreamWriter streamWriter = new StreamWriter(outputStream, RDFModelUtilities.UTF8_NoBOM))
                                     streamWriter.Write(OWLManchesterSerializer.SerializeOntology(exportOntology));
                                 break;
+                            case OWLEnums.OWLFormats.OWL2Functional:
+                                using (StreamWriter streamWriter = new StreamWriter(outputStream, RDFModelUtilities.UTF8_NoBOM))
+                                    streamWriter.Write(OWLFunctionalSerializer.SerializeOntology(exportOntology));
+                                break;
                         }
                     }
                     catch (Exception ex)
@@ -489,6 +493,13 @@ namespace OWLSharp.Ontology
                                     return OWLManchesterParser.DeserializeOntology(streamReader.ReadToEnd());
                             }
 
+                            // OWL2/Functional
+                            case OWLEnums.OWLFormats.OWL2Functional:
+                            {
+                                using (StreamReader streamReader = new StreamReader(inputStream, RDFModelUtilities.UTF8_NoBOM))
+                                    return OWLFunctionalParser.DeserializeOntology(streamReader.ReadToEnd());
+                            }
+
                             default:
                                 throw new NotSupportedException($"{owlFormat} format is not supported");
                         }
@@ -519,7 +530,7 @@ namespace OWLSharp.Ontology
                 webRequest.MaximumAutomaticRedirections = 3;
                 webRequest.AllowAutoRedirect = true;
                 webRequest.Timeout = timeoutMilliseconds;
-                webRequest.Accept = "application/owl+xml,text/owl-manchester,application/rdf+xml,text/turtle,application/turtle,application/x-turtle";
+                webRequest.Accept = "application/owl+xml,text/owl-manchester,text/owl-functional,application/rdf+xml,text/turtle,application/turtle,application/x-turtle";
 
                 WebResponse webResponse = await webRequest.GetResponseAsync();
                 if (webRequest.HaveResponse)
@@ -540,6 +551,10 @@ namespace OWLSharp.Ontology
                     //OWL2/Manchester
                     if (responseContentType.Contains("text/owl-manchester"))
                         return await FromStreamAsync(OWLEnums.OWLFormats.OWL2Manchester, webResponse.GetResponseStream());
+
+                    //OWL2/Functional
+                    if (responseContentType.Contains("text/owl-functional"))
+                        return await FromStreamAsync(OWLEnums.OWLFormats.OWL2Functional, webResponse.GetResponseStream());
 
                     //RDF/XML
                     if (responseContentType.Contains("application/rdf+xml"))

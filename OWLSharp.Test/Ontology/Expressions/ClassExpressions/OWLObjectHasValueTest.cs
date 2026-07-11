@@ -158,4 +158,34 @@ public class OWLObjectHasValueTest
         Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLObjectHasValue objectHasValue = new OWLObjectHasValue(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("http://example.org/Bob")));
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+        [
+            new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")),
+            new OWLPrefix(new RDFNamespace("ex", "http://example.org/"))
+        ]);
+
+        Assert.AreEqual("foaf:knows value ex:Bob", objectHasValue.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLObjectHasValue objectHasValue = new OWLObjectHasValue(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("http://example.org/Bob")));
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+        [
+            new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")),
+            new OWLPrefix(new RDFNamespace("ex", "http://example.org/"))
+        ]);
+
+        Assert.AreEqual("ObjectHasValue( foaf:knows ex:Bob )", objectHasValue.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

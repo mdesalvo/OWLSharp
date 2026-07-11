@@ -70,6 +70,12 @@ namespace OWLSharp.Ontology
                 : null;
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this SymmetricObjectProperty axiom
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"SymmetricObjectProperty( {functionalContext.RenderAxiomAnnotations(Annotations)}{ObjectPropertyExpression.ToFunctionalString(functionalContext)} )";
+
+        /// <summary>
         /// Exports this OWLSymmetricObjectProperty to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

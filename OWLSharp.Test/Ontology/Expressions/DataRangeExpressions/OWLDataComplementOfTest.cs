@@ -90,4 +90,28 @@ public class OWLDataComplementOfTest
         Assert.AreEqual(1, graph[RDFVocabulary.XSD.STRING, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLDataComplementOf dataComplementOf = new OWLDataComplementOf(new OWLDatatype(RDFVocabulary.XSD.STRING));
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#")) ]);
+
+        Assert.AreEqual("not xsd:string", dataComplementOf.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLDataComplementOf dataComplementOf = new OWLDataComplementOf(new OWLDatatype(RDFVocabulary.XSD.STRING));
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#")) ]);
+
+        Assert.AreEqual("DataComplementOf( xsd:string )", dataComplementOf.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

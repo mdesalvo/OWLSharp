@@ -71,6 +71,12 @@ namespace OWLSharp.Ontology
                 ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{string.Join(", ", DataProperties.Select(dtProp => dtProp.ToManchesterString(manchesterContext)))}" };
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this DisjointDataProperties axiom
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"DisjointDataProperties( {functionalContext.RenderAxiomAnnotations(Annotations)}{string.Join(" ", DataProperties.Select(dtProp => dtProp.ToFunctionalString(functionalContext)))} )";
+
+        /// <summary>
         /// Exports this OWLDisjointDataProperties to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

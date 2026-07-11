@@ -110,4 +110,30 @@ public class OWLDataOneOfTest
         Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLDataOneOf dataOneOf = new OWLDataOneOf([
+            new OWLLiteral(new RDFPlainLiteral("hello","en")),
+            new OWLLiteral(new RDFPlainLiteral("ciao","it"))]);
+        OWLManchesterContext manchesterContext = new OWLManchesterContext([]);
+
+        Assert.AreEqual("{\"hello\"@EN, \"ciao\"@IT}", dataOneOf.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLDataOneOf dataOneOf = new OWLDataOneOf([
+            new OWLLiteral(new RDFPlainLiteral("hello","en")),
+            new OWLLiteral(new RDFPlainLiteral("ciao","it"))]);
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext([]);
+
+        Assert.AreEqual("DataOneOf( \"hello\"@EN \"ciao\"@IT )", dataOneOf.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

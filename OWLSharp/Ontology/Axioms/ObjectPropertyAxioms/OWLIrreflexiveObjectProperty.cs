@@ -69,6 +69,12 @@ namespace OWLSharp.Ontology
                 : null;
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this IrreflexiveObjectProperty axiom
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"IrreflexiveObjectProperty( {functionalContext.RenderAxiomAnnotations(Annotations)}{ObjectPropertyExpression.ToFunctionalString(functionalContext)} )";
+
+        /// <summary>
         /// Exports this OWLIrreflexiveObjectProperty to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

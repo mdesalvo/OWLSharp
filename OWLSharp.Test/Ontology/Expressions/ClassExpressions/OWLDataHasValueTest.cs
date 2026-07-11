@@ -97,4 +97,28 @@ public class OWLDataHasValueTest
         Assert.AreEqual(1, graph[RDFVocabulary.DC.DESCRIPTION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLDataHasValue dataHasValue = new OWLDataHasValue(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("hello","en")));
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("dc", "http://purl.org/dc/elements/1.1/")) ]);
+
+        Assert.AreEqual("dc:description value \"hello\"@EN", dataHasValue.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLDataHasValue dataHasValue = new OWLDataHasValue(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("hello","en")));
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("dc", "http://purl.org/dc/elements/1.1/")) ]);
+
+        Assert.AreEqual("DataHasValue( dc:description \"hello\"@EN )", dataHasValue.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

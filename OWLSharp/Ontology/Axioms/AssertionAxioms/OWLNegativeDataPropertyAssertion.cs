@@ -89,6 +89,12 @@ namespace OWLSharp.Ontology
                 ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}not {DataProperty.ToManchesterString(manchesterContext)} {Literal.ToManchesterString(manchesterContext)}" };
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this NegativeDataPropertyAssertion axiom
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"NegativeDataPropertyAssertion( {functionalContext.RenderAxiomAnnotations(Annotations)}{DataProperty.ToFunctionalString(functionalContext)} {IndividualExpression.ToFunctionalString(functionalContext)} {Literal.ToFunctionalString(functionalContext)} )";
+
+        /// <summary>
         /// Exports this OWLNegativeDataPropertyAssertion to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

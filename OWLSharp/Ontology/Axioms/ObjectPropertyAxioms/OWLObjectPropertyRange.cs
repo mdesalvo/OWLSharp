@@ -88,6 +88,12 @@ namespace OWLSharp.Ontology
                 : null;
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this ObjectPropertyRange axiom
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"ObjectPropertyRange( {functionalContext.RenderAxiomAnnotations(Annotations)}{ObjectPropertyExpression.ToFunctionalString(functionalContext)} {ClassExpression.ToFunctionalString(functionalContext)} )";
+
+        /// <summary>
         /// Exports this OWLObjectPropertyRange to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

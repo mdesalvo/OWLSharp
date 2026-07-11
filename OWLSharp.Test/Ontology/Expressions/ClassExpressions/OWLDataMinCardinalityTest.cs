@@ -167,4 +167,54 @@ public class OWLDataMinCardinalityTest
         Assert.AreEqual(1, graph[RDFVocabulary.XSD.STRING, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeUnqualifiedToManchester()
+    {
+        OWLDataMinCardinality dataMinCardinality = new OWLDataMinCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("dc", "http://purl.org/dc/elements/1.1/")) ]);
+
+        Assert.AreEqual("dc:description min 1", dataMinCardinality.ToManchesterString(manchesterContext));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLDataMinCardinality dataMinCardinality = new OWLDataMinCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING));
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+        [
+            new OWLPrefix(new RDFNamespace("dc", "http://purl.org/dc/elements/1.1/")),
+            new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#"))
+        ]);
+
+        Assert.AreEqual("dc:description min 1 xsd:string", dataMinCardinality.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeUnqualifiedToFunctional()
+    {
+        OWLDataMinCardinality dataMinCardinality = new OWLDataMinCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("dc", "http://purl.org/dc/elements/1.1/")) ]);
+
+        Assert.AreEqual("DataMinCardinality( 1 dc:description )", dataMinCardinality.ToFunctionalString(functionalContext));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLDataMinCardinality dataMinCardinality = new OWLDataMinCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING));
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+        [
+            new OWLPrefix(new RDFNamespace("dc", "http://purl.org/dc/elements/1.1/")),
+            new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#"))
+        ]);
+
+        Assert.AreEqual("DataMinCardinality( 1 dc:description xsd:string )", dataMinCardinality.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

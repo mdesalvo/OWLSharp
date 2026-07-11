@@ -114,6 +114,28 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this Declaration axiom
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+        {
+            //The Entity production requires the declared entity to be wrapped in its own type keyword
+            //(Class/Datatype/ObjectProperty/DataProperty/AnnotationProperty/NamedIndividual), unlike every
+            //other axiom argument, which just delegates to the plain expression rendering
+            switch (Entity)
+            {
+                case OWLClass cls: return $"Declaration( {functionalContext.RenderAxiomAnnotations(Annotations)}Class( {cls.ToFunctionalString(functionalContext)} ) )";
+                case OWLDatatype datatype: return $"Declaration( {functionalContext.RenderAxiomAnnotations(Annotations)}Datatype( {datatype.ToFunctionalString(functionalContext)} ) )";
+                case OWLObjectProperty objectProperty: return $"Declaration( {functionalContext.RenderAxiomAnnotations(Annotations)}ObjectProperty( {objectProperty.ToFunctionalString(functionalContext)} ) )";
+                case OWLDataProperty dataProperty: return $"Declaration( {functionalContext.RenderAxiomAnnotations(Annotations)}DataProperty( {dataProperty.ToFunctionalString(functionalContext)} ) )";
+                case OWLAnnotationProperty annotationProperty: return $"Declaration( {functionalContext.RenderAxiomAnnotations(Annotations)}AnnotationProperty( {annotationProperty.ToFunctionalString(functionalContext)} ) )";
+                case OWLNamedIndividual namedIndividual: return $"Declaration( {functionalContext.RenderAxiomAnnotations(Annotations)}NamedIndividual( {namedIndividual.ToFunctionalString(functionalContext)} ) )";
+                //Defensive fallback: should never happen given the XmlElement-constrained Entity types, but
+                //guarantees this method never throws in case of unexpected runtime types
+                default: return $"Declaration( {functionalContext.RenderAxiomAnnotations(Annotations)}{Entity.ToFunctionalString(functionalContext)} )";
+            }
+        }
+
+        /// <summary>
         /// Exports this OWLDeclaration to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

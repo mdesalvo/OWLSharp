@@ -82,6 +82,12 @@ namespace OWLSharp.Ontology
             => $"{{{string.Join(", ", Literals.Select(lit => lit.ToManchesterString(manchesterContext)))}}}";
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this OWLDataOneOf expression
+        /// </summary>
+        public override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"DataOneOf( {string.Join(" ", Literals.Select(lit => lit.ToFunctionalString(functionalContext)))} )";
+
+        /// <summary>
         /// Exports this OWLDataOneOf expression to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

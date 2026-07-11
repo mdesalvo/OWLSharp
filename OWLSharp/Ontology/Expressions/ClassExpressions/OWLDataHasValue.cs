@@ -80,6 +80,12 @@ namespace OWLSharp.Ontology
             => $"{DataProperty.ToManchesterString(manchesterContext)} value {Literal.ToManchesterString(manchesterContext)}";
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this OWLDataHasValue expression
+        /// </summary>
+        public override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"DataHasValue( {DataProperty.ToFunctionalString(functionalContext)} {Literal.ToFunctionalString(functionalContext)} )";
+
+        /// <summary>
         /// Exports this OWLDataHasValue expression to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

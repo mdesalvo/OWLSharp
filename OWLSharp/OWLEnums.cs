@@ -33,7 +33,11 @@ namespace OWLSharp
             /// <summary>
             /// OWL2/Manchester format (https://www.w3.org/TR/owl2-manchester-syntax/)
             /// </summary>
-            OWL2Manchester = 2
+            OWL2Manchester = 2,
+            /// <summary>
+            /// OWL2/Functional-Style format (https://www.w3.org/TR/owl2-syntax/#Functional-Style_Syntax)
+            /// </summary>
+            OWL2Functional = 3
         }
 
         /// <summary>

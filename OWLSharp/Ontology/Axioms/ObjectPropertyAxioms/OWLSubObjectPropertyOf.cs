@@ -103,6 +103,22 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this SubObjectPropertyOf axiom
+        /// (this axiom has two syntactic forms: a plain subproperty/superproperty pair, or a property chain
+        /// as the "sub" side - only one of SubObjectPropertyExpression/SubObjectPropertyChain is ever set)
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+        {
+            if (SubObjectPropertyChain != null)
+            {
+                string objectPropertyChainArguments = string.Join(" ", SubObjectPropertyChain.ObjectPropertyExpressions.Select(opex => opex.ToFunctionalString(functionalContext)));
+                return $"SubObjectPropertyOf( {functionalContext.RenderAxiomAnnotations(Annotations)}ObjectPropertyChain( {objectPropertyChainArguments} ) {SuperObjectPropertyExpression.ToFunctionalString(functionalContext)} )";
+            }
+
+            return $"SubObjectPropertyOf( {functionalContext.RenderAxiomAnnotations(Annotations)}{SubObjectPropertyExpression.ToFunctionalString(functionalContext)} {SuperObjectPropertyExpression.ToFunctionalString(functionalContext)} )";
+        }
+
+        /// <summary>
         /// Exports this OWLSubObjectPropertyOf to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

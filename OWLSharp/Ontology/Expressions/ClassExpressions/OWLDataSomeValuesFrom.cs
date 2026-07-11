@@ -85,6 +85,14 @@ namespace OWLSharp.Ontology
             => $"{DataProperty.ToManchesterString(manchesterContext)} some {manchesterContext.Nest(DataRangeExpression)}";
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this OWLDataSomeValuesFrom expression
+        /// </summary>
+        public override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            //The grammar allows a list of DataPropertyExpression before the final DataRange, but this model
+            //only ever holds a single DataProperty, so the production collapses to a single-argument form
+            => $"DataSomeValuesFrom( {DataProperty.ToFunctionalString(functionalContext)} {DataRangeExpression.ToFunctionalString(functionalContext)} )";
+
+        /// <summary>
         /// Exports this OWLDataSomeValuesFrom expression to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

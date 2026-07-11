@@ -92,6 +92,17 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this AnnotationPropertyRange axiom
+        /// (the range is a bare IRI, not an expression, and may come from either the full IRI field or the
+        /// abbreviated xsd:QName field - only one of the two is ever set, mirroring the Manchester rendering)
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+        {
+            string rangeIRI = IRI ?? (AbbreviatedIRI != null ? string.Concat(AbbreviatedIRI.Namespace, AbbreviatedIRI.Name) : null);
+            return $"AnnotationPropertyRange( {functionalContext.RenderAxiomAnnotations(Annotations)}{AnnotationProperty.ToFunctionalString(functionalContext)} {functionalContext.Abbreviate(new RDFResource(rangeIRI))} )";
+        }
+
+        /// <summary>
         /// Exports this OWLAnnotationPropertyRange to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

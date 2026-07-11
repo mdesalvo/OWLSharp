@@ -17,6 +17,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
+using System;
 using System.Linq;
 
 namespace OWLSharp.Test.Ontology;
@@ -24,6 +25,22 @@ namespace OWLSharp.Test.Ontology;
 [TestClass]
 public class OWLDifferentIndividualsTest
 {
+    #region Utilities
+    private static OWLFunctionalContext CreateContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLFunctionalContext(ontology.Prefixes);
+    }
+
+    private static OWLManchesterContext CreateManchesterContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLManchesterContext(ontology.Prefixes);
+    }
+    #endregion
+
     #region Tests
     [TestMethod]
     public void ShouldCreateDifferentIndividuals()
@@ -240,6 +257,34 @@ public class OWLDifferentIndividualsTest
         Assert.AreEqual(0, graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, null, null].TriplesCount);
         Assert.AreEqual(0, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, null, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLNamedIndividual margherita = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Margherita"));
+        OWLNamedIndividual mozzarella = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Mozzarella"));
+        OWLDifferentIndividuals axiom = new OWLDifferentIndividuals([ margherita, mozzarella ]);
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("DifferentIndividuals( pz:Margherita pz:Mozzarella )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLNamedIndividual margherita = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Margherita"));
+        OWLNamedIndividual mozzarella = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Mozzarella"));
+        OWLDifferentIndividuals axiom = new OWLDifferentIndividuals([ margherita, mozzarella ]);
+
+        OWLManchesterFrameItem frameItem = axiom.ToManchesterFrameItem(CreateManchesterContext());
+
+        Assert.IsNotNull(frameItem);
+        Assert.AreEqual(OWLManchesterFrameKind.Misc, frameItem.FrameKind);
+        Assert.IsNull(frameItem.EntityName);
+        Assert.AreEqual("DifferentIndividuals:", frameItem.SectionKeyword);
+        Assert.AreEqual("pz:Margherita, pz:Mozzarella", frameItem.ItemText);
     }
     #endregion
 }

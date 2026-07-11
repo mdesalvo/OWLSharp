@@ -70,6 +70,12 @@ namespace OWLSharp.Ontology
         /// </summary>
         public override string ToManchesterString(OWLManchesterContext manchesterContext)
             => $"_:{NodeID}";
+
+        /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this anonymous individual (e.g: _:ANON2447)
+        /// </summary>
+        public override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"_:{NodeID}";
         #endregion
     }
 }

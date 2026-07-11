@@ -87,6 +87,12 @@ namespace OWLSharp.Ontology
             => $"not {manchesterContext.Nest(ClassExpression)}";
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this OWLObjectComplementOf expression
+        /// </summary>
+        public override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"ObjectComplementOf( {ClassExpression.ToFunctionalString(functionalContext)} )";
+
+        /// <summary>
         /// Exports this OWLObjectComplementOf expression to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

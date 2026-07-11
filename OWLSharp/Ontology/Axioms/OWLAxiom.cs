@@ -119,6 +119,20 @@ namespace OWLSharp.Ontology
             => null;
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this axiom, i.e. the complete
+        /// "Keyword( axiomAnnotations arg1 arg2 ... )" token as defined by the grammar production
+        /// for this specific axiom type. Unlike Manchester (which groups axioms under per-entity
+        /// frames via ToManchesterFrameItem), every Functional-Style axiom is a single self-delimiting
+        /// token that the serializer can place directly, in any order, inside the enclosing Ontology(...)
+        /// block - so this returns the finished string rather than a frame-placement descriptor.
+        /// The base implementation returns null (not representable) purely as a safety net: every
+        /// concrete OWLAxiom subclass shipped in OWLSharp overrides this, since the Functional-Style
+        /// grammar (unlike Manchester's) has a production for every axiom type OWLSharp models.
+        /// </summary>
+        internal virtual string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => null;
+
+        /// <summary>
         /// Adds the given annotation to the set of this axiom's annotations
         /// </summary>
         /// <exception cref="OWLException"></exception>

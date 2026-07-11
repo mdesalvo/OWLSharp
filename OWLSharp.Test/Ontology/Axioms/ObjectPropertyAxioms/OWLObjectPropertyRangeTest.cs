@@ -14,6 +14,8 @@
    limitations under the License.
 */
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
@@ -216,6 +218,51 @@ public class OWLObjectPropertyRangeTest
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDFS.RANGE, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.FOAF.PERSON, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLObjectProperty hasTopping = new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
+        OWLClass topping = new OWLClass(new RDFResource("http://example.org/pz#Topping"));
+        OWLObjectPropertyRange axiom = new OWLObjectPropertyRange(hasTopping, topping);
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("ObjectPropertyRange( pz:hasTopping pz:Topping )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLObjectProperty hasTopping = new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
+        OWLClass topping = new OWLClass(new RDFResource("http://example.org/pz#Topping"));
+        OWLObjectPropertyRange axiom = new OWLObjectPropertyRange(hasTopping, topping);
+
+        OWLManchesterFrameItem frameItem = axiom.ToManchesterFrameItem(CreateManchesterContext());
+
+        Assert.IsNotNull(frameItem);
+        Assert.AreEqual(OWLManchesterFrameKind.ObjectProperty, frameItem.FrameKind);
+        Assert.AreEqual("pz:hasTopping", frameItem.EntityName);
+        Assert.AreEqual("Range:", frameItem.SectionKeyword);
+        Assert.AreEqual("pz:Topping", frameItem.ItemText);
+    }
+    #endregion
+
+    #endregion
+
+    #region Utilities
+    private static OWLFunctionalContext CreateContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLFunctionalContext(ontology.Prefixes);
+    }
+
+    private static OWLManchesterContext CreateManchesterContext()
+    {
+        List<OWLPrefix> prefixes = [ new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")) ];
+        return new OWLManchesterContext(prefixes);
     }
     #endregion
 }

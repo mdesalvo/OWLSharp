@@ -17,6 +17,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
+using System;
 using System.Linq;
 
 namespace OWLSharp.Test.Ontology;
@@ -24,6 +25,22 @@ namespace OWLSharp.Test.Ontology;
 [TestClass]
 public class OWLNegativeNegativeObjectPropertyAssertionTest
 {
+    #region Utilities
+    private static OWLFunctionalContext CreateContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLFunctionalContext(ontology.Prefixes);
+    }
+
+    private static OWLManchesterContext CreateManchesterContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLManchesterContext(ontology.Prefixes);
+    }
+    #endregion
+
     #region Tests
     [TestMethod]
     public void ShouldCreateNamedIndividualNegativeObjectPropertyAssertion()
@@ -480,6 +497,36 @@ public class OWLNegativeNegativeObjectPropertyAssertionTest
         //Annotations
         Assert.AreEqual(1, graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLObjectProperty hasTopping = new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
+        OWLNamedIndividual margherita = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Margherita"));
+        OWLNamedIndividual mozzarella = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Mozzarella"));
+        OWLNegativeObjectPropertyAssertion axiom = new OWLNegativeObjectPropertyAssertion(hasTopping, margherita, mozzarella);
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("NegativeObjectPropertyAssertion( pz:hasTopping pz:Margherita pz:Mozzarella )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLObjectProperty hasTopping = new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
+        OWLNamedIndividual margherita = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Margherita"));
+        OWLNamedIndividual mozzarella = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Mozzarella"));
+        OWLNegativeObjectPropertyAssertion axiom = new OWLNegativeObjectPropertyAssertion(hasTopping, margherita, mozzarella);
+
+        OWLManchesterFrameItem frameItem = axiom.ToManchesterFrameItem(CreateManchesterContext());
+
+        Assert.IsNotNull(frameItem);
+        Assert.AreEqual(OWLManchesterFrameKind.Individual, frameItem.FrameKind);
+        Assert.AreEqual("pz:Margherita", frameItem.EntityName);
+        Assert.AreEqual("Facts:", frameItem.SectionKeyword);
+        Assert.AreEqual("not pz:hasTopping pz:Mozzarella", frameItem.ItemText);
     }
     #endregion
 }

@@ -111,4 +111,30 @@ public class OWLObjectOneOfTest
         Assert.AreEqual(1, graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLObjectOneOf objectOneOf = new OWLObjectOneOf([
+            new OWLNamedIndividual(new RDFResource("http://example.org/Bob")), new OWLAnonymousIndividual("AnonIdv")]);
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("ex", "http://example.org/")) ]);
+
+        Assert.AreEqual("{ex:Bob, _:AnonIdv}", objectOneOf.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLObjectOneOf objectOneOf = new OWLObjectOneOf([
+            new OWLNamedIndividual(new RDFResource("http://example.org/Bob")), new OWLAnonymousIndividual("AnonIdv")]);
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("ex", "http://example.org/")) ]);
+
+        Assert.AreEqual("ObjectOneOf( ex:Bob _:AnonIdv )", objectOneOf.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

@@ -98,6 +98,12 @@ namespace OWLSharp.Ontology
                 ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{ClassExpression.ToManchesterString(manchesterContext)}" };
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this ClassAssertion axiom
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"ClassAssertion( {functionalContext.RenderAxiomAnnotations(Annotations)}{ClassExpression.ToFunctionalString(functionalContext)} {IndividualExpression.ToFunctionalString(functionalContext)} )";
+
+        /// <summary>
         /// Exports this OWLClassAssertion to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

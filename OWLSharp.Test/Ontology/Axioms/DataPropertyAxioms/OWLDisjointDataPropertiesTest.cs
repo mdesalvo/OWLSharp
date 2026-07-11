@@ -17,6 +17,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
+using System;
 using System.Linq;
 
 namespace OWLSharp.Test.Ontology;
@@ -223,5 +224,45 @@ public class OWLDisjointDataPropertiesTest
         Assert.AreEqual(0, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, null, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
     }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLDataProperty hasCalories = new OWLDataProperty(new RDFResource("http://example.org/pz#hasCalories"));
+        OWLDataProperty hasWeight = new OWLDataProperty(new RDFResource("http://example.org/pz#hasWeight"));
+        OWLDisjointDataProperties axiom = new OWLDisjointDataProperties([ hasCalories, hasWeight ]);
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("DisjointDataProperties( pz:hasCalories pz:hasWeight )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLDataProperty hasCalories = new OWLDataProperty(new RDFResource("http://example.org/pz#hasCalories"));
+        OWLDataProperty hasWeight = new OWLDataProperty(new RDFResource("http://example.org/pz#hasWeight"));
+        OWLDisjointDataProperties axiom = new OWLDisjointDataProperties([ hasCalories, hasWeight ]);
+
+        OWLManchesterFrameItem frameItem = axiom.ToManchesterFrameItem(CreateManchesterContext());
+
+        Assert.IsNotNull(frameItem);
+        Assert.AreEqual(OWLManchesterFrameKind.Misc, frameItem.FrameKind);
+        Assert.IsNull(frameItem.EntityName);
+        Assert.AreEqual("DisjointProperties:", frameItem.SectionKeyword);
+        Assert.AreEqual("pz:hasCalories, pz:hasWeight", frameItem.ItemText);
+    }
+    #endregion
+
+    #region Utilities
+    private static OWLFunctionalContext CreateContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLFunctionalContext(ontology.Prefixes);
+    }
+
+    private static OWLManchesterContext CreateManchesterContext()
+        => new OWLManchesterContext(CreateContext().Prefixes);
     #endregion
 }

@@ -151,4 +151,28 @@ public class OWLObjectHasSelfTest
         Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLObjectHasSelf objectHasSelf = new OWLObjectHasSelf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")) ]);
+
+        Assert.AreEqual("foaf:knows Self", objectHasSelf.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLObjectHasSelf objectHasSelf = new OWLObjectHasSelf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("foaf", "http://xmlns.com/foaf/0.1/")) ]);
+
+        Assert.AreEqual("ObjectHasSelf( foaf:knows )", objectHasSelf.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

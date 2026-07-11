@@ -167,4 +167,54 @@ public class OWLDataMaxCardinalityTest
         Assert.AreEqual(1, graph[RDFVocabulary.XSD.STRING, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount);
     }
     #endregion
+
+    #region Tests (Manchester)
+    [TestMethod]
+    public void ShouldSerializeUnqualifiedToManchester()
+    {
+        OWLDataMaxCardinality dataMaxCardinality = new OWLDataMaxCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+            [ new OWLPrefix(new RDFNamespace("dc", "http://purl.org/dc/elements/1.1/")) ]);
+
+        Assert.AreEqual("dc:description max 1", dataMaxCardinality.ToManchesterString(manchesterContext));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLDataMaxCardinality dataMaxCardinality = new OWLDataMaxCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING));
+        OWLManchesterContext manchesterContext = new OWLManchesterContext(
+        [
+            new OWLPrefix(new RDFNamespace("dc", "http://purl.org/dc/elements/1.1/")),
+            new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#"))
+        ]);
+
+        Assert.AreEqual("dc:description max 1 xsd:string", dataMaxCardinality.ToManchesterString(manchesterContext));
+    }
+    #endregion
+
+    #region Tests (Functional)
+    [TestMethod]
+    public void ShouldSerializeUnqualifiedToFunctional()
+    {
+        OWLDataMaxCardinality dataMaxCardinality = new OWLDataMaxCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("dc", "http://purl.org/dc/elements/1.1/")) ]);
+
+        Assert.AreEqual("DataMaxCardinality( 1 dc:description )", dataMaxCardinality.ToFunctionalString(functionalContext));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLDataMaxCardinality dataMaxCardinality = new OWLDataMaxCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING));
+        OWLFunctionalContext functionalContext = new OWLFunctionalContext(
+        [
+            new OWLPrefix(new RDFNamespace("dc", "http://purl.org/dc/elements/1.1/")),
+            new OWLPrefix(new RDFNamespace("xsd", "http://www.w3.org/2001/XMLSchema#"))
+        ]);
+
+        Assert.AreEqual("DataMaxCardinality( 1 dc:description xsd:string )", dataMaxCardinality.ToFunctionalString(functionalContext));
+    }
+    #endregion
 }

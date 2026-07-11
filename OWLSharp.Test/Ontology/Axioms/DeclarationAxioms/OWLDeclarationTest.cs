@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
@@ -255,5 +256,105 @@ public class OWLDeclarationTest
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.OWL.CLASS, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
     }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctionalOfClass()
+    {
+        OWLDeclaration axiom = new OWLDeclaration(new OWLClass(new RDFResource("http://example.org/pz#Pizza")));
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("Declaration( Class( pz:Pizza ) )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctionalOfDatatype()
+    {
+        OWLDeclaration axiom = new OWLDeclaration(new OWLDatatype(new RDFResource("http://example.org/pz#PositiveInt")));
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("Declaration( Datatype( pz:PositiveInt ) )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctionalOfObjectProperty()
+    {
+        OWLDeclaration axiom = new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping")));
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("Declaration( ObjectProperty( pz:hasTopping ) )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctionalOfDataProperty()
+    {
+        OWLDeclaration axiom = new OWLDeclaration(new OWLDataProperty(new RDFResource("http://example.org/pz#hasCalories")));
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("Declaration( DataProperty( pz:hasCalories ) )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctionalOfAnnotationProperty()
+    {
+        OWLDeclaration axiom = new OWLDeclaration(new OWLAnnotationProperty(new RDFResource("http://example.org/pz#note")));
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("Declaration( AnnotationProperty( pz:note ) )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctionalOfNamedIndividual()
+    {
+        OWLDeclaration axiom = new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://example.org/pz#Margherita")));
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("Declaration( NamedIndividual( pz:Margherita ) )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchesterOfClass()
+    {
+        OWLDeclaration axiom = new OWLDeclaration(new OWLClass(new RDFResource("http://example.org/pz#Pizza")));
+
+        OWLManchesterFrameItem frameItem = axiom.ToManchesterFrameItem(CreateManchesterContext());
+
+        Assert.IsNotNull(frameItem);
+        Assert.AreEqual(OWLManchesterFrameKind.Class, frameItem.FrameKind);
+        Assert.AreEqual("pz:Pizza", frameItem.EntityName);
+        Assert.IsNull(frameItem.SectionKeyword);
+        Assert.IsNull(frameItem.ItemText);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchesterOfNamedIndividual()
+    {
+        OWLDeclaration axiom = new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://example.org/pz#Margherita")));
+
+        OWLManchesterFrameItem frameItem = axiom.ToManchesterFrameItem(CreateManchesterContext());
+
+        Assert.IsNotNull(frameItem);
+        Assert.AreEqual(OWLManchesterFrameKind.Individual, frameItem.FrameKind);
+        Assert.AreEqual("pz:Margherita", frameItem.EntityName);
+        Assert.IsNull(frameItem.SectionKeyword);
+        Assert.IsNull(frameItem.ItemText);
+    }
+    #endregion
+
+    #region Utilities
+    private static OWLFunctionalContext CreateContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLFunctionalContext(ontology.Prefixes);
+    }
+
+    private static OWLManchesterContext CreateManchesterContext()
+        => new OWLManchesterContext(CreateContext().Prefixes);
     #endregion
 }

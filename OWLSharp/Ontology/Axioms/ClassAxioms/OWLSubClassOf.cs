@@ -105,6 +105,12 @@ namespace OWLSharp.Ontology
                 : null;
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this SubClassOf axiom
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"SubClassOf( {functionalContext.RenderAxiomAnnotations(Annotations)}{SubClassExpression.ToFunctionalString(functionalContext)} {SuperClassExpression.ToFunctionalString(functionalContext)} )";
+
+        /// <summary>
         /// Exports this OWLSubClassOf to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

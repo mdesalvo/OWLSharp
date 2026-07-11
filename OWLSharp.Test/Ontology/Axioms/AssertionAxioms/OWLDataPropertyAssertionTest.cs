@@ -17,6 +17,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
+using System;
 using System.Linq;
 
 namespace OWLSharp.Test.Ontology;
@@ -24,6 +25,22 @@ namespace OWLSharp.Test.Ontology;
 [TestClass]
 public class OWLDataPropertyAssertionTest
 {
+    #region Utilities
+    private static OWLFunctionalContext CreateContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLFunctionalContext(ontology.Prefixes);
+    }
+
+    private static OWLManchesterContext CreateManchesterContext()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        return new OWLManchesterContext(ontology.Prefixes);
+    }
+    #endregion
+
     #region Tests
     [TestMethod]
     public void ShouldCreateNamedIndividualDataPropertyAssertion()
@@ -300,6 +317,36 @@ public class OWLDataPropertyAssertionTest
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.FOAF.AGE, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, null, new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToFunctional()
+    {
+        OWLDataProperty hasCalories = new OWLDataProperty(new RDFResource("http://example.org/pz#hasCalories"));
+        OWLNamedIndividual margherita = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Margherita"));
+        OWLDataPropertyAssertion axiom = new OWLDataPropertyAssertion(hasCalories, margherita,
+            new OWLLiteral(new RDFTypedLiteral("850", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+
+        string functionalString = axiom.ToFunctionalString(CreateContext());
+
+        Assert.AreEqual("DataPropertyAssertion( pz:hasCalories pz:Margherita \"850\"^^xsd:integer )", functionalString);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeToManchester()
+    {
+        OWLDataProperty hasCalories = new OWLDataProperty(new RDFResource("http://example.org/pz#hasCalories"));
+        OWLNamedIndividual margherita = new OWLNamedIndividual(new RDFResource("http://example.org/pz#Margherita"));
+        OWLDataPropertyAssertion axiom = new OWLDataPropertyAssertion(hasCalories, margherita,
+            new OWLLiteral(new RDFTypedLiteral("850", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+
+        OWLManchesterFrameItem frameItem = axiom.ToManchesterFrameItem(CreateManchesterContext());
+
+        Assert.IsNotNull(frameItem);
+        Assert.AreEqual(OWLManchesterFrameKind.Individual, frameItem.FrameKind);
+        Assert.AreEqual("pz:Margherita", frameItem.EntityName);
+        Assert.AreEqual("Facts:", frameItem.SectionKeyword);
+        Assert.AreEqual("pz:hasCalories \"850\"^^xsd:integer", frameItem.ItemText);
     }
     #endregion
 }

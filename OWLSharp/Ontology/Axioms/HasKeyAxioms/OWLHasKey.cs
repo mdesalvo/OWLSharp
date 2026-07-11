@@ -125,6 +125,14 @@ namespace OWLSharp.Ontology
                 : null;
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this HasKey axiom
+        /// (the object-property and data-property key lists are each emitted as their own parenthesized group,
+        /// always present even when empty - "( )" is a syntactically valid empty group in this grammar)
+        /// </summary>
+        internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"HasKey( {functionalContext.RenderAxiomAnnotations(Annotations)}{ClassExpression.ToFunctionalString(functionalContext)} ( {string.Join(" ", (ObjectPropertyExpressions ?? new List<OWLObjectPropertyExpression>()).Select(ope => ope.ToFunctionalString(functionalContext)))} ) ( {string.Join(" ", (DataProperties ?? new List<OWLDataProperty>()).Select(dtProp => dtProp.ToFunctionalString(functionalContext)))} ) )";
+
+        /// <summary>
         /// Exports this OWLHasKey to an equivalent RDFGraph object
         /// </summary>
         public override RDFGraph ToRDFGraph()

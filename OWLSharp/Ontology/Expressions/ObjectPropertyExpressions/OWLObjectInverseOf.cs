@@ -69,6 +69,12 @@ namespace OWLSharp.Ontology
             => $"inverse {ObjectProperty.ToManchesterString(manchesterContext)}";
 
         /// <summary>
+        /// Gets the OWL2/Functional-Style representation of this OWLObjectInverseOf expression
+        /// </summary>
+        public override string ToFunctionalString(OWLFunctionalContext functionalContext)
+            => $"ObjectInverseOf( {ObjectProperty.ToFunctionalString(functionalContext)} )";
+
+        /// <summary>
         /// Exports this OWLObjectInverseOf expression to an equivalent RDFGraph object
         /// </summary>
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
