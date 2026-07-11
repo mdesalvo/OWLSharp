@@ -255,8 +255,6 @@ public class OWLDisjointObjectPropertiesTest
     }
     #endregion
 
-    #endregion
-
     #region Utilities
     private static OWLFunctionalContext CreateContext()
     {

@@ -249,8 +249,6 @@ public class OWLEquivalentObjectPropertiesTest
     }
     #endregion
 
-    #endregion
-
     #region Utilities
     private static OWLFunctionalContext CreateContext()
     {
