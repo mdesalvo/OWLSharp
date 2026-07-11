@@ -249,8 +249,6 @@ public class OWLObjectPropertyRangeTest
     }
     #endregion
 
-    #endregion
-
     #region Utilities
     private static OWLFunctionalContext CreateContext()
     {

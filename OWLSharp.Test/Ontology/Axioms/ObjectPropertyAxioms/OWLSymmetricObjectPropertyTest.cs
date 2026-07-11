@@ -316,8 +316,6 @@ public class OWLSymmetricObjectPropertyTest
     }
     #endregion
 
-    #endregion
-
     #region Utilities
     private static OWLFunctionalContext CreateContext()
     {
