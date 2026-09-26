@@ -1,5 +1,7 @@
 # OWLSharp <a href="https://www.nuget.org/packages/OWLSharp"><img src="https://img.shields.io/nuget/dt/OWLSharp?style=flat&color=9f7aea&logo=nuget&label=downloads"/></a> [![codecov](https://codecov.io/gh/mdesalvo/OWLSharp/graph/badge.svg?token=s7ifp1Uf6D)](https://codecov.io/gh/mdesalvo/OWLSharp)
 
+⭐ We appreciate your star, it helps!
+
 OWLSharp is a .NET library built atop <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</a> with the goal of delivering **expressivity** for ontology:
 
 <b><a href="https://github.com/mdesalvo/OWLSharp/releases/download/v5.0.0/OWLSharp.Ontology-5.0.pdf">Modeling</a></b>
