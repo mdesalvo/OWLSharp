@@ -18,6 +18,7 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
+using RDFSharp.Query;
 
 namespace OWLSharp.Test.Ontology;
 
@@ -115,5 +116,82 @@ public class OWLFunctionalRoundTripTest
                          reparsedOntology.ObjectPropertyAxioms[0].ToFunctionalString(new OWLFunctionalContext(reparsedOntology.Prefixes)));
         Assert.AreEqual(originalOntology.ClassAxioms[4].ToFunctionalString(new OWLFunctionalContext(originalOntology.Prefixes)),
                          reparsedOntology.ClassAxioms[4].ToFunctionalString(new OWLFunctionalContext(reparsedOntology.Prefixes)));
+    }
+
+    [TestMethod]
+    [DataRow("http://example.org/x#pct%20enc", "<http://example.org/x#pct%20enc>")]
+    [DataRow("http://example.org/x#ünïcode", null)]
+    public void ShouldRoundTripIRIWithEscapedOrUnicodeCharacters(string classIRI, string expectedFunctionalIRI)
+    {
+        //Verifies that class IRIs with percent-encoded or Unicode characters are rewritten and reread as the same IRI
+        OWLOntology originalOntology = new OWLOntology(new Uri("http://example.org/pz"));
+        originalOntology.Prefixes.Add(new OWLPrefix(new RDFNamespace("ex", "http://example.org/x#")));
+        originalOntology.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass(new RDFResource(classIRI))));
+
+        string functionalDocument = OWLFunctionalSerializer.SerializeOntology(originalOntology);
+        OWLOntology reparsedOntology = OWLFunctionalParser.DeserializeOntology(functionalDocument);
+
+        if (expectedFunctionalIRI != null)
+            Assert.IsTrue(functionalDocument.Contains(expectedFunctionalIRI, StringComparison.Ordinal));
+        Assert.HasCount(1, reparsedOntology.DeclarationAxioms);
+        Assert.AreEqual(new RDFResource(classIRI), reparsedOntology.DeclarationAxioms[0].Entity.GetIRI());
+    }
+
+    [TestMethod]
+    [DataRow("http://example.org/x#ends.dot.", "<http://example.org/x#ends.dot.>")]
+    [DataRow("http://example.org/x#a.b", "ex:a.b")]
+    public void ShouldRoundTripIRIWithDotInLocalName(string classIRI, string expectedFunctionalIRI)
+    {
+        //Verifies that a trailing dot forces the full IRI form while an inner dot keeps the prefixed name
+        OWLOntology originalOntology = new OWLOntology(new Uri("http://example.org/pz"));
+        originalOntology.Prefixes.Add(new OWLPrefix(new RDFNamespace("ex", "http://example.org/x#")));
+        originalOntology.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass(new RDFResource(classIRI))));
+
+        string functionalDocument = OWLFunctionalSerializer.SerializeOntology(originalOntology);
+        OWLOntology reparsedOntology = OWLFunctionalParser.DeserializeOntology(functionalDocument);
+
+        Assert.IsTrue(functionalDocument.Contains($"Class( {expectedFunctionalIRI} )", StringComparison.Ordinal));
+        Assert.AreEqual(new RDFResource(classIRI), reparsedOntology.DeclarationAxioms[0].Entity.GetIRI());
+    }
+
+    [TestMethod]
+    public void ShouldRoundTripSWRLRuleWithAnnotationsAtomsAndBuiltIns()
+    {
+        //Verifies a rule built with the public ctor comes back identical (label and comment included) through Functional-Style
+        OWLOntology originalOntology = new OWLOntology(new Uri("http://example.org/pz"));
+        originalOntology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        SWRLVariableArgument xVariable = new SWRLVariableArgument(new RDFVariable("?x"));
+        SWRLVariableArgument yVariable = new SWRLVariableArgument(new RDFVariable("?y"));
+        SWRLVariableArgument ageVariable = new SWRLVariableArgument(new RDFVariable("?age"));
+        originalOntology.Rules.Add(new SWRLRule(
+            new RDFPlainLiteral("grown-up"), new RDFPlainLiteral("a person of age"),
+            new SWRLAntecedent
+            {
+                Atoms = [
+                    new SWRLClassAtom(new OWLClass(new RDFResource("http://example.org/pz#Person")), xVariable),
+                    new SWRLObjectPropertyAtom(new OWLObjectProperty(new RDFResource("http://example.org/pz#knows")), xVariable, new SWRLIndividualArgument(new RDFResource("http://example.org/pz#Bob"))),
+                    new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("http://example.org/pz#hasAge")), xVariable, ageVariable),
+                    new SWRLDataRangeAtom(new OWLDatatype(RDFVocabulary.XSD.INTEGER), ageVariable),
+                    new SWRLDifferentIndividualsAtom(xVariable, yVariable)
+                ],
+                BuiltIns = [ SWRLBuiltIn.GreaterThan(ageVariable, new SWRLLiteralArgument(new RDFTypedLiteral("17", RDFModelEnums.RDFDatatypes.XSD_INTEGER))) ]
+            },
+            new SWRLConsequent
+            {
+                Atoms = [
+                    new SWRLClassAtom(new OWLClass(new RDFResource("http://example.org/pz#Adult")), xVariable),
+                    new SWRLSameIndividualAtom(xVariable, yVariable)
+                ]
+            }));
+
+        string functionalDocument = OWLFunctionalSerializer.SerializeOntology(originalOntology);
+        OWLOntology reparsedOntology = OWLFunctionalParser.DeserializeOntology(functionalDocument);
+
+        Assert.HasCount(1, reparsedOntology.Rules);
+        Assert.HasCount(2, reparsedOntology.Rules[0].Annotations);
+        Assert.AreEqual("grown-up", reparsedOntology.Rules[0].Annotations[0].ValueLiteral.Value);
+        Assert.AreEqual("a person of age", reparsedOntology.Rules[0].Annotations[1].ValueLiteral.Value);
+        Assert.AreEqual(originalOntology.Rules[0].GetXML(), reparsedOntology.Rules[0].GetXML());
+        Assert.AreEqual(originalOntology.Rules[0].ToString(), reparsedOntology.Rules[0].ToString());
     }
 }

@@ -45,9 +45,10 @@ namespace OWLSharp.Ontology
         /// (SPARQL/Turtle grammar, conservative subset: the full production also allows escaped reserved
         /// characters and a wide range of Unicode code points, which we deliberately do not attempt to
         /// recognize here - an IRI whose local part relies on those exotic characters simply falls back
-        /// to the always-legal full IRI form below, so under-recognizing is safe, over-recognizing is not)
+        /// to the always-legal full IRI form below, so under-recognizing is safe, over-recognizing is not;
+        /// a local part may contain dots but must not end with one, as PN_LOCAL forbids a trailing dot)
         /// </summary>
-        internal static readonly Regex LocalNameRegex = new Regex(@"^[a-zA-Z0-9_][a-zA-Z0-9_\-.]*$", RegexOptions.Compiled);
+        internal static readonly Regex LocalNameRegex = new Regex(@"^[a-zA-Z0-9_]([a-zA-Z0-9_\-.]*[a-zA-Z0-9_\-])?$", RegexOptions.Compiled);
         #endregion
 
         #region Ctors
@@ -67,7 +68,12 @@ namespace OWLSharp.Ontology
         /// </summary>
         public string Abbreviate(RDFResource iri)
         {
-            string iriString = iri?.ToString() ?? string.Empty;
+            //The escaped form of the IRI is the one a Functional-Style document must carry: the default
+            //string form decodes sequences such as %20 into raw spaces that the lexer rejects on reading
+            //(a relative IRI has no absolute form to ask for, so it is taken as originally written)
+            string iriString = iri == null
+                ? string.Empty
+                : iri.URI.IsAbsoluteUri ? iri.URI.AbsoluteUri : iri.URI.OriginalString;
 
             //Among all the declared prefixes whose namespace is a prefix of the given IRI string,
             //pick the one with the longest namespace: this is the most specific match, and it is

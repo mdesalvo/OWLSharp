@@ -114,6 +114,11 @@ namespace OWLSharp.Ontology
         /// </summary>
         internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
         {
+            //An assertion read from OWL/XML may lack its subject or its value (anonymous ones are not modeled):
+            //it has no Functional-Style form then, so the serializer skips it with a warning instead of failing
+            if (AnnotationProperty == null || string.IsNullOrEmpty(SubjectIRI) || (ValueIRI == null && ValueLiteral == null))
+                return null;
+
             string annotationValue = ValueIRI != null
                 ? functionalContext.Abbreviate(new RDFResource(ValueIRI))
                 : ValueLiteral.ToFunctionalString(functionalContext);

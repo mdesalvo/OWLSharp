@@ -99,6 +99,12 @@ namespace OWLSharp.Ontology
         internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
         {
             string domainIRI = IRI ?? (AbbreviatedIRI != null ? string.Concat(AbbreviatedIRI.Namespace, AbbreviatedIRI.Name) : null);
+
+            //An axiom read from OWL/XML may lack its property or its domain: it has no Functional-Style form
+            //then, so the serializer skips it with a warning instead of failing
+            if (AnnotationProperty == null || domainIRI == null)
+                return null;
+
             return $"AnnotationPropertyDomain( {functionalContext.RenderAxiomAnnotations(Annotations)}{AnnotationProperty.ToFunctionalString(functionalContext)} {functionalContext.Abbreviate(new RDFResource(domainIRI))} )";
         }
 

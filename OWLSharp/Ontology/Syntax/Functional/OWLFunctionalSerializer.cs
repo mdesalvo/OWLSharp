@@ -70,11 +70,20 @@ namespace OWLSharp.Ontology
             AppendAxioms(functionalDocument, ontology.AssertionAxioms, functionalContext);
             AppendAxioms(functionalDocument, ontology.AnnotationAxioms, functionalContext);
 
-            //Unlike every other axiom family, SWRL rules have no Functional-Style production at all
-            //(they belong to the separate SWRL specification, not to the OWL2 Structural Specification),
-            //so they are skipped with the same non-fatal warning OWLManchesterSerializer already raises
+            //SWRL rules close the document body as DLSafeRule productions: they are not part of the OWL2
+            //Structural Specification but OWL API and Protege exchange them in this very shape
             foreach (SWRLRule swrlRule in ontology.Rules)
-                OWLEvents.RaiseWarning($"SWRL rule '{swrlRule}' is not representable in OWL2/Functional-Style syntax and has been skipped");
+            {
+                //A malformed rule (e.g: an atom without argument) is skipped like a malformed axiom: it must not fail the whole document
+                try
+                {
+                    functionalDocument.AppendLine($"    {OWLFunctionalSWRL.ToFunctionalString(swrlRule, functionalContext)}");
+                }
+                catch (OWLException ex)
+                {
+                    OWLEvents.RaiseWarning($"SWRL rule '{swrlRule}' is not representable in OWL2/Functional-Style syntax and has been skipped ({ex.Message})");
+                }
+            }
 
             functionalDocument.Append(')');
             return functionalDocument.ToString();
