@@ -4,12 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-OWLSharp is a .NET library built atop [RDFSharp](https://github.com/mdesalvo/RDFSharp) for OWL2 ontology **modeling** (OWL2/XML), **reasoning** (42 RDFS/OWL2 entailment rules + SWRL rules), and **validation** (30 analysis rules for pitfalls/inconsistencies). Extensions for LinkedData ontologies live in the separate `OWLSharp.Extensions` repo.
+OWLSharp is a .NET library built atop [RDFSharp](https://github.com/mdesalvo/RDFSharp) for OWL2 ontology **modeling** (OWL2/XML), **reasoning** (42 RDFS/OWL2 entailment rules + SWRL rules) and **validation** (30 analysis rules for pitfalls/inconsistencies). Extensions for LinkedData ontologies live in the separate `OWLSharp.Extensions` repo.
 
 ## Commands
 
 ```bash
-# Build (targets netstandard2.0 + net8.0 for OWLSharp, net10.0 for tests)
+# Build (targets netstandard2.0 + net8.0 + net10.0 for OWLSharp, net10.0 for tests)
 dotnet build -c Release
 
 # Run full test suite (MSTest)
@@ -25,7 +25,9 @@ dotnet test --filter "FullyQualifiedName~OWLFactHasSelfEntailmentTest.ShouldEnta
 dotnet test -c Release --collect:"XPlat Code Coverage"
 ```
 
-CI (`.github/workflows/linux.yml`, `windows.yml`) builds+tests on push to `main` on both Ubuntu and Windows, using .NET 8, then uploads coverage to Codecov.
+CI (`.github/workflows/linux.yml`, `windows.yml`) builds+tests on push to `main` on both Ubuntu and Windows, using .NET 10, then uploads coverage to Codecov.
+
+Releases go out from a version tag: pushing `vX.Y.Z` triggers `.github/workflows/nuget-publish.yml`, which checks the tag against `<Version>` in `OWLSharp/OWLSharp.csproj`, builds, runs the full suite and pushes `.nupkg` + `.snupkg` to nuget.org via Trusted Publishing (no API key stored in the repository). Bump `<Version>` in both csproj before tagging.
 
 ## Architecture
 
@@ -43,7 +45,7 @@ Both `OWLReasoner` (`Reasoner/OWLReasoner.cs`) and `OWLValidator` (`Validator/OW
 
 `OWLReasoner.ApplyToOntologyAsync` runs these as two sequential phases: the **Schema phase** runs once, looping internally to a real (uncapped) fixpoint — no Reasoner rule derives a T-Box axiom from an A-Box fact, so this tier is acyclic with respect to the Fact tier and never needs revisiting once closed; the **Fact phase** then runs against the now-schema-stable ontology under the existing iterative/capped loop (`OWLReasonerOptions.EnableIterativeReasoning`, `MaxAllowedIterations`, default 3, unless `OWLReasonerOptions.ForceRLFixpointConvergence` is opted into and the ontology is verified OWL2-RL-compliant, in which case the cap is relaxed to run to genuine convergence). Both phases deduplicate produced inferences against axioms already asserted in the ontology (per-axiom-type `HashSet<string>` of `GetXML()`).
 
-`ApplyToOntologyAsync` returns `Task<OWLReasonerReport>` (`Inferences`, `IterationsPerformed`/`ReachedFixpoint` scoped to the Fact phase, `SchemaClosureRounds`) for the Reasoner, and `Task<OWLValidatorReport>` (`Issues`, `IsConsistent` — true iff no `Error`-severity issue) for the Validator — mirroring the `OWLProfileReport` pattern already used by the Profiler (`Profiler/OWLProfiler.cs`).
+`ApplyToOntologyAsync` returns `Task<OWLReasonerReport>` (`Inferences`, `IterationsPerformed`/`ReachedFixpoint` scoped to the Fact phase, `SchemaClosureRounds`) for the Reasoner and `Task<OWLValidatorReport>` (`Issues`, `IsConsistent` — true iff no `Error`-severity issue) for the Validator — mirroring the `OWLProfileReport` pattern already used by the Profiler (`Profiler/OWLProfiler.cs`).
 
 ### SWRL engine and the OWLShims layer
 
@@ -59,4 +61,4 @@ Those RDFSharp types are `internal sealed` and only friend-visible to the `OWLSh
 
 ### Test project layout
 
-`OWLSharp.Test` mirrors `OWLSharp`'s folder structure 1:1, including the Reasoner's `Schema`/`Fact` subfolders (e.g. `Reasoner/RuleSet/Fact/OWLFactHasSelfEntailmentTest.cs` tests `Reasoner/RuleSet/Fact/OWLFactHasSelfEntailment.cs`). It targets `net10.0` only (vs. the library's `netstandard2.0`/`net8.0`) and depends on the `InternalsVisibleTo` grant from `OWLSharp/Properties/AssemblyInfo.cs` to reach internal rule/helper classes directly.
+`OWLSharp.Test` mirrors `OWLSharp`'s folder structure 1:1, including the Reasoner's `Schema`/`Fact` subfolders (e.g. `Reasoner/RuleSet/Fact/OWLFactHasSelfEntailmentTest.cs` tests `Reasoner/RuleSet/Fact/OWLFactHasSelfEntailment.cs`). It targets `net10.0` only (vs. the library's `netstandard2.0`/`net8.0`/`net10.0`) and depends on the `InternalsVisibleTo` grant from `OWLSharp/Properties/AssemblyInfo.cs` to reach internal rule/helper classes directly.
