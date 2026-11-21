@@ -28,6 +28,7 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.DisjointClassesAnalysis);
         internal const string rulesugg = "Class expressions should not belong at the same time to DisjointClasses and SubClassOf/EquivalentClasses axioms: this forces them to be equivalent to owl:Nothing!";
         internal const string rulesugg2 = "There should not be class expressions belonging to a DisjointClasses axiom and having a class assertion on the same individual!";
+        internal const string rulesugg3 = "There should not be classes that are sub classes of two classes stated disjoint: this forces them to be equivalent to owl:Nothing!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
@@ -44,6 +45,8 @@ namespace OWLSharp.Validator
                 //idvsCounter tallies, within the current DisjointClasses axiom only, how many of its member classes each individual
                 //belongs to: a count > 1 means the same individual was asserted into two classes stated disjoint -> A-Box contradiction
                 Dictionary<long, long> idvsCounter = new Dictionary<long, long>();
+                //subClassesCache memoizes GetSubClassesOf(classExpr) across DisjointClasses axioms sharing the same class expression
+                Dictionary<long, List<OWLClassExpression>> subClassesCache = new Dictionary<long, List<OWLClassExpression>>();
 
                 foreach (OWLDisjointClasses disjClasses in ontology.GetClassAxiomsOfType<OWLDisjointClasses>())
                 {
@@ -77,6 +80,46 @@ namespace OWLSharp.Validator
                                     $"Violated DisjointClasses axiom (T-BOX) with signature: '{disjClasses.GetXML()}'",
                                     rulesugg));
                                 break;
+                            }
+                        }
+                    }
+                    #endregion
+
+                    //SubClassOf*(CLS,CLS1) ^ SubClassOf*(CLS,CLS2) ^ DisjointClasses(CLS1,CLS2) -> WARNING
+                    //Warning, not Error: such a class is equivalent to owl:Nothing (a modeling smell) and only its individuals would make the ontology inconsistent
+                    #region Unsatisfiable Classes
+                    //A class below several disjoint pairs of the same axiom is reported once: the issue is per (axiom,class)
+                    HashSet<long> unsatisfiableClassIDs = new HashSet<long>();
+                    for (int i = 0; i < classExpressions.Count; i++)
+                    {
+                        OWLClassExpression outerClass = classExpressions[i];
+                        RDFResource outerClassIRI = outerClass.GetIRI();
+                        if (!subClassesCache.ContainsKey(outerClassIRI.PatternMemberID))
+                            subClassesCache.Add(outerClassIRI.PatternMemberID, ontology.GetSubClassesOf(outerClass));
+
+                        for (int j = i + 1; j < classExpressions.Count; j++)
+                        {
+                            OWLClassExpression innerClass = classExpressions[j];
+                            RDFResource innerClassIRI = innerClass.GetIRI();
+                            if (!subClassesCache.ContainsKey(innerClassIRI.PatternMemberID))
+                                subClassesCache.Add(innerClassIRI.PatternMemberID, ontology.GetSubClassesOf(innerClass));
+
+                            //A class below both members of the pair (and being none of them) can have no individuals;
+                            //owl:Nothing is below every class once the schema is reasoned and being empty is its very definition
+                            foreach (OWLClassExpression commonSubClass in subClassesCache[outerClassIRI.PatternMemberID]
+                                                                           .Where(outerSubClass => !outerSubClass.GetIRI().Equals(outerClassIRI)
+                                                                                                    && !outerSubClass.GetIRI().Equals(innerClassIRI)
+                                                                                                    && !outerSubClass.GetIRI().Equals(RDFVocabulary.OWL.NOTHING)
+                                                                                                    && subClassesCache[innerClassIRI.PatternMemberID].Any(innerSubClass => innerSubClass.GetIRI().Equals(outerSubClass.GetIRI()))))
+                            {
+                                if (unsatisfiableClassIDs.Add(commonSubClass.GetIRI().PatternMemberID))
+                                {
+                                    issues.Add(new OWLIssue(
+                                        OWLEnums.OWLIssueSeverity.Warning,
+                                        rulename,
+                                        $"Violated DisjointClasses axiom (T-BOX) with signature: '{disjClasses.GetXML()}' (unsatisfiable class: '{commonSubClass.GetIRI()}')",
+                                        rulesugg3));
+                                }
                             }
                         }
                     }

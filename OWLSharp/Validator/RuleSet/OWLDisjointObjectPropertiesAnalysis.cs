@@ -23,13 +23,14 @@ namespace OWLSharp.Validator
     /// distinct members ?pi/?pj (i != j) of the (possibly n-ary) disjoint set relate the same ?u,?v pair, which is exactly the prp-adp pattern
     /// (AllDisjointProperties), so no separate rule was needed for the n-ary case. The T-Box overlap check against SubObjectPropertyOf/EquivalentObjectProperties
     /// is an OWLSharp extension (Warning, not Error: the clash only forces the involved properties to be equivalent to owl:bottomObjectProperty,
-    /// which is a modeling smell rather than an ontology-level inconsistency -- unlike the A-Box check above, which is a genuine one)</para>
+    /// which is a modeling smell rather than an ontology-level inconsistency -- unlike the A-Box check above, which is a genuine one). The check on non-simple member properties is an OWLSharp extension too (OWL2 DL simple-role restriction)</para>
     /// </summary>
     internal static class OWLDisjointObjectPropertiesAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.DisjointObjectPropertiesAnalysis);
         internal const string rulesugg = "There should not be disjoint object properties linking the same source and target individual pairs within ObjectPropertyAssertion axioms!";
         internal const string rulesugg2 = "Object properties should not belong at the same time to DisjointObjectProperties and SubObjectPropertyOf/EquivalentObjectProperties axioms: this forces them to be equivalent to owl:bottomObjectProperty!";
+        internal const string rulesugg3 = "There should not be non-simple object properties (transitive ones or ones having transitive or chain-defined sub properties) within DisjointObjectProperties axioms!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
@@ -67,6 +68,19 @@ namespace OWLSharp.Validator
                                           $"Violated DisjointObjectProperties axiom with signature: '{disjObProps.GetXML()}'",
                                           rulesugg));
                                   });
+
+                    //DisjointObjectProperties(OP1,OP2) ^ TransitiveObjectProperty(OP1) -> ERROR
+                    //DisjointObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(SOP,OP1) ^ TransitiveObjectProperty(SOP) -> ERROR
+                    //DisjointObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(ObjectPropertyChain(...),SOP) ^ SubObjectPropertyOf*(SOP,OP1) -> ERROR
+                    //OWL2 DL admits only simple properties in a disjointness axiom: one issue per axiom is enough whatever the number of non-simple members
+                    if (disjObProps.ObjectPropertyExpressions.Any(ontology.CheckIsNonSimpleObjectProperty))
+                    {
+                        issues.Add(new OWLIssue(
+                            OWLEnums.OWLIssueSeverity.Error,
+                            rulename,
+                            $"Violated DisjointObjectProperties axiom with signature: '{disjObProps.GetXML()}'",
+                            rulesugg3));
+                    }
 
                     //DisjointObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP1,OP2) -> WARNING
                     //DisjointObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP2,OP1) -> WARNING

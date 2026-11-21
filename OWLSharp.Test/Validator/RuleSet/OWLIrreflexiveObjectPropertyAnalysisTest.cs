@@ -196,5 +196,90 @@ public class OWLIrreflexiveObjectPropertyAnalysisTest
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLIrreflexiveObjectPropertyAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLIrreflexiveObjectPropertyAnalysis.rulesugg2)));
     }
+
+    [TestMethod]
+    public void ShouldAnalyzeIrreflexiveObjectPropertyOnTransitivePropertyCase()
+    {
+        //IrreflexiveObjectProperty(OP) ^ TransitiveObjectProperty(OP) -> ERROR
+        //A transitive property is non-simple
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLIrreflexiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:OP"))),
+                new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:OP")))
+            ]
+        };
+        List<OWLIssue> issues = OWLIrreflexiveObjectPropertyAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.HasCount(1, issues);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLIrreflexiveObjectPropertyAnalysis.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLIrreflexiveObjectPropertyAnalysis.rulesugg3)));
+    }
+
+    [TestMethod]
+    public void ShouldAnalyzeIrreflexiveObjectPropertyOnPropertyWithTransitiveSubPropertyCase()
+    {
+        //IrreflexiveObjectProperty(OP) ^ SubObjectPropertyOf(SUBOP,OP) ^ TransitiveObjectProperty(SUBOP) -> ERROR
+        //A property having a transitive subproperty is non-simple
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLIrreflexiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:OP"))),
+                new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:SUBOP"))),
+                new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:SUBOP")), new OWLObjectProperty(new RDFResource("ex:OP")))
+            ]
+        };
+        List<OWLIssue> issues = OWLIrreflexiveObjectPropertyAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.HasCount(1, issues);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLIrreflexiveObjectPropertyAnalysis.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLIrreflexiveObjectPropertyAnalysis.rulesugg3)));
+    }
+
+    [TestMethod]
+    public void ShouldAnalyzeIrreflexiveObjectPropertyOnPropertyDefinedByChainCase()
+    {
+        //IrreflexiveObjectProperty(OP) ^ SubObjectPropertyOf(ObjectPropertyChain(OP1,OP2),OP) -> ERROR
+        //A property defined as the superproperty of a chain is non-simple
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLIrreflexiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:OP"))),
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectPropertyChain([ new OWLObjectProperty(new RDFResource("ex:OP1")), new OWLObjectProperty(new RDFResource("ex:OP2")) ]),
+                    new OWLObjectProperty(new RDFResource("ex:OP")))
+            ]
+        };
+        List<OWLIssue> issues = OWLIrreflexiveObjectPropertyAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.HasCount(1, issues);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLIrreflexiveObjectPropertyAnalysis.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLIrreflexiveObjectPropertyAnalysis.rulesugg3)));
+    }
+
+    [TestMethod]
+    public void ShouldNotAnalyzeIrreflexiveObjectPropertyOnPropertyUnderTransitiveCase()
+    {
+        //IrreflexiveObjectProperty(OP) ^ SubObjectPropertyOf(OP,SUPEROP) ^ TransitiveObjectProperty(SUPEROP) -> NO ISSUE
+        //A subproperty of a transitive property stays simple (e.g. hasMother under hasAncestor)
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLIrreflexiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:OP"))),
+                new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:SUPEROP"))),
+                new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:OP")), new OWLObjectProperty(new RDFResource("ex:SUPEROP")))
+            ]
+        };
+        List<OWLIssue> issues = OWLIrreflexiveObjectPropertyAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.IsEmpty(issues);
+    }
     #endregion
 }

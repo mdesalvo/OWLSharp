@@ -199,19 +199,70 @@ public class OWLFunctionalObjectPropertyAnalysisTest
     }
 
     [TestMethod]
-    public void ShouldAnalyzeFunctionalObjectPropertySuperTransitiveCase()
+    public void ShouldNotAnalyzeFunctionalObjectPropertySubOfTransitiveCase()
     {
+        //FunctionalObjectProperty(op1) ^ SubObjectPropertyOf(op1,op2) ^ SubObjectPropertyOf(op2,op3) ^ TransitiveObjectProperty(op3) -> NO ISSUE
+        //A subproperty of a transitive property stays simple (e.g. hasMother under hasAncestor): only the properties above a transitive one are non-simple
         OWLOntology ontology = new OWLOntology
         {
             ObjectPropertyAxioms = [
                 new OWLFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op1"))),
                 new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:op3"))),
+                new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:op1")), new OWLObjectProperty(new RDFResource("ex:op2"))),
+                new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:op2")), new OWLObjectProperty(new RDFResource("ex:op3")))
+            ],
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op2"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op3")))
+            ]
+        };
+        List<OWLIssue> issues = OWLFunctionalObjectPropertyAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.IsEmpty(issues);
+    }
+
+    [TestMethod]
+    public void ShouldAnalyzeFunctionalObjectPropertyWithTransitiveSubPropertyCase()
+    {
+        //FunctionalObjectProperty(op1) ^ SubObjectPropertyOf(op2,op1) ^ SubObjectPropertyOf(op3,op2) ^ TransitiveObjectProperty(op3) -> ERROR
+        //A property having a transitive subproperty (even indirect) is non-simple
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op1"))),
+                new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:op3"))),
+                new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:op2")), new OWLObjectProperty(new RDFResource("ex:op1"))),
+                new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:op3")), new OWLObjectProperty(new RDFResource("ex:op2")))
+            ],
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op2"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op3")))
+            ]
+        };
+        List<OWLIssue> issues = OWLFunctionalObjectPropertyAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.HasCount(1, issues);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLFunctionalObjectPropertyAnalysis.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLFunctionalObjectPropertyAnalysis.rulesugg2)));
+    }
+
+    [TestMethod]
+    public void ShouldAnalyzeFunctionalObjectPropertyWithChainSubPropertyCase()
+    {
+        //FunctionalObjectProperty(op1) ^ SubObjectPropertyOf(ObjectPropertyChain(op2,op3),op1) -> ERROR
+        //A property defined as the superproperty of a chain is non-simple
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op1"))),
                 new OWLSubObjectPropertyOf(
-                    new OWLObjectProperty(new RDFResource("ex:op1")),
-                    new OWLObjectProperty(new RDFResource("ex:op2"))),
-                new OWLSubObjectPropertyOf(
-                    new OWLObjectProperty(new RDFResource("ex:op2")),
-                    new OWLObjectProperty(new RDFResource("ex:op3")))
+                    new OWLObjectPropertyChain([ new OWLObjectProperty(new RDFResource("ex:op2")), new OWLObjectProperty(new RDFResource("ex:op3")) ]),
+                    new OWLObjectProperty(new RDFResource("ex:op1")))
             ],
             DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
