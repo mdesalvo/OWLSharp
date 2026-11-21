@@ -181,6 +181,35 @@ public class SWRLAnnotationPropertyAtomTest
         Assert.IsTrue(string.Equals((antecedentResult.Rows[0]["?Q"] ?? string.Empty), "34^^http://www.w3.org/2001/XMLSchema#positiveInteger"));
     }
 
+    //Verifies that an anonymous individual subject binds to its bnode: IRI and that an assertion with a non-literal value is not bound to a variable right argument
+    [TestMethod]
+    public void ShouldEvaluateSWRLAnnotationPropertyAtomOnAntecedentWithAnonymousIndividuals()
+    {
+        SWRLAnnotationPropertyAtom atom = new SWRLAnnotationPropertyAtom(
+            new OWLAnnotationProperty(RDFVocabulary.FOAF.AGE),
+            new SWRLVariableArgument(new RDFVariable("?P")),
+            new SWRLVariableArgument(new RDFVariable("?Q")));
+
+        OWLOntology ontology = new OWLOntology
+        {
+            AnnotationAxioms = [
+                new OWLAnnotationAssertion(
+                    new OWLAnnotationProperty(RDFVocabulary.FOAF.AGE),
+                    new OWLAnonymousIndividual("a").GetIRI(),
+                    new OWLLiteral(new RDFTypedLiteral("34", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER))),
+                new OWLAnnotationAssertion(
+                    new OWLAnnotationProperty(RDFVocabulary.FOAF.AGE),
+                    new RDFResource("ex:Mark"),
+                    new OWLAnonymousIndividual("b").GetIRI())
+            ]
+        };
+        OWLTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
+
+        Assert.HasCount(1, antecedentResult.Rows);
+        Assert.IsTrue(string.Equals((antecedentResult.Rows[0]["?P"] ?? string.Empty), "bnode:a"));
+        Assert.IsTrue(string.Equals((antecedentResult.Rows[0]["?Q"] ?? string.Empty), "34^^http://www.w3.org/2001/XMLSchema#positiveInteger"));
+    }
+
     [TestMethod]
     public void ShouldEvaluateSWRLAnnotationPropertyAtomWithLiteralRightArgumentOnAntecedent()
     {

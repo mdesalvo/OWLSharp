@@ -15,6 +15,7 @@
 */
 
 using RDFSharp.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -82,9 +83,12 @@ namespace OWLSharp.Ontology
 
             //Search the declared prefix having the longest namespace matching the given IRI
             OWLPrefix bestPrefix = null;
-            foreach (OWLPrefix prefix in Prefixes.Where(pfx => iriString.StartsWith(pfx.IRI, System.StringComparison.Ordinal)))
+            foreach (OWLPrefix prefix in Prefixes)
             {
-                if (bestPrefix == null || prefix.IRI.Length > bestPrefix.IRI.Length)
+                //Only a prefix whose namespace opens the IRI can abbreviate it: the scan runs for every rendered IRI,
+                //so the test stays inline instead of building a filtered sequence each time
+                if (iriString.StartsWith(prefix.IRI, StringComparison.Ordinal)
+                     && (bestPrefix == null || prefix.IRI.Length > bestPrefix.IRI.Length))
                     bestPrefix = prefix;
             }
 
@@ -134,6 +138,14 @@ namespace OWLSharp.Ontology
         }
 
         /// <summary>
+        /// Renders the given resource as an anonymous individual (_:x) when it is a blank node with the bnode: scheme
+        /// otherwise as an abbreviated IRI
+        /// </summary>
+        internal string RenderResource(RDFResource resource)
+            //A blank node written as <bnode:x> would read back as a named IRI: only _:x keeps it anonymous
+            => resource.IsBlank ? OWLAnonymousIndividual.FromIRI(resource).ToManchesterString(this) : Abbreviate(resource);
+
+        /// <summary>
         /// Renders the given annotation as "annProp annValue", recursively prepending
         /// its eventual nested annotation as an "Annotations: ..." block
         /// </summary>
@@ -146,7 +158,7 @@ namespace OWLSharp.Ontology
             sb.Append(annotation.AnnotationProperty.ToManchesterString(this));
             sb.Append(' ');
             if (annotation.ValueIRI != null)
-                sb.Append(Abbreviate(new RDFResource(annotation.ValueIRI)));
+                sb.Append(RenderResource(new RDFResource(annotation.ValueIRI)));
             else if (annotation.ValueAbbreviatedIRI != null)
                 sb.Append(Abbreviate(new RDFResource(string.Concat(annotation.ValueAbbreviatedIRI.Namespace, annotation.ValueAbbreviatedIRI.Name))));
             else if (annotation.ValueAnonymousIndividual != null)

@@ -913,6 +913,23 @@ public class OWLFunctionalParserTest
         Assert.IsNull(ann.ValueIRI);
     }
 
+    //Verifies that an anonymous individual is accepted as subject and as value of an AnnotationAssertion and held as its bnode: IRI
+    [TestMethod]
+    public void ShouldParseAnnotationAssertionWithAnonymousIndividuals()
+    {
+        OWLOntology ontology = Parse("AnnotationAssertion( rdfs:comment _:a \"x\" )\nAnnotationAssertion( rdfs:seeAlso pz:Pizza _:b )\nAnnotationAssertion( rdfs:seeAlso _:a _:b )");
+
+        OWLAnnotationAssertion anonymousToLiteral = (OWLAnnotationAssertion)ontology.AnnotationAxioms[0];
+        Assert.AreEqual("bnode:a", anonymousToLiteral.SubjectIRI);
+        Assert.AreEqual("x", anonymousToLiteral.ValueLiteral.Value);
+        OWLAnnotationAssertion iriToAnonymous = (OWLAnnotationAssertion)ontology.AnnotationAxioms[1];
+        Assert.AreEqual("http://example.org/pz#Pizza", iriToAnonymous.SubjectIRI);
+        Assert.AreEqual("bnode:b", iriToAnonymous.ValueIRI);
+        OWLAnnotationAssertion anonymousToAnonymous = (OWLAnnotationAssertion)ontology.AnnotationAxioms[2];
+        Assert.AreEqual("bnode:a", anonymousToAnonymous.SubjectIRI);
+        Assert.AreEqual("bnode:b", anonymousToAnonymous.ValueIRI);
+    }
+
     [TestMethod]
     public void ShouldParseSubAnnotationPropertyOf()
     {

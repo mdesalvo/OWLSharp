@@ -17,6 +17,7 @@
 using RDFSharp.Model;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using System.Xml;
 using System.Xml.Linq;
@@ -31,6 +32,7 @@ namespace OWLSharp.Ontology
     /// </summary>
     internal static class OWLSerializer
     {
+        #region Statics
         private static readonly XmlWriterSettings DefaultXmlWriterSettings = new XmlWriterSettings
         {
             Encoding = Encoding.UTF8,
@@ -59,13 +61,38 @@ namespace OWLSharp.Ontology
         };
 
         //An IRI is absolute when it starts with a scheme (RFC 3986): anything else is a reference relative to the document base
-        private static readonly System.Text.RegularExpressions.Regex AbsoluteIRIRegex = new System.Text.RegularExpressions.Regex(@"^[A-Za-z][A-Za-z0-9+.\-]*:", System.Text.RegularExpressions.RegexOptions.Compiled);
+        private static readonly Regex AbsoluteIRIRegex = new Regex(@"^[A-Za-z][A-Za-z0-9+.\-]*:", RegexOptions.Compiled);
 
         //Names of the elements whose model reads AbbreviatedIRI children as XML qualified names
         private static readonly HashSet<string> QualifiedNameParentNames = new HashSet<string>(StringComparer.Ordinal)
         {
             "Annotation", "AnnotationPropertyDomain", "AnnotationPropertyRange"
         };
+
+        //Name of the element that holds an anonymous individual in standard OWL2/XML (compared against every element of the document)
+        private static readonly XName AnonymousIndividualElementName = XNamespace.None + "AnonymousIndividual";
+
+        //Name of the element whose subject and value anonymous individuals are held by the model as IRIs (compared against every element of the document)
+        private static readonly XName AnnotationAssertionElementName = XNamespace.None + "AnnotationAssertion";
+
+        //Name of the element that holds an IRI as text: it is assigned to the elements that the model reads as IRIs
+        private static readonly XName IRIElementName = XNamespace.None + "IRI";
+
+        //Name of the element holding an abbreviated IRI that must be expanded (compared against every element of the document)
+        private static readonly XName AbbreviatedIRIElementName = XNamespace.None + "AbbreviatedIRI";
+
+        //Name of the attribute carrying the label of an anonymous individual (read for every converted anonymous individual)
+        private static readonly XName NodeIDAttributeName = XNamespace.None + "nodeID";
+
+        //Name of the elements declaring the prefixes of the document (scanned to expand abbreviated IRIs)
+        private static readonly XName PrefixElementName = XNamespace.None + "Prefix";
+
+        //Name of the attribute carrying the name of a prefix declaration (read for every declared prefix)
+        private static readonly XName PrefixNameAttributeName = XNamespace.None + "name";
+
+        //Name of the attribute carrying the namespace of a prefix declaration (read for every declared prefix)
+        private static readonly XName PrefixIRIAttributeName = XNamespace.None + "IRI";
+        #endregion
 
         /// <summary>
         /// Serializes the given ontology into an OWL2/XML string representation
@@ -170,6 +197,9 @@ namespace OWLSharp.Ontology
             //Standard documents put every element in the OWL namespace: the model only knows local names
             RemoveOWLNamespaceFromElements(ontologyElements);
 
+            //The model has no element for the anonymous individuals of annotation assertions: it holds them as bnode: IRIs
+            ConvertAnnotationAssertionAnonymousIndividualsToIRIs(ontologyElements);
+
             //Files written by previous OWLSharp versions carry the version IRI as ontologyVersion
             XAttribute legacyVersionAttribute = ontologyDocument.Root.Attribute("ontologyVersion");
             if (legacyVersionAttribute != null)
@@ -201,12 +231,42 @@ namespace OWLSharp.Ontology
                 if (ontologyElement.Name.Namespace == owlNamespace)
                     ontologyElement.Name = XNamespace.None + ontologyElement.Name.LocalName;
 
-                //The default declaration of the OWL namespace would contradict the renamed elements
-                ontologyElement.Attributes()
-                               .Where(attribute => attribute.IsNamespaceDeclaration
-                                                    && attribute.Name.Namespace == XNamespace.None
-                                                    && string.Equals(attribute.Value, RDFVocabulary.OWL.BASE_URI, StringComparison.Ordinal))
-                               .Remove();
+                //The default declaration of the OWL namespace would contradict the renamed elements: it appears at most
+                //once per element, so the attributes are walked in place and the walk stops at the removed declaration
+                for (XAttribute attribute = ontologyElement.FirstAttribute; attribute != null; attribute = attribute.NextAttribute)
+                {
+                    if (attribute.IsNamespaceDeclaration
+                         && attribute.Name.Namespace == XNamespace.None
+                         && string.Equals(attribute.Value, RDFVocabulary.OWL.BASE_URI, StringComparison.Ordinal))
+                    {
+                        attribute.Remove();
+                        break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Turns the anonymous individuals that are subject or value of an annotation assertion into IRI elements holding their bnode: IRI
+        /// </summary>
+        private static void ConvertAnnotationAssertionAnonymousIndividualsToIRIs(List<XElement> ontologyElements)
+        {
+            foreach (XElement ontologyElement in ontologyElements)
+            {
+                //Anonymous individuals elsewhere (individual axioms and annotations) are already modeled: they must be left alone
+                if (ontologyElement.Name != AnonymousIndividualElementName
+                     || ontologyElement.Parent?.Name != AnnotationAssertionElementName)
+                    continue;
+
+                //Without a node ID there is no blank node to refer to: the element is left for the model to ignore
+                string nodeID = (string)ontologyElement.Attribute(NodeIDAttributeName);
+                if (string.IsNullOrEmpty(nodeID))
+                    continue;
+
+                //The IRI is composed by the anonymous individual itself, so that it matches what the model exports and reads back
+                ontologyElement.Name = IRIElementName;
+                ontologyElement.RemoveAttributes();
+                ontologyElement.Value = new OWLAnonymousIndividual { NodeID = nodeID }.GetIRI().ToString();
             }
         }
 
@@ -224,8 +284,9 @@ namespace OWLSharp.Ontology
 
             foreach (XElement ontologyElement in ontologyElements)
             {
-                //IRI-valued attributes are those of the OWL2/XML standard (including the SWRL ones)
-                foreach (XAttribute attribute in ontologyElement.Attributes().ToList())
+                //IRI-valued attributes are those of the OWL2/XML standard (including the SWRL ones): rewriting a value
+                //leaves the attribute list unchanged, so the attributes are walked in place without copying them
+                for (XAttribute attribute = ontologyElement.FirstAttribute; attribute != null; attribute = attribute.NextAttribute)
                 {
                     if (attribute.Name.Namespace == XNamespace.None && IRIAttributeNames.Contains(attribute.Name.LocalName))
                         attribute.Value = ResolveRelativeIRI(attribute.Value, baseUri);
@@ -267,11 +328,11 @@ namespace OWLSharp.Ontology
         {
             //The prefixes declared by the document take precedence over the standard ones
             Dictionary<string, string> prefixIRIs = new Dictionary<string, string>(StringComparer.Ordinal);
-            foreach (XElement prefixElement in ontologyRoot.Elements("Prefix"))
+            foreach (XElement prefixElement in ontologyRoot.Elements(PrefixElementName))
             {
                 //A prefix declaration without name or IRI cannot expand anything
-                string prefixName = (string)prefixElement.Attribute("name");
-                string prefixIRI = (string)prefixElement.Attribute("IRI");
+                string prefixName = (string)prefixElement.Attribute(PrefixNameAttributeName);
+                string prefixIRI = (string)prefixElement.Attribute(PrefixIRIAttributeName);
                 if (prefixName != null && prefixIRI != null && !prefixIRIs.ContainsKey(prefixName))
                     prefixIRIs.Add(prefixName, prefixIRI);
             }
@@ -294,7 +355,7 @@ namespace OWLSharp.Ontology
             foreach (XElement ontologyElement in ontologyElements)
             {
                 //Only the AbbreviatedIRI elements (which never have child elements) are expanded
-                if (ontologyElement.Name != XNamespace.None + "AbbreviatedIRI" || ontologyElement.HasElements)
+                if (ontologyElement.Name != AbbreviatedIRIElementName || ontologyElement.HasElements)
                     continue;
 
                 //An abbreviated IRI is made of a (possibly empty) prefix and a local part separated by the first colon
@@ -313,7 +374,7 @@ namespace OWLSharp.Ontology
                     continue;
 
                 //The element becomes a plain IRI element holding the namespace of the prefix followed by the local part
-                ontologyElement.Name = XNamespace.None + "IRI";
+                ontologyElement.Name = IRIElementName;
                 ontologyElement.Value = string.Concat(expandedPrefixIRI, abbreviatedIRI.Substring(colonIndex + 1));
             }
         }

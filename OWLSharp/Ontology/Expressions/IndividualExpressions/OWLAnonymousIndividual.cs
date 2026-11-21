@@ -66,6 +66,13 @@ namespace OWLSharp.Ontology
             => new RDFResource(string.Concat($"bnode:{NodeID}"));
 
         /// <summary>
+        /// Gets the anonymous individual denoted by the given IRI with the reserved bnode: scheme (inverse of GetIRI)
+        /// </summary>
+        internal static OWLAnonymousIndividual FromIRI(RDFResource blankNodeIRI)
+            //The node ID is assigned as is: the label of an RDF blank node is not always a valid xsd:NCName and must not be rejected
+            => new OWLAnonymousIndividual { NodeID = blankNodeIRI.ToString().Substring("bnode:".Length) };
+
+        /// <summary>
         /// Gets the OWL2/Manchester representation of this anonymous individual (e.g: _:ANON2447)
         /// </summary>
         public override string ToManchesterString(OWLManchesterContext manchesterContext)
