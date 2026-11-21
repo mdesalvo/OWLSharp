@@ -18,6 +18,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OWLSharp.Test.Ontology;
@@ -467,6 +468,149 @@ public class OWLAnnotationAssertionTest
     }
     #endregion
 
+    #region Tests (anonymous individuals)
+    //Verifies that Functional-Style writes the blank node subject or value of an assertion as the anonymous individual _:x (never as <bnode:x>) in the six combinations
+    [TestMethod]
+    public void ShouldSerializeToFunctionalWithAnonymousIndividuals()
+    {
+        OWLAnnotationProperty note = new OWLAnnotationProperty(new RDFResource("http://example.org/pz#note"));
+        RDFResource pizza = new RDFResource("http://example.org/pz#Pizza");
+        RDFResource topping = new RDFResource("http://example.org/pz#Topping");
+        RDFResource anonymousSubject = new OWLAnonymousIndividual("a").GetIRI();
+        RDFResource anonymousValue = new OWLAnonymousIndividual("b").GetIRI();
+        OWLLiteral literal = new OWLLiteral(new RDFPlainLiteral("x"));
+        OWLFunctionalContext functionalContext = CreateContext();
+
+        Assert.AreEqual("AnnotationAssertion( pz:note pz:Pizza _:b )", new OWLAnnotationAssertion(note, pizza, anonymousValue).ToFunctionalString(functionalContext));
+        Assert.AreEqual("AnnotationAssertion( pz:note _:a pz:Topping )", new OWLAnnotationAssertion(note, anonymousSubject, topping).ToFunctionalString(functionalContext));
+        Assert.AreEqual("AnnotationAssertion( pz:note _:a \"x\" )", new OWLAnnotationAssertion(note, anonymousSubject, literal).ToFunctionalString(functionalContext));
+        Assert.AreEqual("AnnotationAssertion( pz:note _:a _:b )", new OWLAnnotationAssertion(note, anonymousSubject, anonymousValue).ToFunctionalString(functionalContext));
+    }
+
+    //Verifies that Manchester gives a blank node subject the Individual frame of its own and writes a blank node value as _:y
+    [TestMethod]
+    public void ShouldSerializeToManchesterWithAnonymousIndividuals()
+    {
+        OWLAnnotationProperty note = new OWLAnnotationProperty(new RDFResource("http://example.org/pz#note"));
+        OWLManchesterContext manchesterContext = CreateManchesterContext();
+
+        OWLManchesterFrameItem anonymousSubjectItem = new OWLAnnotationAssertion(note, new OWLAnonymousIndividual("a").GetIRI(), new OWLLiteral(new RDFPlainLiteral("x"))).ToManchesterFrameItem(manchesterContext);
+        OWLManchesterFrameItem anonymousValueItem = new OWLAnnotationAssertion(note, new RDFResource("http://example.org/pz#Pizza"), new OWLAnonymousIndividual("b").GetIRI()).ToManchesterFrameItem(manchesterContext);
+
+        Assert.AreEqual(OWLManchesterFrameKind.Individual, anonymousSubjectItem.FrameKind);
+        Assert.AreEqual("_:a", anonymousSubjectItem.EntityName);
+        Assert.AreEqual("Annotations:", anonymousSubjectItem.SectionKeyword);
+        Assert.AreEqual("pz:note \"x\"", anonymousSubjectItem.ItemText);
+        Assert.AreEqual(OWLManchesterFrameKind.EntityAnnotation, anonymousValueItem.FrameKind);
+        Assert.AreEqual("pz:Pizza", anonymousValueItem.EntityName);
+        Assert.AreEqual("pz:note _:b", anonymousValueItem.ItemText);
+    }
+
+    //Verifies that the RDF export of an assertion with blank node subject or value yields the bnode: resource of the anonymous individual
+    [TestMethod]
+    public void ShouldConvertAnnotationAssertionWithAnonymousIndividualsToGraph()
+    {
+        OWLAnnotationProperty note = new OWLAnnotationProperty(new RDFResource("http://example.org/pz#note"));
+        RDFResource anonymousSubject = new OWLAnonymousIndividual("a").GetIRI();
+        RDFResource anonymousValue = new OWLAnonymousIndividual("b").GetIRI();
+
+        RDFGraph anonymousToAnonymousGraph = new OWLAnnotationAssertion(note, anonymousSubject, anonymousValue).ToRDFGraph();
+        RDFGraph anonymousToLiteralGraph = new OWLAnnotationAssertion(note, anonymousSubject, new OWLLiteral(new RDFPlainLiteral("x"))).ToRDFGraph();
+
+        Assert.AreEqual("bnode:a", anonymousSubject.ToString());
+        Assert.AreEqual(1, anonymousToAnonymousGraph[new RDFResource("bnode:a"), note.GetIRI(), new RDFResource("bnode:b"), null].TriplesCount);
+        Assert.AreEqual(1, anonymousToLiteralGraph[new RDFResource("bnode:a"), note.GetIRI(), null, new RDFPlainLiteral("x")].TriplesCount);
+    }
+
+    //Verifies that a standard OWL2/XML document with anonymous individuals as subject or value of an annotation assertion is read as bnode: IRIs
+    [TestMethod]
+    public void ShouldDeserializeAnnotationAssertionWithAnonymousIndividualsViaOntology()
+    {
+        OWLOntology ontology = OWLSerializer.DeserializeOntology(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <Ontology xmlns="http://www.w3.org/2002/07/owl#" ontologyIRI="http://example.org/pz">
+              <AnnotationAssertion>
+                <AnnotationProperty IRI="http://example.org/pz#note" />
+                <AnonymousIndividual nodeID="a" />
+                <AnonymousIndividual nodeID="b" />
+              </AnnotationAssertion>
+              <AnnotationAssertion>
+                <AnnotationProperty IRI="http://example.org/pz#note" />
+                <IRI>http://example.org/pz#Pizza</IRI>
+                <AnonymousIndividual nodeID="c" />
+              </AnnotationAssertion>
+              <AnnotationAssertion>
+                <Annotation>
+                  <AnnotationProperty IRI="http://example.org/pz#meta" />
+                  <AnonymousIndividual nodeID="m" />
+                </Annotation>
+                <AnnotationProperty IRI="http://example.org/pz#note" />
+                <AnonymousIndividual nodeID="d" />
+                <Literal>x</Literal>
+              </AnnotationAssertion>
+            </Ontology>
+            """);
+
+        Assert.HasCount(3, ontology.AnnotationAxioms);
+        OWLAnnotationAssertion anonymousToAnonymous = (OWLAnnotationAssertion)ontology.AnnotationAxioms[0];
+        Assert.AreEqual("bnode:a", anonymousToAnonymous.SubjectIRI);
+        Assert.AreEqual("bnode:b", anonymousToAnonymous.ValueIRI);
+        OWLAnnotationAssertion iriToAnonymous = (OWLAnnotationAssertion)ontology.AnnotationAxioms[1];
+        Assert.AreEqual("http://example.org/pz#Pizza", iriToAnonymous.SubjectIRI);
+        Assert.AreEqual("bnode:c", iriToAnonymous.ValueIRI);
+        OWLAnnotationAssertion anonymousToLiteral = (OWLAnnotationAssertion)ontology.AnnotationAxioms[2];
+        Assert.AreEqual("bnode:d", anonymousToLiteral.SubjectIRI);
+        Assert.AreEqual("x", anonymousToLiteral.ValueLiteral.Value);
+        //The anonymous individual of the annotation on the axiom has its own model field and is not turned into an IRI
+        Assert.IsNull(anonymousToLiteral.Annotations.Single().ValueIRI);
+        Assert.AreEqual("m", anonymousToLiteral.Annotations.Single().ValueAnonymousIndividual.NodeID);
+    }
+
+    //Verifies that the six subject x value combinations (with blank nodes) are written as IRI elements by OWL2/XML and read back identical
+    [TestMethod]
+    public void ShouldRoundTripAnnotationAssertionsWithAnonymousIndividualsThroughOWL2XML()
+    {
+        OWLOntology originalOntology = CreateOntologyWithAnonymousIndividualAssertions();
+
+        string serializedXML = OWLSerializer.SerializeOntology(originalOntology);
+        OWLOntology reparsedOntology = OWLSerializer.DeserializeOntology(serializedXML);
+
+        Assert.IsTrue(serializedXML.Contains("<IRI>bnode:a</IRI>"));
+        Assert.IsFalse(serializedXML.Contains("<AnonymousIndividual"));
+        CollectionAssert.AreEqual(SortedXml(originalOntology), SortedXml(reparsedOntology));
+    }
+
+    //Verifies that the six subject x value combinations (with blank nodes) are written as _:x by Functional-Style and read back identical
+    [TestMethod]
+    public void ShouldRoundTripAnnotationAssertionsWithAnonymousIndividualsThroughFunctional()
+    {
+        OWLOntology originalOntology = CreateOntologyWithAnonymousIndividualAssertions();
+
+        string functionalDocument = OWLFunctionalSerializer.SerializeOntology(originalOntology);
+        OWLOntology reparsedOntology = OWLFunctionalParser.DeserializeOntology(functionalDocument);
+
+        Assert.IsTrue(functionalDocument.Contains("AnnotationAssertion( pz:note _:a _:b )"));
+        Assert.IsFalse(functionalDocument.Contains("bnode:"));
+        CollectionAssert.AreEqual(SortedXml(originalOntology), SortedXml(reparsedOntology));
+    }
+
+    //Verifies that the six subject x value combinations (with blank nodes) are written by Manchester under the frame of the subject and read back identical
+    [TestMethod]
+    public void ShouldRoundTripAnnotationAssertionsWithAnonymousIndividualsThroughManchester()
+    {
+        OWLOntology originalOntology = CreateOntologyWithAnonymousIndividualAssertions();
+
+        string manchesterDocument = OWLManchesterSerializer.SerializeOntology(originalOntology);
+        OWLOntology reparsedOntology = OWLManchesterParser.DeserializeOntology(manchesterDocument);
+
+        Assert.IsTrue(manchesterDocument.Contains("Individual: _:a"));
+        Assert.IsTrue(manchesterDocument.Contains("pz:note _:b"));
+        Assert.IsFalse(manchesterDocument.Contains("bnode:"));
+        CollectionAssert.AreEqual(SortedXml(originalOntology), SortedXml(reparsedOntology));
+    }
+    #endregion
+
     #region Utilities
     private static OWLFunctionalContext CreateContext()
     {
@@ -474,6 +618,33 @@ public class OWLAnnotationAssertionTest
         ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
         return new OWLFunctionalContext(ontology.Prefixes);
     }
+
+    //Builds an ontology with the six subject (named or blank node) x value (IRI, blank node or literal) combinations: the named subject is declared since Manchester resolves it against the declared entities
+    private static OWLOntology CreateOntologyWithAnonymousIndividualAssertions()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
+        OWLAnnotationProperty note = new OWLAnnotationProperty(new RDFResource("http://example.org/pz#note"));
+        RDFResource pizza = new RDFResource("http://example.org/pz#Pizza");
+        RDFResource topping = new RDFResource("http://example.org/pz#Topping");
+        RDFResource anonymousSubject = new OWLAnonymousIndividual("a").GetIRI();
+        RDFResource anonymousValue = new OWLAnonymousIndividual("b").GetIRI();
+        OWLLiteral literal = new OWLLiteral(new RDFPlainLiteral("x"));
+
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(note));
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass(pizza)));
+        ontology.AnnotationAxioms.Add(new OWLAnnotationAssertion(note, pizza, topping));
+        ontology.AnnotationAxioms.Add(new OWLAnnotationAssertion(note, pizza, literal));
+        ontology.AnnotationAxioms.Add(new OWLAnnotationAssertion(note, pizza, anonymousValue));
+        ontology.AnnotationAxioms.Add(new OWLAnnotationAssertion(note, anonymousSubject, topping));
+        ontology.AnnotationAxioms.Add(new OWLAnnotationAssertion(note, anonymousSubject, literal));
+        ontology.AnnotationAxioms.Add(new OWLAnnotationAssertion(note, anonymousSubject, anonymousValue));
+        return ontology;
+    }
+
+    //Gets the annotation axioms of the given ontology as XML texts sorted by ordinal comparison
+    private static List<string> SortedXml(OWLOntology ontology)
+        => ontology.AnnotationAxioms.Select(axiom => axiom.GetXML()).OrderBy(xml => xml, StringComparer.Ordinal).ToList();
 
     private static OWLManchesterContext CreateManchesterContext()
     {

@@ -15,6 +15,7 @@
 */
 
 using RDFSharp.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -79,9 +80,12 @@ namespace OWLSharp.Ontology
             //pick the one with the longest namespace: this is the most specific match, and it is
             //the one that minimizes the risk of an accidental, unintended abbreviation collision
             OWLPrefix bestPrefix = null;
-            foreach (OWLPrefix prefix in Prefixes.Where(pfx => iriString.StartsWith(pfx.IRI, System.StringComparison.Ordinal)))
+            foreach (OWLPrefix prefix in Prefixes)
             {
-                if (bestPrefix == null || prefix.IRI.Length > bestPrefix.IRI.Length)
+                //Only a prefix whose namespace opens the IRI can abbreviate it: the scan runs for every rendered IRI,
+                //so the test stays inline instead of building a filtered sequence each time
+                if (iriString.StartsWith(prefix.IRI, StringComparison.Ordinal)
+                     && (bestPrefix == null || prefix.IRI.Length > bestPrefix.IRI.Length))
                     bestPrefix = prefix;
             }
 
@@ -97,6 +101,14 @@ namespace OWLSharp.Ontology
 
             return $"<{iriString}>";
         }
+
+        /// <summary>
+        /// Renders the given resource as an anonymous individual (_:x) when it is a blank node with the bnode: scheme
+        /// otherwise as an abbreviated IRI
+        /// </summary>
+        internal string RenderResource(RDFResource resource)
+            //A blank node written as <bnode:x> would read back as a named IRI: only _:x keeps it anonymous
+            => resource.IsBlank ? OWLAnonymousIndividual.FromIRI(resource).ToFunctionalString(this) : Abbreviate(resource);
 
         /// <summary>
         /// Renders the given annotation as "Annotation( annProp annValue )", recursively prepending
@@ -118,7 +130,7 @@ namespace OWLSharp.Ontology
             //AnnotationValue is one of IRI | AnonymousIndividual | Literal: the OWLAnnotation model
             //keeps these as mutually-exclusive optional fields, so exactly one branch below fires
             if (annotation.ValueIRI != null)
-                functionalAnnotation.Append(Abbreviate(new RDFResource(annotation.ValueIRI)));
+                functionalAnnotation.Append(RenderResource(new RDFResource(annotation.ValueIRI)));
             else if (annotation.ValueAbbreviatedIRI != null)
                 functionalAnnotation.Append(Abbreviate(new RDFResource(string.Concat(annotation.ValueAbbreviatedIRI.Namespace, annotation.ValueAbbreviatedIRI.Name))));
             else if (annotation.ValueAnonymousIndividual != null)

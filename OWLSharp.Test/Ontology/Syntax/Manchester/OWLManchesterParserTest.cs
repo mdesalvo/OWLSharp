@@ -574,6 +574,19 @@ public class OWLManchesterParserTest
         Assert.AreEqual("anon1", ((OWLAnonymousIndividual)ca.IndividualExpression).NodeID);
     }
 
+    //Verifies that the annotations of an anonymous individual frame assert on its bnode: IRI and that a _:y value is held as its bnode: IRI
+    [TestMethod]
+    public void ShouldParseAnonymousIndividualFrameAnnotations()
+    {
+        OWLOntology ontology = ParseWithRdfs("Individual: _:a\n    Annotations: rdfs:comment \"x\", rdfs:seeAlso _:b, rdfs:seeAlso pz:Pizza");
+
+        Assert.HasCount(3, ontology.AnnotationAxioms);
+        Assert.IsTrue(ontology.AnnotationAxioms.TrueForAll(axiom => string.Equals(((OWLAnnotationAssertion)axiom).SubjectIRI, "bnode:a")));
+        Assert.AreEqual("x", ((OWLAnnotationAssertion)ontology.AnnotationAxioms[0]).ValueLiteral.Value);
+        Assert.AreEqual("bnode:b", ((OWLAnnotationAssertion)ontology.AnnotationAxioms[1]).ValueIRI);
+        Assert.AreEqual("http://example.org/pz#Pizza", ((OWLAnnotationAssertion)ontology.AnnotationAxioms[2]).ValueIRI);
+    }
+
     [TestMethod]
     public void ShouldParsePositiveObjectPropertyFact()
     {

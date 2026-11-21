@@ -38,6 +38,7 @@ namespace OWLSharp.Ontology
 
         /// <summary>
         /// Represents the IRI of the entity to which this annotation axiom is referred (e.g: http://xmlns.com/foaf/0.1/Person)
+        /// or the bnode: IRI of the anonymous individual to which it is referred (e.g: bnode:ANON2447)
         /// </summary>
         [XmlElement("IRI", DataType="anyURI", Order=3)]
         public string SubjectIRI { get; set; }
@@ -46,6 +47,7 @@ namespace OWLSharp.Ontology
 
         /// <summary>
         /// Represents the annotation value to be used in case of IRI (e.g: http://xmlns.com/foaf/0.1/Person)
+        /// or of anonymous individual (e.g: bnode:ANON2447)
         /// </summary>
         [XmlElement("IRI", DataType="anyURI", Order=4)]
         public string ValueIRI { get; set; }
@@ -92,37 +94,42 @@ namespace OWLSharp.Ontology
         /// </summary>
         internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
         {
+            //A blank node value is written as the anonymous individual _:y: as <bnode:y> it would read back as a named IRI
             string annotationValue;
             if (ValueIRI != null)
-                annotationValue = manchesterContext.Abbreviate(new RDFResource(ValueIRI));
+                annotationValue = manchesterContext.RenderResource(new RDFResource(ValueIRI));
             else if (ValueLiteral != null)
                 annotationValue = ValueLiteral.ToManchesterString(manchesterContext);
             else
                 return null;
 
+            //A blank node subject is an anonymous individual: it owns an Individual frame of its own (found or created by the
+            //serializer) since it is not a declared entity that the entity annotations could be resolved against
+            RDFResource subjectResource = new RDFResource(SubjectIRI);
             return new OWLManchesterFrameItem {
-                FrameKind = OWLManchesterFrameKind.EntityAnnotation,
-                EntityName = manchesterContext.Abbreviate(new RDFResource(SubjectIRI)),
+                FrameKind = subjectResource.IsBlank ? OWLManchesterFrameKind.Individual : OWLManchesterFrameKind.EntityAnnotation,
+                EntityName = manchesterContext.RenderResource(subjectResource),
                 SectionKeyword = "Annotations:",
                 ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{AnnotationProperty.ToManchesterString(manchesterContext)} {annotationValue}" };
         }
 
         /// <summary>
         /// Gets the OWL2/Functional-Style representation of this AnnotationAssertion axiom
-        /// (AnnotationSubject is always an IRI in this model - SubjectIRI - since anonymous individuals as
-        /// annotation subjects are not modeled here; AnnotationValue is mutually-exclusive IRI/Literal)
+        /// (AnnotationSubject is the IRI held by SubjectIRI; AnnotationValue is a mutually-exclusive IRI/Literal;
+        /// a bnode: IRI is rendered as the anonymous individual it denotes)
         /// </summary>
         internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
         {
-            //An assertion read from OWL/XML may lack its subject or its value (anonymous ones are not modeled):
+            //An assertion read from OWL/XML may lack its subject or its value:
             //it has no Functional-Style form then, so the serializer skips it with a warning instead of failing
             if (AnnotationProperty == null || string.IsNullOrEmpty(SubjectIRI) || (ValueIRI == null && ValueLiteral == null))
                 return null;
 
+            //A blank node subject or value is written as the anonymous individual _:x: as <bnode:x> it would read back as a named IRI
             string annotationValue = ValueIRI != null
-                ? functionalContext.Abbreviate(new RDFResource(ValueIRI))
+                ? functionalContext.RenderResource(new RDFResource(ValueIRI))
                 : ValueLiteral.ToFunctionalString(functionalContext);
-            return $"AnnotationAssertion( {functionalContext.RenderAxiomAnnotations(Annotations)}{AnnotationProperty.ToFunctionalString(functionalContext)} {functionalContext.Abbreviate(new RDFResource(SubjectIRI))} {annotationValue} )";
+            return $"AnnotationAssertion( {functionalContext.RenderAxiomAnnotations(Annotations)}{AnnotationProperty.ToFunctionalString(functionalContext)} {functionalContext.RenderResource(new RDFResource(SubjectIRI))} {annotationValue} )";
         }
 
         /// <summary>

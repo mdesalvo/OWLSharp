@@ -87,6 +87,9 @@ namespace OWLSharp.Ontology
             List<OWLAnnotationAssertion> atomPredicateAssertions = OWLAnnotationAxiomHelper.SelectAnnotationAssertionsByAPEX(annAsns, (OWLAnnotationProperty)Predicate);
             if (RightArgument is SWRLLiteralArgument rightArgumentLiteral)
                 atomPredicateAssertions = atomPredicateAssertions.Where(asn => asn.ValueLiteral?.GetLiteral().Equals(rightArgumentLiteral.GetLiteral()) ?? false).ToList();
+            //A variable right argument binds literals only: an assertion valued by an IRI or by a blank node has no literal to bind
+            else
+                atomPredicateAssertions = atomPredicateAssertions.Where(asn => asn.ValueLiteral != null).ToList();
 
             //Save them into the atom result
             Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();

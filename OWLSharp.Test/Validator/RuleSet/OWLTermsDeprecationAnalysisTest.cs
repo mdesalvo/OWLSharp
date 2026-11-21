@@ -152,5 +152,27 @@ public class OWLTermsDeprecationAnalysisTest
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected presence of deprecated annotation property with IRI: 'http://xmlns.com/foaf/0.1/author'")));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLTermsDeprecationAnalysis.rulesugg)));
     }
+
+    //Verifies that a deprecation assertion on an anonymous individual subject neither fails nor raises issues, since it is not a declared entity
+    [TestMethod]
+    public void ShouldAnalyzeDeprecatedTermsAnonymousSubjectCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            AnnotationAxioms = [
+                new OWLAnnotationAssertion(
+                    new OWLAnnotationProperty(RDFVocabulary.OWL.DEPRECATED),
+                    new OWLAnonymousIndividual("a").GetIRI(),
+                    new OWLLiteral(RDFTypedLiteral.True))
+            ],
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")))
+            ]
+        };
+        List<OWLIssue> issues = OWLTermsDeprecationAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.IsEmpty(issues);
+    }
     #endregion
 }

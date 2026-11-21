@@ -1323,9 +1323,8 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// AnnotationAssertion := 'AnnotationAssertion' '(' axiomAnnotations AnnotationProperty AnnotationSubject AnnotationValue ')'
         /// AnnotationSubject := IRI | AnonymousIndividual
-        /// (the OWLAnnotationAssertion object model only carries an IRI subject - SubjectIRI - with no
-        /// anonymous-individual counterpart, so a nodeID subject is rejected here with a clear diagnostic
-        /// rather than silently discarded or mis-parsed)
+        /// AnnotationValue := AnonymousIndividual | IRI | Literal
+        /// (an anonymous individual is modeled by its bnode: IRI, in SubjectIRI or ValueIRI)
         /// </summary>
         /// <exception cref="OWLException"></exception>
         private OWLAnnotationAssertion ParseAnnotationAssertion()
@@ -1335,13 +1334,25 @@ namespace OWLSharp.Ontology
             List<OWLAnnotation> annotations = ParseAxiomAnnotations();
             OWLAnnotationProperty annotationProperty = new OWLAnnotationProperty(ParseIRI("AnnotationAssertion"));
 
-            if (Current.Type == OWLFunctionalTokenType.NodeID)
-                throw new OWLException("Cannot parse OWL2/Functional document: AnnotationAssertion with an anonymous individual subject is not representable by the OWLSharp object model (OWLAnnotationAssertion only carries an IRI subject)");
-            RDFResource subjectIRI = ParseIRI("AnnotationAssertion subject");
+            //A nodeID token (_:x) is an anonymous individual: the model holds it as its bnode: IRI
+            RDFResource subjectIRI = Current.Type == OWLFunctionalTokenType.NodeID
+                ? ParseAnonymousIndividual().GetIRI()
+                : ParseIRI("AnnotationAssertion subject");
 
-            OWLAnnotationAssertion axiom = Current.Type == OWLFunctionalTokenType.QuotedString
-                ? new OWLAnnotationAssertion(annotationProperty, subjectIRI, ParseLiteral())
-                : new OWLAnnotationAssertion(annotationProperty, subjectIRI, ParseIRI("AnnotationAssertion value"));
+            //The token type alone tells which of the three value shapes follows
+            OWLAnnotationAssertion axiom;
+            switch (Current.Type)
+            {
+                case OWLFunctionalTokenType.QuotedString:
+                    axiom = new OWLAnnotationAssertion(annotationProperty, subjectIRI, ParseLiteral());
+                    break;
+                case OWLFunctionalTokenType.NodeID:
+                    axiom = new OWLAnnotationAssertion(annotationProperty, subjectIRI, ParseAnonymousIndividual().GetIRI());
+                    break;
+                default:
+                    axiom = new OWLAnnotationAssertion(annotationProperty, subjectIRI, ParseIRI("AnnotationAssertion value"));
+                    break;
+            }
 
             Expect(OWLFunctionalTokenType.CloseParenthesis, "AnnotationAssertion");
             return Annotate(axiom, annotations);
