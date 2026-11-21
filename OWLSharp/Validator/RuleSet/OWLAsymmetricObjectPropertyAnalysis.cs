@@ -19,13 +19,15 @@ using System.Linq;
 namespace OWLSharp.Validator
 {
     /// <summary>
-    /// <para>W3C OWL2 RL/RDF: prp-asyp (assertion-pair violation check). The AsymmetricObjectProperty+SymmetricObjectProperty overlap check is an OWLSharp extension</para>
+    /// <para>W3C OWL2 RL/RDF: prp-asyp (assertion-pair violation check). The AsymmetricObjectProperty+SymmetricObjectProperty and AsymmetricObjectProperty+ReflexiveObjectProperty overlap checks are an OWLSharp extension as well as the check on non-simple properties (OWL2 DL simple-role restriction)</para>
     /// </summary>
     internal static class OWLAsymmetricObjectPropertyAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis);
         internal const string rulesugg1 = "There should not be object properties at the same time asymmetric and symmetric!";
         internal const string rulesugg2 = "There should not be object assertions switching source/target individuals under the same asymmetric object property!";
+        internal const string rulesugg3 = "There should not be object properties at the same time asymmetric and reflexive!";
+        internal const string rulesugg4 = "There should not be asymmetric object properties that are non-simple: transitive ones or ones having transitive or chain-defined sub properties!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
@@ -35,6 +37,7 @@ namespace OWLSharp.Validator
             List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
             List<OWLAsymmetricObjectProperty> asymObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLAsymmetricObjectProperty>();
             List<OWLSymmetricObjectProperty> symObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLSymmetricObjectProperty>();
+            List<OWLReflexiveObjectProperty> refObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLReflexiveObjectProperty>();
 
             //AsymmetricObjectProperty(OP) ^ SymmetricObjectProperty(OP) -> ERROR
             foreach (OWLAsymmetricObjectProperty asymObjProp in asymObjProps)
@@ -50,6 +53,39 @@ namespace OWLSharp.Validator
                                    $"Violated AsymmetricObjectProperty axiom with signature: '{asymObjProp.GetXML()}'",
                                    rulesugg1));
                            });
+            }
+
+            //AsymmetricObjectProperty(OP) ^ ReflexiveObjectProperty(OP) -> ERROR
+            foreach (OWLAsymmetricObjectProperty asymObjProp in asymObjProps)
+            {
+                //A reflexive property relates every individual to itself, which an asymmetric property forbids (it would be its own opposite pair)
+                RDFResource asymObjPropIRI = asymObjProp.ObjectPropertyExpression.GetIRI();
+                refObjProps.Where(refObjProp => refObjProp.ObjectPropertyExpression.GetIRI().Equals(asymObjPropIRI))
+                           .ToList()
+                           .ForEach(refObjProp =>
+                           {
+                               issues.Add(new OWLIssue(
+                                   OWLEnums.OWLIssueSeverity.Error,
+                                   rulename,
+                                   $"Violated AsymmetricObjectProperty axiom with signature: '{asymObjProp.GetXML()}'",
+                                   rulesugg3));
+                           });
+            }
+
+            //AsymmetricObjectProperty(OP) ^ TransitiveObjectProperty(OP) -> ERROR
+            //AsymmetricObjectProperty(OP) ^ SubObjectPropertyOf(SOP,OP) ^ TransitiveObjectProperty(SOP) -> ERROR
+            //AsymmetricObjectProperty(OP) ^ SubObjectPropertyOf(ObjectPropertyChain(...),SOP) ^ SubObjectPropertyOf*(SOP,OP) -> ERROR
+            foreach (OWLAsymmetricObjectProperty asymObjProp in asymObjProps)
+            {
+                //OWL2 DL admits asymmetry on simple properties only: a transitive or chain-defined subproperty makes the property non-simple
+                if (ontology.CheckIsNonSimpleObjectProperty(asymObjProp.ObjectPropertyExpression))
+                {
+                    issues.Add(new OWLIssue(
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated AsymmetricObjectProperty axiom with signature: '{asymObjProp.GetXML()}'",
+                        rulesugg4));
+                }
             }
 
             //AsymmetricObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV2,IDV1) -> ERROR

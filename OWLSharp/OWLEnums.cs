@@ -227,8 +227,11 @@ namespace OWLSharp
             /// </summary>
             FactObjectAllValuesFromEntailment = 30,
             /// <summary>
-            /// SubClassOf(D,ObjectMaxCardinality(1,OP)) ^ ClassAssertion(D,I) ^ ObjectPropertyAssertion(OP,I,I1) ^ ObjectPropertyAssertion(OP,I,I2) -> SameIndividual(I1,I2)
-            /// <para>W3C OWL2 RL/RDF: cls-maxc2</para><para>Tier: Fact</para>
+            /// SubClassOf(D,ObjectMaxCardinality(1,OP)) ^ ClassAssertion(D,I) ^ ObjectPropertyAssertion(OP,I,I1) ^ ObjectPropertyAssertion(OP,I,I2) -> SameIndividual(I1,I2)<br/>
+            /// SubClassOf(D,ObjectMaxCardinality(1,OP,C)) ^ ClassAssertion(D,I) ^ ObjectPropertyAssertion(OP,I,I1) ^ ClassAssertion(C,I1) ^ ObjectPropertyAssertion(OP,I,I2) ^ ClassAssertion(C,I2) -> SameIndividual(I1,I2)<br/>
+            /// SubClassOf(D,ObjectExactCardinality(1,OP[,C])) is handled as SubClassOf(D,ObjectMaxCardinality(1,OP[,C]))
+            /// <para>W3C OWL2 RL/RDF: cls-maxc2, cls-maxqc3, cls-maxqc4 (a qualifying owl:Thing excludes no filler, so it falls back to cls-maxc2). Fillers outside
+            /// the qualifying class are never merged. The ObjectExactCardinality(1) case is an OWLSharp extension: its upper bound is the same as a max of 1</para><para>Tier: Fact</para>
             /// </summary>
             FactObjectMaxCardinalityEntailment = 31,
             /// <summary>
@@ -269,6 +272,10 @@ namespace OWLSharp
             /// SameIndividual(I1,I2) ^ SameIndividual(I2,I3) -> SameIndividual(I1,I3)<br/>
             /// SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I1,I3) -> ObjectPropertyAssertion(OP,I2,I3)<br/>
             /// SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I2,I3) -> ObjectPropertyAssertion(OP,I1,I3)<br/>
+            /// SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I3,I1) -> ObjectPropertyAssertion(OP,I3,I2)<br/>
+            /// SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I3,I2) -> ObjectPropertyAssertion(OP,I3,I1)<br/>
+            /// SameIndividual(I1,I2) ^ DataPropertyAssertion(DP,I1,LIT) -> DataPropertyAssertion(DP,I2,LIT)<br/>
+            /// SameIndividual(I1,I2) ^ DataPropertyAssertion(DP,I2,LIT) -> DataPropertyAssertion(DP,I1,LIT)<br/>
             /// SameIndividual(I1,I2) ^ ClassAssertion(C,I1) -> ClassAssertion(C,I2)
             /// <para>W3C OWL2 RL/RDF: eq-sym, eq-trans, eq-rep-s, eq-rep-o</para><para>Tier: Fact</para>
             /// </summary>
@@ -302,8 +309,14 @@ namespace OWLSharp
         {
             /// <summary>
             /// AsymmetricObjectProperty(OP) ^ SymmetricObjectProperty(OP) -> ERROR<br/>
+            /// AsymmetricObjectProperty(OP) ^ ReflexiveObjectProperty(OP) -> ERROR<br/>
+            /// AsymmetricObjectProperty(OP) ^ TransitiveObjectProperty(OP) -> ERROR<br/>
+            /// AsymmetricObjectProperty(OP) ^ SubObjectPropertyOf(OP2,OP) ^ TransitiveObjectProperty(OP2) -> ERROR<br/>
+            /// AsymmetricObjectProperty(OP) ^ SubObjectPropertyOf(ObjectPropertyChain(...),OP2) ^ SubObjectPropertyOf*(OP2,OP) -> ERROR<br/>
             /// AsymmetricObjectProperty(OP) ^ ObjectPropertyAssertion(OP,I1,I2) ^ ObjectPropertyAssertion(OP,I2,I1) -> ERROR
-            /// <para>W3C OWL2 RL/RDF: prp-asyp (assertion-pair violation check). The AsymmetricObjectProperty+SymmetricObjectProperty overlap check is an OWLSharp extension</para>
+            /// <para>W3C OWL2 RL/RDF: prp-asyp (assertion-pair violation check). The AsymmetricObjectProperty+SymmetricObjectProperty and AsymmetricObjectProperty+ReflexiveObjectProperty
+            /// overlap checks are an OWLSharp extension (Reflexive is incompatible with Asymmetric). The check on non-simple properties (transitive ones or ones having transitive
+            /// or chain-defined sub properties) is an OWLSharp extension (OWL2 DL simple-role restriction)</para>
             /// </summary>
             AsymmetricObjectPropertyAnalysis = 1,
             /// <summary>
@@ -333,10 +346,12 @@ namespace OWLSharp
             /// DisjointClasses(C1,C2) ^ SubClassOf(C1,C2) -> WARNING<br/>
             /// DisjointClasses(C1,C2) ^ SubClassOf(C2,C1) -> WARNING<br/>
             /// DisjointClasses(C1,C2) ^ EquivalentClasses(C1,C2) -> WARNING<br/>
+            /// SubClassOf*(C,C1) ^ SubClassOf*(C,C2) ^ DisjointClasses(C1,C2) -> WARNING<br/>
             /// DisjointClasses(C1,C2) ^ ClassAssertion(C1,I) ^ ClassAssertion(C2,I) -> ERROR
             /// <para>W3C OWL2 RL/RDF: cax-dw (A-Box shared-ClassAssertion check, Error: a genuine ontology inconsistency). The T-Box overlap check
-            /// against SubClassOf/EquivalentClasses is an OWLSharp extension (Warning: it only forces the involved classes to be equivalent to
-            /// owl:Nothing, a modeling smell rather than an ontology-level inconsistency by itself)</para>
+            /// against SubClassOf/EquivalentClasses and the check on unsatisfiable classes (direct or indirect subclasses of two disjoint classes) are an
+            /// OWLSharp extension (Warning: it only forces the involved classes to be equivalent to owl:Nothing, a modeling smell rather than an
+            /// ontology-level inconsistency by itself)</para>
             /// </summary>
             DisjointClassesAnalysis = 6,
             /// <summary>
@@ -354,11 +369,15 @@ namespace OWLSharp
             /// DisjointObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP1,OP2) -> WARNING<br/>
             /// DisjointObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP2,OP1) -> WARNING<br/>
             /// DisjointObjectProperties(OP1,OP2) ^ EquivalentObjectProperties(OP1,OP2) -> WARNING<br/>
-            /// AllDisjointObjectProperties(OP1,...,OPN) ^ ObjectPropertyAssertion(OPi,I1,I2) ^ ObjectPropertyAssertion(OPj,I1,I2), i != j -> ERROR
+            /// AllDisjointObjectProperties(OP1,...,OPN) ^ ObjectPropertyAssertion(OPi,I1,I2) ^ ObjectPropertyAssertion(OPj,I1,I2), i != j -> ERROR<br/>
+            /// DisjointObjectProperties(OP1,OP2) ^ TransitiveObjectProperty(OP1) -> ERROR<br/>
+            /// DisjointObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP3,OP1) ^ TransitiveObjectProperty(OP3) -> ERROR<br/>
+            /// DisjointObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(ObjectPropertyChain(...),OP3) ^ SubObjectPropertyOf*(OP3,OP1) -> ERROR
             /// <para>W3C OWL2 RL/RDF: prp-pdw, prp-adp (A-Box shared-assertion check; the flattened-then-grouped scan already covers any two distinct members of the
             /// n-ary AllDisjointProperties list sharing the same (source,target) pair, which is the prp-adp case; Error, a genuine ontology inconsistency).
             /// The T-Box overlap check against SubObjectPropertyOf/EquivalentObjectProperties is an OWLSharp extension (Warning: it only forces the involved
-            /// properties to be equivalent to owl:bottomObjectProperty, a modeling smell rather than an ontology-level inconsistency by itself)</para>
+            /// properties to be equivalent to owl:bottomObjectProperty, a modeling smell rather than an ontology-level inconsistency by itself).
+            /// The check on non-simple member properties (transitive ones or ones having transitive or chain-defined sub properties) is an OWLSharp extension (OWL2 DL simple-role restriction)</para>
             /// </summary>
             DisjointObjectPropertiesAnalysis = 8,
             /// <summary>
@@ -399,8 +418,9 @@ namespace OWLSharp
             /// <summary>
             /// FunctionalObjectProperty(OP) ^ ObjectPropertyAssertion(OP,I1,I2) ^ ObjectPropertyAssertion(OP,I1,I3) ^ DifferentIndividuals(I2,I3) -> ERROR<br/>
             /// FunctionalObjectProperty(OP) ^ TransitiveObjectProperty(OP) -> ERROR<br/>
-            /// FunctionalObjectProperty(OP) ^ SubObjectPropertyOf(OP,OP2) ^ TransitiveObjectProperty(OP2) -> ERROR
-            /// <para>W3C OWL2 RL/RDF: prp-fp (consistency-check form: flags when the sameAs inference would contradict an explicit DifferentIndividuals). The FunctionalObjectProperty+TransitiveObjectProperty restriction check is an OWLSharp extension (OWL2 DL simple-role restriction, unrelated to RL/RDF)</para>
+            /// FunctionalObjectProperty(OP) ^ SubObjectPropertyOf(OP2,OP) ^ TransitiveObjectProperty(OP2) -> ERROR<br/>
+            /// FunctionalObjectProperty(OP) ^ SubObjectPropertyOf(ObjectPropertyChain(...),OP2) ^ SubObjectPropertyOf*(OP2,OP) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: prp-fp (consistency-check form: flags when the sameAs inference would contradict an explicit DifferentIndividuals). The FunctionalObjectProperty restriction check is an OWLSharp extension (OWL2 DL simple-role restriction, unrelated to RL/RDF): the property must not be non-simple, that is transitive or having a transitive or chain-defined sub property (a sub property of a transitive property stays simple)</para>
             /// </summary>
             FunctionalObjectPropertyAnalysis = 14,
             /// <summary>
@@ -412,14 +432,18 @@ namespace OWLSharp
             /// <summary>
             /// InverseFunctionalObjectProperty(OP) ^ ObjectPropertyAssertion(OP,I1,I2) ^ ObjectPropertyAssertion(OP,I3,I2) ^ DifferentIndividuals(I1,I3) -> ERROR<br/>
             /// InverseFunctionalObjectProperty(OP) ^ TransitiveObjectProperty(OP) -> ERROR<br/>
-            /// InverseFunctionalObjectProperty(OP) ^ SubObjectPropertyOf(OP,OP2) ^ TransitiveObjectProperty(OP2) -> ERROR
-            /// <para>W3C OWL2 RL/RDF: prp-ifp (consistency-check form: flags when the sameAs inference would contradict an explicit DifferentIndividuals). The InverseFunctionalObjectProperty+TransitiveObjectProperty restriction check is an OWLSharp extension (OWL2 DL simple-role restriction, unrelated to RL/RDF)</para>
+            /// InverseFunctionalObjectProperty(OP) ^ SubObjectPropertyOf(OP2,OP) ^ TransitiveObjectProperty(OP2) -> ERROR<br/>
+            /// InverseFunctionalObjectProperty(OP) ^ SubObjectPropertyOf(ObjectPropertyChain(...),OP2) ^ SubObjectPropertyOf*(OP2,OP) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: prp-ifp (consistency-check form: flags when the sameAs inference would contradict an explicit DifferentIndividuals). The InverseFunctionalObjectProperty restriction check is an OWLSharp extension (OWL2 DL simple-role restriction, unrelated to RL/RDF): the property must not be non-simple, that is transitive or having a transitive or chain-defined sub property (a sub property of a transitive property stays simple)</para>
             /// </summary>
             InverseFunctionalObjectPropertyAnalysis = 16,
             /// <summary>
             /// IrreflexiveObjectProperty(OP) ^ ReflexiveObjectProperty(OP) -> ERROR<br/>
+            /// IrreflexiveObjectProperty(OP) ^ TransitiveObjectProperty(OP) -> ERROR<br/>
+            /// IrreflexiveObjectProperty(OP) ^ SubObjectPropertyOf(OP2,OP) ^ TransitiveObjectProperty(OP2) -> ERROR<br/>
+            /// IrreflexiveObjectProperty(OP) ^ SubObjectPropertyOf(ObjectPropertyChain(...),OP2) ^ SubObjectPropertyOf*(OP2,OP) -> ERROR<br/>
             /// IrreflexiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,I,I) -> ERROR
-            /// <para>W3C OWL2 RL/RDF: prp-irp (reflexive-assertion violation check). The Irreflexive+Reflexive overlap check is an OWLSharp extension</para>
+            /// <para>W3C OWL2 RL/RDF: prp-irp (reflexive-assertion violation check). The Irreflexive+Reflexive overlap check is an OWLSharp extension. The check on non-simple properties (transitive ones or ones having transitive or chain-defined sub properties) is an OWLSharp extension (OWL2 DL simple-role restriction)</para>
             /// </summary>
             IrreflexiveObjectPropertyAnalysis = 17,
             /// <summary>
@@ -443,8 +467,11 @@ namespace OWLSharp
             /// ObjectPropertyChain(PC,(OP1,OP2)) ^ SubObjectPropertyOf(PC,OP) ^ FunctionalObjectProperty(OP) -> ERROR<br/>
             /// ObjectPropertyChain(PC,(OP1,OP2)) ^ SubObjectPropertyOf(PC,OP) ^ InverseFunctionalObjectProperty(OP) -> ERROR<br/>
             /// ObjectPropertyChain(PC,(OP1,OP2)) ^ SubObjectPropertyOf(PC,OP) ^ IrreflexiveObjectProperty(OP) -> ERROR<br/>
-            /// ObjectPropertyChain(PC,(OP1,OP2)) ^ SubObjectPropertyOf(PC,OP1) -> ERROR
-            /// <para>OWLSharp extension: enforces OWL2 DL property-chain regularity / simple-role restrictions (chain superproperty cannot be asymmetric/functional/inverse-functional/irreflexive; chain cannot be self-referential), which is outside the RL/RDF entailment table</para>
+            /// ObjectPropertyChain(PC,(OP1,...,OPN)) ^ SubObjectPropertyOf(PC,OP) ^ OP = OPi, 1 &lt; i &lt; N -> ERROR<br/>
+            /// ObjectPropertyChain(PC,(OP1,...,OPN)) ^ SubObjectPropertyOf(PC,OP) ^ OP = OP1 ^ OP = OPN ^ N &gt; 2 -> ERROR
+            /// <para>OWLSharp extension: enforces OWL2 DL property-chain regularity / simple-role restrictions (chain superproperty cannot be asymmetric/functional/inverse-functional/irreflexive;
+            /// chain can contain its superproperty only as first or last element and not at both ends when longer than two elements, so OP o Q => OP, Q o OP => OP and OP o OP => OP are regular),
+            /// which is outside the RL/RDF entailment table</para>
             /// </summary>
             ObjectPropertyChainAnalysis = 21,
             /// <summary>
@@ -459,10 +486,19 @@ namespace OWLSharp
             ObjectPropertyRangeAnalysis = 23,
             /// <summary>
             /// SubClassOf(C1,C2) ^ DisjointClasses(C1,C2) -> WARNING<br/>
-            /// SubClassOf(C,[Object|Data][Exact|Max]Cardinality(P,N) -> ERROR (ON ASSERTION'S CARDINALITY VIOLATION)
+            /// SubClassOf(C,Data[Exact|Max]Cardinality(DP,N)) ^ ClassAssertion(C,I) ^ more than N distinct DataPropertyAssertion(DP,I,LIT) -> ERROR<br/>
+            /// SubClassOf(C,Object[Exact|Max]Cardinality(OP,N[,D])) ^ ClassAssertion(C,I) ^ N+1 pairwise DifferentIndividuals fillers of OP -> ERROR<br/>
+            /// SubClassOf(C,Object[Exact|Max]Cardinality(OP,N[,D])) ^ ClassAssertion(C,I) ^ more than N distinct fillers of OP but not N+1 pairwise DifferentIndividuals -> WARNING<br/>
+            /// SubClassOf(C,ObjectMinCardinality|ObjectMaxCardinality|ObjectExactCardinality(OP[,D])) ^ OP non-simple -> ERROR
             /// <para>W3C OWL2 RL/RDF: cls-maxc1, cls-maxc2, cls-maxqc1, cls-maxqc2, cls-maxqc3, cls-maxqc4 (cardinality-violation checks, qualified and
-            /// unqualified; Error, a genuine A-Box violation). The SubClassOf vs DisjointClasses overlap check is an OWLSharp extension (Warning: it only
-            /// forces the subclass to be equivalent to owl:Nothing, a modeling smell rather than an ontology-level inconsistency by itself). NOTE:
+            /// unqualified). Data values beyond the bound are an Error (distinct literals are distinct values). Object fillers are an Error only when N+1 of them
+            /// are pairwise DifferentIndividuals. They are a Warning when they exceed N without being declared different (open world with no unique name assumption:
+            /// the Reasoner unifies them, cls-maxc2/cls-maxqc3). Fillers are counted distinct after SameIndividual unification and ObjectInverseOf is supported;
+            /// an owl:Thing qualifier is handled as an unqualified restriction and the exact search of N+1 pairwise different fillers is performed for N up to 3
+            /// only (beyond it the finding stays a Warning). The SubClassOf vs DisjointClasses overlap check is an OWLSharp extension (Warning: it only
+            /// forces the subclass to be equivalent to owl:Nothing, a modeling smell rather than an ontology-level inconsistency by itself). The check on object
+            /// cardinality restrictions over non-simple properties (transitive ones or ones having transitive or chain-defined sub properties) is an OWLSharp
+            /// extension (OWL2 DL simple-role restriction, independent from the assertions). NOTE:
             /// SubClassOf combined with the mutual SubClassOf in the other direction, or with EquivalentClasses on the same pair, is NOT flagged at all
             /// (removed, not merely downgraded): both are just redundant restatements of class equivalence, and mutual SubClassOf in particular is a
             /// common, deliberate idiom for expressing it without an explicit EquivalentClasses axiom</para>
@@ -517,8 +553,9 @@ namespace OWLSharp
             /// <summary>
             /// Class(C) ^ SubClassOf(owl:Thing,C) -> WARNING<br/>
             /// Class(C) ^ SubClassOf(C, owl:Nothing) -> WARNING<br/>
-            /// ClassAssertion(owl:Nothing, I) -> WARNING
-            /// <para>W3C OWL2 RL/RDF: cls-thing, cls-nothing1 (owl:Thing/owl:Nothing root/bottom-position checks), cls-nothing2 (individuals in owl:Nothing check)</para>
+            /// ClassAssertion(owl:Nothing, I) -> ERROR
+            /// <para>W3C OWL2 RL/RDF: cls-thing, cls-nothing1 (owl:Thing/owl:Nothing root/bottom-position checks), cls-nothing2 (individuals in owl:Nothing check: Error, since
+            /// an individual of owl:Nothing makes the ontology inconsistent)</para>
             /// </summary>
             ThingNothingAnalysis = 29,
             /// <summary>

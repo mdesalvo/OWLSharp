@@ -462,5 +462,44 @@ public class OWLObjectPropertyAxiomHelperTest
         Assert.IsFalse(ontology.CheckHasTransitiveObjectProperty(null));
         Assert.IsFalse((null as OWLOntology).CheckHasTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:TransObp"))));
     }
+
+    [TestMethod]
+    public void ShouldCheckIsNonSimpleObjectProperty()
+    {
+        //Non-simple: transitive, or having a transitive or chain-defined subproperty (OWL2 DL, section 11.1)
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:TransObp"))),
+                new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:SubTransObp"))),
+                new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:SubTransObp")), new OWLObjectProperty(new RDFResource("ex:SuperTransObp"))),
+                new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:SimpleObp")), new OWLObjectProperty(new RDFResource("ex:TransObp"))),
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectPropertyChain([ new OWLObjectProperty(new RDFResource("ex:hasFather")), new OWLObjectProperty(new RDFResource("ex:hasBrother")) ]),
+                    new OWLObjectProperty(new RDFResource("ex:hasUncle"))),
+                new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:hasUncle")), new OWLObjectProperty(new RDFResource("ex:hasRelative")))
+            ]
+        };
+
+        //Transitive property
+        Assert.IsTrue(ontology.CheckIsNonSimpleObjectProperty(new OWLObjectProperty(new RDFResource("ex:TransObp"))));
+        //Superproperty of a transitive property
+        Assert.IsTrue(ontology.CheckIsNonSimpleObjectProperty(new OWLObjectProperty(new RDFResource("ex:SuperTransObp"))));
+        //Subproperty of a transitive property stays simple (e.g. hasMother under hasAncestor)
+        Assert.IsFalse(ontology.CheckIsNonSimpleObjectProperty(new OWLObjectProperty(new RDFResource("ex:SimpleObp"))));
+        //Superproperty of a chain
+        Assert.IsTrue(ontology.CheckIsNonSimpleObjectProperty(new OWLObjectProperty(new RDFResource("ex:hasUncle"))));
+        //Indirect superproperty of a chain
+        Assert.IsTrue(ontology.CheckIsNonSimpleObjectProperty(new OWLObjectProperty(new RDFResource("ex:hasRelative"))));
+        //Property taking part in a chain only as an element stays simple
+        Assert.IsFalse(ontology.CheckIsNonSimpleObjectProperty(new OWLObjectProperty(new RDFResource("ex:hasFather"))));
+        //Inverse of a transitive property
+        Assert.IsTrue(ontology.CheckIsNonSimpleObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:TransObp")))));
+        //Property without axioms
+        Assert.IsFalse(ontology.CheckIsNonSimpleObjectProperty(new OWLObjectProperty(new RDFResource("ex:Unknown"))));
+        //Null ontology or property
+        Assert.IsFalse(ontology.CheckIsNonSimpleObjectProperty(null));
+        Assert.IsFalse((null as OWLOntology).CheckIsNonSimpleObjectProperty(new OWLObjectProperty(new RDFResource("ex:TransObp"))));
+    }
     #endregion
 }

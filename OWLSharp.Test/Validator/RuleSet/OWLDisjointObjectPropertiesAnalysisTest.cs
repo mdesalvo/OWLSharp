@@ -244,5 +244,90 @@ public class OWLDisjointObjectPropertiesAnalysisTest
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointObjectPropertiesAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointObjectPropertiesAnalysis.rulesugg2)));
     }
+
+    [TestMethod]
+    public void ShouldAnalyzeDisjointObjectPropertiesOnTransitivePropertyCase()
+    {
+        //DisjointObjectProperties(OP) ^ TransitiveObjectProperty(OP) -> ERROR
+        //A transitive property is non-simple
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:OP")), new OWLObjectProperty(new RDFResource("ex:OP9")) ]),
+                new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:OP")))
+            ]
+        };
+        List<OWLIssue> issues = OWLDisjointObjectPropertiesAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.HasCount(1, issues);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointObjectPropertiesAnalysis.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointObjectPropertiesAnalysis.rulesugg3)));
+    }
+
+    [TestMethod]
+    public void ShouldAnalyzeDisjointObjectPropertiesOnPropertyWithTransitiveSubPropertyCase()
+    {
+        //DisjointObjectProperties(OP) ^ SubObjectPropertyOf(SUBOP,OP) ^ TransitiveObjectProperty(SUBOP) -> ERROR
+        //A property having a transitive subproperty is non-simple
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:OP")), new OWLObjectProperty(new RDFResource("ex:OP9")) ]),
+                new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:SUBOP"))),
+                new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:SUBOP")), new OWLObjectProperty(new RDFResource("ex:OP")))
+            ]
+        };
+        List<OWLIssue> issues = OWLDisjointObjectPropertiesAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.HasCount(1, issues);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointObjectPropertiesAnalysis.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointObjectPropertiesAnalysis.rulesugg3)));
+    }
+
+    [TestMethod]
+    public void ShouldAnalyzeDisjointObjectPropertiesOnPropertyDefinedByChainCase()
+    {
+        //DisjointObjectProperties(OP) ^ SubObjectPropertyOf(ObjectPropertyChain(OP1,OP2),OP) -> ERROR
+        //A property defined as the superproperty of a chain is non-simple
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:OP")), new OWLObjectProperty(new RDFResource("ex:OP9")) ]),
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectPropertyChain([ new OWLObjectProperty(new RDFResource("ex:OP1")), new OWLObjectProperty(new RDFResource("ex:OP2")) ]),
+                    new OWLObjectProperty(new RDFResource("ex:OP")))
+            ]
+        };
+        List<OWLIssue> issues = OWLDisjointObjectPropertiesAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.HasCount(1, issues);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointObjectPropertiesAnalysis.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointObjectPropertiesAnalysis.rulesugg3)));
+    }
+
+    [TestMethod]
+    public void ShouldNotAnalyzeDisjointObjectPropertiesOnPropertyUnderTransitiveCase()
+    {
+        //DisjointObjectProperties(OP) ^ SubObjectPropertyOf(OP,SUPEROP) ^ TransitiveObjectProperty(SUPEROP) -> NO ISSUE
+        //A subproperty of a transitive property stays simple (e.g. hasMother under hasAncestor)
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:OP")), new OWLObjectProperty(new RDFResource("ex:OP9")) ]),
+                new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:SUPEROP"))),
+                new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:OP")), new OWLObjectProperty(new RDFResource("ex:SUPEROP")))
+            ]
+        };
+        List<OWLIssue> issues = OWLDisjointObjectPropertiesAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.IsEmpty(issues);
+    }
     #endregion
 }

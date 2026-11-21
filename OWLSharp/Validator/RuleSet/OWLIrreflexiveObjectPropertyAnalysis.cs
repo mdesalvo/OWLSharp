@@ -19,13 +19,14 @@ using System.Linq;
 namespace OWLSharp.Validator
 {
     /// <summary>
-    /// <para>W3C OWL2 RL/RDF: prp-irp (reflexive-assertion violation check). The Irreflexive+Reflexive overlap check is an OWLSharp extension</para>
+    /// <para>W3C OWL2 RL/RDF: prp-irp (reflexive-assertion violation check). The Irreflexive+Reflexive overlap check is an OWLSharp extension as well as the check on non-simple properties (OWL2 DL simple-role restriction)</para>
     /// </summary>
     internal static class OWLIrreflexiveObjectPropertyAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.IrreflexiveObjectPropertyAnalysis);
         internal const string rulesugg1 = "There should not be object properties at the same time irreflexive and reflexive!";
         internal const string rulesugg2 = "There should not be object assertions having the same source/target individual under an irreflexive object property!";
+        internal const string rulesugg3 = "There should not be irreflexive object properties that are non-simple: transitive ones or ones having transitive or chain-defined sub properties!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
@@ -50,6 +51,22 @@ namespace OWLSharp.Validator
                             $"Violated IrreflexiveObjectProperty axiom with signature: '{irrefObjProp.GetXML()}'",
                             rulesugg1));
                     });
+            }
+
+            //IrreflexiveObjectProperty(OP) ^ TransitiveObjectProperty(OP) -> ERROR
+            //IrreflexiveObjectProperty(OP) ^ SubObjectPropertyOf(SOP,OP) ^ TransitiveObjectProperty(SOP) -> ERROR
+            //IrreflexiveObjectProperty(OP) ^ SubObjectPropertyOf(ObjectPropertyChain(...),SOP) ^ SubObjectPropertyOf*(SOP,OP) -> ERROR
+            foreach (OWLIrreflexiveObjectProperty irrefObjProp in irrefObjProps)
+            {
+                //OWL2 DL admits irreflexivity on simple properties only: a transitive or chain-defined subproperty makes the property non-simple
+                if (ontology.CheckIsNonSimpleObjectProperty(irrefObjProp.ObjectPropertyExpression))
+                {
+                    issues.Add(new OWLIssue(
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated IrreflexiveObjectProperty axiom with signature: '{irrefObjProp.GetXML()}'",
+                        rulesugg3));
+                }
             }
 
             //IrreflexiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV1) -> ERROR

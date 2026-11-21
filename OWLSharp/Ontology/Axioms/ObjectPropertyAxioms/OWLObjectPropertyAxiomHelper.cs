@@ -277,6 +277,30 @@ namespace OWLSharp.Ontology
         /// </summary>
         public static bool CheckHasTransitiveObjectProperty(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr)
             => ontology != null && objPropExpr != null && GetObjectPropertyAxiomsOfType<OWLTransitiveObjectProperty>(ontology).Any(top => top.ObjectPropertyExpression.GetIRI().Equals(objPropExpr.GetIRI()));
+
+        /// <summary>
+        /// Checks whether the given object property expression is non-simple in the given ontology (OWL2 DL, section 11.1)
+        /// </summary>
+        internal static bool CheckIsNonSimpleObjectProperty(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr)
+        {
+            //Without a property there is nothing that could break the OWL2 DL restrictions on simple properties
+            if (ontology == null || objPropExpr == null)
+                return false;
+
+            //An inverse is non-simple exactly when its property is, since both are entailed by the same composite axioms
+            OWLObjectPropertyExpression namedObjPropExpr = objPropExpr is OWLObjectInverseOf objInverseOf ? objInverseOf.ObjectProperty : objPropExpr;
+
+            //A property defined as the superproperty of a chain is composite: its pairs are built by joining other pairs
+            HashSet<long> chainSuperPropertyIDs = new HashSet<long>(GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>(ontology)
+                                                                     .Where(ax => ax.SubObjectPropertyChain != null)
+                                                                     .Select(ax => ax.SuperObjectPropertyExpression.GetIRI().PatternMemberID));
+
+            //Non-simplicity flows upward: a property is non-simple when it, or any of its subproperties, is transitive or chain-defined,
+            //while a subproperty of a transitive property stays simple (e.g. a functional hasMother under a transitive hasAncestor)
+            return new List<OWLObjectPropertyExpression> { namedObjPropExpr }
+                    .Concat(GetSubObjectPropertiesOf(ontology, namedObjPropExpr))
+                    .Any(opex => CheckHasTransitiveObjectProperty(ontology, opex) || chainSuperPropertyIDs.Contains(opex.GetIRI().PatternMemberID));
+        }
         #endregion
     }
 }

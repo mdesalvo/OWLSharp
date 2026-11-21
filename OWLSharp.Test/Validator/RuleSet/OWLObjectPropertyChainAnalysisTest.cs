@@ -136,8 +136,10 @@ public class OWLObjectPropertyChainAnalysisTest
     }
 
     [TestMethod]
-    public void ShouldAnalyzeObjectPropertyChainLoopCase()
+    public void ShouldNotAnalyzeObjectPropertyChainSuperPropertyAsLastElementCase()
     {
+        //SubObjectPropertyOf(ObjectPropertyChain(hasFather,hasUncle),hasUncle) -> NO ISSUE
+        //OWL2 DL regularity admits the superproperty as the last element of the chain (Q o OP => OP)
         OWLOntology ontology = new OWLOntology
         {
             DeclarationAxioms = [
@@ -151,6 +153,85 @@ public class OWLObjectPropertyChainAnalysisTest
                         new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
                         new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))]),
                     new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle")))
+            ]
+        };
+        List<OWLIssue> issues = OWLObjectPropertyChainAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.IsEmpty(issues);
+    }
+
+    [TestMethod]
+    public void ShouldNotAnalyzeObjectPropertyChainSuperPropertyAsFirstElementCase()
+    {
+        //SubObjectPropertyOf(ObjectPropertyChain(OP,Q),OP) -> NO ISSUE
+        //OWL2 DL regularity admits the superproperty as the first element of the chain (OP o Q => OP)
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectPropertyChain([ new OWLObjectProperty(new RDFResource("ex:OP")), new OWLObjectProperty(new RDFResource("ex:Q")) ]),
+                    new OWLObjectProperty(new RDFResource("ex:OP")))
+            ]
+        };
+        List<OWLIssue> issues = OWLObjectPropertyChainAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.IsEmpty(issues);
+    }
+
+    [TestMethod]
+    public void ShouldNotAnalyzeObjectPropertyChainSuperPropertyAsFirstAndLastElementOfTwoCase()
+    {
+        //SubObjectPropertyOf(ObjectPropertyChain(OP,OP),OP) -> NO ISSUE
+        //OP o OP => OP is the legal two-element case with the superproperty at both ends
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectPropertyChain([ new OWLObjectProperty(new RDFResource("ex:OP")), new OWLObjectProperty(new RDFResource("ex:OP")) ]),
+                    new OWLObjectProperty(new RDFResource("ex:OP")))
+            ]
+        };
+        List<OWLIssue> issues = OWLObjectPropertyChainAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.IsEmpty(issues);
+    }
+
+    [TestMethod]
+    public void ShouldAnalyzeObjectPropertyChainSuperPropertyAsInnerElementCase()
+    {
+        //SubObjectPropertyOf(ObjectPropertyChain(Q,OP,R),OP) -> ERROR
+        //The superproperty in an inner position (neither first nor last) makes the chain irregular
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectPropertyChain([ new OWLObjectProperty(new RDFResource("ex:Q")), new OWLObjectProperty(new RDFResource("ex:OP")), new OWLObjectProperty(new RDFResource("ex:R")) ]),
+                    new OWLObjectProperty(new RDFResource("ex:OP")))
+            ]
+        };
+        List<OWLIssue> issues = OWLObjectPropertyChainAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.HasCount(1, issues);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyChainAnalysis.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyChainAnalysis.rulesugg2)));
+    }
+
+    [TestMethod]
+    public void ShouldAnalyzeObjectPropertyChainSuperPropertyAtBothEndsOfLongerChainCase()
+    {
+        //SubObjectPropertyOf(ObjectPropertyChain(OP,Q,OP),OP) -> ERROR
+        //The superproperty at both ends of a chain longer than two elements makes the chain irregular
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectPropertyChain([ new OWLObjectProperty(new RDFResource("ex:OP")), new OWLObjectProperty(new RDFResource("ex:Q")), new OWLObjectProperty(new RDFResource("ex:OP")) ]),
+                    new OWLObjectProperty(new RDFResource("ex:OP")))
             ]
         };
         List<OWLIssue> issues = OWLObjectPropertyChainAnalysis.ExecuteRule(ontology);

@@ -18,13 +18,13 @@ using System.Linq;
 namespace OWLSharp.Validator
 {
     /// <summary>
-    /// <para>W3C OWL2 RL/RDF: prp-fp (consistency-check form: flags when the sameAs inference would contradict an explicit DifferentIndividuals). The FunctionalObjectProperty+TransitiveObjectProperty restriction check is an OWLSharp extension (OWL2 DL simple-role restriction, unrelated to RL/RDF)</para>
+    /// <para>W3C OWL2 RL/RDF: prp-fp (consistency-check form: flags when the sameAs inference would contradict an explicit DifferentIndividuals). The FunctionalObjectProperty restriction check on non-simple properties (transitive ones or ones having transitive or chain-defined sub properties) is an OWLSharp extension (OWL2 DL simple-role restriction, unrelated to RL/RDF)</para>
     /// </summary>
     internal static class OWLFunctionalObjectPropertyAnalysis
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.FunctionalObjectPropertyAnalysis);
         internal const string rulesugg = "There should not be functional object properties linking the same source individual to more than one target individuals within ObjectPropertyAssertion axioms if these target individuals are explicitly different!";
-        internal const string rulesugg2 = "There should not be functional object properties also defined as transitive, or having super properties defined as transitive!";
+        internal const string rulesugg2 = "There should not be functional object properties that are non-simple: transitive ones or ones having transitive or chain-defined sub properties!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
@@ -77,9 +77,10 @@ namespace OWLSharp.Validator
                            });
 
                     //FunctionalObjectProperty(FOP) ^ TransitiveObjectProperty(FOP) -> ERROR
-                    //FunctionalObjectProperty(FOP) ^ SubObjectPropertyOf(FOP, SOP) ^ TransitiveObjectProperty(SOP) -> ERROR
-                    if (ontology.CheckHasTransitiveObjectProperty(fop.ObjectPropertyExpression)
-                         || ontology.GetSuperObjectPropertiesOf(fop.ObjectPropertyExpression).Any(ontology.CheckHasTransitiveObjectProperty))
+                    //FunctionalObjectProperty(FOP) ^ SubObjectPropertyOf(SOP,FOP) ^ TransitiveObjectProperty(SOP) -> ERROR
+                    //FunctionalObjectProperty(FOP) ^ SubObjectPropertyOf(ObjectPropertyChain(...),SOP) ^ SubObjectPropertyOf*(SOP,FOP) -> ERROR
+                    //A functional property must be simple: a subproperty of a transitive one stays simple, while a transitive or chain-defined subproperty makes it non-simple
+                    if (ontology.CheckIsNonSimpleObjectProperty(fop.ObjectPropertyExpression))
                     {
                         issues.Add(new OWLIssue(
                             OWLEnums.OWLIssueSeverity.Error,
