@@ -72,7 +72,14 @@ namespace OWLSharp.Ontology
         /// Gets the OWL2/Functional-Style representation of this SubAnnotationPropertyOf axiom
         /// </summary>
         internal override string ToFunctionalString(OWLFunctionalContext functionalContext)
-            => $"SubAnnotationPropertyOf( {functionalContext.RenderAxiomAnnotations(Annotations)}{SubAnnotationProperty.ToFunctionalString(functionalContext)} {SuperAnnotationProperty.ToFunctionalString(functionalContext)} )";
+        {
+            //An axiom read from OWL/XML may lack one of its two properties: it has no Functional-Style form
+            //then, so the serializer skips it with a warning instead of failing
+            if (SubAnnotationProperty == null || SuperAnnotationProperty == null)
+                return null;
+
+            return $"SubAnnotationPropertyOf( {functionalContext.RenderAxiomAnnotations(Annotations)}{SubAnnotationProperty.ToFunctionalString(functionalContext)} {SuperAnnotationProperty.ToFunctionalString(functionalContext)} )";
+        }
 
         /// <summary>
         /// Exports this OWLSubAnnotationPropertyOf to an equivalent RDFGraph object

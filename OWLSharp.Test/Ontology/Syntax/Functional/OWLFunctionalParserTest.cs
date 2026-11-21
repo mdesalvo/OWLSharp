@@ -14,9 +14,12 @@
    limitations under the License.
 */
 
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
+using OWLSharp.Reasoner;
 
 namespace OWLSharp.Test.Ontology;
 
@@ -984,5 +987,239 @@ public class OWLFunctionalParserTest
         Assert.AreEqual("c1", dcc.Annotations[0].ValueLiteral.Value);
         Assert.AreEqual("c2", dcc.Annotations[1].ValueLiteral.Value);
     }
+    #endregion
+
+    #region Tests (SWRL rules)
+    private const string VariableX = "Variable(<urn:swrl:var#x>)";
+
+    [TestMethod]
+    public void ShouldParseClassAtomInBodyAndHead()
+    {
+        //Verifies the class atom is read in both sections with the internal-ctor shape (no right argument)
+        OWLOntology ontology = Parse($"DLSafeRule(Body(ClassAtom(pz:Person {VariableX})) Head(ClassAtom(pz:Adult {VariableX})))");
+
+        Assert.HasCount(1, ontology.Rules);
+        SWRLRule rule = ontology.Rules[0];
+        Assert.IsEmpty(rule.Annotations);
+        Assert.HasCount(1, rule.Antecedent.Atoms);
+        Assert.IsEmpty(rule.Antecedent.BuiltIns);
+        SWRLClassAtom bodyAtom = (SWRLClassAtom)rule.Antecedent.Atoms[0];
+        Assert.AreEqual("http://example.org/pz#Person", bodyAtom.Predicate.GetIRI().ToString());
+        Assert.AreEqual("urn:swrl:var#x", ((SWRLVariableArgument)bodyAtom.LeftArgument).IRI);
+        Assert.IsNull(bodyAtom.RightArgument);
+        Assert.HasCount(1, rule.Consequent.Atoms);
+        Assert.AreEqual("http://example.org/pz#Adult", ((SWRLClassAtom)rule.Consequent.Atoms[0]).Predicate.GetIRI().ToString());
+    }
+
+    [TestMethod]
+    public void ShouldParseClassAtomWithComplexClassExpressionAndIndividualArgument()
+    {
+        //Verifies the class expression is any ClassExpression and the argument a named individual
+        OWLOntology ontology = Parse("DLSafeRule(Body(ClassAtom(ObjectUnionOf(pz:A pz:B) pz:Alice)) Head())");
+
+        SWRLClassAtom atom = (SWRLClassAtom)ontology.Rules[0].Antecedent.Atoms[0];
+        Assert.IsInstanceOfType<OWLObjectUnionOf>(atom.Predicate);
+        Assert.AreEqual("http://example.org/pz#Alice", ((SWRLIndividualArgument)atom.LeftArgument).IRI);
+    }
+
+    [TestMethod]
+    public void ShouldParseDataRangeAtom()
+    {
+        //Verifies the data range atom takes a data range and a data argument
+        OWLOntology ontology = Parse("DLSafeRule(Body(DataRangeAtom(xsd:integer Variable(<urn:swrl:var#age>))) Head())");
+
+        SWRLDataRangeAtom atom = (SWRLDataRangeAtom)ontology.Rules[0].Antecedent.Atoms[0];
+        Assert.IsInstanceOfType<OWLDatatype>(atom.Predicate);
+        Assert.AreEqual("urn:swrl:var#age", ((SWRLVariableArgument)atom.LeftArgument).IRI);
+        Assert.IsNull(atom.RightArgument);
+    }
+
+    [TestMethod]
+    public void ShouldParseObjectPropertyAtom()
+    {
+        //Verifies the object property atom keeps its argument order when the property is a named one
+        OWLOntology ontology = Parse($"DLSafeRule(Body(ObjectPropertyAtom(pz:hasParent {VariableX} pz:Bob)) Head())");
+
+        SWRLObjectPropertyAtom atom = (SWRLObjectPropertyAtom)ontology.Rules[0].Antecedent.Atoms[0];
+        Assert.IsInstanceOfType<OWLObjectProperty>(atom.Predicate);
+        Assert.AreEqual("http://example.org/pz#hasParent", atom.Predicate.GetIRI().ToString());
+        Assert.IsInstanceOfType<SWRLVariableArgument>(atom.LeftArgument);
+        Assert.AreEqual("http://example.org/pz#Bob", ((SWRLIndividualArgument)atom.RightArgument).IRI);
+    }
+
+    [TestMethod]
+    public void ShouldParseInverseObjectPropertyAtomAsAtomWithSwappedArguments()
+    {
+        //Verifies P^-1(x,y) is read as P(y,x) because the model only holds named properties
+        OWLOntology ontology = Parse("DLSafeRule(Body(ObjectPropertyAtom(ObjectInverseOf(pz:hasParent) Variable(<urn:swrl:var#x>) Variable(<urn:swrl:var#y>))) Head())");
+
+        SWRLObjectPropertyAtom atom = (SWRLObjectPropertyAtom)ontology.Rules[0].Antecedent.Atoms[0];
+        Assert.IsInstanceOfType<OWLObjectProperty>(atom.Predicate);
+        Assert.AreEqual("http://example.org/pz#hasParent", atom.Predicate.GetIRI().ToString());
+        Assert.AreEqual("urn:swrl:var#y", ((SWRLVariableArgument)atom.LeftArgument).IRI);
+        Assert.AreEqual("urn:swrl:var#x", ((SWRLVariableArgument)atom.RightArgument).IRI);
+    }
+
+    [TestMethod]
+    public void ShouldParseDataPropertyAtomWithTypedLiteral()
+    {
+        //Verifies the data property atom accepts an individual then a literal with its datatype
+        OWLOntology ontology = Parse($"DLSafeRule(Body(DataPropertyAtom(pz:hasAge {VariableX} \"18\"^^xsd:integer)) Head())");
+
+        SWRLDataPropertyAtom atom = (SWRLDataPropertyAtom)ontology.Rules[0].Antecedent.Atoms[0];
+        Assert.IsInstanceOfType<OWLDataProperty>(atom.Predicate);
+        SWRLLiteralArgument literalArgument = (SWRLLiteralArgument)atom.RightArgument;
+        Assert.AreEqual("18", literalArgument.Value);
+        Assert.AreEqual("http://www.w3.org/2001/XMLSchema#integer", literalArgument.DatatypeIRI);
+        Assert.IsNull(literalArgument.Language);
+    }
+
+    [TestMethod]
+    public void ShouldParseDataPropertyAtomWithVariableAndLanguageLiteral()
+    {
+        //Verifies the data argument may be a variable and a plain literal may carry its language
+        OWLOntology ontology = Parse($"DLSafeRule(Body(DataPropertyAtom(pz:hasName {VariableX} Variable(<urn:swrl:var#n>)) DataPropertyAtom(pz:hasName {VariableX} \"Bob\"@en)) Head())");
+
+        Assert.IsInstanceOfType<SWRLVariableArgument>(((SWRLDataPropertyAtom)ontology.Rules[0].Antecedent.Atoms[0]).RightArgument);
+        SWRLLiteralArgument literalArgument = (SWRLLiteralArgument)((SWRLDataPropertyAtom)ontology.Rules[0].Antecedent.Atoms[1]).RightArgument;
+        Assert.AreEqual("Bob", literalArgument.Value);
+        Assert.AreEqual("en", literalArgument.Language);
+        Assert.IsNull(literalArgument.DatatypeIRI);
+    }
+
+    [TestMethod]
+    public void ShouldParseAnnotationPropertyAtom()
+    {
+        //Verifies the OWLSharp extension keeps the annotation property and accepts any argument kind
+        OWLOntology ontology = Parse($"DLSafeRule(Body(AnnotationPropertyAtom(rdfs:label {VariableX} \"Bob\")) Head(AnnotationPropertyAtom(rdfs:seeAlso {VariableX} pz:Bob)))");
+
+        SWRLAnnotationPropertyAtom bodyAtom = (SWRLAnnotationPropertyAtom)ontology.Rules[0].Antecedent.Atoms[0];
+        Assert.IsInstanceOfType<OWLAnnotationProperty>(bodyAtom.Predicate);
+        Assert.IsInstanceOfType<SWRLLiteralArgument>(bodyAtom.RightArgument);
+        SWRLAnnotationPropertyAtom headAtom = (SWRLAnnotationPropertyAtom)ontology.Rules[0].Consequent.Atoms[0];
+        Assert.IsInstanceOfType<SWRLIndividualArgument>(headAtom.RightArgument);
+    }
+
+    [TestMethod]
+    public void ShouldParseSameAndDifferentIndividualAtoms()
+    {
+        //Verifies the two equality atoms get the predicate the public ctors assign
+        OWLOntology ontology = Parse($"DLSafeRule(Body(SameIndividualAtom({VariableX} Variable(<urn:swrl:var#y>))) Head(DifferentIndividualsAtom({VariableX} pz:Bob)))");
+
+        SWRLSameIndividualAtom sameAtom = (SWRLSameIndividualAtom)ontology.Rules[0].Antecedent.Atoms[0];
+        Assert.AreSame(SWRLSameIndividualAtom.SameAs, sameAtom.Predicate);
+        Assert.IsInstanceOfType<SWRLVariableArgument>(sameAtom.RightArgument);
+        SWRLDifferentIndividualsAtom differentAtom = (SWRLDifferentIndividualsAtom)ontology.Rules[0].Consequent.Atoms[0];
+        Assert.AreSame(SWRLDifferentIndividualsAtom.DifferentFrom, differentAtom.Predicate);
+        Assert.IsInstanceOfType<SWRLIndividualArgument>(differentAtom.RightArgument);
+    }
+
+    [TestMethod]
+    public void ShouldParseBuiltInAtomInBody()
+    {
+        //Verifies the built-in lands in the BuiltIns list with only its IRI and arguments
+        OWLOntology ontology = Parse($"DLSafeRule(Body(BuiltInAtom(<http://www.w3.org/2003/11/swrlb#greaterThan> Variable(<urn:swrl:var#age>) \"17\"^^xsd:integer) ClassAtom(pz:Person {VariableX})) Head())");
+
+        SWRLAntecedent antecedent = ontology.Rules[0].Antecedent;
+        Assert.HasCount(1, antecedent.Atoms);
+        Assert.HasCount(1, antecedent.BuiltIns);
+        Assert.AreEqual("http://www.w3.org/2003/11/swrlb#greaterThan", antecedent.BuiltIns[0].IRI);
+        Assert.HasCount(2, antecedent.BuiltIns[0].Arguments);
+        Assert.IsInstanceOfType<SWRLVariableArgument>(antecedent.BuiltIns[0].Arguments[0]);
+        Assert.AreEqual("17", ((SWRLLiteralArgument)antecedent.BuiltIns[0].Arguments[1]).Value);
+        Assert.IsNull(antecedent.BuiltIns[0].EvaluatorFunction);
+    }
+
+    [TestMethod]
+    public void ShouldParseBuiltInAtomHavingIndividualArgument()
+    {
+        //Verifies a named individual is accepted as built-in argument, since OWLSharp rules may hold one and write it as a bare IRI
+        OWLOntology ontology = Parse($"DLSafeRule(Body(BuiltInAtom(<http://www.w3.org/2003/11/swrlb#equal> {VariableX} pz:Mario)) Head())");
+
+        SWRLBuiltIn builtIn = ontology.Rules[0].Antecedent.BuiltIns[0];
+        Assert.HasCount(2, builtIn.Arguments);
+        Assert.IsInstanceOfType<SWRLIndividualArgument>(builtIn.Arguments[1]);
+    }
+
+    [TestMethod]
+    public void ShouldParseRuleAnnotationsWithoutAddingOthers()
+    {
+        //Verifies the annotations of the document are the only ones on the rule
+        OWLOntology ontology = Parse("DLSafeRule(Annotation(rdfs:label \"adult\") Annotation(rdfs:comment \"a person of age\") Body() Head())");
+
+        SWRLRule rule = ontology.Rules[0];
+        Assert.HasCount(2, rule.Annotations);
+        Assert.AreEqual("adult", rule.Annotations[0].ValueLiteral.Value);
+        Assert.AreEqual("a person of age", rule.Annotations[1].ValueLiteral.Value);
+        Assert.IsEmpty(rule.Antecedent.Atoms);
+        Assert.IsEmpty(rule.Consequent.Atoms);
+    }
+
+    [TestMethod]
+    public void ShouldKeepCaseOfVariableIRI()
+    {
+        //Verifies the variable IRI is stored exactly as written in the document
+        OWLOntology ontology = Parse("DLSafeRule(Body(ClassAtom(pz:Person Variable(<urn:swrl:var#MyVar>))) Head())");
+
+        Assert.AreEqual("urn:swrl:var#MyVar", ((SWRLVariableArgument)ontology.Rules[0].Antecedent.Atoms[0].LeftArgument).IRI);
+    }
+
+    [TestMethod]
+    public async Task ShouldParseProtegeStyleDocumentWithCommentsAndApplyItsRuleAsync()
+    {
+        //Verifies a Protege-like document (comments included) loads its rule and that the rule can then be evaluated
+        const string document = @"# exported by an editor
+Prefix(:=<http://example.org/pz#>)
+Prefix(swrlb:=<http://www.w3.org/2003/11/swrlb#>)
+Ontology(<http://example.org/pz>
+    # the data
+    Declaration(Class(:Person))
+    Declaration(Class(:Adult))
+    Declaration(DataProperty(:hasAge))
+    Declaration(NamedIndividual(:Alice))
+    ClassAssertion(:Person :Alice)
+    DataPropertyAssertion(:hasAge :Alice ""30""^^xsd:integer)
+
+    # the rule
+    DLSafeRule(Annotation(rdfs:label ""adult"") Body(ClassAtom(:Person Variable(<urn:swrl:var#x>)) DataPropertyAtom(:hasAge Variable(<urn:swrl:var#x>) Variable(<urn:swrl:var#age>)) BuiltInAtom(swrlb:greaterThan Variable(<urn:swrl:var#age>) ""17""^^xsd:integer)) Head(ClassAtom(:Adult Variable(<urn:swrl:var#x>))))
+)";
+        OWLOntology ontology = OWLFunctionalParser.DeserializeOntology(document);
+
+        Assert.HasCount(1, ontology.Rules);
+        Assert.HasCount(1, ontology.Rules[0].Annotations);
+        List<OWLInference> inferences = await ontology.Rules[0].ApplyToOntologyAsync(ontology);
+        Assert.HasCount(1, inferences);
+        Assert.IsTrue(inferences[0].Axiom is OWLClassAssertion classAssertion
+                      && classAssertion.ClassExpression.GetIRI().ToString() == "http://example.org/pz#Adult"
+                      && classAssertion.IndividualExpression.GetIRI().ToString() == "http://example.org/pz#Alice");
+    }
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnBuiltInAtomInHead()
+        => Assert.ThrowsExactly<OWLException>(() => Parse($"DLSafeRule(Body() Head(BuiltInAtom(<http://www.w3.org/2003/11/swrlb#greaterThan> {VariableX} \"1\")))"));
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnBuiltInAtomWithoutArguments()
+        => Assert.ThrowsExactly<OWLException>(() => Parse("DLSafeRule(Body(BuiltInAtom(<http://www.w3.org/2003/11/swrlb#pi>)) Head())"));
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnAnonymousIndividualArgument()
+    {
+        OWLException exception = Assert.ThrowsExactly<OWLException>(() => Parse("DLSafeRule(Body(ClassAtom(pz:Person _:anon)) Head())"));
+
+        Assert.IsTrue(exception.Message.Contains("anonymous individual", System.StringComparison.Ordinal));
+    }
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnUnrecognizedAtomKeyword()
+        => Assert.ThrowsExactly<OWLException>(() => Parse($"DLSafeRule(Body(FizzAtom(pz:Person {VariableX})) Head())"));
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnLiteralInIndividualPosition()
+        => Assert.ThrowsExactly<OWLException>(() => Parse("DLSafeRule(Body(ClassAtom(pz:Person \"x\")) Head())"));
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnRuleWithoutHead()
+        => Assert.ThrowsExactly<OWLException>(() => Parse("DLSafeRule(Body())"));
     #endregion
 }

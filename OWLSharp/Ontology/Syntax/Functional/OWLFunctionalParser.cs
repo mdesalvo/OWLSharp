@@ -796,6 +796,9 @@ namespace OWLSharp.Ontology
                 case "AnnotationPropertyDomain": ontology.AnnotationAxioms.Add(ParseAnnotationPropertyDomainOrRange(keyword)); return;
                 case "AnnotationPropertyRange": ontology.AnnotationAxioms.Add(ParseAnnotationPropertyDomainOrRange(keyword)); return;
 
+                //SWRL rule (the DLSafeRule production of OWL API and Protege)
+                case "DLSafeRule": ontology.Rules.Add(ParseDLSafeRule()); return;
+
                 default:
                     throw new OWLException($"Cannot parse OWL2/Functional document: unrecognized Axiom keyword '{keyword}'");
             }
@@ -1378,6 +1381,201 @@ namespace OWLSharp.Ontology
                 : new OWLAnnotationPropertyRange(annotationProperty, targetIRI);
             return Annotate(axiom, annotations);
         }
+        #endregion
+
+        #region SWRL rules
+        /// <summary>
+        /// DLSafeRule := 'DLSafeRule' '(' axiomAnnotations 'Body' '(' { Atom } ')' 'Head' '(' { Atom } ')' ')'
+        /// </summary>
+        private SWRLRule ParseDLSafeRule()
+        {
+            Advance(); //'DLSafeRule'
+            Expect(OWLFunctionalTokenType.OpenParenthesis, "DLSafeRule");
+            List<OWLAnnotation> annotations = ParseAxiomAnnotations();
+
+            //The rule is built like the OWL/XML deserialization does (internal ctor plus property assignment),
+            //since the public ctor would add its own label and comment annotations to the ones just read
+            SWRLRule rule = new SWRLRule { Annotations = annotations, Antecedent = new SWRLAntecedent(), Consequent = new SWRLConsequent() };
+
+            //Body: atoms and built-ins may interleave in the document but the model keeps them in two lists
+            ExpectRuleSection("Body");
+            while (Current.Type != OWLFunctionalTokenType.CloseParenthesis)
+            {
+                if (CurrentIsName("BuiltInAtom"))
+                    rule.Antecedent.BuiltIns.Add(ParseBuiltInAtom());
+                else
+                    rule.Antecedent.Atoms.Add(ParseAtom());
+            }
+            Expect(OWLFunctionalTokenType.CloseParenthesis, "Body");
+
+            //Head: only atoms are allowed, since the model has no way to derive a built-in
+            ExpectRuleSection("Head");
+            while (Current.Type != OWLFunctionalTokenType.CloseParenthesis)
+            {
+                if (CurrentIsName("BuiltInAtom"))
+                    throw new OWLException("Cannot parse OWL2/Functional document: BuiltInAtom is not allowed in the Head of a DLSafeRule");
+                rule.Consequent.Atoms.Add(ParseAtom());
+            }
+            Expect(OWLFunctionalTokenType.CloseParenthesis, "Head");
+
+            Expect(OWLFunctionalTokenType.CloseParenthesis, "DLSafeRule");
+            return rule;
+        }
+
+        /// <summary>
+        /// Consumes the opening "Body(" or "Head(" of a DLSafeRule, failing if the document has anything else at this position
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
+        private void ExpectRuleSection(string sectionKeyword)
+        {
+            //Both sections are mandatory and ordered, so a rule without them cannot be materialized
+            if (!CurrentIsName(sectionKeyword))
+                throw new OWLException($"Cannot parse OWL2/Functional document: expected '{sectionKeyword}' while parsing DLSafeRule, found {Current}");
+
+            Advance(); //'Body' or 'Head'
+            Expect(OWLFunctionalTokenType.OpenParenthesis, sectionKeyword);
+        }
+
+        /// <summary>
+        /// Atom := ClassAtom | DataRangeAtom | ObjectPropertyAtom | DataPropertyAtom | AnnotationPropertyAtom |
+        /// SameIndividualAtom | DifferentIndividualsAtom (BuiltInAtom is handled apart, since only a Body may contain it)
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
+        private SWRLAtom ParseAtom()
+        {
+            if (Current.Type != OWLFunctionalTokenType.Name)
+                throw new OWLException($"Cannot parse OWL2/Functional document: expected Atom, found {Current}");
+
+            string keyword = Advance().Value;
+            Expect(OWLFunctionalTokenType.OpenParenthesis, keyword);
+
+            //Every atom is built like the OWL/XML deserialization does (internal ctor plus property assignment):
+            //the initializers run in text order, which is also the order of the tokens they consume
+            SWRLAtom atom;
+            switch (keyword)
+            {
+                //ClassAtom( ClassExpression IArg )
+                case "ClassAtom":
+                    atom = new SWRLClassAtom { Predicate = ParseClassExpression(), LeftArgument = ParseRuleArgument(keyword, acceptIndividual: true, acceptLiteral: false) };
+                    break;
+                //DataRangeAtom( DataRange DArg )
+                case "DataRangeAtom":
+                    atom = new SWRLDataRangeAtom { Predicate = ParseDataRange(), LeftArgument = ParseRuleArgument(keyword, acceptIndividual: false, acceptLiteral: true) };
+                    break;
+                //ObjectPropertyAtom( ObjectPropertyExpression IArg IArg )
+                case "ObjectPropertyAtom":
+                    atom = ParseObjectPropertyAtom();
+                    break;
+                //DataPropertyAtom( DataProperty IArg DArg )
+                case "DataPropertyAtom":
+                    atom = new SWRLDataPropertyAtom { Predicate = ParseDataPropertyExpression(), LeftArgument = ParseRuleArgument(keyword, acceptIndividual: true, acceptLiteral: false), RightArgument = ParseRuleArgument(keyword, acceptIndividual: false, acceptLiteral: true) };
+                    break;
+                //AnnotationPropertyAtom( AnnotationProperty Arg Arg ): OWLSharp extension whose arguments may be of any kind
+                case "AnnotationPropertyAtom":
+                    atom = new SWRLAnnotationPropertyAtom { Predicate = new OWLAnnotationProperty(ParseIRI(keyword)), LeftArgument = ParseRuleArgument(keyword, acceptIndividual: true, acceptLiteral: true), RightArgument = ParseRuleArgument(keyword, acceptIndividual: true, acceptLiteral: true) };
+                    break;
+                //SameIndividualAtom( IArg IArg ): the predicate is the one the public ctor assigns
+                case "SameIndividualAtom":
+                    atom = new SWRLSameIndividualAtom { Predicate = SWRLSameIndividualAtom.SameAs, LeftArgument = ParseRuleArgument(keyword, acceptIndividual: true, acceptLiteral: false), RightArgument = ParseRuleArgument(keyword, acceptIndividual: true, acceptLiteral: false) };
+                    break;
+                //DifferentIndividualsAtom( IArg IArg ): the predicate is the one the public ctor assigns
+                case "DifferentIndividualsAtom":
+                    atom = new SWRLDifferentIndividualsAtom { Predicate = SWRLDifferentIndividualsAtom.DifferentFrom, LeftArgument = ParseRuleArgument(keyword, acceptIndividual: true, acceptLiteral: false), RightArgument = ParseRuleArgument(keyword, acceptIndividual: true, acceptLiteral: false) };
+                    break;
+                default:
+                    throw new OWLException($"Cannot parse OWL2/Functional document: unrecognized Atom keyword '{keyword}'");
+            }
+
+            Expect(OWLFunctionalTokenType.CloseParenthesis, keyword);
+            return atom;
+        }
+
+        /// <summary>
+        /// ObjectPropertyAtom := 'ObjectPropertyAtom' '(' ObjectPropertyExpression IArg IArg ')'
+        /// (the opening keyword and '(' have already been consumed by the caller, ParseAtom)
+        /// </summary>
+        private SWRLObjectPropertyAtom ParseObjectPropertyAtom()
+        {
+            OWLObjectPropertyExpression objectPropertyExpression = ParseObjectPropertyExpression();
+            SWRLArgument firstArgument = ParseRuleArgument("ObjectPropertyAtom", acceptIndividual: true, acceptLiteral: false);
+            SWRLArgument secondArgument = ParseRuleArgument("ObjectPropertyAtom", acceptIndividual: true, acceptLiteral: false);
+
+            //The model only holds named properties: an inverse P(x,y) is the same statement as P(y,x),
+            //so it is read as an atom over the inverted property with the two arguments swapped
+            if (objectPropertyExpression is OWLObjectInverseOf inverseObjectProperty)
+                return new SWRLObjectPropertyAtom { Predicate = inverseObjectProperty.ObjectProperty, LeftArgument = secondArgument, RightArgument = firstArgument };
+
+            return new SWRLObjectPropertyAtom { Predicate = objectPropertyExpression, LeftArgument = firstArgument, RightArgument = secondArgument };
+        }
+
+        /// <summary>
+        /// BuiltInAtom := 'BuiltInAtom' '(' IRI DArg { DArg } ')' (a named individual is also accepted as argument, since the model allows it)
+        /// </summary>
+        private SWRLBuiltIn ParseBuiltInAtom()
+        {
+            Advance(); //'BuiltInAtom'
+            Expect(OWLFunctionalTokenType.OpenParenthesis, "BuiltInAtom");
+
+            //The built-in carries only its IRI and arguments, like the OWL/XML deserialization leaves it:
+            //the evaluator is resolved from the IRI whenever the rule is run
+            SWRLBuiltIn builtIn = new SWRLBuiltIn { IRI = ParseIRIText("BuiltInAtom") };
+            //Beyond the DArg of the grammar a named individual is read too: OWLSharp rules may hold one and must survive the round trip
+            while (Current.Type != OWLFunctionalTokenType.CloseParenthesis)
+                builtIn.Arguments.Add(ParseRuleArgument("BuiltInAtom", acceptIndividual: true, acceptLiteral: true));
+
+            //A built-in without arguments has nothing to evaluate
+            if (builtIn.Arguments.Count == 0)
+                throw new OWLException("Cannot parse OWL2/Functional document: expected at least 1 DArg while parsing BuiltInAtom, found 0");
+
+            Expect(OWLFunctionalTokenType.CloseParenthesis, "BuiltInAtom");
+            return builtIn;
+        }
+
+        /// <summary>
+        /// IArg := Variable( IRI ) | Individual; DArg := Variable( IRI ) | Literal
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
+        private SWRLArgument ParseRuleArgument(string production, bool acceptIndividual, bool acceptLiteral)
+        {
+            //A variable is legal in every argument position
+            if (CurrentIsName("Variable"))
+            {
+                Advance(); //'Variable'
+                Expect(OWLFunctionalTokenType.OpenParenthesis, "Variable");
+
+                //The variable IRI is kept exactly as read, so that its case survives the round trip
+                SWRLVariableArgument variableArgument = new SWRLVariableArgument { IRI = ParseIRIText("Variable") };
+                Expect(OWLFunctionalTokenType.CloseParenthesis, "Variable");
+                return variableArgument;
+            }
+
+            //A named individual is a bare IRI
+            if (acceptIndividual && CurrentIsIRI())
+                return new SWRLIndividualArgument { IRI = ParseIRIText(production) };
+
+            //The model only represents named individuals as rule arguments
+            if (acceptIndividual && Current.Type == OWLFunctionalTokenType.NodeID)
+                throw new OWLException($"Cannot parse OWL2/Functional document: anonymous individual {Current} as argument of {production} is not representable by the OWLSharp object model (SWRL arguments only carry named individuals)");
+
+            //A literal is a quoted string with its optional datatype or language tag
+            if (acceptLiteral && Current.Type == OWLFunctionalTokenType.QuotedString)
+            {
+                OWLLiteral literal = ParseLiteral();
+                return new SWRLLiteralArgument { Value = literal.Value, DatatypeIRI = literal.DatatypeIRI, Language = literal.Language };
+            }
+
+            string expectedArguments = acceptIndividual && acceptLiteral ? "Variable, Individual or Literal" : acceptIndividual ? "Variable or Individual" : "Variable or Literal";
+            throw new OWLException($"Cannot parse OWL2/Functional document: expected {expectedArguments} while parsing {production}, found {Current}");
+        }
+
+        /// <summary>
+        /// Consumes the current FullIRI/PrefixedName token and resolves it to its full IRI string, exactly as written in the document
+        /// </summary>
+        /// <exception cref="OWLException"></exception>
+        private string ParseIRIText(string production)
+            => CurrentIsIRI()
+                ? ResolveIRI(Advance())
+                : throw new OWLException($"Cannot parse OWL2/Functional document: expected IRI while parsing {production}, found {Current}");
         #endregion
 
         #endregion

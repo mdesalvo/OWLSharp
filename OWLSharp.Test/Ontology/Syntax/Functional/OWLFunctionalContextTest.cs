@@ -77,7 +77,29 @@ public class OWLFunctionalContextTest
             [ new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")) ]);
 
         Assert.AreEqual("<http://example.org/pz#a/b>", context.Abbreviate(new RDFResource("http://example.org/pz#a/b")));
-        Assert.AreEqual("<http://example.org/pz#a b>", context.Abbreviate(new RDFResource("http://example.org/pz#a b")));
+        Assert.AreEqual("<http://example.org/pz#a%20b>", context.Abbreviate(new RDFResource("http://example.org/pz#a b")));
+    }
+
+    [TestMethod]
+    public void ShouldKeepPercentEncodingInFullIRI()
+    {
+        //Verifies that an IRI carrying %20 is written with the escape intact instead of a decoded space
+        OWLFunctionalContext context = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("ex", "http://example.org/x#")) ]);
+
+        Assert.AreEqual("<http://example.org/x#pct%20enc>", context.Abbreviate(new RDFResource("http://example.org/x#pct%20enc")));
+    }
+
+    [TestMethod]
+    public void ShouldFallBackToFullIRIWhenLocalNameEndsWithDot()
+    {
+        //Verifies that a trailing dot (illegal in PN_LOCAL) prevents abbreviation while inner dots do not
+        OWLFunctionalContext context = new OWLFunctionalContext(
+            [ new OWLPrefix(new RDFNamespace("ex", "http://example.org/x#")) ]);
+
+        Assert.AreEqual("<http://example.org/x#ends.dot.>", context.Abbreviate(new RDFResource("http://example.org/x#ends.dot.")));
+        Assert.AreEqual("ex:a.b", context.Abbreviate(new RDFResource("http://example.org/x#a.b")));
+        Assert.AreEqual("ex:a", context.Abbreviate(new RDFResource("http://example.org/x#a")));
     }
 
     [TestMethod]
