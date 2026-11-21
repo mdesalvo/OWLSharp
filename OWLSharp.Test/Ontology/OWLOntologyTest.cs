@@ -326,6 +326,7 @@ public class OWLOntologyTest
     [TestMethod]
     public void ShouldSerializeOntology()
     {
+        //The version IRI is written with the standard versionIRI attribute of OWL2/XML (it used to be the OWLSharp-specific ontologyVersion)
         OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
         ontology.Prefixes.Add(
             new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
@@ -392,7 +393,7 @@ public class OWLOntologyTest
         Assert.IsTrue(string.Equals(serializedXML.ReplaceLineEndings(),
             """
             <?xml version="1.0" encoding="utf-8"?>
-            <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont" ontologyVersion="ex:ont/v1">
+            <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont" versionIRI="ex:ont/v1">
               <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
               <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
               <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
@@ -498,10 +499,11 @@ public class OWLOntologyTest
     [TestMethod]
     public void ShouldDeserializeOntology()
     {
+        //The version IRI is read from the standard versionIRI attribute of OWL2/XML (the legacy ontologyVersion attribute has its own test)
         OWLOntology ontology = OWLSerializer.DeserializeOntology(
             """
             <?xml version="1.0" encoding="utf-8"?>
-            <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont" ontologyVersion="ex:ont/v1">
+            <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont" versionIRI="ex:ont/v1">
               <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
               <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
               <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
@@ -639,7 +641,7 @@ public class OWLOntologyTest
         OWLOntology ontology = OWLSerializer.DeserializeOntology(
             """
             <?xml version="1.0" encoding="utf-8"?>
-            <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:ont" ontologyVersion="ex:ont/v1">
+            <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:ont" versionIRI="ex:ont/v1">
               <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
               <Import>ex:ont2</Import>
               <Annotation>
@@ -964,6 +966,7 @@ public class OWLOntologyTest
     [TestMethod]
     public void ShouldSerializeOntologyWithIgnoredImportKnowledge()
     {
+        //The version IRI is written with the standard versionIRI attribute of OWL2/XML (it used to be the OWLSharp-specific ontologyVersion)
         OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
         ontology.Prefixes.Add(
             new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
@@ -1033,7 +1036,7 @@ public class OWLOntologyTest
         Assert.IsTrue(string.Equals(serializedXML.ReplaceLineEndings(),
             """
             <?xml version="1.0" encoding="utf-8"?>
-            <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont" ontologyVersion="ex:ont/v1">
+            <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont" versionIRI="ex:ont/v1">
               <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
               <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
               <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
@@ -1136,6 +1139,7 @@ public class OWLOntologyTest
     [TestMethod]
     public async Task ShouldSerializeOntologyWithIgnoredInferredKnowledgeAsync()
     {
+        //The version IRI is written with the standard versionIRI attribute of OWL2/XML (it used to be the OWLSharp-specific ontologyVersion)
         OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
         ontology.Prefixes.Add(
             new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
@@ -1205,7 +1209,7 @@ public class OWLOntologyTest
         Assert.IsTrue(string.Equals((await reader.ReadToEndAsync(TestContext.CancellationToken)).ReplaceLineEndings(),
             """
             <?xml version="1.0" encoding="utf-8"?>
-            <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont" ontologyVersion="ex:ont/v1">
+            <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont" versionIRI="ex:ont/v1">
               <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
               <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
               <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
@@ -6030,6 +6034,220 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology);
         Assert.IsTrue(string.Equals(ontology.IRI, "ex:wiremock", StringComparison.Ordinal));
         Assert.HasCount(1, ontology.DeclarationAxioms);
+    }
+
+    [TestMethod]
+    public void ShouldDeserializeStandardOwlXmlWithDefaultNamespace()
+    {
+        //Verifies that a standard OWL2/XML file (default OWL namespace and versionIRI) is read with IRI, version IRI, axioms and literals intact
+        OWLOntology ontology = OWLSerializer.DeserializeOntology(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <Ontology xmlns="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" ontologyIRI="http://example.org/ont" versionIRI="http://example.org/ont/v1">
+              <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+              <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+              <Declaration>
+                <Class IRI="http://example.org/ont#Pizza" />
+              </Declaration>
+              <SubClassOf>
+                <Class IRI="http://example.org/ont#Pizza" />
+                <Class IRI="http://example.org/ont#Food" />
+              </SubClassOf>
+              <AnnotationAssertion>
+                <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+                <IRI>http://example.org/ont#Pizza</IRI>
+                <Literal xml:lang="en">Pizza</Literal>
+              </AnnotationAssertion>
+              <AnnotationAssertion>
+                <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                <IRI>http://example.org/ont#Pizza</IRI>
+                <Literal>first line
+            second line</Literal>
+              </AnnotationAssertion>
+            </Ontology>
+            """);
+
+        Assert.AreEqual("http://example.org/ont", ontology.IRI);
+        Assert.AreEqual("http://example.org/ont/v1", ontology.VersionIRI);
+        Assert.HasCount(1, ontology.DeclarationAxioms);
+        Assert.AreEqual("http://example.org/ont#Pizza", ((OWLClass)ontology.DeclarationAxioms[0].Entity).IRI);
+        Assert.HasCount(1, ontology.ClassAxioms);
+        OWLSubClassOf subClassOf = (OWLSubClassOf)ontology.ClassAxioms[0];
+        Assert.AreEqual("http://example.org/ont#Pizza", ((OWLClass)subClassOf.SubClassExpression).IRI);
+        Assert.AreEqual("http://example.org/ont#Food", ((OWLClass)subClassOf.SuperClassExpression).IRI);
+        Assert.HasCount(2, ontology.AnnotationAxioms);
+        OWLAnnotationAssertion labelAssertion = (OWLAnnotationAssertion)ontology.AnnotationAxioms[0];
+        Assert.AreEqual("Pizza", labelAssertion.ValueLiteral.Value);
+        Assert.AreEqual("en", labelAssertion.ValueLiteral.Language);
+        OWLAnnotationAssertion commentAssertion = (OWLAnnotationAssertion)ontology.AnnotationAxioms[1];
+        Assert.AreEqual("first line\nsecond line", commentAssertion.ValueLiteral.Value);
+    }
+
+    [TestMethod]
+    public void ShouldDeserializeStandardOwlXmlWithPrefixedElements()
+    {
+        //Verifies that a standard OWL2/XML file whose elements are qualified with a declared owl prefix is read like the default-namespace one
+        OWLOntology ontology = OWLSerializer.DeserializeOntology(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <owl:Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" ontologyIRI="http://example.org/ont" versionIRI="http://example.org/ont/v1">
+              <owl:Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+              <owl:Declaration>
+                <owl:Class IRI="http://example.org/ont#Pizza" />
+              </owl:Declaration>
+              <owl:SubClassOf>
+                <owl:Class IRI="http://example.org/ont#Pizza" />
+                <owl:Class IRI="http://example.org/ont#Food" />
+              </owl:SubClassOf>
+              <owl:AnnotationAssertion>
+                <owl:AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+                <owl:IRI>http://example.org/ont#Pizza</owl:IRI>
+                <owl:Literal xml:lang="it">Pizza</owl:Literal>
+              </owl:AnnotationAssertion>
+            </owl:Ontology>
+            """);
+
+        Assert.AreEqual("http://example.org/ont", ontology.IRI);
+        Assert.AreEqual("http://example.org/ont/v1", ontology.VersionIRI);
+        Assert.HasCount(1, ontology.DeclarationAxioms);
+        Assert.HasCount(1, ontology.ClassAxioms);
+        Assert.HasCount(1, ontology.AnnotationAxioms);
+        Assert.AreEqual("it", ((OWLAnnotationAssertion)ontology.AnnotationAxioms[0]).ValueLiteral.Language);
+    }
+
+    [TestMethod]
+    public void ShouldDeserializeLegacyOntologyVersionAttribute()
+    {
+        //Verifies that files written by previous versions (ontologyVersion attribute) still provide the version IRI
+        OWLOntology ontology = OWLSerializer.DeserializeOntology(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:ont" ontologyVersion="ex:ont/v1">
+              <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+            </Ontology>
+            """);
+
+        Assert.AreEqual("ex:ont", ontology.IRI);
+        Assert.AreEqual("ex:ont/v1", ontology.VersionIRI);
+    }
+
+    [TestMethod]
+    public void ShouldSerializeVersionIRIAsStandardAttributeAndReadItBack()
+    {
+        //Verifies that the written document carries versionIRI (never ontologyVersion) and that it is read back identically
+        OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+
+        string serializedXML = OWLSerializer.SerializeOntology(ontology);
+        OWLOntology deserializedOntology = OWLSerializer.DeserializeOntology(serializedXML);
+
+        Assert.IsTrue(serializedXML.Contains("versionIRI=\"ex:ont/v1\"", StringComparison.Ordinal));
+        Assert.IsFalse(serializedXML.Contains("ontologyVersion", StringComparison.Ordinal));
+        Assert.AreEqual("ex:ont", deserializedOntology.IRI);
+        Assert.AreEqual("ex:ont/v1", deserializedOntology.VersionIRI);
+    }
+
+    [TestMethod]
+    public void ShouldDeserializeProtegeStyleOwlXmlWithRelativeAndAbbreviatedIRIs()
+    {
+        //Verifies that relative IRIs (resolved against xml:base) and AbbreviatedIRI elements (expanded with the declared prefixes) are read as absolute IRIs
+        OWLOntology ontology = OWLSerializer.DeserializeOntology(
+            """
+            <?xml version="1.0"?>
+            <Ontology xmlns="http://www.w3.org/2002/07/owl#" xml:base="http://example.org/pizza" ontologyIRI="http://example.org/pizza">
+              <Prefix name="" IRI="http://example.org/pizza#" />
+              <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+              <Import>other</Import>
+              <Declaration>
+                <Class IRI="#Pizza" />
+              </Declaration>
+              <Declaration>
+                <NamedIndividual IRI="#Margherita" />
+              </Declaration>
+              <SubClassOf>
+                <Class IRI="#Pizza" />
+                <Class IRI="http://example.org/food#Food" />
+              </SubClassOf>
+              <ClassAssertion>
+                <Class IRI="#Pizza" />
+                <NamedIndividual IRI="#Margherita" />
+              </ClassAssertion>
+              <AnnotationAssertion>
+                <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#seeAlso" />
+                <AbbreviatedIRI>:Pizza</AbbreviatedIRI>
+                <IRI>#Margherita</IRI>
+              </AnnotationAssertion>
+            </Ontology>
+            """);
+
+        Assert.AreEqual("http://example.org/pizza", ontology.IRI);
+        Assert.HasCount(1, ontology.Imports);
+        Assert.AreEqual("http://example.org/other", ontology.Imports[0].IRI);
+        Assert.AreEqual("http://example.org/pizza#Pizza", ((OWLClass)ontology.DeclarationAxioms[0].Entity).IRI);
+        Assert.AreEqual("http://example.org/pizza#Margherita", ((OWLNamedIndividual)ontology.DeclarationAxioms[1].Entity).IRI);
+        OWLSubClassOf subClassOf = (OWLSubClassOf)ontology.ClassAxioms[0];
+        Assert.AreEqual("http://example.org/pizza#Pizza", ((OWLClass)subClassOf.SubClassExpression).IRI);
+        Assert.AreEqual("http://example.org/food#Food", ((OWLClass)subClassOf.SuperClassExpression).IRI);
+        OWLClassAssertion classAssertion = (OWLClassAssertion)ontology.AssertionAxioms[0];
+        Assert.AreEqual("http://example.org/pizza#Pizza", ((OWLClass)classAssertion.ClassExpression).IRI);
+        Assert.AreEqual("http://example.org/pizza#Margherita", ((OWLNamedIndividual)classAssertion.IndividualExpression).IRI);
+        OWLAnnotationAssertion annotationAssertion = (OWLAnnotationAssertion)ontology.AnnotationAxioms[0];
+        Assert.AreEqual("http://example.org/pizza#Pizza", annotationAssertion.SubjectIRI);
+        Assert.AreEqual("http://example.org/pizza#Margherita", annotationAssertion.ValueIRI);
+    }
+
+    [TestMethod]
+    public void ShouldResolveRelativeIRIsAgainstOntologyIRIWhenXmlBaseIsMissing()
+    {
+        //Verifies that the ontology IRI is the base of relative IRIs when the document has no xml:base
+        OWLOntology ontology = OWLSerializer.DeserializeOntology(
+            """
+            <?xml version="1.0"?>
+            <Ontology xmlns="http://www.w3.org/2002/07/owl#" ontologyIRI="http://example.org/pizza" versionIRI="v2">
+              <Declaration>
+                <Class IRI="#Pizza" />
+              </Declaration>
+            </Ontology>
+            """);
+
+        Assert.AreEqual("http://example.org/v2", ontology.VersionIRI);
+        Assert.AreEqual("http://example.org/pizza#Pizza", ((OWLClass)ontology.DeclarationAxioms[0].Entity).IRI);
+    }
+
+    [TestMethod]
+    public void ShouldResolveRootRelativeIRIsOnEveryPlatform()
+    {
+        //Verifies that an IRI starting with "/" is resolved against the base (Unix Uri parsing would otherwise take it for an absolute file path)
+        OWLOntology ontology = OWLSerializer.DeserializeOntology(
+            """
+            <?xml version="1.0"?>
+            <Ontology xmlns="http://www.w3.org/2002/07/owl#" xml:base="http://example.org/pizza" ontologyIRI="http://example.org/pizza">
+              <Declaration>
+                <Class IRI="/food#Pizza" />
+              </Declaration>
+            </Ontology>
+            """);
+
+        Assert.AreEqual("http://example.org/food#Pizza", ((OWLClass)ontology.DeclarationAxioms[0].Entity).IRI);
+    }
+
+    [TestMethod]
+    public void ShouldKeepAbbreviatedIRIWhenPrefixIsNotDeclared()
+    {
+        //Verifies that an AbbreviatedIRI element whose prefix is only an XML namespace declaration is still read by the model as a qualified name
+        OWLOntology ontology = OWLSerializer.DeserializeOntology(
+            """
+            <?xml version="1.0"?>
+            <Ontology ontologyIRI="ex:ont">
+              <Annotation>
+                <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                <AbbreviatedIRI xmlns:q1="http://example.org/">q1:seeThis</AbbreviatedIRI>
+              </Annotation>
+            </Ontology>
+            """);
+
+        Assert.HasCount(1, ontology.Annotations);
+        Assert.IsNull(ontology.Annotations[0].ValueIRI);
+        Assert.AreEqual("http://example.org/:seeThis", ontology.Annotations[0].ValueAbbreviatedIRI.ToString());
     }
     #endregion
 

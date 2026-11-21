@@ -49,9 +49,9 @@ namespace OWLSharp.Ontology
         public string IRI { get; set; }
 
         /// <summary>
-        /// The version IRI of the ontology, which eventually represents the current version of the artifact
+        /// The version IRI of the ontology, which eventually represents the current version of the artifact (written as the standard versionIRI attribute; the legacy ontologyVersion attribute is still read)
         /// </summary>
-        [XmlAttribute("ontologyVersion", DataType="anyURI")]
+        [XmlAttribute("versionIRI", DataType="anyURI")]
         public string VersionIRI { get; set; }
 
         /// <summary>
