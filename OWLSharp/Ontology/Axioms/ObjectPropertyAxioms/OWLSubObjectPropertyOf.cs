@@ -85,21 +85,38 @@ namespace OWLSharp.Ontology
         internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
         {
             if (SubObjectPropertyChain != null)
-                return SuperObjectPropertyExpression is OWLObjectProperty superObjProp
-                    ? new OWLManchesterFrameItem {
-                        FrameKind = OWLManchesterFrameKind.ObjectProperty,
-                        EntityName = superObjProp.ToManchesterString(manchesterContext),
-                        SectionKeyword = "SubPropertyChain:",
-                        ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{string.Join(" o ", SubObjectPropertyChain.ObjectPropertyExpressions.Select(opex => opex.ToManchesterString(manchesterContext)))}" }
-                    : null;
+            {
+                OWLObjectProperty superObjProp = OWLManchesterContext.GetNamedObjectProperty(SuperObjectPropertyExpression);
+                //Without a named super property there is no frame to host the chain
+                if (superObjProp == null)
+                    return null;
 
-            return SubObjectPropertyExpression is OWLObjectProperty subObjProp
-                ? new OWLManchesterFrameItem {
+                //Chain composed into "inverse P" holds exactly when the reversed chain of inverses is composed into P
+                //(the inverse of "p1 o p2" is "inverse p2 o inverse p1"), so the chain is flipped and put on the frame of P
+                string chainText = SuperObjectPropertyExpression is OWLObjectInverseOf
+                    ? string.Join(" o ", SubObjectPropertyChain.ObjectPropertyExpressions.AsEnumerable().Reverse().Select(opex => manchesterContext.RenderInverse(opex)))
+                    : string.Join(" o ", SubObjectPropertyChain.ObjectPropertyExpressions.Select(opex => opex.ToManchesterString(manchesterContext)));
+                return new OWLManchesterFrameItem {
                     FrameKind = OWLManchesterFrameKind.ObjectProperty,
-                    EntityName = subObjProp.ToManchesterString(manchesterContext),
-                    SectionKeyword = "SubPropertyOf:",
-                    ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{SuperObjectPropertyExpression.ToManchesterString(manchesterContext)}" }
-                : null;
+                    EntityName = superObjProp.ToManchesterString(manchesterContext),
+                    SectionKeyword = "SubPropertyChain:",
+                    ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{chainText}" };
+            }
+
+            OWLObjectProperty subObjProp = OWLManchesterContext.GetNamedObjectProperty(SubObjectPropertyExpression);
+            //Without a named sub property there is no frame to host the axiom
+            if (subObjProp == null)
+                return null;
+
+            //"inverse P" below Q holds exactly when P is below "inverse Q": the frame of P takes the inverted super property
+            string superText = SubObjectPropertyExpression is OWLObjectInverseOf
+                ? manchesterContext.RenderInverse(SuperObjectPropertyExpression)
+                : SuperObjectPropertyExpression.ToManchesterString(manchesterContext);
+            return new OWLManchesterFrameItem {
+                FrameKind = OWLManchesterFrameKind.ObjectProperty,
+                EntityName = subObjProp.ToManchesterString(manchesterContext),
+                SectionKeyword = "SubPropertyOf:",
+                ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{superText}" };
         }
 
         /// <summary>

@@ -80,13 +80,20 @@ namespace OWLSharp.Ontology
         /// Gets the contribution of this OWLObjectPropertyDomain to the OWL2/Manchester rendering of the ontology
         /// </summary>
         internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
-            => ObjectPropertyExpression is OWLObjectProperty objProp
-                ? new OWLManchesterFrameItem {
-                    FrameKind = OWLManchesterFrameKind.ObjectProperty,
-                    EntityName = objProp.ToManchesterString(manchesterContext),
-                    SectionKeyword = "Domain:",
-                    ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{ClassExpression.ToManchesterString(manchesterContext)}" }
-                : null;
+        {
+            //The domain of "inverse P" is the set of the individuals that P points to, which is the range of P
+            OWLObjectProperty objProp = OWLManchesterContext.GetNamedObjectProperty(ObjectPropertyExpression);
+            //Without a named property there is no frame to host the axiom
+            if (objProp == null)
+                return null;
+
+            string sectionKeyword = ObjectPropertyExpression is OWLObjectInverseOf ? "Range:" : "Domain:";
+            return new OWLManchesterFrameItem {
+                FrameKind = OWLManchesterFrameKind.ObjectProperty,
+                EntityName = objProp.ToManchesterString(manchesterContext),
+                SectionKeyword = sectionKeyword,
+                ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{ClassExpression.ToManchesterString(manchesterContext)}" };
+        }
 
         /// <summary>
         /// Gets the OWL2/Functional-Style representation of this ObjectPropertyDomain axiom

@@ -38,7 +38,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Regex validating that the local part of an abbreviated IRI is a legal Manchester simple name
         /// </summary>
-        internal static readonly Regex LocalNameRegex = new Regex(@"^[a-zA-Z0-9_][a-zA-Z0-9_\-.]*$", RegexOptions.Compiled);
+        internal static readonly Regex LocalNameRegex = new Regex(@"^[a-zA-Z0-9_]([a-zA-Z0-9_\-.]*[a-zA-Z0-9_\-])?$", RegexOptions.Compiled);
 
         /// <summary>
         /// Bidirectional mapping between OWL2 facet IRIs and their Manchester keywords/symbols
@@ -74,7 +74,11 @@ namespace OWLSharp.Ontology
         /// </summary>
         public string Abbreviate(RDFResource iri)
         {
-            string iriString = iri?.ToString() ?? string.Empty;
+            //The escaped form is required, since the unescaped one turns sequences such as "%20" into
+            //characters that are forbidden inside "<...>" and the written document would no longer read back
+            string iriString = iri == null
+                ? string.Empty
+                : iri.URI.IsAbsoluteUri ? iri.URI.AbsoluteUri : iri.URI.OriginalString;
 
             //Search the declared prefix having the longest namespace matching the given IRI
             OWLPrefix bestPrefix = null;
@@ -94,6 +98,20 @@ namespace OWLSharp.Ontology
 
             return $"<{iriString}>";
         }
+
+        /// <summary>
+        /// Gets the named object property on which the given property expression is built, whether plain or inverse (null if there is none)
+        /// </summary>
+        internal static OWLObjectProperty GetNamedObjectProperty(OWLObjectPropertyExpression expression)
+            => expression is OWLObjectInverseOf inverseExpression ? inverseExpression.ObjectProperty : expression as OWLObjectProperty;
+
+        /// <summary>
+        /// Renders the inverse of the given property expression, cancelling the inverse when the expression already is one
+        /// </summary>
+        internal string RenderInverse(OWLObjectPropertyExpression expression)
+            => expression is OWLObjectInverseOf inverseExpression
+                ? inverseExpression.ObjectProperty.ToManchesterString(this)
+                : $"inverse {expression.ToManchesterString(this)}";
 
         /// <summary>
         /// Renders the given expression, wrapping it in parentheses unless it is self-delimiting
@@ -165,7 +183,9 @@ namespace OWLSharp.Ontology
         /* Frame-less section for n-ary axioms (EquivalentClasses:, SameIndividual:, ...) */
         Misc = 7,
         /* Annotations targeting a declared entity of any kind (resolved by the serializer) */
-        EntityAnnotation = 8
+        EntityAnnotation = 8,
+        /* SWRL rule (owns no entity, so it never takes part in the declared entities symbol table) */
+        Rule = 9
     }
 
     /// <summary>

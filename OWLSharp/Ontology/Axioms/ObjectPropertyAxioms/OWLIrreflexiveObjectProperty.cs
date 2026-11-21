@@ -60,13 +60,19 @@ namespace OWLSharp.Ontology
         /// Gets the contribution of this OWLIrreflexiveObjectProperty to the OWL2/Manchester rendering of the ontology
         /// </summary>
         internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
-            => ObjectPropertyExpression is OWLObjectProperty objProp
-                ? new OWLManchesterFrameItem {
-                    FrameKind = OWLManchesterFrameKind.ObjectProperty,
-                    EntityName = objProp.ToManchesterString(manchesterContext),
-                    SectionKeyword = "Characteristics:",
-                    ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}Irreflexive" }
-                : null;
+        {
+            //Reversing a pair (x,x) changes nothing, so "inverse P" is irreflexive exactly when P is
+            OWLObjectProperty objProp = OWLManchesterContext.GetNamedObjectProperty(ObjectPropertyExpression);
+            //Without a named property there is no frame to host the axiom
+            if (objProp == null)
+                return null;
+
+            return new OWLManchesterFrameItem {
+                FrameKind = OWLManchesterFrameKind.ObjectProperty,
+                EntityName = objProp.ToManchesterString(manchesterContext),
+                SectionKeyword = "Characteristics:",
+                ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}Irreflexive" };
+        }
 
         /// <summary>
         /// Gets the OWL2/Functional-Style representation of this IrreflexiveObjectProperty axiom

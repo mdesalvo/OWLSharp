@@ -380,6 +380,36 @@ public class OWLManchesterLexerTest
         Assert.AreEqual(OWLManchesterTokenType.CloseBracket, tokens[11].Type);
     }
 
+    //Verifies that a SWRL variable is lexed as a single Variable token carrying the name without the question mark
+    [TestMethod]
+    public void ShouldTokenizeSWRLVariable()
+    {
+        List<OWLManchesterToken> tokens = OWLManchesterLexer.Tokenize("?pizza_1");
+
+        Assert.AreEqual(OWLManchesterTokenType.Variable, tokens[0].Type);
+        Assert.AreEqual("pizza_1", tokens[0].Value);
+        Assert.AreEqual(OWLManchesterTokenType.EndOfDocument, tokens[1].Type);
+    }
+
+    //Verifies that a question mark without a name is rejected, since no atom could ever bind such a variable
+    [TestMethod]
+    public void ShouldThrowExceptionOnSWRLVariableWithoutName()
+        => Assert.ThrowsExactly<OWLException>(() => OWLManchesterLexer.Tokenize("? "));
+
+    //Verifies that the rule arrow is lexed as its own token and that a negative number right after it stays a number
+    [TestMethod]
+    public void ShouldTokenizeRuleArrowAndKeepNegativeNumbers()
+    {
+        List<OWLManchesterToken> tokens = OWLManchesterLexer.Tokenize("-> -5 ->-7");
+
+        Assert.AreEqual(OWLManchesterTokenType.Arrow, tokens[0].Type);
+        Assert.AreEqual(OWLManchesterTokenType.IntegerNumber, tokens[1].Type);
+        Assert.AreEqual("-5", tokens[1].Value);
+        Assert.AreEqual(OWLManchesterTokenType.Arrow, tokens[2].Type);
+        Assert.AreEqual(OWLManchesterTokenType.IntegerNumber, tokens[3].Type);
+        Assert.AreEqual("-7", tokens[3].Value);
+    }
+
     [TestMethod]
     public void ShouldProduceEveryTokenTypeAcrossTheGrammar()
     {
@@ -396,6 +426,8 @@ public class OWLManchesterLexerTest
             + "Individual: pz:Margherita\n"
             + "    Facts: pz:hasCalories \"850\"^^xsd:integer, pz:hasName \"Pizza\"@it, pz:hasNote \"free text\"\n"
             + "    Types: {pz:A, pz:B}[pz:C]\n"
+            + "Rule:\n"
+            + "    pz:Pizza(?x) -> pz:Topping(?x)\n"
             + "# a trailing comment\n";
 
         List<OWLManchesterToken> tokens = OWLManchesterLexer.Tokenize(document);

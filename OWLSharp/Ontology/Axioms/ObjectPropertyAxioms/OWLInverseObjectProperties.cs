@@ -62,7 +62,7 @@ namespace OWLSharp.Ontology
         #region Methods
         /// <summary>
         /// Gets the contribution of this OWLInverseObjectProperties to the OWL2/Manchester rendering of the ontology
-        /// (anchored to whichever of the two property expressions is named; null if both are anonymous)
+        /// (anchored to whichever of the two property expressions is named, or to the left one when both are inverse)
         /// </summary>
         internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
         {
@@ -73,13 +73,23 @@ namespace OWLSharp.Ontology
                     SectionKeyword = "InverseOf:",
                     ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{RightObjectPropertyExpression.ToManchesterString(manchesterContext)}" };
 
-            return RightObjectPropertyExpression is OWLObjectProperty rightObjProp
-                ? new OWLManchesterFrameItem {
+            if (RightObjectPropertyExpression is OWLObjectProperty rightObjProp)
+                return new OWLManchesterFrameItem {
                     FrameKind = OWLManchesterFrameKind.ObjectProperty,
                     EntityName = rightObjProp.ToManchesterString(manchesterContext),
                     SectionKeyword = "InverseOf:",
-                    ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{LeftObjectPropertyExpression.ToManchesterString(manchesterContext)}" }
-                : null;
+                    ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{LeftObjectPropertyExpression.ToManchesterString(manchesterContext)}" };
+
+            //Inverting both sides of "inverse P is the inverse of inverse Q" cancels the two inverses: P is the inverse of Q
+            if (LeftObjectPropertyExpression is OWLObjectInverseOf leftInverse && RightObjectPropertyExpression is OWLObjectInverseOf rightInverse)
+                return new OWLManchesterFrameItem {
+                    FrameKind = OWLManchesterFrameKind.ObjectProperty,
+                    EntityName = leftInverse.ObjectProperty.ToManchesterString(manchesterContext),
+                    SectionKeyword = "InverseOf:",
+                    ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{rightInverse.ObjectProperty.ToManchesterString(manchesterContext)}" };
+
+            //Neither side is a plain or inverse property, so no named property is left to own a frame
+            return null;
         }
 
         /// <summary>
