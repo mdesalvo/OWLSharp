@@ -100,6 +100,34 @@ namespace OWLSharp.Ontology
                     case '[': EmitToken(OWLManchesterTokenType.OpenBracket, "[", tokLine, tokCol); Move(); continue;
                     case ']': EmitToken(OWLManchesterTokenType.CloseBracket, "]", tokLine, tokCol); Move(); continue;
 
+                    //Rule arrow "->" separating the body from the head of a SWRL rule; a lone "-" is left
+                    //to the numeric literal handling below, so that negative numbers keep working
+                    case '-':
+                        if (pos + 1 < doc.Length && doc[pos + 1] == '>')
+                        {
+                            EmitToken(OWLManchesterTokenType.Arrow, "->", tokLine, tokCol);
+                            Move(2);
+                            continue;
+                        }
+                        break;
+
+                    //SWRL variable "?name" (the token value carries the name without the question mark)
+                    case '?':
+                    {
+                        Move();
+                        StringBuilder sb = new StringBuilder();
+                        while (pos < doc.Length && IsNameChar(doc[pos]))
+                        {
+                            sb.Append(doc[pos]);
+                            Move();
+                        }
+                        //A variable without a name cannot be bound by any atom of the rule
+                        if (sb.Length == 0)
+                            throw new OWLException($"Cannot tokenize OWL2/Manchester document: empty variable name at line {tokLine}, column {tokCol}");
+                        EmitToken(OWLManchesterTokenType.Variable, sb.ToString(), tokLine, tokCol);
+                        continue;
+                    }
+
                     //Full IRI or facet comparator "<="/"<"
                     case '<':
                     {
@@ -360,7 +388,11 @@ namespace OWLSharp.Ontology
         GreaterOrEqual = 20,
         LessThan = 21,
         GreaterThan = 22,
-        EndOfDocument = 23
+        /* SWRL variable, e.g: "?x" (value carries the name without '?') */
+        Variable = 23,
+        /* SWRL rule arrow "->" */
+        Arrow = 24,
+        EndOfDocument = 25
     }
 
     /// <summary>

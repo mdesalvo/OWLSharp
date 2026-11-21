@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
@@ -50,6 +51,37 @@ public class OWLManchesterSerializerTest
         OWLOntology ontology = new OWLOntology(new Uri("http://example.org/pz"));
         ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("pz", "http://example.org/pz#")));
         return ontology;
+    }
+
+    private static OWLObjectProperty HasToppingProperty
+        => new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
+
+    private static OWLObjectProperty IsToppingOfProperty
+        => new OWLObjectProperty(new RDFResource("http://example.org/pz#isToppingOf"));
+
+    private static OWLClass PizzaClass
+        => new OWLClass(new RDFResource("http://example.org/pz#Pizza"));
+
+    //Verifies that an axiom on "inverse P" is written on the frame of P in its equivalent form
+    //and that reading the document back gives the rewritten axiom (annotations of the axiom included)
+    private static void AssertInverseAxiomIsRewritten(OWLObjectPropertyAxiom originalAxiom, OWLObjectPropertyAxiom expectedAxiomAfterRewrite)
+    {
+        OWLOntology ontology = CreateBaseOntology();
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(HasToppingProperty));
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(IsToppingOfProperty));
+        OWLAnnotation keptAnnotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("kept")));
+        originalAxiom.Annotate(keptAnnotation);
+        expectedAxiomAfterRewrite.Annotate(keptAnnotation);
+        ontology.ObjectPropertyAxioms.Add(originalAxiom);
+
+        string document = string.Empty;
+        List<string> warnings = CaptureWarnings(() => document = OWLManchesterSerializer.SerializeOntology(ontology));
+        OWLOntology reparsedOntology = OWLManchesterParser.DeserializeOntology(document);
+
+        //The axiom must not be skipped
+        Assert.HasCount(0, warnings);
+        Assert.HasCount(1, reparsedOntology.ObjectPropertyAxioms);
+        Assert.AreEqual(expectedAxiomAfterRewrite.GetXML(), reparsedOntology.ObjectPropertyAxioms[0].GetXML());
     }
     #endregion
 
@@ -377,84 +409,6 @@ public class OWLManchesterSerializerTest
     }
 
     [TestMethod]
-    public void ShouldWarnAndSkipCharacteristicOnAnonymousObjectProperty()
-    {
-        OWLOntology ontology = CreateBaseOntology();
-        OWLObjectProperty hasTopping = new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
-        ontology.ObjectPropertyAxioms.Add(new OWLFunctionalObjectProperty(new OWLObjectInverseOf(hasTopping)));
-
-        List<string> warnings = CaptureWarnings(() =>
-        {
-            string document = OWLManchesterSerializer.SerializeOntology(ontology);
-            Assert.IsFalse(document.Contains("Functional", StringComparison.Ordinal));
-        });
-
-        Assert.HasCount(1, warnings);
-        Assert.IsTrue(warnings[0].Contains("OWLFunctionalObjectProperty", StringComparison.Ordinal));
-    }
-
-    [TestMethod]
-    public void ShouldWarnAndSkipDomainAndRangeOnAnonymousObjectProperty()
-    {
-        OWLOntology ontology = CreateBaseOntology();
-        OWLObjectProperty hasTopping = new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
-        OWLClass pizza = new OWLClass(new RDFResource("http://example.org/pz#Pizza"));
-        ontology.ObjectPropertyAxioms.Add(new OWLObjectPropertyDomain(new OWLObjectInverseOf(hasTopping), pizza));
-        ontology.ObjectPropertyAxioms.Add(new OWLObjectPropertyRange(new OWLObjectInverseOf(hasTopping), pizza));
-
-        List<string> warnings = CaptureWarnings(() => OWLManchesterSerializer.SerializeOntology(ontology));
-
-        Assert.HasCount(2, warnings);
-        Assert.IsTrue(warnings[0].Contains("OWLObjectPropertyDomain", StringComparison.Ordinal));
-        Assert.IsTrue(warnings[1].Contains("OWLObjectPropertyRange", StringComparison.Ordinal));
-    }
-
-    [TestMethod]
-    public void ShouldWarnAndSkipInverseObjectPropertiesWhenBothSidesAreAnonymous()
-    {
-        OWLOntology ontology = CreateBaseOntology();
-        OWLObjectProperty hasTopping = new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
-        OWLObjectProperty isToppingOf = new OWLObjectProperty(new RDFResource("http://example.org/pz#isToppingOf"));
-        ontology.ObjectPropertyAxioms.Add(new OWLInverseObjectProperties(new OWLObjectInverseOf(hasTopping), new OWLObjectInverseOf(isToppingOf)));
-
-        List<string> warnings = CaptureWarnings(() =>
-        {
-            string document = OWLManchesterSerializer.SerializeOntology(ontology);
-            Assert.IsFalse(document.Contains("InverseOf:", StringComparison.Ordinal));
-        });
-
-        Assert.HasCount(1, warnings);
-        Assert.IsTrue(warnings[0].Contains("OWLInverseObjectProperties", StringComparison.Ordinal));
-    }
-
-    [TestMethod]
-    public void ShouldWarnAndSkipSubObjectPropertyOfWithAnonymousSubProperty()
-    {
-        OWLOntology ontology = CreateBaseOntology();
-        OWLObjectProperty hasTopping = new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
-        ontology.ObjectPropertyAxioms.Add(new OWLSubObjectPropertyOf(new OWLObjectInverseOf(hasTopping), hasTopping));
-
-        List<string> warnings = CaptureWarnings(() => OWLManchesterSerializer.SerializeOntology(ontology));
-
-        Assert.HasCount(1, warnings);
-        Assert.IsTrue(warnings[0].Contains("OWLSubObjectPropertyOf", StringComparison.Ordinal));
-    }
-
-    [TestMethod]
-    public void ShouldWarnAndSkipSubPropertyChainWithAnonymousSuperProperty()
-    {
-        OWLOntology ontology = CreateBaseOntology();
-        OWLObjectProperty hasTopping = new OWLObjectProperty(new RDFResource("http://example.org/pz#hasTopping"));
-        ontology.ObjectPropertyAxioms.Add(new OWLSubObjectPropertyOf(
-            new OWLObjectPropertyChain([ hasTopping, hasTopping ]), new OWLObjectInverseOf(hasTopping)));
-
-        List<string> warnings = CaptureWarnings(() => OWLManchesterSerializer.SerializeOntology(ontology));
-
-        Assert.HasCount(1, warnings);
-        Assert.IsTrue(warnings[0].Contains("OWLSubObjectPropertyOf", StringComparison.Ordinal));
-    }
-
-    [TestMethod]
     public void ShouldWarnAndSkipSWRLRules()
     {
         OWLOntology ontology = CreateBaseOntology();
@@ -490,6 +444,212 @@ public class OWLManchesterSerializerTest
 
         Assert.HasCount(1, warnings);
         Assert.IsTrue(warnings[0].Contains("OWLAnnotationAssertion", StringComparison.Ordinal));
+    }
+    #endregion
+
+    #region Tests (axioms on inverse properties)
+    //Verifies that the domain of "inverse P" is written as the range of P
+    [TestMethod]
+    public void ShouldRewriteDomainOfInverseObjectPropertyAsRangeOfNamedProperty()
+        => AssertInverseAxiomIsRewritten(
+            new OWLObjectPropertyDomain(new OWLObjectInverseOf(HasToppingProperty), PizzaClass),
+            new OWLObjectPropertyRange(HasToppingProperty, PizzaClass));
+
+    //Verifies that the range of "inverse P" is written as the domain of P
+    [TestMethod]
+    public void ShouldRewriteRangeOfInverseObjectPropertyAsDomainOfNamedProperty()
+        => AssertInverseAxiomIsRewritten(
+            new OWLObjectPropertyRange(new OWLObjectInverseOf(HasToppingProperty), PizzaClass),
+            new OWLObjectPropertyDomain(HasToppingProperty, PizzaClass));
+
+    //Verifies that functionality of "inverse P" is written as inverse functionality of P
+    [TestMethod]
+    public void ShouldRewriteFunctionalInverseObjectPropertyAsInverseFunctionalNamedProperty()
+        => AssertInverseAxiomIsRewritten(
+            new OWLFunctionalObjectProperty(new OWLObjectInverseOf(HasToppingProperty)),
+            new OWLInverseFunctionalObjectProperty(HasToppingProperty));
+
+    //Verifies that inverse functionality of "inverse P" is written as functionality of P
+    [TestMethod]
+    public void ShouldRewriteInverseFunctionalInverseObjectPropertyAsFunctionalNamedProperty()
+        => AssertInverseAxiomIsRewritten(
+            new OWLInverseFunctionalObjectProperty(new OWLObjectInverseOf(HasToppingProperty)),
+            new OWLFunctionalObjectProperty(HasToppingProperty));
+
+    //Verifies that symmetry of "inverse P" is written as the same characteristic of P
+    [TestMethod]
+    public void ShouldRewriteSymmetricInverseObjectPropertyOnNamedProperty()
+        => AssertInverseAxiomIsRewritten(
+            new OWLSymmetricObjectProperty(new OWLObjectInverseOf(HasToppingProperty)),
+            new OWLSymmetricObjectProperty(HasToppingProperty));
+
+    //Verifies that asymmetry of "inverse P" is written as the same characteristic of P
+    [TestMethod]
+    public void ShouldRewriteAsymmetricInverseObjectPropertyOnNamedProperty()
+        => AssertInverseAxiomIsRewritten(
+            new OWLAsymmetricObjectProperty(new OWLObjectInverseOf(HasToppingProperty)),
+            new OWLAsymmetricObjectProperty(HasToppingProperty));
+
+    //Verifies that reflexivity of "inverse P" is written as the same characteristic of P
+    [TestMethod]
+    public void ShouldRewriteReflexiveInverseObjectPropertyOnNamedProperty()
+        => AssertInverseAxiomIsRewritten(
+            new OWLReflexiveObjectProperty(new OWLObjectInverseOf(HasToppingProperty)),
+            new OWLReflexiveObjectProperty(HasToppingProperty));
+
+    //Verifies that irreflexivity of "inverse P" is written as the same characteristic of P
+    [TestMethod]
+    public void ShouldRewriteIrreflexiveInverseObjectPropertyOnNamedProperty()
+        => AssertInverseAxiomIsRewritten(
+            new OWLIrreflexiveObjectProperty(new OWLObjectInverseOf(HasToppingProperty)),
+            new OWLIrreflexiveObjectProperty(HasToppingProperty));
+
+    //Verifies that transitivity of "inverse P" is written as the same characteristic of P
+    [TestMethod]
+    public void ShouldRewriteTransitiveInverseObjectPropertyOnNamedProperty()
+        => AssertInverseAxiomIsRewritten(
+            new OWLTransitiveObjectProperty(new OWLObjectInverseOf(HasToppingProperty)),
+            new OWLTransitiveObjectProperty(HasToppingProperty));
+
+    //Verifies that "inverse P" below a named property Q is written as P below "inverse Q"
+    [TestMethod]
+    public void ShouldRewriteSubPropertyOfNamedFromInverseObjectProperty()
+        => AssertInverseAxiomIsRewritten(
+            new OWLSubObjectPropertyOf(new OWLObjectInverseOf(HasToppingProperty), IsToppingOfProperty),
+            new OWLSubObjectPropertyOf(HasToppingProperty, new OWLObjectInverseOf(IsToppingOfProperty)));
+
+    //Verifies that "inverse P" below "inverse Q" is written as P below Q
+    [TestMethod]
+    public void ShouldRewriteSubPropertyOfInverseFromInverseObjectProperty()
+        => AssertInverseAxiomIsRewritten(
+            new OWLSubObjectPropertyOf(new OWLObjectInverseOf(HasToppingProperty), new OWLObjectInverseOf(IsToppingOfProperty)),
+            new OWLSubObjectPropertyOf(HasToppingProperty, IsToppingOfProperty));
+
+    //Verifies that a chain below "inverse P" is written as the reversed chain of inverses below P
+    [TestMethod]
+    public void ShouldRewriteSubPropertyChainOfInverseObjectPropertyAsReversedInvertedChain()
+        => AssertInverseAxiomIsRewritten(
+            new OWLSubObjectPropertyOf(
+                new OWLObjectPropertyChain([ HasToppingProperty, new OWLObjectInverseOf(IsToppingOfProperty) ]),
+                new OWLObjectInverseOf(HasToppingProperty)),
+            new OWLSubObjectPropertyOf(
+                new OWLObjectPropertyChain([ IsToppingOfProperty, new OWLObjectInverseOf(HasToppingProperty) ]),
+                HasToppingProperty));
+
+    //Verifies that the inverse relation between two inverse properties is written on the frame of the first one
+    [TestMethod]
+    public void ShouldRewriteInverseObjectPropertiesBetweenTwoInversesOnNamedProperty()
+        => AssertInverseAxiomIsRewritten(
+            new OWLInverseObjectProperties(new OWLObjectInverseOf(HasToppingProperty), new OWLObjectInverseOf(IsToppingOfProperty)),
+            new OWLInverseObjectProperties(HasToppingProperty, IsToppingOfProperty));
+    #endregion
+
+    #region Tests (IRIs and names)
+    //Verifies that an IRI carrying percent-encoded characters is written escaped and read back identical
+    [TestMethod]
+    public void ShouldWriteIRIWithPercentEncodingEscapedAndReadItBack()
+    {
+        OWLOntology ontology = CreateBaseOntology();
+        OWLClass encodedClass = new OWLClass(new RDFResource("http://example.org/x#pct%20enc"));
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(encodedClass));
+
+        string document = OWLManchesterSerializer.SerializeOntology(ontology);
+        OWLOntology reparsedOntology = OWLManchesterParser.DeserializeOntology(document);
+
+        Assert.IsTrue(document.Contains("Class: <http://example.org/x#pct%20enc>", StringComparison.Ordinal));
+        Assert.HasCount(1, reparsedOntology.DeclarationAxioms);
+        Assert.AreEqual(encodedClass.GetIRI(), reparsedOntology.DeclarationAxioms[0].Entity.GetIRI());
+    }
+
+    //Verifies that an IRI carrying Unicode characters survives the Manchester round-trip unchanged
+    [TestMethod]
+    public void ShouldRoundTripIRIWithUnicodeCharacters()
+    {
+        OWLOntology ontology = CreateBaseOntology();
+        OWLClass unicodeClass = new OWLClass(new RDFResource("http://example.org/x#ünïcode"));
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(unicodeClass));
+
+        string document = OWLManchesterSerializer.SerializeOntology(ontology);
+        OWLOntology reparsedOntology = OWLManchesterParser.DeserializeOntology(document);
+
+        Assert.HasCount(1, reparsedOntology.DeclarationAxioms);
+        Assert.AreEqual(unicodeClass.GetIRI(), reparsedOntology.DeclarationAxioms[0].Entity.GetIRI());
+    }
+
+    //Verifies that a local name ending with a dot is never abbreviated, while inner dots and single characters are
+    [TestMethod]
+    public void ShouldNotAbbreviateLocalNameEndingWithDot()
+    {
+        OWLOntology ontology = CreateBaseOntology();
+        ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("ex", "http://example.org/x#")));
+        OWLClass trailingDotClass = new OWLClass(new RDFResource("http://example.org/x#ends.dot."));
+        OWLClass innerDotClass = new OWLClass(new RDFResource("http://example.org/x#a.b"));
+        OWLClass singleCharacterClass = new OWLClass(new RDFResource("http://example.org/x#a"));
+        ontology.DeclarationAxioms.AddRange([ new OWLDeclaration(trailingDotClass), new OWLDeclaration(innerDotClass), new OWLDeclaration(singleCharacterClass) ]);
+
+        string document = OWLManchesterSerializer.SerializeOntology(ontology);
+        OWLOntology reparsedOntology = OWLManchesterParser.DeserializeOntology(document);
+
+        Assert.IsTrue(document.Contains("Class: <http://example.org/x#ends.dot.>", StringComparison.Ordinal));
+        Assert.IsTrue(document.Contains("Class: ex:a.b", StringComparison.Ordinal));
+        Assert.IsTrue(document.Contains("Class: ex:a\n", StringComparison.Ordinal) || document.Contains("Class: ex:a\r\n", StringComparison.Ordinal));
+        Assert.HasCount(3, reparsedOntology.DeclarationAxioms);
+        Assert.AreEqual(trailingDotClass.GetIRI(), reparsedOntology.DeclarationAxioms[0].Entity.GetIRI());
+        Assert.AreEqual(innerDotClass.GetIRI(), reparsedOntology.DeclarationAxioms[1].Entity.GetIRI());
+        Assert.AreEqual(singleCharacterClass.GetIRI(), reparsedOntology.DeclarationAxioms[2].Entity.GetIRI());
+    }
+    #endregion
+
+    #region Tests (empty prefix)
+    //Verifies that the empty prefix survives reading and writing, so that a second writing abbreviates ":x" names again
+    [TestMethod]
+    public void ShouldKeepEmptyPrefixAcrossReadAndWrite()
+    {
+        const string sourceDocument = "Prefix: : <http://example.org/pz#>\nOntology: <http://example.org/pz>\nClass: :Pizza\n    SubClassOf: :Topping\n";
+
+        OWLOntology firstOntology = OWLManchesterParser.DeserializeOntology(sourceDocument);
+        string firstDocument = OWLManchesterSerializer.SerializeOntology(firstOntology);
+        OWLOntology secondOntology = OWLManchesterParser.DeserializeOntology(firstDocument);
+        string secondDocument = OWLManchesterSerializer.SerializeOntology(secondOntology);
+
+        Assert.IsTrue(firstOntology.Prefixes.Any(pfx => pfx.Name == string.Empty && pfx.IRI == "http://example.org/pz#"));
+        Assert.IsTrue(firstDocument.Contains("Class: :Pizza", StringComparison.Ordinal));
+        CollectionAssert.AreEqual(
+            firstOntology.Prefixes.Select(pfx => $"{pfx.Name}={pfx.IRI}").ToList(),
+            secondOntology.Prefixes.Select(pfx => $"{pfx.Name}={pfx.IRI}").ToList());
+        Assert.AreEqual(firstDocument, secondDocument);
+    }
+    #endregion
+
+    #region Tests (annotations of declarations)
+    //Verifies that the annotations of a declaration are discarded with a warning while the frame of the entity is still written
+    [TestMethod]
+    public void ShouldWarnAndDiscardAnnotationsOfDeclaration()
+    {
+        OWLOntology ontology = CreateBaseOntology();
+        OWLDeclaration declaration = new OWLDeclaration(new OWLClass(new RDFResource("http://example.org/pz#Pizza")));
+        declaration.Annotate(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("lost"))));
+        ontology.DeclarationAxioms.Add(declaration);
+
+        string document = string.Empty;
+        List<string> warnings = CaptureWarnings(() => document = OWLManchesterSerializer.SerializeOntology(ontology));
+
+        Assert.HasCount(1, warnings);
+        Assert.IsTrue(warnings[0].Contains("Declaration", StringComparison.Ordinal));
+        Assert.IsTrue(document.Contains("Class: pz:Pizza", StringComparison.Ordinal));
+        Assert.IsFalse(document.Contains("lost", StringComparison.Ordinal));
+    }
+
+    //Verifies that a declaration without annotations raises no warning
+    [TestMethod]
+    public void ShouldNotWarnOnDeclarationWithoutAnnotations()
+    {
+        OWLOntology ontology = CreateBaseOntology();
+        ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass(new RDFResource("http://example.org/pz#Pizza"))));
+
+        List<string> warnings = CaptureWarnings(() => OWLManchesterSerializer.SerializeOntology(ontology));
+
+        Assert.HasCount(0, warnings);
     }
     #endregion
 }

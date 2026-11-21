@@ -48,7 +48,8 @@ namespace OWLSharp.Ontology
                 { "DataProperty:", OWLManchesterFrameKind.DataProperty },
                 { "AnnotationProperty:", OWLManchesterFrameKind.AnnotationProperty },
                 { "Datatype:", OWLManchesterFrameKind.Datatype },
-                { "Individual:", OWLManchesterFrameKind.Individual }
+                { "Individual:", OWLManchesterFrameKind.Individual },
+                { "Rule:", OWLManchesterFrameKind.Rule }
             };
 
         /// <summary>
@@ -326,8 +327,9 @@ namespace OWLSharp.Ontology
                     i += 2;
                 }
 
-                //Frame headers declare the kind of their owning entity
+                //Frame headers declare the kind of their owning entity (a rule frame owns none, so its first atom must not be mistaken for a header)
                 else if (FrameKeywords.TryGetValue(tokens[i].Value, out OWLManchesterFrameKind frameKind)
+                          && frameKind != OWLManchesterFrameKind.Rule
                           && IsEntityToken(tokens[i + 1]))
                 {
                     string entityIRI = ResolveIRI(tokens[i + 1]);
@@ -348,7 +350,7 @@ namespace OWLSharp.Ontology
 
         #region Pass 2 (document)
         /// <summary>
-        /// document := prefixDeclaration* 'Ontology:' [iri [versionIri]] (import | ontologyAnnotations)* (frame | misc)*
+        /// document := prefixDeclaration* 'Ontology:' [iri [versionIri]] (import | ontologyAnnotations)* (frame | misc | rule)*
         /// </summary>
         private void ParseDocument()
         {
@@ -408,6 +410,7 @@ namespace OWLSharp.Ontology
                     case "AnnotationProperty:": ParseAnnotationPropertyFrame(); break;
                     case "Datatype:": ParseDatatypeFrame(); break;
                     case "Individual:": ParseIndividualFrame(); break;
+                    case "Rule:": ParseRuleFrame(); break;
                     case "EquivalentClasses:": ParseMiscClassesSection(equivalent: true); break;
                     case "DisjointClasses:": ParseMiscClassesSection(equivalent: false); break;
                     case "EquivalentProperties:": ParseMiscPropertiesSection(equivalent: true); break;
@@ -434,10 +437,10 @@ namespace OWLSharp.Ontology
 
             //Registered in the resolution map right away, since IRIs later in the document may already need it
             prefixes[prefixName] = prefixIRI;
-            //The empty/default prefix (":") only serves local IRI resolution and is never added to the ontology's
-            //own prefix list; a prefix redeclared later in the document is likewise skipped, to avoid a duplicate entry
-            if (prefixName.Length > 0 && !ontology.Prefixes.Any(pfx => string.Equals(pfx.Name, prefixName, StringComparison.Ordinal)))
-                ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace(prefixName, prefixIRI)));
+            //The empty/default prefix (":") is kept in the ontology's prefix list like any other, so that rewriting the
+            //document abbreviates ":x" names again; a prefix redeclared later in the document is skipped, to avoid a duplicate entry
+            if (!ontology.Prefixes.Any(pfx => string.Equals(pfx.Name, prefixName, StringComparison.Ordinal)))
+                ontology.Prefixes.Add(new OWLPrefix { Name = prefixName, IRI = prefixIRI });
         }
         #endregion
 
@@ -983,6 +986,176 @@ namespace OWLSharp.Ontology
             AddAxiom(same
                 ? (OWLAssertionAxiom)new OWLSameIndividual(idvExprs)
                 : new OWLDifferentIndividuals(idvExprs), annotations, ontology.AssertionAxioms);
+        }
+        #endregion
+
+        #region Rules
+        /// <summary>
+        /// rule := 'Rule:' [annotations] atomList '->' atomList
+        /// </summary>
+        private void ParseRuleFrame()
+        {
+            Advance(); //Rule:
+
+            //Built like the OWL/XML deserialization does (the public constructor of SWRLRule would add label and comment annotations)
+            SWRLRule rule = new SWRLRule
+            {
+                Annotations = TryParseAnnotationBlock(),
+                Antecedent = new SWRLAntecedent(),
+                Consequent = new SWRLConsequent()
+            };
+
+            //Body: atoms and built-ins, which the model keeps in two separate lists
+            ParseRuleAtomList(rule.Antecedent.Atoms, rule.Antecedent.BuiltIns);
+            Expect(OWLManchesterTokenType.Arrow, "rule");
+            //Head: atoms only, so a null built-in list makes any built-in an error
+            ParseRuleAtomList(rule.Consequent.Atoms, null);
+
+            ontology.Rules.Add(rule);
+        }
+
+        /// <summary>
+        /// atomList := atom (',' atom)*
+        /// (the given built-in list is null when built-ins are not allowed, as in the head of a rule)
+        /// </summary>
+        private void ParseRuleAtomList(List<SWRLAtom> atoms, List<SWRLBuiltIn> builtIns)
+        {
+            do
+            {
+                ParseRuleAtom(atoms, builtIns);
+            } while (TryConsumeComma());
+        }
+
+        /// <summary>
+        /// atom := entityIRI '(' arg [',' arg] ')' | ('sameAs' | 'differentFrom') '(' arg ',' arg ')' | builtinIRI '(' arg (',' arg)* ')'
+        /// </summary>
+        private void ParseRuleAtom(List<SWRLAtom> atoms, List<SWRLBuiltIn> builtIns)
+        {
+            //"sameAs" and "differentFrom" are plain names, so they denote an equality atom only when an argument list follows
+            bool isEqualityAtom = (CurrentIsName("sameAs") || CurrentIsName("differentFrom")) && Peek(1).Type == OWLManchesterTokenType.OpenParenthesis;
+            //Kept for naming the equality keyword in diagnostics once it has been consumed
+            OWLManchesterToken predicateToken = Current;
+            string predicateIRI = null;
+            //The equality keyword is no IRI, so it is consumed on its own while any other predicate is resolved to its IRI
+            if (isEqualityAtom)
+                Advance();
+            else
+                predicateIRI = ParseEntityIRI("rule atom");
+
+            //Arguments are comma-separated and enclosed in parentheses, whatever the kind of atom
+            Expect(OWLManchesterTokenType.OpenParenthesis, "rule atom");
+            List<SWRLArgument> arguments = new List<SWRLArgument>();
+            do
+            {
+                arguments.Add(ParseRuleArgument());
+            } while (TryConsumeComma());
+            Expect(OWLManchesterTokenType.CloseParenthesis, "rule atom");
+
+            //Equality atoms relate exactly two individuals
+            if (isEqualityAtom)
+            {
+                if (arguments.Count != 2)
+                    throw new OWLException($"Cannot parse OWL2/Manchester document: rule atom {predicateToken} requires exactly 2 arguments");
+
+                //The predicate is the same one that the public constructors of the equality atoms assign
+                SWRLAtom equalityAtom = string.Equals(predicateToken.Value, "sameAs", StringComparison.Ordinal)
+                    ? (SWRLAtom)new SWRLSameIndividualAtom { Predicate = SWRLSameIndividualAtom.SameAs }
+                    : new SWRLDifferentIndividualsAtom { Predicate = SWRLDifferentIndividualsAtom.DifferentFrom };
+                equalityAtom.LeftArgument = arguments[0];
+                equalityAtom.RightArgument = arguments[1];
+                atoms.Add(equalityAtom);
+                return;
+            }
+
+            //Built-ins are told apart from entities by their IRI alone, as the symbol table only knows the declared entities
+            if (OWLManchesterSWRL.IsBuiltInIRI(predicateIRI))
+            {
+                //A null list means that this atom sits in the head of the rule, where built-ins have no meaning
+                if (builtIns == null)
+                    throw new OWLException($"Cannot parse OWL2/Manchester document: built-in <{predicateIRI}> cannot be used in the head of a rule");
+
+                builtIns.Add(new SWRLBuiltIn { IRI = predicateIRI, Arguments = arguments });
+                return;
+            }
+
+            //The declared kind of the entity (if any) decides which kind of atom it is
+            RDFResource predicateResource = new RDFResource(predicateIRI);
+            symbols.TryGetValue(predicateIRI, out OWLManchesterFrameKind predicateKind);
+            SWRLAtom atom;
+            switch (arguments.Count)
+            {
+                //One argument: a datatype makes a data range atom, whereas anything else is read as a class atom
+                case 1:
+                    if (predicateKind == OWLManchesterFrameKind.ObjectProperty
+                         || predicateKind == OWLManchesterFrameKind.DataProperty
+                         || predicateKind == OWLManchesterFrameKind.AnnotationProperty)
+                        throw new OWLException($"Cannot parse OWL2/Manchester document: property <{predicateIRI}> used in a rule atom requires 2 arguments");
+                    //The XSD datatypes are never declared in a document but are no classes either, so they are data ranges
+                    atom = predicateKind == OWLManchesterFrameKind.Datatype
+                            || predicateIRI.StartsWith(RDFVocabulary.XSD.BASE_URI, StringComparison.Ordinal)
+                        ? (SWRLAtom)new SWRLDataRangeAtom { Predicate = new OWLDatatype(predicateResource) }
+                        : new SWRLClassAtom { Predicate = new OWLClass(predicateResource) };
+                    break;
+
+                //Two arguments: the declared kind of the property decides, while an undeclared one is told by its second argument
+                case 2:
+                    switch (predicateKind)
+                    {
+                        case OWLManchesterFrameKind.ObjectProperty:
+                            atom = new SWRLObjectPropertyAtom { Predicate = new OWLObjectProperty(predicateResource) };
+                            break;
+                        case OWLManchesterFrameKind.DataProperty:
+                            atom = new SWRLDataPropertyAtom { Predicate = new OWLDataProperty(predicateResource) };
+                            break;
+                        //Annotation properties in atoms are an OWLSharp extension
+                        case OWLManchesterFrameKind.AnnotationProperty:
+                            atom = new SWRLAnnotationPropertyAtom { Predicate = new OWLAnnotationProperty(predicateResource) };
+                            break;
+                        //Classes, datatypes and individuals cannot relate two arguments
+                        case OWLManchesterFrameKind.Class:
+                        case OWLManchesterFrameKind.Datatype:
+                        case OWLManchesterFrameKind.Individual:
+                            throw new OWLException($"Cannot parse OWL2/Manchester document: entity <{predicateIRI}> used in a rule atom requires 1 argument");
+                        //Undeclared: a literal as second argument can only be the value of a data property
+                        default:
+                            atom = arguments[1] is SWRLLiteralArgument
+                                ? (SWRLAtom)new SWRLDataPropertyAtom { Predicate = new OWLDataProperty(predicateResource) }
+                                : new SWRLObjectPropertyAtom { Predicate = new OWLObjectProperty(predicateResource) };
+                            break;
+                    }
+                    break;
+
+                //No other atom shape exists outside of built-ins
+                default:
+                    throw new OWLException($"Cannot parse OWL2/Manchester document: rule atom <{predicateIRI}> requires 1 or 2 arguments");
+            }
+            atom.LeftArgument = arguments[0];
+            atom.RightArgument = arguments.Count > 1 ? arguments[1] : null;
+            atoms.Add(atom);
+        }
+
+        /// <summary>
+        /// arg := '?' name | individualIRI | literal
+        /// </summary>
+        private SWRLArgument ParseRuleArgument()
+        {
+            switch (Current.Type)
+            {
+                //Variables are stored under the IRI namespace that the SWRL object model reserves to them
+                case OWLManchesterTokenType.Variable:
+                    return new SWRLVariableArgument { IRI = string.Concat(OWLManchesterSWRL.VariableIRIPrefix, Advance().Value) };
+
+                //Entity references denote named individuals
+                case OWLManchesterTokenType.FullIRI:
+                case OWLManchesterTokenType.PrefixedName:
+                case OWLManchesterTokenType.Name when IsEntityToken(Current):
+                    return new SWRLIndividualArgument { IRI = new RDFResource(ResolveIRI(Advance())).ToString() };
+
+                //Anything else must be a literal (quoted string, number or boolean), which ParseLiteral itself checks
+                default:
+                    OWLLiteral literal = ParseLiteral();
+                    return new SWRLLiteralArgument { Value = literal.Value, DatatypeIRI = literal.DatatypeIRI, Language = literal.Language };
+            }
         }
         #endregion
 

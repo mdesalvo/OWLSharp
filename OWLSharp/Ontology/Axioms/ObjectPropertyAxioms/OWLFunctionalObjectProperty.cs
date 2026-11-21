@@ -61,13 +61,20 @@ namespace OWLSharp.Ontology
         /// Gets the contribution of this OWLFunctionalObjectProperty to the OWL2/Manchester rendering of the ontology
         /// </summary>
         internal override OWLManchesterFrameItem ToManchesterFrameItem(OWLManchesterContext manchesterContext)
-            => ObjectPropertyExpression is OWLObjectProperty objProp
-                ? new OWLManchesterFrameItem {
-                    FrameKind = OWLManchesterFrameKind.ObjectProperty,
-                    EntityName = objProp.ToManchesterString(manchesterContext),
-                    SectionKeyword = "Characteristics:",
-                    ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}Functional" }
-                : null;
+        {
+            //"inverse P" is functional when each individual has at most one incoming P edge, which is what InverseFunctional states on P
+            OWLObjectProperty objProp = OWLManchesterContext.GetNamedObjectProperty(ObjectPropertyExpression);
+            //Without a named property there is no frame to host the axiom
+            if (objProp == null)
+                return null;
+
+            string characteristic = ObjectPropertyExpression is OWLObjectInverseOf ? "InverseFunctional" : "Functional";
+            return new OWLManchesterFrameItem {
+                FrameKind = OWLManchesterFrameKind.ObjectProperty,
+                EntityName = objProp.ToManchesterString(manchesterContext),
+                SectionKeyword = "Characteristics:",
+                ItemText = $"{manchesterContext.RenderAxiomAnnotations(Annotations)}{characteristic}" };
+        }
 
         /// <summary>
         /// Gets the OWL2/Functional-Style representation of this FunctionalObjectProperty axiom

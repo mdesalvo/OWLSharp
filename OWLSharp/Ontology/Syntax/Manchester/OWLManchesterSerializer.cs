@@ -24,7 +24,8 @@ namespace OWLSharp.Ontology
     /// OWLManchesterSerializer orchestrates the OWL2/Manchester rendering of an ontology:
     /// it collects the frame items contributed by each axiom (via ToManchesterFrameItem),
     /// groups them by owning entity frame and emits the resulting Manchester document.
-    /// Axioms not representable in Manchester syntax (GCIs, SWRL rules, ...) are skipped with a warning.
+    /// SWRL rules are emitted as "Rule:" frames after the misc sections.
+    /// Axioms not representable in Manchester syntax (GCIs, SWRL rules on complex expressions, ...) are skipped with a warning.
     /// </summary>
     internal static class OWLManchesterSerializer
     {
@@ -57,6 +58,7 @@ namespace OWLSharp.Ontology
             List<(OWLManchesterFrameKind Kind, string EntityName)> frameOrder = new List<(OWLManchesterFrameKind, string)>();
             List<(string SectionKeyword, string ItemText)> miscItems = new List<(string, string)>();
             List<OWLManchesterFrameItem> entityAnnotationItems = new List<OWLManchesterFrameItem>();
+            List<string> ruleItems = new List<string>();
 
             void CollectAxiom(OWLAxiom axiom)
             {
@@ -66,6 +68,10 @@ namespace OWLSharp.Ontology
                     OWLEvents.RaiseWarning($"Axiom of type {axiom.GetType().Name} is not representable in OWL2/Manchester syntax and has been skipped ({axiom.GetXML()})");
                     return;
                 }
+
+                //Manchester has no place for the annotations of a declaration: the entity frame is still written but they are lost
+                if (axiom is OWLDeclaration && axiom.Annotations.Count > 0)
+                    OWLEvents.RaiseWarning($"Annotations of the Declaration axiom of {frameItem.EntityName} are not representable in OWL2/Manchester syntax and have been discarded");
 
                 switch (frameItem.FrameKind)
                 {
@@ -108,8 +114,17 @@ namespace OWLSharp.Ontology
             ontology.KeyAxioms.ForEach(CollectAxiom);
             ontology.AssertionAxioms.ForEach(CollectAxiom);
             ontology.AnnotationAxioms.ForEach(CollectAxiom);
-            ontology.Rules.ForEach(swrlRule =>
-                OWLEvents.RaiseWarning($"SWRL rule '{swrlRule}' is not representable in OWL2/Manchester syntax and has been skipped"));
+            foreach (SWRLRule swrlRule in ontology.Rules)
+            {
+                string ruleItem = OWLManchesterSWRL.RenderRule(swrlRule, ctx);
+                //Rules that Manchester cannot express are dropped, whereas the other syntaxes keep them
+                if (ruleItem == null)
+                {
+                    OWLEvents.RaiseWarning($"SWRL rule '{swrlRule}' is not representable in OWL2/Manchester syntax (class atoms need a named class and data range atoms a named datatype) and has been skipped: it can be written in OWL2/Functional-Style and OWL2/XML syntaxes");
+                    continue;
+                }
+                ruleItems.Add(ruleItem);
+            }
 
             //Entity annotations are attached to the frame of their subject entity, whatever its kind
             foreach (OWLManchesterFrameItem entityAnnotationItem in entityAnnotationItems)
@@ -166,6 +181,14 @@ namespace OWLSharp.Ontology
             foreach ((string sectionKeyword, string itemText) in miscItems)
             {
                 sb.AppendLine($"{sectionKeyword} {itemText}");
+                sb.AppendLine();
+            }
+
+            //Rule frames
+            foreach (string ruleItem in ruleItems)
+            {
+                sb.AppendLine("Rule:");
+                sb.AppendLine($"    {ruleItem}");
                 sb.AppendLine();
             }
             #endregion
