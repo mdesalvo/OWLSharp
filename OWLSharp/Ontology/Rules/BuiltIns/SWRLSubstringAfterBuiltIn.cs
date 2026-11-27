@@ -45,11 +45,8 @@ namespace OWLSharp.Ontology
             if (sourceValue == null || separatorValue == null)
                 return null;
 
-            //An empty separator gives an empty result, as this built-in has always done (XPath fn:substring-after would give the whole source)
-            if (separatorValue.Length == 0)
-                return new RDFPlainLiteral(string.Empty);
-
-            //The text after the first separator is the result: it is empty when the separator does not occur
+            //The text after the first separator is the result, as in XPath fn:substring-after: it is empty when the separator does not occur,
+            //while an empty separator occurs before the first character and leaves the whole source after it
             int separatorIndex = sourceValue.IndexOf(separatorValue, StringComparison.Ordinal);
             return new RDFPlainLiteral(separatorIndex == -1 ? string.Empty : sourceValue.Substring(separatorIndex + separatorValue.Length));
         }

@@ -243,8 +243,9 @@ public class SWRLSubstringAfterBuiltInTest
         RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
+        //An empty separator occurs before the first character: as in XPath fn:substring-after the whole source follows it
         antecedentResults.AddRow(["", "tattoo"]);
-        antecedentResults.AddRow(["http://example.org", "http://tattoo.org/test"]);
+        antecedentResults.AddRow(["tattoo", "tattoo"]);
 
         SWRLBuiltIn builtin = SWRLBuiltIn.SubstringAfter(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -256,7 +257,7 @@ public class SWRLSubstringAfterBuiltInTest
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
         Assert.HasCount(1, builtinResults.Rows);
-        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), ""));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "tattoo"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "tattoo"));
     }
 
