@@ -172,7 +172,7 @@ public class SWRLDataPropertyAtomTest
                     new OWLLiteral(new RDFTypedLiteral("34", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)))
             ]
         };
-        OWLTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
+        RDFTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(2, antecedentResult.Columns);
@@ -202,7 +202,7 @@ public class SWRLDataPropertyAtomTest
                     new OWLLiteral(new RDFPlainLiteral("hello","en-US--RTL")))
             ]
         };
-        OWLTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
+        RDFTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(1, antecedentResult.Columns);
@@ -218,7 +218,7 @@ public class SWRLDataPropertyAtomTest
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-        OWLTable antecedentResult = new OWLTable();
+        RDFTable antecedentResult = new RDFTable();
         antecedentResult.AddColumn("?P");
         antecedentResult.AddColumn("?Q");
         antecedentResult.AddRow(["ex:Mark", "34^^http://www.w3.org/2001/XMLSchema#positiveInteger"]);
@@ -241,7 +241,7 @@ public class SWRLDataPropertyAtomTest
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLLiteralArgument(new RDFPlainLiteral("hello","en-US--RTL")));
 
-        OWLTable antecedentResult = new OWLTable();
+        RDFTable antecedentResult = new RDFTable();
         antecedentResult.AddColumn("?P");
         antecedentResult.AddRow(["ex:Mark"]);
 

@@ -163,12 +163,12 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Evaluates the atom in the context of being part of a SWRL antecedent
         /// </summary>
-        internal abstract OWLTable EvaluateOnAntecedent(OWLOntology ontology);
+        internal abstract RDFTable EvaluateOnAntecedent(OWLOntology ontology);
 
         /// <summary>
         /// Evaluates the atom in the context of being part of a SWRL consequent
         /// </summary>
-        internal abstract List<OWLInference> EvaluateOnConsequent(OWLTable antecedentResults, OWLOntology ontology);
+        internal abstract List<OWLInference> EvaluateOnConsequent(RDFTable antecedentResults, OWLOntology ontology);
 
         /// <summary>
         /// Exports this SWRL atom to an equivalent RDFGraph object

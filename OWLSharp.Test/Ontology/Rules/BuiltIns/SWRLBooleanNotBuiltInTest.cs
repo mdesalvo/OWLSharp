@@ -124,7 +124,7 @@ public class SWRLBooleanNotBuiltInTest
     [TestMethod]
     public void ShouldEvaluateBooleanNotBuiltIn()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(["true^^http://www.w3.org/2001/XMLSchema#boolean", "false^^http://www.w3.org/2001/XMLSchema#boolean"
@@ -147,7 +147,7 @@ public class SWRLBooleanNotBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -162,7 +162,7 @@ public class SWRLBooleanNotBuiltInTest
         SWRLBuiltIn builtin2 = SWRLBuiltIn.BooleanNot(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
-        OWLTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(2, builtinResults2.Columns);
         Assert.HasCount(11, builtinResults2.Rows);
@@ -170,7 +170,7 @@ public class SWRLBooleanNotBuiltInTest
         SWRLBuiltIn builtin3 = SWRLBuiltIn.BooleanNot(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        OWLTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(2, builtinResults3.Columns);
         Assert.HasCount(11, builtinResults3.Rows);
@@ -198,7 +198,7 @@ public class SWRLBooleanNotBuiltInTest
     [TestMethod]
     public void ShouldEvaluateBooleanNotBuiltInWithLeftBool()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(["true^^http://www.w3.org/2001/XMLSchema#boolean"]);
         antecedentResults.AddRow(["false^^http://www.w3.org/2001/XMLSchema#boolean"]);
@@ -218,7 +218,7 @@ public class SWRLBooleanNotBuiltInTest
             ]
         };
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
@@ -229,7 +229,7 @@ public class SWRLBooleanNotBuiltInTest
     [TestMethod]
     public void ShouldEvaluateBooleanNotBuiltInWithRightBool()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddRow(["true^^http://www.w3.org/2001/XMLSchema#boolean"]);
         antecedentResults.AddRow(["false^^http://www.w3.org/2001/XMLSchema#boolean"]);
@@ -249,7 +249,7 @@ public class SWRLBooleanNotBuiltInTest
             ]
         };
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);

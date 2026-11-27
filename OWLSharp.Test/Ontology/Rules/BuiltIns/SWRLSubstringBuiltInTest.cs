@@ -101,7 +101,7 @@ public class SWRLSubstringBuiltInTest
         // W3C SWRL spec uses 1-based indexing (aligned with XPath fn:substring):
         // substring("hello", 2) = "ello"  (from position 2, i.e. the second character)
         // substring("http://example.org/test", 8) = "example.org/test"  (h=1..e=8)
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
@@ -115,7 +115,7 @@ public class SWRLSubstringBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?Z")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);
@@ -133,7 +133,7 @@ public class SWRLSubstringBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?F"))); //unexisting
-        OWLTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(3, builtinResults2.Columns);
         Assert.HasCount(3, builtinResults2.Rows);
@@ -142,7 +142,7 @@ public class SWRLSubstringBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        OWLTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(3, builtinResults3.Columns);
         Assert.HasCount(3, builtinResults3.Rows);
@@ -170,7 +170,7 @@ public class SWRLSubstringBuiltInTest
     [TestMethod]
     public void ShouldEvaluateSubstringBuiltInWithStringRightArgumentSRC()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Z");
         // 1-based: substring("hello", 2) = "ello"; substring("hello", 4) = "o" ? "@EN-US"
@@ -183,7 +183,7 @@ public class SWRLSubstringBuiltInTest
             new SWRLLiteralArgument(new RDFPlainLiteral("hello")),
             new SWRLVariableArgument(new RDFVariable("?Z")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -195,7 +195,7 @@ public class SWRLSubstringBuiltInTest
     [TestMethod]
     public void ShouldEvaluateSubstringBuiltInWithNumericRightArgumentIDX()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         // 1-based literal index 2: substring("hello", 2) = "ello"
@@ -208,7 +208,7 @@ public class SWRLSubstringBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLLiteralArgument(new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -220,7 +220,7 @@ public class SWRLSubstringBuiltInTest
     [TestMethod]
     public void ShouldEvaluateSubstringBuiltInWithNumericRightArgumentIDXLEN()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         // 1-based literal index 2, len 2: substring("hello",2,2)="el"; substring("http://...",2,2)="tt"
@@ -234,7 +234,7 @@ public class SWRLSubstringBuiltInTest
             new SWRLLiteralArgument(new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)),
             new SWRLLiteralArgument(new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -248,7 +248,7 @@ public class SWRLSubstringBuiltInTest
     [TestMethod]
     public void ShouldEvaluateSubstringBuiltInWithLength()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
@@ -268,7 +268,7 @@ public class SWRLSubstringBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);

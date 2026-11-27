@@ -124,7 +124,7 @@ public class SWRLContainsIgnoreCaseBuiltInTest
     [TestMethod]
     public void ShouldEvaluateContainsIgnoreCaseBuiltIn()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(["hello", "eLlo"]);
@@ -147,7 +147,7 @@ public class SWRLContainsIgnoreCaseBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -164,7 +164,7 @@ public class SWRLContainsIgnoreCaseBuiltInTest
         SWRLBuiltIn builtin2 = SWRLBuiltIn.ContainsIgnoreCase(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
-        OWLTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(2, builtinResults2.Columns);
         Assert.HasCount(13, builtinResults2.Rows);
@@ -172,7 +172,7 @@ public class SWRLContainsIgnoreCaseBuiltInTest
         SWRLBuiltIn builtin3 = SWRLBuiltIn.ContainsIgnoreCase(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        OWLTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(2, builtinResults3.Columns);
         Assert.HasCount(13, builtinResults3.Rows);
@@ -200,7 +200,7 @@ public class SWRLContainsIgnoreCaseBuiltInTest
     [TestMethod]
     public void ShouldEvaluateContainsIgnoreCaseBuiltInWithLeftString()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(["eLlo"]);
         antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int"]);
@@ -221,7 +221,7 @@ public class SWRLContainsIgnoreCaseBuiltInTest
             ]
         };
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
@@ -237,7 +237,7 @@ public class SWRLContainsIgnoreCaseBuiltInTest
     [TestMethod]
     public void ShouldEvaluateContainsIgnoreCaseBuiltInWithRightString()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int"]);
         antecedentResults.AddRow(["7^^http://www.w3.org/2001/XMLSchema#int"]);
@@ -258,7 +258,7 @@ public class SWRLContainsIgnoreCaseBuiltInTest
             ]
         };
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
@@ -273,7 +273,7 @@ public class SWRLContainsIgnoreCaseBuiltInTest
     [TestMethod]
     public void ShouldEvaluateContainsIgnoreCaseBuiltInWithIndividualArguments()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?dummy");
         antecedentResults.AddRow(["dummy"]);
 
@@ -281,7 +281,7 @@ public class SWRLContainsIgnoreCaseBuiltInTest
             new SWRLIndividualArgument(new RDFResource("http://example.org/hello")),
             new SWRLIndividualArgument(new RDFResource("http://example.org/hello")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Rows);

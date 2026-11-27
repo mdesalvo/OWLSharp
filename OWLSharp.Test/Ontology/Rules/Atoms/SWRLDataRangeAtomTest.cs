@@ -109,7 +109,7 @@ public class SWRLDataRangeAtomTest
                     new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)))
             ]
         };
-        OWLTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
+        RDFTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(1, antecedentResult.Columns);

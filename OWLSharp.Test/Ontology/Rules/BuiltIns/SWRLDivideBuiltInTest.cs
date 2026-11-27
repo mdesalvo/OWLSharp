@@ -113,7 +113,7 @@ public class SWRLDivideBuiltInTest
     [TestMethod]
     public void ShouldEvaluateDivideBuiltIn()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
@@ -142,7 +142,7 @@ public class SWRLDivideBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?Z")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);
@@ -160,7 +160,7 @@ public class SWRLDivideBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?F"))); //unexisting
-        OWLTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(3, builtinResults2.Columns);
         Assert.IsEmpty(builtinResults2.Rows);
@@ -199,7 +199,7 @@ public class SWRLDivideBuiltInTest
     [TestMethod]
     public void ShouldEvaluateDivideBuiltInWithNumbers()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "4.0^^http://www.w3.org/2001/XMLSchema#float"
@@ -223,7 +223,7 @@ public class SWRLDivideBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLLiteralArgument(new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);

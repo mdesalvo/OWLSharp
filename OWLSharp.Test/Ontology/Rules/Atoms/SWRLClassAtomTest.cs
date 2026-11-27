@@ -114,7 +114,7 @@ public class SWRLClassAtomTest
                     new OWLNamedIndividual(new RDFResource("ex:Mark")))
             ]
         };
-        OWLTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
+        RDFTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(1, antecedentResult.Columns);
@@ -129,7 +129,7 @@ public class SWRLClassAtomTest
             new OWLClass(RDFVocabulary.FOAF.AGENT),
             new SWRLVariableArgument(new RDFVariable("?P")));
 
-        OWLTable antecedentResult = new OWLTable();
+        RDFTable antecedentResult = new RDFTable();
         antecedentResult.AddColumn("?P");
         antecedentResult.AddRow(["ex:Mark"]);
 

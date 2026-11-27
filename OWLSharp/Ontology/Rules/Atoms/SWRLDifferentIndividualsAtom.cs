@@ -69,13 +69,13 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Evaluates the atom in the context of being part of a SWRL antecedent
         /// </summary>
-        internal override OWLTable EvaluateOnAntecedent(OWLOntology ontology)
+        internal override RDFTable EvaluateOnAntecedent(OWLOntology ontology)
         {
             string leftArgumentString = LeftArgument.ToString();
             string rightArgumentString = RightArgument.ToString();
 
             //Initialize the structure of the atom result
-            OWLTable atomResult = new OWLTable();
+            RDFTable atomResult = new RDFTable();
             atomResult.AddColumn(leftArgumentString);
             if (RightArgument is SWRLVariableArgument)
                 atomResult.AddColumn(rightArgumentString);
@@ -137,7 +137,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Evaluates the atom in the context of being part of a SWRL consequent
         /// </summary>
-        internal override List<OWLInference> EvaluateOnConsequent(OWLTable antecedentResults, OWLOntology ontology)
+        internal override List<OWLInference> EvaluateOnConsequent(RDFTable antecedentResults, OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
             string leftArgumentString = LeftArgument.ToString();
@@ -155,7 +155,7 @@ namespace OWLSharp.Ontology
             #endregion
 
             //Iterate the antecedent results table to materialize the atom's reasoner evidences
-            foreach (OWLTableRow currentRow in antecedentResults.Rows)
+            foreach (RDFTableRow currentRow in antecedentResults.Rows)
             {
                 #region Guards
                 //The current row MUST have a BOUND value in the column corresponding to the atom's left argument

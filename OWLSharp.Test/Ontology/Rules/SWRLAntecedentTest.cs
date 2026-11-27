@@ -133,7 +133,7 @@ public class SWRLAntecedentTest
                     })
             ]
         };
-        OWLTable antecedentResult = ontology.Rules[0].Antecedent.Evaluate(ontology);
+        RDFTable antecedentResult = ontology.Rules[0].Antecedent.Evaluate(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(1, antecedentResult.Columns);

@@ -98,7 +98,7 @@ public class SWRLReplaceBuiltInTest
     [TestMethod]
     public void ShouldEvaluateReplaceBuiltIn()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
@@ -118,7 +118,7 @@ public class SWRLReplaceBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
@@ -151,7 +151,7 @@ public class SWRLReplaceBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?P"))); //unexisting
-        OWLTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(4, builtinResults2.Columns);
         Assert.HasCount(8, builtinResults2.Rows);
@@ -161,7 +161,7 @@ public class SWRLReplaceBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
-        OWLTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(4, builtinResults3.Columns);
         Assert.HasCount(8, builtinResults3.Rows);
@@ -189,7 +189,7 @@ public class SWRLReplaceBuiltInTest
     [TestMethod]
     public void ShouldEvaluateReplaceBuiltInWithSTRLiteral()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Z");
         antecedentResults.AddColumn("?Q");
@@ -208,7 +208,7 @@ public class SWRLReplaceBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);
@@ -230,7 +230,7 @@ public class SWRLReplaceBuiltInTest
     [TestMethod]
     public void ShouldEvaluateReplaceBuiltInWithRGXLiteral()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Q");
@@ -249,7 +249,7 @@ public class SWRLReplaceBuiltInTest
             new SWRLLiteralArgument(new RDFPlainLiteral("ll")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);
@@ -268,7 +268,7 @@ public class SWRLReplaceBuiltInTest
     [TestMethod]
     public void ShouldEvaluateReplaceBuiltInWithRPLLiteral()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
@@ -287,7 +287,7 @@ public class SWRLReplaceBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLLiteralArgument(new RDFTypedLiteral("MM", RDFModelEnums.RDFDatatypes.XSD_STRING)));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);

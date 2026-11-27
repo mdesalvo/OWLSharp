@@ -104,7 +104,7 @@ public class SWRLDayTimeDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateDayTimeDurationBuiltIn()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
@@ -132,7 +132,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(5, builtinResults.Columns);
@@ -151,7 +151,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
-        OWLTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(5, builtinResults2.Columns);
         Assert.HasCount(2, builtinResults2.Rows);
@@ -162,7 +162,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
-        OWLTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(5, builtinResults3.Columns);
         Assert.HasCount(2, builtinResults3.Rows);
@@ -173,7 +173,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?U")));
-        OWLTable builtinResults4 = builtin4.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults4 = builtin4.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults4);
         Assert.HasCount(5, builtinResults4.Columns);
         Assert.HasCount(2, builtinResults4.Rows);
@@ -184,7 +184,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?F"))); //unexisting
-        OWLTable builtinResults5 = builtin5.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults5 = builtin5.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults5);
         Assert.HasCount(5, builtinResults5.Columns);
         Assert.HasCount(2, builtinResults5.Rows);
@@ -212,7 +212,7 @@ public class SWRLDayTimeDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateDayTimeDurationBuiltInWithLeftLiteral()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
         antecedentResults.AddColumn("?Q");
@@ -237,7 +237,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
@@ -251,7 +251,7 @@ public class SWRLDayTimeDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateDayTimeDurationBuiltInWithRightDayLiteral()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Z");
         antecedentResults.AddColumn("?Q");
@@ -276,7 +276,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
@@ -290,7 +290,7 @@ public class SWRLDayTimeDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateDayTimeBuiltInWithRightHourLiteral()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Q");
@@ -315,7 +315,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
@@ -329,7 +329,7 @@ public class SWRLDayTimeDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateDayTimeBuiltInWithRightMinuteLiteral()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
@@ -354,7 +354,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLLiteralArgument(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INTEGER)),
             new SWRLVariableArgument(new RDFVariable("?U")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
@@ -368,7 +368,7 @@ public class SWRLDayTimeDurationBuiltInTest
     [TestMethod]
     public void ShouldEvaluateDayTimeBuiltInWithRightSecondLiteral()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
@@ -393,7 +393,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLLiteralArgument(new RDFTypedLiteral("12", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);

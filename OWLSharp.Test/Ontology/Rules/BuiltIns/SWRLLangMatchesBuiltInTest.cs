@@ -124,7 +124,7 @@ public class SWRLLangMatchesBuiltInTest
     [TestMethod]
     public void ShouldEvaluateEXTLangMatchesBuiltIn()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(["hello", "hi"]);
@@ -138,7 +138,7 @@ public class SWRLLangMatchesBuiltInTest
 
         Assert.IsTrue(builtin.IsExtension);
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -153,7 +153,7 @@ public class SWRLLangMatchesBuiltInTest
         SWRLBuiltIn builtin2 = SWRLBuiltIn.LangMatches(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
-        OWLTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(2, builtinResults2.Columns);
         Assert.HasCount(4, builtinResults2.Rows);
@@ -161,7 +161,7 @@ public class SWRLLangMatchesBuiltInTest
         SWRLBuiltIn builtin3 = SWRLBuiltIn.LangMatches(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        OWLTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(2, builtinResults3.Columns);
         Assert.HasCount(4, builtinResults3.Rows);

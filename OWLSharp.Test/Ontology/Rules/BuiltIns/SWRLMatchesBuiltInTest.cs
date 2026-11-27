@@ -140,7 +140,7 @@ public class SWRLMatchesBuiltInTest
     [TestMethod]
     public void ShouldEvaluateMatchesBuiltIn()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(["hello", "ello$"]);
@@ -164,7 +164,7 @@ public class SWRLMatchesBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -183,7 +183,7 @@ public class SWRLMatchesBuiltInTest
         SWRLBuiltIn builtin2 = SWRLBuiltIn.Matches(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
-        OWLTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(2, builtinResults2.Columns);
         Assert.HasCount(14, builtinResults2.Rows);
@@ -191,7 +191,7 @@ public class SWRLMatchesBuiltInTest
         SWRLBuiltIn builtin3 = SWRLBuiltIn.Matches(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        OWLTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(2, builtinResults3.Columns);
         Assert.HasCount(14, builtinResults3.Rows);
@@ -219,7 +219,7 @@ public class SWRLMatchesBuiltInTest
     [TestMethod]
     public void ShouldEvaluateMatchesBuiltInWithLiteralLeftArgument()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(["ello$"]);
         antecedentResults.AddRow(["eLLo$"]);
@@ -235,7 +235,7 @@ public class SWRLMatchesBuiltInTest
             new SWRLLiteralArgument(new RDFPlainLiteral("hello")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
@@ -250,7 +250,7 @@ public class SWRLMatchesBuiltInTest
     [TestMethod]
     public void ShouldEvaluateMatchesBuiltInWithLiteralRightArgument()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddRow(["hello"]);
         antecedentResults.AddRow(["eLLo$"]);
@@ -264,7 +264,7 @@ public class SWRLMatchesBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLLiteralArgument(new RDFPlainLiteral("ello$")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
@@ -276,7 +276,7 @@ public class SWRLMatchesBuiltInTest
     [TestMethod]
     public void ShouldEvaluateMatchesBuiltInWithFlags()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(["hello", "eLLo$"]);
@@ -300,7 +300,7 @@ public class SWRLMatchesBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLLiteralArgument(new RDFPlainLiteral("ismx")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);

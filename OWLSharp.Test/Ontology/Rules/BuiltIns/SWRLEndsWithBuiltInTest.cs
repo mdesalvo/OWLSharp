@@ -124,7 +124,7 @@ public class SWRLEndsWithBuiltInTest
     [TestMethod]
     public void ShouldEvaluateEndsWithBuiltIn()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(["hello", "ello"]);
@@ -134,7 +134,7 @@ public class SWRLEndsWithBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -149,7 +149,7 @@ public class SWRLEndsWithBuiltInTest
         SWRLBuiltIn builtin2 = SWRLBuiltIn.EndsWith(
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
-        OWLTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(2, builtinResults2.Columns);
         Assert.HasCount(2, builtinResults2.Rows);
@@ -157,7 +157,7 @@ public class SWRLEndsWithBuiltInTest
         SWRLBuiltIn builtin3 = SWRLBuiltIn.EndsWith(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        OWLTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(2, builtinResults3.Columns);
         Assert.HasCount(2, builtinResults3.Rows);
@@ -185,7 +185,7 @@ public class SWRLEndsWithBuiltInTest
     [TestMethod]
     public void ShouldEvaluateEndsWithBuiltInWithLeftString()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(["ello"]);
         antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int"]);
@@ -206,7 +206,7 @@ public class SWRLEndsWithBuiltInTest
             ]
         };
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
@@ -221,7 +221,7 @@ public class SWRLEndsWithBuiltInTest
     [TestMethod]
     public void ShouldEvaluateEndsWithBuiltInWithRightString()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int"]);
         antecedentResults.AddRow(["7^^http://www.w3.org/2001/XMLSchema#int"]);
@@ -242,7 +242,7 @@ public class SWRLEndsWithBuiltInTest
             ]
         };
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
@@ -256,7 +256,7 @@ public class SWRLEndsWithBuiltInTest
     [TestMethod]
     public void ShouldEvaluateEndsWithBuiltInWithIndividualArguments()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?dummy");
         antecedentResults.AddRow(["dummy"]);
 
@@ -264,7 +264,7 @@ public class SWRLEndsWithBuiltInTest
             new SWRLIndividualArgument(new RDFResource("http://example.org/hello")),
             new SWRLIndividualArgument(new RDFResource("http://example.org/hello")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Rows);

@@ -1,4 +1,4 @@
-﻿/*
+/*
    Copyright 2014-2026 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -123,7 +123,7 @@ public class SWRLBuiltInTest
                 new SWRLLiteralArgument(new RDFPlainLiteral("lit"))
             ]
         };
-        OWLTable table = new OWLTable();
+        RDFTable table = new RDFTable();
         table.AddColumn("?VAR");
         table.AddRow(["value"]);
         Assert.ThrowsExactly<SWRLException>(() => _ = builtin.EvaluateOnAntecedent(table));
@@ -138,7 +138,7 @@ public class SWRLBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?VAR")),
             new SWRLIndividualArgument(new RDFResource("http://test.org/")),
             new SWRLLiteralArgument(new RDFPlainLiteral("lit")));
-        OWLTable table = new OWLTable();
+        RDFTable table = new RDFTable();
         table.AddColumn("?VAR");
         table.AddRow(["value"]);
         table.AddRow(["value2"]);

@@ -160,7 +160,7 @@ public class SWRLSameIndividualAtomTest
                     new OWLNamedIndividual(new RDFResource("ex:John"))])
             ]
         };
-        OWLTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
+        RDFTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(2, antecedentResult.Columns);
@@ -190,7 +190,7 @@ public class SWRLSameIndividualAtomTest
                     new OWLNamedIndividual(new RDFResource("ex:John"))])
             ]
         };
-        OWLTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
+        RDFTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(1, antecedentResult.Columns);
@@ -205,7 +205,7 @@ public class SWRLSameIndividualAtomTest
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-        OWLTable antecedentResult = new OWLTable();
+        RDFTable antecedentResult = new RDFTable();
         antecedentResult.AddColumn("?P");
         antecedentResult.AddColumn("?Q");
         antecedentResult.AddRow(["ex:Mark", "ex:John"]);
@@ -226,7 +226,7 @@ public class SWRLSameIndividualAtomTest
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLIndividualArgument(new RDFResource("ex:Mark")));
 
-        OWLTable antecedentResult = new OWLTable();
+        RDFTable antecedentResult = new RDFTable();
         antecedentResult.AddColumn("?P");
         antecedentResult.AddRow(["ex:John"]);
 

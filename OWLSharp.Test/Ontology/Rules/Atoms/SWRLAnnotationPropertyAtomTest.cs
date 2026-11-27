@@ -172,7 +172,7 @@ public class SWRLAnnotationPropertyAtomTest
                     new OWLLiteral(new RDFTypedLiteral("34", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)))
             ]
         };
-        OWLTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
+        RDFTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(2, antecedentResult.Columns);
@@ -203,7 +203,7 @@ public class SWRLAnnotationPropertyAtomTest
                     new OWLAnonymousIndividual("b").GetIRI())
             ]
         };
-        OWLTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
+        RDFTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.HasCount(1, antecedentResult.Rows);
         Assert.IsTrue(string.Equals((antecedentResult.Rows[0]["?P"] ?? string.Empty), "bnode:a"));
@@ -231,7 +231,7 @@ public class SWRLAnnotationPropertyAtomTest
                     new OWLLiteral(new RDFPlainLiteral("hello","en-US--RTL")))
             ]
         };
-        OWLTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
+        RDFTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
         Assert.IsNotNull(antecedentResult);
         Assert.HasCount(1, antecedentResult.Columns);
@@ -247,7 +247,7 @@ public class SWRLAnnotationPropertyAtomTest
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-        OWLTable antecedentResult = new OWLTable();
+        RDFTable antecedentResult = new RDFTable();
         antecedentResult.AddColumn("?P");
         antecedentResult.AddColumn("?Q");
         antecedentResult.AddRow(["ex:Mark", "34^^http://www.w3.org/2001/XMLSchema#positiveInteger"]);
@@ -270,7 +270,7 @@ public class SWRLAnnotationPropertyAtomTest
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLLiteralArgument(new RDFPlainLiteral("hello","en-US--RTL")));
 
-        OWLTable antecedentResult = new OWLTable();
+        RDFTable antecedentResult = new RDFTable();
         antecedentResult.AddColumn("?P");
         antecedentResult.AddRow(["ex:Mark"]);
 

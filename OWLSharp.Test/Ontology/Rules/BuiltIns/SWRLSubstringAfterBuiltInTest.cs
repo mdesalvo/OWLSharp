@@ -92,7 +92,7 @@ public class SWRLSubstringAfterBuiltInTest
     [TestMethod]
     public void ShouldEvaluateSubstringAfterBuiltIn()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddColumn("?Z");
@@ -104,7 +104,7 @@ public class SWRLSubstringAfterBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?Z")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);
@@ -122,7 +122,7 @@ public class SWRLSubstringAfterBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?F"))); //unexisting
-        OWLTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(3, builtinResults2.Columns);
         Assert.HasCount(2, builtinResults2.Rows);
@@ -131,7 +131,7 @@ public class SWRLSubstringAfterBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?X")),
             new SWRLVariableArgument(new RDFVariable("?Y")));
-        OWLTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(3, builtinResults3.Columns);
         Assert.HasCount(2, builtinResults3.Rows);
@@ -159,7 +159,7 @@ public class SWRLSubstringAfterBuiltInTest
     [TestMethod]
     public void ShouldEvaluateSubstringAfterBuiltInWithRightArgumentSTR()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Z");
         antecedentResults.AddRow(["too", "at"]);
@@ -170,7 +170,7 @@ public class SWRLSubstringAfterBuiltInTest
             new SWRLLiteralArgument(new RDFPlainLiteral("tattoo")),
             new SWRLVariableArgument(new RDFVariable("?Z")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -184,7 +184,7 @@ public class SWRLSubstringAfterBuiltInTest
     [TestMethod]
     public void ShouldEvaluateSubstringAfterBuiltInWithRightArgumentEmptySTR()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Z");
         antecedentResults.AddRow(["", "attoo"]);
@@ -195,7 +195,7 @@ public class SWRLSubstringAfterBuiltInTest
             new SWRLLiteralArgument(RDFPlainLiteral.Empty),
             new SWRLVariableArgument(new RDFVariable("?Z")));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -207,7 +207,7 @@ public class SWRLSubstringAfterBuiltInTest
     [TestMethod]
     public void ShouldEvaluateSubstringAfterBuiltInWithRightArgumentSEP()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(["o", "tattoo"]);
@@ -218,7 +218,7 @@ public class SWRLSubstringAfterBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLLiteralArgument(new RDFTypedLiteral("atto", RDFModelEnums.RDFDatatypes.XSD_STRING)));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
@@ -232,7 +232,7 @@ public class SWRLSubstringAfterBuiltInTest
     [TestMethod]
     public void ShouldEvaluateSubstringAfterBuiltInWithRightArgumentEmptySEP()
     {
-        OWLTable antecedentResults = new OWLTable();
+        RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
         antecedentResults.AddRow(["", "tattoo"]);
@@ -243,7 +243,7 @@ public class SWRLSubstringAfterBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLLiteralArgument(new RDFTypedLiteral("", RDFModelEnums.RDFDatatypes.XSD_STRING)));
 
-        OWLTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
