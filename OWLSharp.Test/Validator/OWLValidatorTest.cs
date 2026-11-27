@@ -409,6 +409,32 @@ public class OWLValidatorTest
     }
 
     [TestMethod]
+    public async Task ShouldAnalyzeObjectPropertyChainWithDefaultValidatorAsync()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")))
+            ],
+            ObjectPropertyAxioms = [
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectPropertyChain([
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother"))]),
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle")))
+            ]
+        };
+        //Every rule runs next to the chain: the top and bottom analysis walks the super properties of each property
+        OWLValidatorReport report = await OWLValidator.Default.ApplyToOntologyAsync(ontology);
+
+        //A regular chain on its own breaks no rule
+        Assert.IsTrue(report.IsConsistent);
+        Assert.IsTrue(report.Issues.TrueForAll(iss => !string.Equals(iss.RuleName, OWLObjectPropertyChainAnalysis.rulename)));
+    }
+
+    [TestMethod]
     public async Task ShouldAnalyzeObjectPropertyChainAsync()
     {
         OWLOntology ontology = new OWLOntology

@@ -219,6 +219,27 @@ public class OWLObjectPropertyAxiomHelperTest
     }
 
     [TestMethod]
+    public void ShouldGetSuperObjectPropertiesOfIgnoringPropertyChains()
+    {
+        //A chain axiom sits next to a plain one: only the plain one speaks of the super properties of a single property
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectPropertyChain([ new OWLObjectProperty(new RDFResource("ex:hasFather")), new OWLObjectProperty(new RDFResource("ex:hasBrother")) ]),
+                    new OWLObjectProperty(new RDFResource("ex:hasUncle"))),
+                new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:hasFather")), new OWLObjectProperty(new RDFResource("ex:hasParent")))
+            ]
+        };
+
+        //The father is a parent, while the chain does not make the father an uncle
+        List<OWLObjectPropertyExpression> superObjectPropertiesOfHasFather = ontology.GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:hasFather")));
+        Assert.HasCount(1, superObjectPropertiesOfHasFather);
+        Assert.IsTrue(ontology.CheckIsSuperObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:hasParent")), new OWLObjectProperty(new RDFResource("ex:hasFather"))));
+        Assert.IsFalse(ontology.CheckIsSuperObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:hasUncle")), new OWLObjectProperty(new RDFResource("ex:hasFather"))));
+    }
+
+    [TestMethod]
     public void ShouldGetSuperObjectPropertiesOfWithEquivalentObjectPropertiesDiscovery()
     {
         OWLOntology ontology = new OWLOntology

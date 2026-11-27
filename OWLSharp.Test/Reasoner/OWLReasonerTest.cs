@@ -771,6 +771,47 @@ public class OWLReasonerTest
     }
 
     [TestMethod]
+    public async Task ShouldEntailObjectPropertyChainWithDefaultReasonerAsync()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Aebe"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jish"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
+            ],
+            ObjectPropertyAxioms = [
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectPropertyChain([
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")) ]),
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle")))
+            ],
+            AssertionAxioms = [
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Aebe")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jish"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jish")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
+            ]
+        };
+        //Every rule runs next to the chain: the sub property rules must not stumble on an axiom with no single sub property
+        List<OWLInference> inferences = (await OWLReasoner.Default.ApplyToOntologyAsync(ontology)).Inferences;
+
+        Assert.IsTrue(inferences.Any(i => string.Equals(i.RuleName, OWLFactObjectPropertyChainEntailment.rulename)
+                                          && i.Axiom is OWLObjectPropertyAssertion inf
+                                          && string.Equals(inf.ObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasUncle")
+                                          && string.Equals(inf.SourceIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Aebe")
+                                          && string.Equals(inf.TargetIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/John")));
+    }
+
+    [TestMethod]
     public async Task ShouldEntailObjectPropertyDomainAsync()
     {
         OWLOntology ontology = new OWLOntology

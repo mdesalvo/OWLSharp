@@ -133,7 +133,8 @@ namespace OWLSharp.Ontology
                 #endregion
 
                 #region Discovery
-                foreach (OWLSubObjectPropertyOf axiom in axioms.Where(ax => ax.SubObjectPropertyExpression.GetIRI().Equals(objPropExprIRI)))
+                //A property chain axiom has no single sub property, so it says nothing about the super properties of one property
+                foreach (OWLSubObjectPropertyOf axiom in axioms.Where(ax => ax.SubObjectPropertyExpression != null && ax.SubObjectPropertyExpression.GetIRI().Equals(objPropExprIRI)))
                     foundSuperObjPropExprs.Add(axiom.SuperObjectPropertyExpression);
 
                 //SubObjectPropertyOf(P1,P2) ^ SubObjectPropertyOf(P2,P3) -> SubObjectPropertyOf(P1,P3)
