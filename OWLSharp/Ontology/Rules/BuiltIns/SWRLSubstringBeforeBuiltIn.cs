@@ -45,9 +45,9 @@ namespace OWLSharp.Ontology
             if (sourceValue == null || separatorValue == null)
                 return null;
 
-            //The text before the first separator is the result: the whole source is kept when the separator does not occur
+            //The text before the first separator is the result, as in XPath fn:substring-before: it is empty when the separator does not occur
             int separatorIndex = sourceValue.IndexOf(separatorValue, StringComparison.Ordinal);
-            return new RDFPlainLiteral(separatorIndex == -1 ? sourceValue : sourceValue.Substring(0, separatorIndex));
+            return new RDFPlainLiteral(separatorIndex == -1 ? string.Empty : sourceValue.Substring(0, separatorIndex));
         }
         #endregion
     }
