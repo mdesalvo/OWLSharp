@@ -1078,9 +1078,7 @@ namespace OWLSharp.Ontology
                                 .AddPattern(new RDFPattern(new RDFVariable("?NASN"), RDFVocabulary.OWL.ASSERTION_PROPERTY, new RDFVariable("?OBJP")))
                                 .AddPattern(new RDFPattern(new RDFVariable("?NASN"), RDFVocabulary.OWL.TARGET_INDIVIDUAL, new RDFVariable("?TIDV")))
                                 .AddPattern(new RDFPattern(new RDFVariable("?OBJP"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
-                                .AddFilter(new RDFFilter(new RDFIsUriExpression(new RDFVariable("?SIDV"))))
-                                .AddFilter(new RDFFilter(new RDFIsUriExpression(new RDFVariable("?OBJP"))))
-                                .AddFilter(new RDFFilter(new RDFIsUriExpression(new RDFVariable("?TIDV")))));
+                                .AddFilter(new RDFFilter(new RDFIsUriExpression(new RDFVariable("?OBJP")))));
                         RDFSelectQueryResult result = query.ApplyToGraph(graph);
                         foreach (DataRow resultRow in result.SelectResults.Rows)
                         {
@@ -1147,8 +1145,6 @@ namespace OWLSharp.Ontology
                                         .Union(new RDFPattern(new RDFVariable("?CLS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS))
                                         .Union(new RDFPattern(new RDFVariable("?CLS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DEPRECATED_CLASS))
                                         .Union(new RDFPattern(new RDFVariable("?CLS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION)))
-                                .AddFilter(new RDFFilter(new RDFIsUriExpression(new RDFVariable("?IDV"))))
-                                .AddFilter(new RDFFilter(new RDFIsUriExpression(new RDFVariable("?CLS"))))
                                 .AddFilter(new RDFFilter(new RDFNotExpression(new RDFSameTermExpression(new RDFVariable("?IDV"), new RDFVariable("?CLS")))))
                                 .AddFilter(new RDFFilter(new RDFNotExpression(new RDFInExpression(new RDFVariable("?CLS"), new List<RDFPatternMember> {
                                     RDFVocabulary.RDF.LIST, RDFVocabulary.RDFS.CLASS, RDFVocabulary.OWL.CLASS, RDFVocabulary.OWL.DEPRECATED_CLASS, RDFVocabulary.OWL.RESTRICTION })))));
@@ -1180,7 +1176,6 @@ namespace OWLSharp.Ontology
                                 .AddPattern(new RDFPattern(new RDFVariable("?NASN"), RDFVocabulary.OWL.ASSERTION_PROPERTY, new RDFVariable("?DTP")))
                                 .AddPattern(new RDFPattern(new RDFVariable("?NASN"), RDFVocabulary.OWL.TARGET_VALUE, new RDFVariable("?TVAL")))
                                 .AddPattern(new RDFPattern(new RDFVariable("?DTP"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY))
-                                .AddFilter(new RDFFilter(new RDFIsUriExpression(new RDFVariable("?SIDV"))))
                                 .AddFilter(new RDFFilter(new RDFIsUriExpression(new RDFVariable("?DTP"))))
                                 .AddFilter(new RDFFilter(new RDFIsLiteralExpression(new RDFVariable("?TVAL")))));
                         RDFSelectQueryResult result = query.ApplyToGraph(graph);
