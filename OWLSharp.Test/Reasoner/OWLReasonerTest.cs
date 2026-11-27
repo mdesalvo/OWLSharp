@@ -771,6 +771,54 @@ public class OWLReasonerTest
     }
 
     [TestMethod]
+    public async Task ShouldReachFixpointBeyondDefaultCapWhenForcingRLConvergenceAsync()
+    {
+        //Four cascading property chains: each one needs the assertion entailed by the previous one, so the last link needs five Fact iterations.
+        //The declared class makes the Schema phase entail SubClassOf(ex:Person,owl:Thing), which the RL grammar would reject as an axiom
+        OWLObjectProperty step = new OWLObjectProperty(new RDFResource("ex:step"));
+        OWLObjectProperty reach1 = new OWLObjectProperty(new RDFResource("ex:reach1"));
+        OWLObjectProperty reach2 = new OWLObjectProperty(new RDFResource("ex:reach2"));
+        OWLObjectProperty reach3 = new OWLObjectProperty(new RDFResource("ex:reach3"));
+        OWLObjectProperty reach4 = new OWLObjectProperty(new RDFResource("ex:reach4"));
+        OWLObjectProperty reach5 = new OWLObjectProperty(new RDFResource("ex:reach5"));
+        OWLNamedIndividual[] stops = Enumerable.Range(0, 6).Select(i => new OWLNamedIndividual(new RDFResource($"ex:stop{i}"))).ToArray();
+        OWLOntology BuildOntology() => new OWLOntology
+        {
+            DeclarationAxioms = [ new OWLDeclaration(new OWLClass(new RDFResource("ex:Person"))) ],
+            ObjectPropertyAxioms = [
+                new OWLSubObjectPropertyOf(new OWLObjectPropertyChain([reach1, step]), reach2),
+                new OWLSubObjectPropertyOf(new OWLObjectPropertyChain([reach2, step]), reach3),
+                new OWLSubObjectPropertyOf(new OWLObjectPropertyChain([reach3, step]), reach4),
+                new OWLSubObjectPropertyOf(new OWLObjectPropertyChain([reach4, step]), reach5)
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Person")), stops[0]),
+                new OWLObjectPropertyAssertion(reach1, stops[0], stops[1]),
+                new OWLObjectPropertyAssertion(step, stops[1], stops[2]),
+                new OWLObjectPropertyAssertion(step, stops[2], stops[3]),
+                new OWLObjectPropertyAssertion(step, stops[3], stops[4]),
+                new OWLObjectPropertyAssertion(step, stops[4], stops[5])
+            ]
+        };
+        bool HasLastLink(OWLReasonerReport report) => report.Inferences.Any(inf => inf.Axiom is OWLObjectPropertyAssertion asn
+                                                                                  && asn.ObjectPropertyExpression.GetIRI().Equals(reach5.GetIRI())
+                                                                                  && asn.SourceIndividualExpression.GetIRI().Equals(stops[0].GetIRI())
+                                                                                  && asn.TargetIndividualExpression.GetIRI().Equals(stops[5].GetIRI()));
+
+        //The ontology is written in OWL2 RL, so forcing RL convergence lifts the cap: the reasoner reaches the last link and the fixpoint
+        OWLOntology forcedOntology = BuildOntology();
+        Assert.IsTrue((await forcedOntology.CheckProfileAsync(OWLEnums.OWLProfiles.RL)).IsCompliant);
+        OWLReasonerReport forcedReport = await OWLReasoner.Default.ApplyToOntologyAsync(forcedOntology, new OWLReasonerOptions { ForceRLFixpointConvergence = true });
+        Assert.IsTrue(forcedReport.ReachedFixpoint);
+        Assert.IsTrue(HasLastLink(forcedReport));
+
+        //Without forcing, the default cap of 3 iterations stops before the last link
+        OWLReasonerReport cappedReport = await OWLReasoner.Default.ApplyToOntologyAsync(BuildOntology());
+        Assert.IsFalse(cappedReport.ReachedFixpoint);
+        Assert.IsFalse(HasLastLink(cappedReport));
+    }
+
+    [TestMethod]
     public async Task ShouldEntailObjectPropertyChainWithDefaultReasonerAsync()
     {
         OWLOntology ontology = new OWLOntology

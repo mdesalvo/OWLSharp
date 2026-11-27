@@ -138,11 +138,12 @@ public class SWRLSubstringBeforeBuiltInTest
         Assert.IsTrue(string.Equals((builtinResults3.Rows[0][0] ?? string.Empty), "t"));
         Assert.IsTrue(string.Equals((builtinResults3.Rows[0][1] ?? string.Empty), "tattoo"));
         Assert.IsTrue(string.Equals((builtinResults3.Rows[0][2] ?? string.Empty), "attoo"));
-        Assert.IsTrue(string.Equals((builtinResults3.Rows[0][3] ?? string.Empty), "t"));
+        //The separator never occurs in the source: as in XPath fn:substring-before the result is the zero-length string
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[0][3] ?? string.Empty), ""));
         Assert.IsTrue(string.Equals((builtinResults3.Rows[1][0] ?? string.Empty), "http://example.org/"));
         Assert.IsTrue(string.Equals((builtinResults3.Rows[1][1] ?? string.Empty), "http://example.org/test"));
         Assert.IsTrue(string.Equals((builtinResults3.Rows[1][2] ?? string.Empty), "test"));
-        Assert.IsTrue(string.Equals((builtinResults3.Rows[1][3] ?? string.Empty), "http://example.org/"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[1][3] ?? string.Empty), ""));
 
         //Test exception on unknown builtIn
         Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLBuiltIn
@@ -256,6 +257,29 @@ public class SWRLSubstringBeforeBuiltInTest
         Assert.HasCount(1, builtinResults.Rows);
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), ""));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "tattoo"));
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateSubstringBeforeBuiltInWithSeparatorNotOccurring()
+    {
+        //A separator that does not occur in the source leaves nothing before it, as in XPath fn:substring-before
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(["Vallerosa"]);
+        antecedentResults.AddRow(["Valle Rosa"]);
+
+        SWRLBuiltIn builtin = SWRLBuiltIn.SubstringBefore(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLLiteralArgument(new RDFPlainLiteral(" ")));
+
+        //The first variable is bound to the text before the first space: empty when the source has no space
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+        Assert.HasCount(2, builtinResults.Columns);
+        Assert.HasCount(2, builtinResults.Rows);
+        Assert.AreEqual("", builtinResults.Rows[0]["?X"]);
+        Assert.AreEqual("Valle", builtinResults.Rows[1]["?X"]);
     }
 
     [TestMethod]

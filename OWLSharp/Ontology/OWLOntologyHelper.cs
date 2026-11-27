@@ -537,13 +537,8 @@ namespace OWLSharp.Ontology
                                     OWLDisjointObjectProperties disjointObjectProperties = new OWLDisjointObjectProperties {
                                         ObjectPropertyExpressions = adjpMembers };
 
-                                    LoadIRIAnnotations(ont, new List<RDFResource> {
-                                        RDFVocabulary.OWL.DEPRECATED,
-                                        RDFVocabulary.RDFS.COMMENT,
-                                        RDFVocabulary.RDFS.LABEL,
-                                        RDFVocabulary.RDFS.SEE_ALSO,
-                                        RDFVocabulary.RDFS.IS_DEFINED_BY
-                                    }, (RDFResource)allDisjointPropertiesTriple.Subject, annAxiomsGraph, out List<OWLAnnotation> adjpAnnotations);
+                                    //The axiom is annotated by the built-in annotation properties and by the declared ones, which the loader appends to its own copy
+                                    LoadIRIAnnotations(ont, new List<RDFResource>(BuiltInAnnotationProperties), (RDFResource)allDisjointPropertiesTriple.Subject, annAxiomsGraph, out List<OWLAnnotation> adjpAnnotations);
                                     disjointObjectProperties.Annotations = adjpAnnotations;
 
                                     ont.ObjectPropertyAxioms.Add(disjointObjectProperties);
@@ -705,13 +700,8 @@ namespace OWLSharp.Ontology
                                     OWLDisjointDataProperties disjointDataProperties = new OWLDisjointDataProperties {
                                         DataProperties = adjpMembers };
 
-                                    LoadIRIAnnotations(ont, new List<RDFResource> {
-                                        RDFVocabulary.OWL.DEPRECATED,
-                                        RDFVocabulary.RDFS.COMMENT,
-                                        RDFVocabulary.RDFS.LABEL,
-                                        RDFVocabulary.RDFS.SEE_ALSO,
-                                        RDFVocabulary.RDFS.IS_DEFINED_BY
-                                    }, (RDFResource)allDisjointPropertiesTriple.Subject, annAxiomsGraph, out List<OWLAnnotation> adjpAnnotations);
+                                    //The axiom is annotated by the built-in annotation properties and by the declared ones, which the loader appends to its own copy
+                                    LoadIRIAnnotations(ont, new List<RDFResource>(BuiltInAnnotationProperties), (RDFResource)allDisjointPropertiesTriple.Subject, annAxiomsGraph, out List<OWLAnnotation> adjpAnnotations);
                                     disjointDataProperties.Annotations = adjpAnnotations;
 
                                     ont.DataPropertyAxioms.Add(disjointDataProperties);
@@ -850,13 +840,8 @@ namespace OWLSharp.Ontology
                                     OWLDisjointClasses disjointClasses = new OWLDisjointClasses {
                                         ClassExpressions = adjcMembers };
 
-                                    LoadIRIAnnotations(ont, new List<RDFResource> {
-                                        RDFVocabulary.OWL.DEPRECATED,
-                                        RDFVocabulary.RDFS.COMMENT,
-                                        RDFVocabulary.RDFS.LABEL,
-                                        RDFVocabulary.RDFS.SEE_ALSO,
-                                        RDFVocabulary.RDFS.IS_DEFINED_BY
-                                    }, (RDFResource)allDisjointClassesTriple.Subject, annAxiomsGraph, out List<OWLAnnotation> adjcAnnotations);
+                                    //The axiom is annotated by the built-in annotation properties and by the declared ones, which the loader appends to its own copy
+                                    LoadIRIAnnotations(ont, new List<RDFResource>(BuiltInAnnotationProperties), (RDFResource)allDisjointClassesTriple.Subject, annAxiomsGraph, out List<OWLAnnotation> adjcAnnotations);
                                     disjointClasses.Annotations = adjcAnnotations;
 
                                     ont.ClassAxioms.Add(disjointClasses);
@@ -1004,13 +989,8 @@ namespace OWLSharp.Ontology
                                     OWLDifferentIndividuals differentIndividuals = new OWLDifferentIndividuals {
                                         IndividualExpressions = adiffMembers };
 
-                                    LoadIRIAnnotations(ont, new List<RDFResource> {
-                                        RDFVocabulary.OWL.DEPRECATED,
-                                        RDFVocabulary.RDFS.COMMENT,
-                                        RDFVocabulary.RDFS.LABEL,
-                                        RDFVocabulary.RDFS.SEE_ALSO,
-                                        RDFVocabulary.RDFS.IS_DEFINED_BY
-                                    }, (RDFResource)allDifferentTriple.Subject, annAxiomsGraph, out List<OWLAnnotation> adjpAnnotations);
+                                    //The axiom is annotated by the built-in annotation properties and by the declared ones, which the loader appends to its own copy
+                                    LoadIRIAnnotations(ont, new List<RDFResource>(BuiltInAnnotationProperties), (RDFResource)allDifferentTriple.Subject, annAxiomsGraph, out List<OWLAnnotation> adjpAnnotations);
                                     differentIndividuals.Annotations = adjpAnnotations;
 
                                     ont.AssertionAxioms.Add(differentIndividuals);
@@ -1106,13 +1086,8 @@ namespace OWLSharp.Ontology
                                     TargetIndividualExpression = rightIE
                                 };
 
-                                LoadIRIAnnotations(ont, new List<RDFResource> {
-                                        RDFVocabulary.OWL.DEPRECATED,
-                                        RDFVocabulary.RDFS.COMMENT,
-                                        RDFVocabulary.RDFS.LABEL,
-                                        RDFVocabulary.RDFS.SEE_ALSO,
-                                        RDFVocabulary.RDFS.IS_DEFINED_BY
-                                    }, axiomIRI, annAxiomsGraph, out List<OWLAnnotation> nasnAnnotations);
+                                //The axiom is annotated by the built-in annotation properties and by the declared ones, which the loader appends to its own copy
+                                LoadIRIAnnotations(ont, new List<RDFResource>(BuiltInAnnotationProperties), axiomIRI, annAxiomsGraph, out List<OWLAnnotation> nasnAnnotations);
                                 negObjPropAsn.Annotations = nasnAnnotations;
 
                                 ont.AssertionAxioms.Add(negObjPropAsn);
@@ -1205,13 +1180,8 @@ namespace OWLSharp.Ontology
                                     Literal = litVal
                                 };
 
-                                LoadIRIAnnotations(ont, new List<RDFResource> {
-                                    RDFVocabulary.OWL.DEPRECATED,
-                                    RDFVocabulary.RDFS.COMMENT,
-                                    RDFVocabulary.RDFS.LABEL,
-                                    RDFVocabulary.RDFS.SEE_ALSO,
-                                    RDFVocabulary.RDFS.IS_DEFINED_BY
-                                }, axiomIRI, annAxiomsGraph, out List<OWLAnnotation> nasnAnnotations);
+                                //The axiom is annotated by the built-in annotation properties and by the declared ones, which the loader appends to its own copy
+                                LoadIRIAnnotations(ont, new List<RDFResource>(BuiltInAnnotationProperties), axiomIRI, annAxiomsGraph, out List<OWLAnnotation> nasnAnnotations);
                                 negDtPropAsn.Annotations = nasnAnnotations;
 
                                 ont.AssertionAxioms.Add(negDtPropAsn);
