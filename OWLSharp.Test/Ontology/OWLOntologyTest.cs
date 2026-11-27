@@ -2025,6 +2025,77 @@ public class OWLOntologyTest
     }
 
     [TestMethod]
+    public async Task ShouldReadBuiltInAnnotationAssertionsWithoutDeclarationFromGraphAsync()
+    {
+        //A vocabulary using rdfs:label, rdfs:comment and rdfs:seeAlso without ever declaring them as annotation properties
+        RDFGraph graph = new RDFGraph();
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:Wine"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:Wine"), RDFVocabulary.RDFS.LABEL, new RDFPlainLiteral("Wine", "en")));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:Wine"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("A wine", "en")));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:producedBy"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:producedBy"), RDFVocabulary.RDFS.LABEL, new RDFPlainLiteral("produced by", "en")));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:rosso"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:rosso"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:page")));
+
+        //The built-in annotation properties are implicitly declared, so their assertions must be read anyway
+        OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+        Assert.IsNotNull(ontology);
+        Assert.HasCount(4, ontology.AnnotationAxioms);
+        Assert.IsTrue(ontology.AnnotationAxioms.TrueForAll(ax => ax is OWLAnnotationAssertion));
+        Assert.AreEqual(1, ontology.AnnotationAxioms.OfType<OWLAnnotationAssertion>().Count(asn => asn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.LABEL)
+                                                                                                   && string.Equals(asn.SubjectIRI, "ex:Wine", StringComparison.Ordinal)
+                                                                                                   && asn.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("Wine", "en"))));
+        Assert.AreEqual(1, ontology.AnnotationAxioms.OfType<OWLAnnotationAssertion>().Count(asn => asn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                                                                                                   && string.Equals(asn.SubjectIRI, "ex:Wine", StringComparison.Ordinal)
+                                                                                                   && asn.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("A wine", "en"))));
+        Assert.AreEqual(1, ontology.AnnotationAxioms.OfType<OWLAnnotationAssertion>().Count(asn => asn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.LABEL)
+                                                                                                   && string.Equals(asn.SubjectIRI, "ex:producedBy", StringComparison.Ordinal)
+                                                                                                   && asn.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("produced by", "en"))));
+        Assert.AreEqual(1, ontology.AnnotationAxioms.OfType<OWLAnnotationAssertion>().Count(asn => asn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.SEE_ALSO)
+                                                                                                   && string.Equals(asn.SubjectIRI, "ex:rosso", StringComparison.Ordinal)
+                                                                                                   && string.Equals(asn.ValueIRI, "ex:page", StringComparison.Ordinal)));
+        //The implicit declarations stay implicit: only the class, the object property and the individual are declared
+        Assert.HasCount(3, ontology.DeclarationAxioms);
+    }
+
+    [TestMethod]
+    public async Task ShouldNotDuplicateDeclaredBuiltInAnnotationAssertionsFromGraphAsync()
+    {
+        //A vocabulary that explicitly declares rdfs:label, which is also one of the implicitly declared built-in annotation properties
+        RDFGraph graph = new RDFGraph();
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:Wine"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:Wine"), RDFVocabulary.RDFS.LABEL, new RDFPlainLiteral("Wine", "en")));
+        await graph.AddTripleAsync(new RDFTriple(RDFVocabulary.RDFS.LABEL, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY));
+
+        //The assertion of the declared built-in must be read once only
+        OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+        Assert.IsNotNull(ontology);
+        Assert.HasCount(1, ontology.AnnotationAxioms.OfType<OWLAnnotationAssertion>().ToList());
+    }
+
+    [TestMethod]
+    public async Task ShouldNotDuplicateDeprecatedClassAnnotationAssertionFromGraphAsync()
+    {
+        //A deprecated class stated both through owl:DeprecatedClass and through the owl:deprecated annotation
+        RDFGraph graph = new RDFGraph();
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:OldWine"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:OldWine"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DEPRECATED_CLASS));
+        await graph.AddTripleAsync(new RDFTriple(new RDFResource("ex:OldWine"), RDFVocabulary.OWL.DEPRECATED, new RDFTypedLiteral("true", RDFModelEnums.RDFDatatypes.XSD_BOOLEAN)));
+
+        //The deprecation derived from owl:DeprecatedClass and the one read from the graph are the same assertion
+        OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+        Assert.IsNotNull(ontology);
+        Assert.AreEqual(1, ontology.AnnotationAxioms.OfType<OWLAnnotationAssertion>().Count(asn => asn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.DEPRECATED)
+                                                                                                   && string.Equals(asn.SubjectIRI, "ex:OldWine", StringComparison.Ordinal)));
+    }
+
+    [TestMethod]
     public async Task ShouldReadOntologyAnnotationsFromGraphAsync()
     {
         RDFGraph graph = new RDFGraph();
@@ -5810,7 +5881,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology);
         Assert.AreEqual(RDFVocabulary.SHACL.BASE_URI, ontology.IRI);
         Assert.HasCount(2, ontology.Annotations);
-        Assert.IsEmpty(ontology.AnnotationAxioms);
+        Assert.HasCount(129, ontology.AnnotationAxioms);
         Assert.HasCount(109, ontology.AssertionAxioms);
         Assert.HasCount(37, ontology.ClassAxioms);
         Assert.IsEmpty(ontology.DataPropertyAxioms);

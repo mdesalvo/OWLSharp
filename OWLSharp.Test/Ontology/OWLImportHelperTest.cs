@@ -35,7 +35,7 @@ public class OWLImportHelperTest
 
         Assert.HasCount(1, ontology.Imports);
         Assert.IsTrue(string.Equals(ontology.Imports.Single().IRI, "http://www.w3.org/2004/02/skos/core"));
-        Assert.HasCount(51, ontology.AnnotationAxioms);
+        Assert.HasCount(128, ontology.AnnotationAxioms);
         Assert.IsTrue(ontology.AnnotationAxioms.TrueForAll(ax => ax.IsImport));
         Assert.HasCount(4, ontology.ClassAxioms);
         Assert.IsTrue(ontology.ClassAxioms.TrueForAll(ax => ax.IsImport));
@@ -68,7 +68,7 @@ public class OWLImportHelperTest
         await ontology.ResolveImportsAsync();
 
         Assert.HasCount(3, ontology.Imports);
-        Assert.HasCount(153, ontology.AnnotationAxioms);
+        Assert.HasCount(758, ontology.AnnotationAxioms);
         Assert.IsTrue(ontology.AnnotationAxioms.TrueForAll(ax => ax.IsImport));
         Assert.HasCount(77, ontology.ClassAxioms);
         Assert.IsTrue(ontology.ClassAxioms.TrueForAll(ax => ax.IsImport));

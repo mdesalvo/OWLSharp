@@ -31,6 +31,24 @@ namespace OWLSharp.Ontology
     /// </summary>
     public static class OWLOntologyHelper
     {
+        #region Fields
+        /// <summary>
+        /// The annotation properties built into OWL2, which every ontology declares implicitly
+        /// </summary>
+        /// <remarks>OWL2 Structural Specification, section 5.5 lists them and section 5.8 (Table 5) declares them in every ontology.</remarks>
+        internal static readonly RDFResource[] BuiltInAnnotationProperties = {
+            RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH,
+            RDFVocabulary.OWL.INCOMPATIBLE_WITH,
+            RDFVocabulary.OWL.PRIOR_VERSION,
+            RDFVocabulary.OWL.VERSION_INFO,
+            RDFVocabulary.OWL.DEPRECATED,
+            RDFVocabulary.RDFS.COMMENT,
+            RDFVocabulary.RDFS.LABEL,
+            RDFVocabulary.RDFS.SEE_ALSO,
+            RDFVocabulary.RDFS.IS_DEFINED_BY
+        };
+        #endregion
+
         #region Methods
         /// <summary>
         /// Applies the given SPARQL ASK query to the given ontology, contextually executing the given OWL reasoner for inference materialization
@@ -243,17 +261,8 @@ namespace OWLSharp.Ontology
                     }
                     void LoadOntologyAnnotations(OWLOntology ont, RDFGraph annAxiomsGraph)
                     {
-                        LoadIRIAnnotations(ont, new List<RDFResource> {
-                                RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH,
-                                RDFVocabulary.OWL.INCOMPATIBLE_WITH,
-                                RDFVocabulary.OWL.PRIOR_VERSION,
-                                RDFVocabulary.OWL.VERSION_INFO,
-                                RDFVocabulary.OWL.DEPRECATED,
-                                RDFVocabulary.RDFS.COMMENT,
-                                RDFVocabulary.RDFS.LABEL,
-                                RDFVocabulary.RDFS.SEE_ALSO,
-                                RDFVocabulary.RDFS.IS_DEFINED_BY
-                            }, new RDFResource(ont.IRI), annAxiomsGraph, out List<OWLAnnotation> ontologyAnnotations);
+                        //The ontology is annotated by the built-in annotation properties and by the declared ones, which the loader appends to its own copy
+                        LoadIRIAnnotations(ont, new List<RDFResource>(BuiltInAnnotationProperties), new RDFResource(ont.IRI), annAxiomsGraph, out List<OWLAnnotation> ontologyAnnotations);
                         ont.Annotations = ontologyAnnotations;
                     }
 
@@ -1232,7 +1241,21 @@ namespace OWLSharp.Ontology
                                                                                             .ToList();
                         #endregion
 
-                        declaredAnnotationProperties.ForEach(annProp =>
+                        //The built-in annotation properties are implicitly declared in every OWL2 ontology:
+                        //the ones not declared in the graph still need their assertions read, but get no declaration axiom
+                        List<OWLAnnotationProperty> undeclaredBuiltInAnnotationProperties = BuiltInAnnotationProperties
+                            .Where(builtInIRI => !declaredAnnotationProperties.Any(declaredProp => declaredProp.GetIRI().Equals(builtInIRI)))
+                            .Select(builtInIRI => builtInIRI.ToEntity<OWLAnnotationProperty>())
+                            .ToList();
+
+                        //Annotation properties whose assertions are read: a built-in declared in the graph is iterated once only
+                        List<OWLAnnotationProperty> assertedAnnotationProperties = new List<OWLAnnotationProperty>(declaredAnnotationProperties);
+                        assertedAnnotationProperties.AddRange(undeclaredBuiltInAnnotationProperties);
+
+                        //Annotation axioms already present (such as the owl:deprecated ones derived from owl:DeprecatedClass) must not be asserted twice
+                        HashSet<string> knownAnnotationAxiomsXML = new HashSet<string>(ont.AnnotationAxioms.Select(annAxiom => annAxiom.GetXML()), StringComparer.Ordinal);
+
+                        assertedAnnotationProperties.ForEach(annProp =>
                         {
                             RDFResource annPropIRI = annProp.GetIRI();
                             RDFGraph annPropGraph = graph[p: annPropIRI];
@@ -1249,7 +1272,9 @@ namespace OWLSharp.Ontology
 
                                     LoadAxiomAnnotations(ont, clsAnnPropTriple, annAsn, annAxiomsGraph);
 
-                                    ont.AnnotationAxioms.Add(annAsn);
+                                    //The signature is taken once the axiom annotations are loaded: they are part of the assertion's identity
+                                    if (knownAnnotationAxiomsXML.Add(annAsn.GetXML()))
+                                        ont.AnnotationAxioms.Add(annAsn);
                                 }
                             });
 
@@ -1265,7 +1290,9 @@ namespace OWLSharp.Ontology
 
                                     LoadAxiomAnnotations(ont, dtAnnPropTriple, annAsn, annAxiomsGraph);
 
-                                    ont.AnnotationAxioms.Add(annAsn);
+                                    //Only the first occurrence of an identical assertion is kept
+                                    if (knownAnnotationAxiomsXML.Add(annAsn.GetXML()))
+                                        ont.AnnotationAxioms.Add(annAsn);
                                 }
                             });
 
@@ -1281,7 +1308,9 @@ namespace OWLSharp.Ontology
 
                                     LoadAxiomAnnotations(ont, opAnnPropTriple, annAsn, annAxiomsGraph);
 
-                                    ont.AnnotationAxioms.Add(annAsn);
+                                    //Only the first occurrence of an identical assertion is kept
+                                    if (knownAnnotationAxiomsXML.Add(annAsn.GetXML()))
+                                        ont.AnnotationAxioms.Add(annAsn);
                                 }
                             });
 
@@ -1297,7 +1326,9 @@ namespace OWLSharp.Ontology
 
                                     LoadAxiomAnnotations(ont, dpAnnPropTriple, annAsn, annAxiomsGraph);
 
-                                    ont.AnnotationAxioms.Add(annAsn);
+                                    //Only the first occurrence of an identical assertion is kept
+                                    if (knownAnnotationAxiomsXML.Add(annAsn.GetXML()))
+                                        ont.AnnotationAxioms.Add(annAsn);
                                 }
                             });
 
@@ -1313,7 +1344,9 @@ namespace OWLSharp.Ontology
 
                                     LoadAxiomAnnotations(ont, apAnnPropTriple, annAsn, annAxiomsGraph);
 
-                                    ont.AnnotationAxioms.Add(annAsn);
+                                    //Only the first occurrence of an identical assertion is kept
+                                    if (knownAnnotationAxiomsXML.Add(annAsn.GetXML()))
+                                        ont.AnnotationAxioms.Add(annAsn);
                                 }
                             });
 
@@ -1329,7 +1362,9 @@ namespace OWLSharp.Ontology
 
                                     LoadAxiomAnnotations(ont, idvAnnPropTriple, annAsn, annAxiomsGraph);
 
-                                    ont.AnnotationAxioms.Add(annAsn);
+                                    //Only the first occurrence of an identical assertion is kept
+                                    if (knownAnnotationAxiomsXML.Add(annAsn.GetXML()))
+                                        ont.AnnotationAxioms.Add(annAsn);
                                 }
                             });
                         });
