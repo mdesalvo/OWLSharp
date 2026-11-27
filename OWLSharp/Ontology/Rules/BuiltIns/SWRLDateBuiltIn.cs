@@ -40,110 +40,30 @@ namespace OWLSharp.Ontology
                 throw new ArgumentException("it requires exactly 5 arguments");
             #endregion
 
-            #region LeftArgument
-            RDFPatternMember leftPatternMember = null;
-            switch (builtInArguments[0])
-            {
-                case SWRLVariableArgument leftArgVar:
-                {
-                    #region Guards
-                    string leftArgVarName = leftArgVar.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(leftArgVarName))
-                        return true;
-                    #endregion
+            //An argument that no atom has bound never satisfies the built-in
+            RDFPatternMember leftPatternMember = SWRLHelper.GetArgumentValue(antecedentResultsRow, builtInArguments[0]);
+            if (leftPatternMember == null)
+                return false;
 
-                    leftPatternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[leftArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument leftArgLit:
-                    leftPatternMember = leftArgLit.GetLiteral();
-                    break;
-            }
-            #endregion
+            //An argument that no atom has bound never satisfies the built-in
+            RDFPatternMember rightPatternMemberYEAR = SWRLHelper.GetArgumentValue(antecedentResultsRow, builtInArguments[1]);
+            if (rightPatternMemberYEAR == null)
+                return false;
 
-            #region RightArgument (YEAR)
-            RDFPatternMember rightPatternMemberYEAR = null;
-            switch (builtInArguments[1])
-            {
-                case SWRLVariableArgument rightArgVarYEAR:
-                {
-                    #region Guards
-                    string rightArgVarName = rightArgVarYEAR.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(rightArgVarName))
-                        return true;
-                    #endregion
+            //An argument that no atom has bound never satisfies the built-in
+            RDFPatternMember rightPatternMemberMONTH = SWRLHelper.GetArgumentValue(antecedentResultsRow, builtInArguments[2]);
+            if (rightPatternMemberMONTH == null)
+                return false;
 
-                    rightPatternMemberYEAR = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[rightArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument rightArgLitYEAR:
-                    rightPatternMemberYEAR = rightArgLitYEAR.GetLiteral();
-                    break;
-            }
-            #endregion
+            //An argument that no atom has bound never satisfies the built-in
+            RDFPatternMember rightPatternMemberDAY = SWRLHelper.GetArgumentValue(antecedentResultsRow, builtInArguments[3]);
+            if (rightPatternMemberDAY == null)
+                return false;
 
-            #region RightArgument (MONTH)
-            RDFPatternMember rightPatternMemberMONTH = null;
-            switch (builtInArguments[2])
-            {
-                case SWRLVariableArgument rightArgVarMONTH:
-                {
-                    #region Guards
-                    string rightArgVarName = rightArgVarMONTH.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(rightArgVarName))
-                        return true;
-                    #endregion
-
-                    rightPatternMemberMONTH = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[rightArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument rightArgLitMONTH:
-                    rightPatternMemberMONTH = rightArgLitMONTH.GetLiteral();
-                    break;
-            }
-            #endregion
-
-            #region RightArgument (DAY)
-            RDFPatternMember rightPatternMemberDAY = null;
-            switch (builtInArguments[3])
-            {
-                case SWRLVariableArgument rightArgVarDAY:
-                {
-                    #region Guards
-                    string rightArgVarName = rightArgVarDAY.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(rightArgVarName))
-                        return true;
-                    #endregion
-
-                    rightPatternMemberDAY = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[rightArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument rightArgLitDAY:
-                    rightPatternMemberDAY = rightArgLitDAY.GetLiteral();
-                    break;
-            }
-            #endregion
-
-            #region RightArgument (TZ)
-            RDFPatternMember rightPatternMemberTZ = null;
-            switch (builtInArguments[4])
-            {
-                case SWRLVariableArgument rightArgVarTZ:
-                {
-                    #region Guards
-                    string rightArgVarName = rightArgVarTZ.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(rightArgVarName))
-                        return true;
-                    #endregion
-
-                    rightPatternMemberTZ = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[rightArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument rightArgLitTZ:
-                    rightPatternMemberTZ = rightArgLitTZ.GetLiteral();
-                    break;
-            }
-            #endregion
+            //An argument that no atom has bound never satisfies the built-in
+            RDFPatternMember rightPatternMemberTZ = SWRLHelper.GetArgumentValue(antecedentResultsRow, builtInArguments[4]);
+            if (rightPatternMemberTZ == null)
+                return false;
 
             //This is a datetime builtIn, so ensure to have information compatible with "date/datetime" semantic
             bool isDateTimeLeftPM = leftPatternMember is RDFTypedLiteral leftPMTLit

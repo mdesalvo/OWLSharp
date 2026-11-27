@@ -16,8 +16,9 @@
 
 using System.Collections.Generic;
 using System;
-using RDFSharp.Query;
+using System.Text;
 using RDFSharp.Model;
+using RDFSharp.Query;
 
 namespace OWLSharp.Ontology
 {
@@ -28,60 +29,31 @@ namespace OWLSharp.Ontology
     {
         #region Methods
         /// <summary>
-        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// Computes the concatenation of the arguments after the first
         /// </summary>
         /// <exception cref="ArgumentException"></exception>
-        internal static bool EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
+        internal static RDFLiteral EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
             if (builtInArguments?.Count < 2)
                 throw new ArgumentException("it requires at least 2 arguments");
             #endregion
 
-            #region Arguments
-            string leftValue = null, rightValue = null;
-            for (int i = 0; i < builtInArguments.Count; i++)
+            //The concatenation grows with every operand from the second argument on
+            StringBuilder concatenation = new StringBuilder();
+            for (int i = 1; i < builtInArguments.Count; i++)
             {
-                //Parse current argument
-                RDFPatternMember patternMember = null;
-                switch (builtInArguments[i])
-                {
-                    case SWRLVariableArgument argVar when antecedentResultsRow.HasColumn(argVar.GetVariable().ToString()):
-                        patternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[argVar.GetVariable().ToString()] ?? string.Empty));
-                        break;
-                    case SWRLLiteralArgument argLit:
-                        patternMember = argLit.GetLiteral();
-                        break;
-                    case SWRLIndividualArgument argIdv:
-                        patternMember = argIdv.GetResource();
-                        break;
-                }
+                //Only strings can be concatenated: an unbound or non-string operand leaves the result undefined
+                string operandValue = SWRLHelper.GetStringValue(SWRLHelper.GetArgumentValue(antecedentResultsRow, builtInArguments[i]));
+                if (operandValue == null)
+                    return null;
 
-                //This is a string builtIn, so ensure to have information compatible with "string" semantic
-                if (patternMember is RDFResource
-                     || patternMember is RDFPlainLiteral
-                     || (patternMember is RDFTypedLiteral pmTLit && pmTLit.HasStringDatatype()))
-                {
-                    string argValue = patternMember is RDFLiteral pmLit ? pmLit.Value : patternMember.ToString();
-
-                    //First argument concurs to the left value
-                    if (i == 0)
-                        leftValue = argValue;
-                    //Other arguments concur to the right value
-                    else if (rightValue == null)
-                        rightValue = argValue;
-                    else
-                        rightValue = string.Concat(rightValue, argValue);
-                }
-                //In case of type error just discard the current row
-                else
-                {
-                    return false;
-                }
+                //Operands are joined in the order of the arguments
+                concatenation.Append(operandValue);
             }
 
-            return string.Equals(leftValue, rightValue, StringComparison.Ordinal);
-            #endregion
+            //The concatenated text is a plain literal without language
+            return new RDFPlainLiteral(concatenation.ToString());
         }
         #endregion
     }

@@ -16,9 +16,8 @@
 
 using System.Collections.Generic;
 using System;
-using RDFSharp.Query;
 using RDFSharp.Model;
-using System.Globalization;
+using RDFSharp.Query;
 
 namespace OWLSharp.Ontology
 {
@@ -29,55 +28,39 @@ namespace OWLSharp.Ontology
     {
         #region Methods
         /// <summary>
-        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// Computes the second argument raised to the power of the third one
         /// </summary>
         /// <exception cref="ArgumentException"></exception>
-        internal static bool EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
+        internal static RDFLiteral EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
             if (builtInArguments?.Count != 3)
                 throw new ArgumentException("it requires exactly 3 arguments");
             #endregion
 
-            #region Arguments
-            double? leftValue = null, rightValue = null;
-            for (int i=0; i<builtInArguments.Count; i++)
-            {
-                //Parse current argument
-                RDFPatternMember patternMember = null;
-                switch (builtInArguments[i])
-                {
-                    case SWRLVariableArgument argVar when antecedentResultsRow.HasColumn(argVar.GetVariable().ToString()):
-                        patternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[argVar.GetVariable().ToString()] ?? string.Empty));
-                        break;
-                    case SWRLLiteralArgument argLit:
-                        patternMember = argLit.GetLiteral();
-                        break;
-                }
+            //Only numbers take part in the computation: an unbound or non-numeric operand leaves the result undefined
+            if (!SWRLHelper.TryGetNumericOperands(antecedentResultsRow, builtInArguments, out SWRLNumericFamily numericFamily, out decimal[] exactOperands, out double[] approximateOperands))
+                return null;
 
-                //Collect current argument
-                if (patternMember is RDFTypedLiteral typedLiteral
-                     && typedLiteral.HasDecimalDatatype()
-                     && double.TryParse(typedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double argValue))
+            //An integer base raised to a non-negative integer exponent stays an exact integer
+            if (numericFamily == SWRLNumericFamily.Integer && exactOperands[1] >= 0m)
+            {
+                //Square-and-multiply keeps the cost logarithmic in the exponent (beyond the decimal range the power overflows and the row is dropped)
+                decimal power = 1m, factor = exactOperands[0];
+                for (decimal exponent = exactOperands[1]; exponent > 0m; exponent = decimal.Truncate(exponent / 2m))
                 {
-                    //First argument concurs to the left value
-                    if (i == 0)
-                        leftValue = argValue;
-                    //Other arguments concur to the right value
-                    else if (rightValue == null)
-                        rightValue = argValue;
-                    else
-                        rightValue = Math.Pow(rightValue.Value, argValue);
+                    //An odd exponent takes the current factor into the power
+                    if (decimal.Remainder(exponent, 2m) == 1m)
+                        power *= factor;
+                    //The factor is squared only while exponent bits remain, so that a power within range never overflows on its last square
+                    if (exponent > 1m)
+                        factor *= factor;
                 }
-                //In case of type error just discard the current row
-                else
-                {
-                    return false;
-                }
+                return SWRLHelper.ToNumericLiteral(power, SWRLNumericFamily.Integer);
             }
 
-            return leftValue.HasValue && rightValue.HasValue && leftValue.Value == rightValue.Value;
-            #endregion
+            //A decimal or negative exponent, or a non-integer base, gives a power computed in double precision
+            return SWRLHelper.ToNumericLiteral(Math.Pow(approximateOperands[0], approximateOperands[1]));
         }
         #endregion
     }

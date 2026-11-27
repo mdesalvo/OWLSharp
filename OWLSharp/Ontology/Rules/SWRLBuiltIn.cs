@@ -97,6 +97,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#abs built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn Abs(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn
@@ -112,6 +113,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#add built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn Add(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn
@@ -123,6 +125,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#booleanNot built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn BooleanNot(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn
@@ -138,6 +141,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#ceiling built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn Ceiling(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn
@@ -183,6 +187,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#cos built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn Cos(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn
@@ -231,6 +236,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#divide built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn Divide(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn
@@ -272,6 +278,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#floor built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn Floor(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn
@@ -317,6 +324,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#integerDivide built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn IntegerDivide(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn
@@ -373,6 +381,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#lowercase built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn LowerCase(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn
@@ -399,6 +408,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#mod built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn Mod(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn
@@ -410,6 +420,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#multiply built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn Multiply(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn
@@ -421,6 +432,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#normalizeSpace built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn NormalizeSpace(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn
@@ -451,6 +463,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#pow built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn Pow(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn
@@ -462,6 +475,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#replace built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn Replace(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn
@@ -473,6 +487,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#round built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn Round(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn
@@ -488,6 +503,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#roundHalfToEven built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn RoundHalfToEven(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn
@@ -503,6 +519,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#sin built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn Sin(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn
@@ -533,6 +550,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#stringConcat built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn StringConcat(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn
@@ -559,6 +577,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#stringLength built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn StringLength(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn
@@ -574,6 +593,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#substring built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn Substring(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn
@@ -585,6 +605,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#substringAfter built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn SubstringAfter(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn
@@ -596,6 +617,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#substringBefore built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn SubstringBefore(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn
@@ -607,6 +629,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#subtract built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn Subtract(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn
@@ -618,6 +641,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#tan built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn Tan(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn
@@ -644,6 +668,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#unaryMinus built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn UnaryMinus(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn
@@ -659,6 +684,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#unaryPlus built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn UnaryPlus(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn
@@ -674,6 +700,7 @@ namespace OWLSharp.Ontology
         /// <summary>
         /// Builds a standard http://www.w3.org/2003/11/swrlb#upperCase built-in
         /// </summary>
+        /// <remarks>When the first argument is a variable bound by no atom, the built-in binds it to the computed value.</remarks>
         /// <exception cref="SWRLException"></exception>
         public static SWRLBuiltIn UpperCase(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn
@@ -756,6 +783,160 @@ namespace OWLSharp.Ontology
         {
             RDFTable filteredTable = antecedentResults.Clone();
 
+            //Binding built-ins compute their first argument from the others while predicate built-ins only test the row: the IRI selects the evaluator once for all rows
+            Func<RDFTableRow, List<SWRLArgument>, RDFLiteral> literalComputer = null;
+            Func<RDFTableRow, List<SWRLArgument>, bool> rowEvaluator = null;
+            //Custom built-ins (and unregistered IRIs) match no case: they are resolved row by row against the register
+            switch (IRI)
+            {
+                case "http://www.w3.org/2003/11/swrlb#abs":
+                    literalComputer = SWRLAbsBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#add":
+                    literalComputer = SWRLAddBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#booleanNot":
+                    literalComputer = SWRLBooleanNotBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#ceiling":
+                    literalComputer = SWRLCeilingBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#cos":
+                    literalComputer = SWRLCosBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#divide":
+                    literalComputer = SWRLDivideBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#floor":
+                    literalComputer = SWRLFloorBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#integerDivide":
+                    literalComputer = SWRLIntegerDivideBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#lowerCase":
+                    literalComputer = SWRLLowerCaseBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#mod":
+                    literalComputer = SWRLModBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#multiply":
+                    literalComputer = SWRLMultiplyBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#normalizeSpace":
+                    literalComputer = SWRLNormalizeSpaceBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#pow":
+                    literalComputer = SWRLPowBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#replace":
+                    literalComputer = SWRLReplaceBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#round":
+                    literalComputer = SWRLRoundBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#roundHalfToEven":
+                    literalComputer = SWRLRoundHalfToEvenBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#sin":
+                    literalComputer = SWRLSinBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#stringConcat":
+                    literalComputer = SWRLStringConcatBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#stringLength":
+                    literalComputer = SWRLStringLengthBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#substring":
+                    literalComputer = SWRLSubstringBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#substringAfter":
+                    literalComputer = SWRLSubstringAfterBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#substringBefore":
+                    literalComputer = SWRLSubstringBeforeBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#subtract":
+                    literalComputer = SWRLSubtractBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#tan":
+                    literalComputer = SWRLTanBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#unaryMinus":
+                    literalComputer = SWRLUnaryMinusBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#unaryPlus":
+                    literalComputer = SWRLUnaryPlusBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#upperCase":
+                    literalComputer = SWRLUpperCaseBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#contains":
+                    rowEvaluator = SWRLContainsBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#containsIgnoreCase":
+                    rowEvaluator = SWRLContainsIgnoreCaseBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#date":
+                    rowEvaluator = SWRLDateBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#dateTime":
+                    rowEvaluator = SWRLDateTimeBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#dayTimeDuration":
+                    rowEvaluator = SWRLDayTimeDurationBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#endsWith":
+                    rowEvaluator = SWRLEndsWithBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#equal":
+                    rowEvaluator = SWRLEqualBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#greaterThan":
+                    rowEvaluator = SWRLGreaterThanBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#greaterThanOrEqual":
+                    rowEvaluator = SWRLGreaterThanOrEqualBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#lessThan":
+                    rowEvaluator = SWRLLessThanBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#lessThanOrEqual":
+                    rowEvaluator = SWRLLessThanOrEqualBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#matches":
+                    rowEvaluator = SWRLMatchesBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#notEqual":
+                    rowEvaluator = SWRLNotEqualBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#startsWith":
+                    rowEvaluator = SWRLStartsWithBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase":
+                    rowEvaluator = SWRLStringEqualIgnoreCaseBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#time":
+                    rowEvaluator = SWRLTimeBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "http://www.w3.org/2003/11/swrlb#yearMonthDuration":
+                    rowEvaluator = SWRLYearMonthDurationBuiltIn.EvaluateOnAntecedent;
+                    break;
+                case "https://github.com/mdesalvo/OWLSharp#langMatches":
+                    rowEvaluator = SWRLLangMatchesBuiltIn.EvaluateOnAntecedent;
+                    break;
+            }
+
+            //A first variable bound by no previous atom receives the computed value in a new column
+            string bindingColumnName = null;
+            if (literalComputer != null
+                 && Arguments?.Count > 0
+                 && Arguments[0] is SWRLVariableArgument firstArgumentVariable
+                 && !antecedentResults.HasColumn(firstArgumentVariable.GetVariable().ToString()))
+            {
+                bindingColumnName = firstArgumentVariable.GetVariable().ToString();
+                filteredTable.AddColumn(bindingColumnName);
+            }
+
             //Custom built-ins expose a public DataRow-based evaluator function: this DataTable is materialized
             //lazily (at most once), only if a custom built-in is actually encountered while scanning the rows.
             DataTable lazyDataTableForCustomBuiltIns = null;
@@ -768,165 +949,48 @@ namespace OWLSharp.Ontology
                 try
                 {
                     bool keepRow;
-                    switch (IRI)
+                    RDFLiteral computedLiteral = null;
+                    if (literalComputer != null)
                     {
-                        case "http://www.w3.org/2003/11/swrlb#abs":
-                            keepRow = SWRLAbsBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#add":
-                            keepRow = SWRLAddBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#booleanNot":
-                            keepRow = SWRLBooleanNotBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#ceiling":
-                            keepRow = SWRLCeilingBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#contains":
-                            keepRow = SWRLContainsBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#containsIgnoreCase":
-                            keepRow = SWRLContainsIgnoreCaseBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#cos":
-                            keepRow = SWRLCosBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#date":
-                            keepRow = SWRLDateBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#dateTime":
-                            keepRow = SWRLDateTimeBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#dayTimeDuration":
-                            keepRow = SWRLDayTimeDurationBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#divide":
-                            keepRow = SWRLDivideBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#endsWith":
-                            keepRow = SWRLEndsWithBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#equal":
-                            keepRow = SWRLEqualBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#floor":
-                            keepRow = SWRLFloorBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#greaterThan":
-                            keepRow = SWRLGreaterThanBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#greaterThanOrEqual":
-                            keepRow = SWRLGreaterThanOrEqualBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#integerDivide":
-                            keepRow = SWRLIntegerDivideBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "https://github.com/mdesalvo/OWLSharp#langMatches":
-                            keepRow = SWRLLangMatchesBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#lessThan":
-                            keepRow = SWRLLessThanBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#lessThanOrEqual":
-                            keepRow = SWRLLessThanOrEqualBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#lowerCase":
-                            keepRow = SWRLLowerCaseBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#matches":
-                            keepRow = SWRLMatchesBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#mod":
-                            keepRow = SWRLModBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#multiply":
-                            keepRow = SWRLMultiplyBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#normalizeSpace":
-                            keepRow = SWRLNormalizeSpaceBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#notEqual":
-                            keepRow = SWRLNotEqualBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#pow":
-                            keepRow = SWRLPowBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#replace":
-                            keepRow = SWRLReplaceBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#round":
-                            keepRow = SWRLRoundBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#roundHalfToEven":
-                            keepRow = SWRLRoundHalfToEvenBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#sin":
-                            keepRow = SWRLSinBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#startsWith":
-                            keepRow = SWRLStartsWithBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#stringConcat":
-                            keepRow = SWRLStringConcatBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase":
-                            keepRow = SWRLStringEqualIgnoreCaseBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#stringLength":
-                            keepRow = SWRLStringLengthBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#substring":
-                            keepRow = SWRLSubstringBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#substringAfter":
-                            keepRow = SWRLSubstringAfterBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#substringBefore":
-                            keepRow = SWRLSubstringBeforeBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#subtract":
-                            keepRow = SWRLSubtractBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#tan":
-                            keepRow = SWRLTanBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#time":
-                            keepRow = SWRLTimeBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#unaryMinus":
-                            keepRow = SWRLUnaryMinusBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#unaryPlus":
-                            keepRow = SWRLUnaryPlusBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#upperCase":
-                            keepRow = SWRLUpperCaseBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        case "http://www.w3.org/2003/11/swrlb#yearMonthDuration":
-                            keepRow = SWRLYearMonthDurationBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
-                            break;
-                        default:
-                            SWRLBuiltIn customBuiltIn = SWRLBuiltInRegister.GetBuiltIn(IRI)
-                                                          ?? throw new NotImplementedException($"unregistered IRI {IRI}");
-                            //Assign the built-in arguments before evaluation
-                            customBuiltIn.Arguments = Arguments;
-                            //Custom built-ins are public API and evaluate against a DataRow: materialize the
-                            //antecedent results into a DataTable (once) so the corresponding row can be handed to it
-                            if (lazyDataTableForCustomBuiltIns == null)
-                                lazyDataTableForCustomBuiltIns = antecedentResults.ToDataTable();
-                            //Evaluate the built-in on the current row
-                            keepRow = customBuiltIn.EvaluatorFunction(lazyDataTableForCustomBuiltIns.Rows[rowIndex]);
-                            //Cleanup the built-in arguments after evaluation
-                            customBuiltIn.Arguments = null;
-                            break;
+                        //An undefined computation never satisfies the built-in
+                        computedLiteral = literalComputer(currentRow, Arguments);
+                        keepRow = computedLiteral != null;
+                        //Predicate mode also requires the first argument to hold the computed value, compared by value as SPARQL does: an unbound one never does
+                        if (keepRow && bindingColumnName == null)
+                        {
+                            RDFPatternMember firstPatternMember = SWRLHelper.GetArgumentValue(currentRow, Arguments[0]);
+                            keepRow = firstPatternMember != null && RDFQueryUtilities.CompareRDFPatternMembers(firstPatternMember, computedLiteral) == 0;
+                        }
+                    }
+                    else if (rowEvaluator != null)
+                    {
+                        keepRow = rowEvaluator(currentRow, Arguments);
+                    }
+                    else
+                    {
+                        SWRLBuiltIn customBuiltIn = SWRLBuiltInRegister.GetBuiltIn(IRI)
+                                                      ?? throw new NotImplementedException($"unregistered IRI {IRI}");
+                        //Assign the built-in arguments before evaluation
+                        customBuiltIn.Arguments = Arguments;
+                        //Custom built-ins are public API and evaluate against a DataRow: materialize the
+                        //antecedent results into a DataTable (once) so the corresponding row can be handed to it
+                        if (lazyDataTableForCustomBuiltIns == null)
+                            lazyDataTableForCustomBuiltIns = antecedentResults.ToDataTable();
+                        //Evaluate the built-in on the current row
+                        keepRow = customBuiltIn.EvaluatorFunction(lazyDataTableForCustomBuiltIns.Rows[rowIndex]);
+                        //Cleanup the built-in arguments after evaluation
+                        customBuiltIn.Arguments = null;
                     }
 
                     //If current row has satisfied the builtIn, keep it in the filtered result table
                     if (keepRow)
                     {
-                        string[] cells = new string[antecedentResults.ColumnsCount];
-                        for (int c = 0; c < cells.Length; c++)
+                        string[] cells = new string[filteredTable.ColumnsCount];
+                        for (int c = 0; c < antecedentResults.ColumnsCount; c++)
                             cells[c] = currentRow[c];
+                        //In binding mode the computed value fills the new column, which is the last one
+                        if (bindingColumnName != null)
+                            cells[cells.Length - 1] = computedLiteral.ToString();
                         filteredTable.AddRow(cells);
                     }
                 }

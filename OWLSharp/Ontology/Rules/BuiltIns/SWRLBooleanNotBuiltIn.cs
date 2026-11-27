@@ -16,8 +16,8 @@
 
 using System.Collections.Generic;
 using System;
-using RDFSharp.Query;
 using RDFSharp.Model;
+using RDFSharp.Query;
 
 namespace OWLSharp.Ontology
 {
@@ -28,69 +28,24 @@ namespace OWLSharp.Ontology
     {
         #region Methods
         /// <summary>
-        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// Computes the logical negation of the second argument
         /// </summary>
         /// <exception cref="ArgumentException"></exception>
-        internal static bool EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
+        internal static RDFLiteral EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
             if (builtInArguments?.Count != 2)
                 throw new ArgumentException("it requires exactly 2 arguments");
             #endregion
 
-            #region LeftArgument
-            RDFPatternMember leftPatternMember = null;
-            switch (builtInArguments[0])
-            {
-                case SWRLVariableArgument leftArgVar:
-                {
-                    #region Guards
-                    string leftArgVarName = leftArgVar.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(leftArgVarName))
-                        return true;
-                    #endregion
+            //Only booleans can be negated: an unbound or non-boolean operand leaves the result undefined
+            if (!(SWRLHelper.GetArgumentValue(antecedentResultsRow, builtInArguments[1]) is RDFTypedLiteral operandLiteral)
+                 || !operandLiteral.HasBooleanDatatype()
+                 || !bool.TryParse(operandLiteral.Value, out bool operandTruth))
+                return null;
 
-                    leftPatternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[leftArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument leftArgLit:
-                    leftPatternMember = leftArgLit.GetLiteral();
-                    break;
-            }
-            #endregion
-
-            #region RightArgument
-            RDFPatternMember rightPatternMember = null;
-            switch (builtInArguments[1])
-            {
-                case SWRLVariableArgument rightArgVar:
-                {
-                    #region Guards
-                    string rightArgVarName = rightArgVar.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(rightArgVarName))
-                        return true;
-                    #endregion
-
-                    rightPatternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[rightArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument rightArgLit:
-                    rightPatternMember = rightArgLit.GetLiteral();
-                    break;
-            }
-            #endregion
-
-            if (leftPatternMember is RDFTypedLiteral leftTypedLiteral
-                 && leftTypedLiteral.HasBooleanDatatype()
-                 && bool.TryParse(leftTypedLiteral.Value, out bool leftBool)
-                 && rightPatternMember is RDFTypedLiteral rightTypedLiteral
-                 && rightTypedLiteral.HasBooleanDatatype()
-                 && bool.TryParse(rightTypedLiteral.Value, out bool rightBool))
-            {
-                return leftBool == !rightBool;
-            }
-
-            return false;
+            //The negation is the opposite truth value
+            return operandTruth ? RDFTypedLiteral.False : RDFTypedLiteral.True;
         }
         #endregion
     }

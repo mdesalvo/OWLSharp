@@ -16,8 +16,8 @@
 
 using System.Collections.Generic;
 using System;
-using RDFSharp.Query;
 using RDFSharp.Model;
+using RDFSharp.Query;
 
 namespace OWLSharp.Ontology
 {
@@ -28,78 +28,23 @@ namespace OWLSharp.Ontology
     {
         #region Methods
         /// <summary>
-        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// Computes the lower case form of the second argument
         /// </summary>
         /// <exception cref="ArgumentException"></exception>
-        internal static bool EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
+        internal static RDFLiteral EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
             if (builtInArguments?.Count != 2)
                 throw new ArgumentException("it requires exactly 2 arguments");
             #endregion
 
-            #region LeftArgument
-            RDFPatternMember leftPatternMember = null;
-            switch (builtInArguments[0])
-            {
-                case SWRLVariableArgument leftArgVar:
-                {
-                    #region Guards
-                    string leftArgVarName = leftArgVar.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(leftArgVarName))
-                        return true;
-                    #endregion
+            //Only strings can be lower-cased: an unbound or non-string argument leaves the result undefined
+            string sourceValue = SWRLHelper.GetStringValue(SWRLHelper.GetArgumentValue(antecedentResultsRow, builtInArguments[1]));
+            if (sourceValue == null)
+                return null;
 
-                    leftPatternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[leftArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument leftArgLit:
-                    leftPatternMember = leftArgLit.GetLiteral();
-                    break;
-                case SWRLIndividualArgument leftArgIdv:
-                    leftPatternMember = leftArgIdv.GetResource();
-                    break;
-            }
-            #endregion
-
-            #region RightArgument
-            RDFPatternMember rightPatternMember = null;
-            switch (builtInArguments[1])
-            {
-                case SWRLVariableArgument rightArgVar:
-                {
-                    #region Guards
-                    string rightArgVarName = rightArgVar.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(rightArgVarName))
-                        return true;
-                    #endregion
-
-                    rightPatternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[rightArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument rightArgLit:
-                    rightPatternMember = rightArgLit.GetLiteral();
-                    break;
-                case SWRLIndividualArgument rightArgIdv:
-                    rightPatternMember = rightArgIdv.GetResource();
-                    break;
-            }
-            #endregion
-
-            //This is a string builtIn, so ensure to have information compatible with "string" semantic
-            bool isStringLeftPM = leftPatternMember is RDFResource
-                                   || leftPatternMember is RDFPlainLiteral
-                                   || (leftPatternMember is RDFTypedLiteral leftPMTLit && leftPMTLit.HasStringDatatype());
-            bool isStringRightPM = rightPatternMember is RDFResource
-                                    || rightPatternMember is RDFPlainLiteral
-                                    || (rightPatternMember is RDFTypedLiteral rightPMTLit && rightPMTLit.HasStringDatatype());
-            if (isStringLeftPM && isStringRightPM)
-            {
-                string leftPMValue = leftPatternMember is RDFLiteral leftPMLit ? leftPMLit.Value : leftPatternMember.ToString();
-                string rightPMValue = rightPatternMember is RDFLiteral rightPMLit ? rightPMLit.Value : rightPatternMember.ToString();
-                return string.Equals(leftPMValue, rightPMValue.ToLower(), StringComparison.Ordinal);
-            }
-            return false;
+            //Case mapping does not depend on the culture of the process, as in XQuery
+            return new RDFPlainLiteral(sourceValue.ToLowerInvariant());
         }
         #endregion
     }

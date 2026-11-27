@@ -16,8 +16,8 @@
 
 using System.Collections.Generic;
 using System;
-using RDFSharp.Query;
 using RDFSharp.Model;
+using RDFSharp.Query;
 
 namespace OWLSharp.Ontology
 {
@@ -28,116 +28,26 @@ namespace OWLSharp.Ontology
     {
         #region Methods
         /// <summary>
-        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// Computes the part of the second argument that precedes the first occurrence of the third one
         /// </summary>
         /// <exception cref="ArgumentException"></exception>
-        internal static bool EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
+        internal static RDFLiteral EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
             if (builtInArguments?.Count != 3)
                 throw new ArgumentException("it requires exactly 3 arguments");
             #endregion
 
-            #region LeftArgument
-            RDFPatternMember leftPatternMember = null;
-            switch (builtInArguments[0])
-            {
-                case SWRLVariableArgument leftArgVar:
-                {
-                    #region Guards
-                    string leftArgVarName = leftArgVar.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(leftArgVarName))
-                        return true;
-                    #endregion
+            //Only strings can be split: an unbound or non-string argument leaves the result undefined
+            string sourceValue = SWRLHelper.GetStringValue(SWRLHelper.GetArgumentValue(antecedentResultsRow, builtInArguments[1]));
+            //Only strings can separate: an unbound or non-string argument leaves the result undefined
+            string separatorValue = SWRLHelper.GetStringValue(SWRLHelper.GetArgumentValue(antecedentResultsRow, builtInArguments[2]));
+            if (sourceValue == null || separatorValue == null)
+                return null;
 
-                    leftPatternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[leftArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument leftArgLit:
-                    leftPatternMember = leftArgLit.GetLiteral();
-                    break;
-                case SWRLIndividualArgument leftArgIdv:
-                    leftPatternMember = leftArgIdv.GetResource();
-                    break;
-            }
-            #endregion
-
-            #region RightArgument (STRING)
-            RDFPatternMember rightPatternMemberSTR = null;
-            switch (builtInArguments[1])
-            {
-                case SWRLVariableArgument rightArgVarSTR:
-                {
-                    #region Guards
-                    string rightArgVarName = rightArgVarSTR.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(rightArgVarName))
-                        return true;
-                    #endregion
-
-                    rightPatternMemberSTR = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[rightArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument rightArgLitSTR:
-                    rightPatternMemberSTR = rightArgLitSTR.GetLiteral();
-                    break;
-                case SWRLIndividualArgument rightArgIdvSTR:
-                    rightPatternMemberSTR = rightArgIdvSTR.GetResource();
-                    break;
-            }
-            #endregion
-
-            #region RightArgument (SEPARATOR)
-            RDFPatternMember rightPatternMemberSEP = null;
-            switch (builtInArguments[2])
-            {
-                case SWRLVariableArgument rightArgVarSEP:
-                {
-                    #region Guards
-                    string rightArgVarName = rightArgVarSEP.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(rightArgVarName))
-                        return true;
-                    #endregion
-
-                    rightPatternMemberSEP = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[rightArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument rightArgLitSEP:
-                    rightPatternMemberSEP = rightArgLitSEP.GetLiteral();
-                    break;
-                case SWRLIndividualArgument rightArgIdvSEP:
-                    rightPatternMemberSEP = rightArgIdvSEP.GetResource();
-                    break;
-            }
-            #endregion
-
-            //This is a string builtIn, so ensure to have information compatible with "string" semantic
-            bool isStringLeftPM = leftPatternMember is RDFResource
-                                   || leftPatternMember is RDFPlainLiteral
-                                   || (leftPatternMember is RDFTypedLiteral leftPMTLit && leftPMTLit.HasStringDatatype());
-            bool isStringRightPMSTR = rightPatternMemberSTR is RDFResource
-                                        || rightPatternMemberSTR is RDFPlainLiteral
-                                        || (rightPatternMemberSTR is RDFTypedLiteral rightPMTLitSTR && rightPMTLitSTR.HasStringDatatype());
-            bool isStringRightPMSEP = rightPatternMemberSEP is RDFResource
-                                        || rightPatternMemberSEP is RDFPlainLiteral
-                                        || (rightPatternMemberSEP is RDFTypedLiteral rightPMTLitSEP && rightPMTLitSEP.HasStringDatatype());
-            if (isStringLeftPM && isStringRightPMSTR && isStringRightPMSEP)
-            {
-                string leftPMValue = leftPatternMember is RDFLiteral leftPMLit ? leftPMLit.Value : leftPatternMember.ToString();
-                string rightPMSTRValue = rightPatternMemberSTR is RDFLiteral rightPMLitSTR ? rightPMLitSTR.Value : rightPatternMemberSTR.ToString();
-                string rightPMSEPValue = rightPatternMemberSEP is RDFLiteral rightPMLitSEP ? rightPMLitSEP.Value : rightPatternMemberSEP.ToString();
-
-                //Short-Circuit
-                if (string.IsNullOrEmpty(rightPMSTRValue) || rightPMSEPValue == null)
-                    return string.Equals(leftPMValue, rightPMSTRValue);
-                if (rightPMSEPValue.Length == 0)
-                    return string.Equals(leftPMValue, string.Empty);
-
-                //Split
-                int sepIndex = rightPMSTRValue.IndexOf(rightPMSEPValue, StringComparison.Ordinal);
-                return sepIndex == -1 ? string.Equals(leftPMValue, rightPMSTRValue, StringComparison.Ordinal)
-                                      : string.Equals(leftPMValue, rightPMSTRValue.Substring(0, sepIndex), StringComparison.Ordinal);
-            }
-            return false;
+            //The text before the first separator is the result: the whole source is kept when the separator does not occur
+            int separatorIndex = sourceValue.IndexOf(separatorValue, StringComparison.Ordinal);
+            return new RDFPlainLiteral(separatorIndex == -1 ? sourceValue : sourceValue.Substring(0, separatorIndex));
         }
         #endregion
     }

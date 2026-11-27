@@ -153,19 +153,13 @@ public class SWRLStringConcatBuiltInTest
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);
-        Assert.HasCount(4, builtinResults.Rows);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "hello"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "h"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Z"] ?? string.Empty), "ello"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "hello"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "hello@EN"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Z"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), "hello^^http://www.w3.org/2001/XMLSchema#string"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Y"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Z"] ?? string.Empty), "hello@EN--ltr"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?X"] ?? string.Empty), "http://example.org/test/"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?Y"] ?? string.Empty), "http://example.org/"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?Z"] ?? string.Empty), "test/"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "http://example.org/test/"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "http://example.org/"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Z"] ?? string.Empty), "test/"));
 
         //Test with unexisting variables
 
@@ -182,8 +176,15 @@ public class SWRLStringConcatBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Y")));
         RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
-        Assert.HasCount(3, builtinResults3.Columns);
-        Assert.IsEmpty(builtinResults3.Rows);
+        Assert.HasCount(4, builtinResults3.Columns);
+        Assert.HasCount(7, builtinResults3.Rows);
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[0]["?F"] ?? string.Empty), "h"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[1]["?F"] ?? string.Empty), "EN-US"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[2]["?F"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[3]["?F"] ?? string.Empty), "2"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[4]["?F"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[5]["?F"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[6]["?F"] ?? string.Empty), "http://example.org/"));
 
         //Test exception on unknown builtIn
         Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLBuiltIn
@@ -293,6 +294,120 @@ public class SWRLStringConcatBuiltInTest
         Assert.HasCount(1, builtinResults2.Columns);
         Assert.HasCount(1, builtinResults2.Rows);
         Assert.IsTrue(string.Equals((builtinResults2.Rows[0]["?X"] ?? string.Empty), "The white fox jumps over the lazy..."));
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateStringConcatBuiltInBindingFirstArgument()
+    {
+        //The first variable has no column: the built-in adds it and fills it with the computed value of the rows it can compute
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddRow(["ab", "cd"]);
+        antecedentResults.AddRow(["hello@EN", "x^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow(["http://example.org/", "test"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "x"]);
+        antecedentResults.AddRow(["x", "2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow([null, "cd"]);
+        antecedentResults.AddRow(["ab", null]);
+
+        SWRLBuiltIn builtin = SWRLBuiltIn.StringConcat(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?Z")));
+
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+        string[][] expectedRows = [
+            ["ab", "cd", "abcd"],
+            ["hello@EN", "x^^http://www.w3.org/2001/XMLSchema#string", "hellox"],
+            ["http://example.org/", "test", "http://example.org/test"]
+        ];
+        Assert.IsNotNull(builtinResults);
+        Assert.HasCount(3, builtinResults.Columns);
+        Assert.AreEqual("?X", builtinResults.Columns[2].Name);
+        Assert.HasCount(3, builtinResults.Rows);
+        for (int i = 0; i < expectedRows.Length; i++)
+            for (int j = 0; j < expectedRows[i].Length; j++)
+                Assert.AreEqual(expectedRows[i][j], builtinResults.Rows[i][j]);
+        //The incoming table keeps its own columns
+        Assert.HasCount(2, antecedentResults.Columns);
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateStringConcatBuiltInInPredicateMode()
+    {
+        //The first variable is bound: a row is kept only when its first cell holds the computed value
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddRow(["abcd", "ab", "cd"]);
+        antecedentResults.AddRow(["zzz", "ab", "cd"]);
+        antecedentResults.AddRow(["abcd@EN", "ab", "cd"]);
+        antecedentResults.AddRow(["abcd^^http://www.w3.org/2001/XMLSchema#string", "ab", "cd"]);
+        antecedentResults.AddRow(["hellox", "hello@EN", "x^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow(["zzz", "hello@EN", "x^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow(["http://example.org/test", "http://example.org/", "test"]);
+        antecedentResults.AddRow(["zzz", "http://example.org/", "test"]);
+        antecedentResults.AddRow([null, "ab", "cd"]);
+
+        SWRLBuiltIn builtin = SWRLBuiltIn.StringConcat(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?Z")));
+
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+        string[][] expectedRows = [
+            ["abcd", "ab", "cd"],
+            ["abcd^^http://www.w3.org/2001/XMLSchema#string", "ab", "cd"],
+            ["hellox", "hello@EN", "x^^http://www.w3.org/2001/XMLSchema#string"],
+            ["http://example.org/test", "http://example.org/", "test"]
+        ];
+        Assert.IsNotNull(builtinResults);
+        Assert.HasCount(3, builtinResults.Columns);
+        Assert.HasCount(4, builtinResults.Rows);
+        for (int i = 0; i < expectedRows.Length; i++)
+            for (int j = 0; j < expectedRows[i].Length; j++)
+                Assert.AreEqual(expectedRows[i][j], builtinResults.Rows[i][j]);
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateStringConcatBuiltInWithUnexistingNonFirstArgument()
+    {
+        //A non-first variable with no column is unbound: no row can satisfy the built-in whether the first variable is bound or not
+        RDFTable bindingResults = new RDFTable();
+        bindingResults.AddColumn("?Y");
+        bindingResults.AddColumn("?Z");
+        bindingResults.AddRow(["ab", "cd"]);
+        RDFTable predicateResults = new RDFTable();
+        predicateResults.AddColumn("?X");
+        predicateResults.AddColumn("?Y");
+        predicateResults.AddColumn("?Z");
+        predicateResults.AddRow(["abcd", "ab", "cd"]);
+
+        SWRLBuiltIn builtin1 = SWRLBuiltIn.StringConcat(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?F")),
+            new SWRLVariableArgument(new RDFVariable("?Z")));
+        RDFTable bindingTable1 = builtin1.EvaluateOnAntecedent(bindingResults);
+        Assert.HasCount(3, bindingTable1.Columns);
+        Assert.IsEmpty(bindingTable1.Rows);
+        RDFTable predicateTable1 = builtin1.EvaluateOnAntecedent(predicateResults);
+        Assert.HasCount(3, predicateTable1.Columns);
+        Assert.IsEmpty(predicateTable1.Rows);
+
+        SWRLBuiltIn builtin2 = SWRLBuiltIn.StringConcat(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?F")));
+        RDFTable bindingTable2 = builtin2.EvaluateOnAntecedent(bindingResults);
+        Assert.HasCount(3, bindingTable2.Columns);
+        Assert.IsEmpty(bindingTable2.Rows);
+        RDFTable predicateTable2 = builtin2.EvaluateOnAntecedent(predicateResults);
+        Assert.HasCount(3, predicateTable2.Columns);
+        Assert.IsEmpty(predicateTable2.Rows);
     }
     #endregion
 }

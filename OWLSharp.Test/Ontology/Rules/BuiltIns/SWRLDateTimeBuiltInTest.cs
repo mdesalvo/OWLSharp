@@ -208,7 +208,7 @@ public class SWRLDateTimeBuiltInTest
         RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(8, builtinResults2.Columns);
-        Assert.HasCount(3, builtinResults2.Rows);
+        Assert.HasCount(0, builtinResults2.Rows);
 
         SWRLBuiltIn builtin3 = SWRLBuiltIn.DateTime(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -222,7 +222,7 @@ public class SWRLDateTimeBuiltInTest
         RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(8, builtinResults3.Columns);
-        Assert.HasCount(3, builtinResults3.Rows);
+        Assert.HasCount(0, builtinResults3.Rows);
 
         SWRLBuiltIn builtin4 = SWRLBuiltIn.DateTime(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -236,7 +236,7 @@ public class SWRLDateTimeBuiltInTest
         RDFTable builtinResults4 = builtin4.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults4);
         Assert.HasCount(8, builtinResults4.Columns);
-        Assert.HasCount(3, builtinResults4.Rows);
+        Assert.HasCount(0, builtinResults4.Rows);
 
         SWRLBuiltIn builtin5 = SWRLBuiltIn.DateTime(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -250,7 +250,7 @@ public class SWRLDateTimeBuiltInTest
         RDFTable builtinResults5 = builtin5.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults5);
         Assert.HasCount(8, builtinResults5.Columns);
-        Assert.HasCount(3, builtinResults5.Rows);
+        Assert.HasCount(0, builtinResults5.Rows);
 
         SWRLBuiltIn builtin6 = SWRLBuiltIn.DateTime(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -264,7 +264,7 @@ public class SWRLDateTimeBuiltInTest
         RDFTable builtinResults6 = builtin6.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults6);
         Assert.HasCount(8, builtinResults6.Columns);
-        Assert.HasCount(3, builtinResults6.Rows);
+        Assert.HasCount(0, builtinResults6.Rows);
 
         SWRLBuiltIn builtin7 = SWRLBuiltIn.DateTime(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -278,7 +278,7 @@ public class SWRLDateTimeBuiltInTest
         RDFTable builtinResults7 = builtin7.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults7);
         Assert.HasCount(8, builtinResults7.Columns);
-        Assert.HasCount(3, builtinResults7.Rows);
+        Assert.HasCount(0, builtinResults7.Rows);
 
         //Test exception on unknown builtIn
         Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLBuiltIn
@@ -805,6 +805,195 @@ public class SWRLDateTimeBuiltInTest
         Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?U"] ?? string.Empty), "10^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?V"] ?? string.Empty), "30^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?T"] ?? string.Empty), ""));
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateDateTimeBuiltInWithUnexistingVariableDroppingEveryRow()
+    {
+        //An unbound variable never satisfies a built-in: the same row is kept by the complete built-in and dropped once one variable has no column
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddColumn("?Q");
+        antecedentResults.AddColumn("?U");
+        antecedentResults.AddColumn("?V");
+        antecedentResults.AddColumn("?W");
+        antecedentResults.AddColumn("?T");
+        antecedentResults.AddRow(["2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime", "2010^^http://www.w3.org/2001/XMLSchema#int", "5^^http://www.w3.org/2001/XMLSchema#int", "22^^http://www.w3.org/2001/XMLSchema#int", "10^^http://www.w3.org/2001/XMLSchema#int", "30^^http://www.w3.org/2001/XMLSchema#int", "30^^http://www.w3.org/2001/XMLSchema#int", "UTC"]);
+
+        SWRLBuiltIn completeBuiltin = SWRLBuiltIn.DateTime(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?Z")),
+            new SWRLVariableArgument(new RDFVariable("?Q")),
+            new SWRLVariableArgument(new RDFVariable("?U")),
+            new SWRLVariableArgument(new RDFVariable("?V")),
+            new SWRLVariableArgument(new RDFVariable("?W")),
+            new SWRLVariableArgument(new RDFVariable("?T")));
+        RDFTable completeResults = completeBuiltin.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(8, completeResults.Columns);
+        Assert.HasCount(1, completeResults.Rows);
+        Assert.AreEqual("2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime", completeResults.Rows[0][0]);
+        Assert.AreEqual("2010^^http://www.w3.org/2001/XMLSchema#int", completeResults.Rows[0][1]);
+        Assert.AreEqual("5^^http://www.w3.org/2001/XMLSchema#int", completeResults.Rows[0][2]);
+        Assert.AreEqual("22^^http://www.w3.org/2001/XMLSchema#int", completeResults.Rows[0][3]);
+        Assert.AreEqual("10^^http://www.w3.org/2001/XMLSchema#int", completeResults.Rows[0][4]);
+        Assert.AreEqual("30^^http://www.w3.org/2001/XMLSchema#int", completeResults.Rows[0][5]);
+        Assert.AreEqual("30^^http://www.w3.org/2001/XMLSchema#int", completeResults.Rows[0][6]);
+        Assert.AreEqual("UTC", completeResults.Rows[0][7]);
+
+        SWRLBuiltIn builtin1 = SWRLBuiltIn.DateTime(
+            new SWRLVariableArgument(new RDFVariable("?F")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?Z")),
+            new SWRLVariableArgument(new RDFVariable("?Q")),
+            new SWRLVariableArgument(new RDFVariable("?U")),
+            new SWRLVariableArgument(new RDFVariable("?V")),
+            new SWRLVariableArgument(new RDFVariable("?W")),
+            new SWRLVariableArgument(new RDFVariable("?T")));
+        RDFTable builtinResults1 = builtin1.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(8, builtinResults1.Columns);
+        Assert.IsEmpty(builtinResults1.Rows);
+
+        SWRLBuiltIn builtin2 = SWRLBuiltIn.DateTime(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?F")),
+            new SWRLVariableArgument(new RDFVariable("?Z")),
+            new SWRLVariableArgument(new RDFVariable("?Q")),
+            new SWRLVariableArgument(new RDFVariable("?U")),
+            new SWRLVariableArgument(new RDFVariable("?V")),
+            new SWRLVariableArgument(new RDFVariable("?W")),
+            new SWRLVariableArgument(new RDFVariable("?T")));
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(8, builtinResults2.Columns);
+        Assert.IsEmpty(builtinResults2.Rows);
+
+        SWRLBuiltIn builtin3 = SWRLBuiltIn.DateTime(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?F")),
+            new SWRLVariableArgument(new RDFVariable("?Q")),
+            new SWRLVariableArgument(new RDFVariable("?U")),
+            new SWRLVariableArgument(new RDFVariable("?V")),
+            new SWRLVariableArgument(new RDFVariable("?W")),
+            new SWRLVariableArgument(new RDFVariable("?T")));
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(8, builtinResults3.Columns);
+        Assert.IsEmpty(builtinResults3.Rows);
+
+        SWRLBuiltIn builtin4 = SWRLBuiltIn.DateTime(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?Z")),
+            new SWRLVariableArgument(new RDFVariable("?F")),
+            new SWRLVariableArgument(new RDFVariable("?U")),
+            new SWRLVariableArgument(new RDFVariable("?V")),
+            new SWRLVariableArgument(new RDFVariable("?W")),
+            new SWRLVariableArgument(new RDFVariable("?T")));
+        RDFTable builtinResults4 = builtin4.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(8, builtinResults4.Columns);
+        Assert.IsEmpty(builtinResults4.Rows);
+
+        SWRLBuiltIn builtin5 = SWRLBuiltIn.DateTime(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?Z")),
+            new SWRLVariableArgument(new RDFVariable("?Q")),
+            new SWRLVariableArgument(new RDFVariable("?F")),
+            new SWRLVariableArgument(new RDFVariable("?V")),
+            new SWRLVariableArgument(new RDFVariable("?W")),
+            new SWRLVariableArgument(new RDFVariable("?T")));
+        RDFTable builtinResults5 = builtin5.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(8, builtinResults5.Columns);
+        Assert.IsEmpty(builtinResults5.Rows);
+
+        SWRLBuiltIn builtin6 = SWRLBuiltIn.DateTime(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?Z")),
+            new SWRLVariableArgument(new RDFVariable("?Q")),
+            new SWRLVariableArgument(new RDFVariable("?U")),
+            new SWRLVariableArgument(new RDFVariable("?F")),
+            new SWRLVariableArgument(new RDFVariable("?W")),
+            new SWRLVariableArgument(new RDFVariable("?T")));
+        RDFTable builtinResults6 = builtin6.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(8, builtinResults6.Columns);
+        Assert.IsEmpty(builtinResults6.Rows);
+
+        SWRLBuiltIn builtin7 = SWRLBuiltIn.DateTime(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?Z")),
+            new SWRLVariableArgument(new RDFVariable("?Q")),
+            new SWRLVariableArgument(new RDFVariable("?U")),
+            new SWRLVariableArgument(new RDFVariable("?V")),
+            new SWRLVariableArgument(new RDFVariable("?F")),
+            new SWRLVariableArgument(new RDFVariable("?T")));
+        RDFTable builtinResults7 = builtin7.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(8, builtinResults7.Columns);
+        Assert.IsEmpty(builtinResults7.Rows);
+
+        SWRLBuiltIn builtin8 = SWRLBuiltIn.DateTime(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?Z")),
+            new SWRLVariableArgument(new RDFVariable("?Q")),
+            new SWRLVariableArgument(new RDFVariable("?U")),
+            new SWRLVariableArgument(new RDFVariable("?V")),
+            new SWRLVariableArgument(new RDFVariable("?W")),
+            new SWRLVariableArgument(new RDFVariable("?F")));
+        RDFTable builtinResults8 = builtin8.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(8, builtinResults8.Columns);
+        Assert.IsEmpty(builtinResults8.Rows);
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateDateTimeBuiltInWithNullCellDroppingTheRow()
+    {
+        //A null cell is an unbound variable: the row holding it is dropped while the complete row is kept
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddColumn("?Q");
+        antecedentResults.AddColumn("?U");
+        antecedentResults.AddColumn("?V");
+        antecedentResults.AddColumn("?W");
+        antecedentResults.AddColumn("?T");
+        antecedentResults.AddRow(["2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime", "2010^^http://www.w3.org/2001/XMLSchema#int", "5^^http://www.w3.org/2001/XMLSchema#int", "22^^http://www.w3.org/2001/XMLSchema#int", "10^^http://www.w3.org/2001/XMLSchema#int", "30^^http://www.w3.org/2001/XMLSchema#int", "30^^http://www.w3.org/2001/XMLSchema#int", "UTC"]);
+        antecedentResults.AddRow([null, "2010^^http://www.w3.org/2001/XMLSchema#int", "5^^http://www.w3.org/2001/XMLSchema#int", "22^^http://www.w3.org/2001/XMLSchema#int", "10^^http://www.w3.org/2001/XMLSchema#int", "30^^http://www.w3.org/2001/XMLSchema#int", "30^^http://www.w3.org/2001/XMLSchema#int", "UTC"]);
+        antecedentResults.AddRow(["2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime", null, "5^^http://www.w3.org/2001/XMLSchema#int", "22^^http://www.w3.org/2001/XMLSchema#int", "10^^http://www.w3.org/2001/XMLSchema#int", "30^^http://www.w3.org/2001/XMLSchema#int", "30^^http://www.w3.org/2001/XMLSchema#int", "UTC"]);
+        antecedentResults.AddRow(["2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime", "2010^^http://www.w3.org/2001/XMLSchema#int", null, "22^^http://www.w3.org/2001/XMLSchema#int", "10^^http://www.w3.org/2001/XMLSchema#int", "30^^http://www.w3.org/2001/XMLSchema#int", "30^^http://www.w3.org/2001/XMLSchema#int", "UTC"]);
+        antecedentResults.AddRow(["2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime", "2010^^http://www.w3.org/2001/XMLSchema#int", "5^^http://www.w3.org/2001/XMLSchema#int", null, "10^^http://www.w3.org/2001/XMLSchema#int", "30^^http://www.w3.org/2001/XMLSchema#int", "30^^http://www.w3.org/2001/XMLSchema#int", "UTC"]);
+        antecedentResults.AddRow(["2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime", "2010^^http://www.w3.org/2001/XMLSchema#int", "5^^http://www.w3.org/2001/XMLSchema#int", "22^^http://www.w3.org/2001/XMLSchema#int", null, "30^^http://www.w3.org/2001/XMLSchema#int", "30^^http://www.w3.org/2001/XMLSchema#int", "UTC"]);
+        antecedentResults.AddRow(["2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime", "2010^^http://www.w3.org/2001/XMLSchema#int", "5^^http://www.w3.org/2001/XMLSchema#int", "22^^http://www.w3.org/2001/XMLSchema#int", "10^^http://www.w3.org/2001/XMLSchema#int", null, "30^^http://www.w3.org/2001/XMLSchema#int", "UTC"]);
+        antecedentResults.AddRow(["2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime", "2010^^http://www.w3.org/2001/XMLSchema#int", "5^^http://www.w3.org/2001/XMLSchema#int", "22^^http://www.w3.org/2001/XMLSchema#int", "10^^http://www.w3.org/2001/XMLSchema#int", "30^^http://www.w3.org/2001/XMLSchema#int", null, "UTC"]);
+        antecedentResults.AddRow(["2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime", "2010^^http://www.w3.org/2001/XMLSchema#int", "5^^http://www.w3.org/2001/XMLSchema#int", "22^^http://www.w3.org/2001/XMLSchema#int", "10^^http://www.w3.org/2001/XMLSchema#int", "30^^http://www.w3.org/2001/XMLSchema#int", "30^^http://www.w3.org/2001/XMLSchema#int", null]);
+
+        SWRLBuiltIn builtin = SWRLBuiltIn.DateTime(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?Z")),
+            new SWRLVariableArgument(new RDFVariable("?Q")),
+            new SWRLVariableArgument(new RDFVariable("?U")),
+            new SWRLVariableArgument(new RDFVariable("?V")),
+            new SWRLVariableArgument(new RDFVariable("?W")),
+            new SWRLVariableArgument(new RDFVariable("?T")));
+
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+        Assert.IsNotNull(builtinResults);
+        Assert.HasCount(8, builtinResults.Columns);
+        Assert.HasCount(1, builtinResults.Rows);
+        Assert.AreEqual("2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime", builtinResults.Rows[0][0]);
+        Assert.AreEqual("2010^^http://www.w3.org/2001/XMLSchema#int", builtinResults.Rows[0][1]);
+        Assert.AreEqual("5^^http://www.w3.org/2001/XMLSchema#int", builtinResults.Rows[0][2]);
+        Assert.AreEqual("22^^http://www.w3.org/2001/XMLSchema#int", builtinResults.Rows[0][3]);
+        Assert.AreEqual("10^^http://www.w3.org/2001/XMLSchema#int", builtinResults.Rows[0][4]);
+        Assert.AreEqual("30^^http://www.w3.org/2001/XMLSchema#int", builtinResults.Rows[0][5]);
+        Assert.AreEqual("30^^http://www.w3.org/2001/XMLSchema#int", builtinResults.Rows[0][6]);
+        Assert.AreEqual("UTC", builtinResults.Rows[0][7]);
     }
     #endregion
 }

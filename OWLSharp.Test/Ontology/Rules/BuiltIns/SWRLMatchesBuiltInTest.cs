@@ -168,15 +168,11 @@ public class SWRLMatchesBuiltInTest
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
-        Assert.HasCount(4, builtinResults.Rows);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "hello"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "ello$"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "hello"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Y"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?X"] ?? string.Empty), "http://example.org/test/"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?Y"] ?? string.Empty), "^http"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "http://example.org/test/"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "^http"));
 
         //Test with unexisting variables
 
@@ -186,7 +182,7 @@ public class SWRLMatchesBuiltInTest
         RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(2, builtinResults2.Columns);
-        Assert.HasCount(14, builtinResults2.Rows);
+        Assert.HasCount(0, builtinResults2.Rows);
 
         SWRLBuiltIn builtin3 = SWRLBuiltIn.Matches(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
@@ -194,7 +190,7 @@ public class SWRLMatchesBuiltInTest
         RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(2, builtinResults3.Columns);
-        Assert.HasCount(14, builtinResults3.Rows);
+        Assert.HasCount(0, builtinResults3.Rows);
 
         //Test exception on unknown builtIn
         Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLBuiltIn
@@ -239,12 +235,11 @@ public class SWRLMatchesBuiltInTest
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
-        Assert.HasCount(5, builtinResults.Rows);
+        Assert.HasCount(4, builtinResults.Rows);
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "ello$"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "^hello"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Y"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?Y"] ?? string.Empty), "hello^^http://www.w3.org/2001/XMLSchema#string"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[4]["?Y"] ?? string.Empty), "^hello$"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Y"] ?? string.Empty), "hello^^http://www.w3.org/2001/XMLSchema#string"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?Y"] ?? string.Empty), "^hello$"));
     }
 
     [TestMethod]
@@ -304,15 +299,68 @@ public class SWRLMatchesBuiltInTest
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
-        Assert.HasCount(4, builtinResults.Rows);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "hello"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "eLLo$"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "hello"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Y"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?X"] ?? string.Empty), "HTtp://example.org/test/"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?Y"] ?? string.Empty), "^http"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "HTtp://example.org/test/"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "^http"));
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateMatchesBuiltInWithUnexistingVariableDroppingEveryRow()
+    {
+        //An unbound variable never satisfies a built-in: the same row is kept by the complete built-in and dropped once one variable has no column
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(["hello", "^h"]);
+
+        SWRLBuiltIn completeBuiltin = SWRLBuiltIn.Matches(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")));
+        RDFTable completeResults = completeBuiltin.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(2, completeResults.Columns);
+        Assert.HasCount(1, completeResults.Rows);
+        Assert.AreEqual("hello", completeResults.Rows[0][0]);
+        Assert.AreEqual("^h", completeResults.Rows[0][1]);
+
+        SWRLBuiltIn builtin1 = SWRLBuiltIn.Matches(
+            new SWRLVariableArgument(new RDFVariable("?F")),
+            new SWRLVariableArgument(new RDFVariable("?Y")));
+        RDFTable builtinResults1 = builtin1.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(2, builtinResults1.Columns);
+        Assert.IsEmpty(builtinResults1.Rows);
+
+        SWRLBuiltIn builtin2 = SWRLBuiltIn.Matches(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?F")));
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(2, builtinResults2.Columns);
+        Assert.IsEmpty(builtinResults2.Rows);
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateMatchesBuiltInWithNullCellDroppingTheRow()
+    {
+        //A null cell is an unbound variable: the row holding it is dropped while the complete row is kept
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(["hello", "^h"]);
+        antecedentResults.AddRow([null, "^h"]);
+        antecedentResults.AddRow(["hello", null]);
+
+        SWRLBuiltIn builtin = SWRLBuiltIn.Matches(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")));
+
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+        Assert.IsNotNull(builtinResults);
+        Assert.HasCount(2, builtinResults.Columns);
+        Assert.HasCount(1, builtinResults.Rows);
+        Assert.AreEqual("hello", builtinResults.Rows[0][0]);
+        Assert.AreEqual("^h", builtinResults.Rows[0][1]);
     }
     #endregion
 }

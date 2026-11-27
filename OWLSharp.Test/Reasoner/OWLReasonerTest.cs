@@ -1982,5 +1982,345 @@ public class OWLReasonerTest
         Assert.HasCount(105, report.Inferences);
     }
     #endregion
+
+    #region Built-in bindings
+    private static OWLOntology BuildWinePricingOntology(params (string Wine, string Price)[] wines)
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Wine"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:PremiumWine"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:TaxedItem"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:price"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:priceWithVAT")))
+            ]
+        };
+        foreach ((string wine, string price) in wines)
+        {
+            ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLNamedIndividual(new RDFResource(wine))));
+            ontology.AssertionAxioms.Add(new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource(wine))));
+            ontology.AssertionAxioms.Add(new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:price")), new OWLNamedIndividual(new RDFResource(wine)), new OWLLiteral(new RDFTypedLiteral(price, RDFModelEnums.RDFDatatypes.XSD_DECIMAL))));
+        }
+        return ontology;
+    }
+
+    private static SWRLRule BuildValueAddedTaxRule()
+        => new SWRLRule(new RDFPlainLiteral("ValueAddedTaxRule"), new RDFPlainLiteral("Wine price plus 22 percent VAT"),
+            new SWRLAntecedent
+            {
+                Atoms = [
+                    new SWRLClassAtom(new OWLClass(new RDFResource("ex:Wine")), new SWRLVariableArgument(new RDFVariable("?w"))),
+                    new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:price")), new SWRLVariableArgument(new RDFVariable("?w")), new SWRLVariableArgument(new RDFVariable("?p")))
+                ],
+                BuiltIns = [
+                    SWRLBuiltIn.Multiply(new SWRLVariableArgument(new RDFVariable("?t")), new SWRLVariableArgument(new RDFVariable("?p")), new SWRLLiteralArgument(new RDFTypedLiteral("1.22", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))
+                ]
+            },
+            new SWRLConsequent
+            {
+                Atoms = [ new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:priceWithVAT")), new SWRLVariableArgument(new RDFVariable("?w")), new SWRLVariableArgument(new RDFVariable("?t"))) ]
+            });
+
+    private static bool IsPriceWithVATAssertion(OWLInference inference, string wine, string vatPrice)
+        => inference.Axiom is OWLDataPropertyAssertion dpa
+            && dpa.IsInference
+            && dpa.DataProperty.GetIRI().Equals(new RDFResource("ex:priceWithVAT"))
+            && dpa.IndividualExpression.GetIRI().Equals(new RDFResource(wine))
+            && dpa.Literal.GetLiteral().Equals(new RDFTypedLiteral(vatPrice, RDFModelEnums.RDFDatatypes.XSD_DECIMAL));
+
+    [TestMethod]
+    public async Task ShouldEntailPriceWithVATBindingTheFirstArgumentOfMultiplyViaSWRLRuleAsync()
+    {
+        // Rule: Wine(?w) ^ price(?w,?p) ^ multiply(?t,?p,1.22) -> priceWithVAT(?w,?t) with ?t bound by the built-in
+        OWLOntology ontology = BuildWinePricingOntology(("ex:Barolo", "14.50"));
+        ontology.Rules = [ BuildValueAddedTaxRule() ];
+
+        List<OWLInference> inferences = (await new OWLReasoner().ApplyToOntologyAsync(ontology)).Inferences;
+
+        Assert.HasCount(1, inferences);
+        Assert.IsTrue(IsPriceWithVATAssertion(inferences[0], "ex:Barolo", "17.69"));
+        Assert.AreEqual(ontology.Rules[0].Consequent.Atoms[0].ToString(), inferences[0].RuleName);
+        // The inferred assertion is merged into the ontology flagged as inference
+        Assert.IsTrue(ontology.AssertionAxioms.Any(ax => ax is OWLDataPropertyAssertion dpa
+                                                          && dpa.IsInference
+                                                          && dpa.DataProperty.GetIRI().Equals(new RDFResource("ex:priceWithVAT"))
+                                                          && dpa.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Barolo"))
+                                                          && dpa.Literal.GetLiteral().Equals(new RDFTypedLiteral("17.69", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))));
+    }
+
+    [TestMethod]
+    public async Task ShouldEntailPremiumWineFeedingTheBoundValueToALaterBuiltInInTheSameRuleAsync()
+    {
+        // Rule: Wine(?w) ^ price(?w,?p) ^ multiply(?t,?p,1.22) ^ greaterThan(?t,35) -> PremiumWine(?w) with ?t bound then consumed
+        OWLOntology ontology = BuildWinePricingOntology(("ex:Dolcetto", "14.50"), ("ex:Barolo", "32.00"), ("ex:Barbaresco", "38.00"));
+        ontology.Rules = [
+            new SWRLRule(new RDFPlainLiteral("PremiumWineRule"), new RDFPlainLiteral("Wines whose price with VAT exceeds 35"),
+                new SWRLAntecedent
+                {
+                    Atoms = [
+                        new SWRLClassAtom(new OWLClass(new RDFResource("ex:Wine")), new SWRLVariableArgument(new RDFVariable("?w"))),
+                        new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:price")), new SWRLVariableArgument(new RDFVariable("?w")), new SWRLVariableArgument(new RDFVariable("?p")))
+                    ],
+                    BuiltIns = [
+                        SWRLBuiltIn.Multiply(new SWRLVariableArgument(new RDFVariable("?t")), new SWRLVariableArgument(new RDFVariable("?p")), new SWRLLiteralArgument(new RDFTypedLiteral("1.22", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))),
+                        SWRLBuiltIn.GreaterThan(new SWRLVariableArgument(new RDFVariable("?t")), new SWRLLiteralArgument(new RDFTypedLiteral("35", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))
+                    ]
+                },
+                new SWRLConsequent
+                {
+                    Atoms = [ new SWRLClassAtom(new OWLClass(new RDFResource("ex:PremiumWine")), new SWRLVariableArgument(new RDFVariable("?w"))) ]
+                })
+        ];
+
+        List<OWLInference> inferences = (await new OWLReasoner().ApplyToOntologyAsync(ontology)).Inferences;
+
+        // 14.50 -> 17.69 (not premium), 32.00 -> 39.04 and 38.00 -> 46.36 (premium)
+        Assert.HasCount(2, inferences);
+        Assert.IsTrue(inferences.All(inf => inf.Axiom is OWLClassAssertion ca
+                                             && ca.IsInference
+                                             && ca.ClassExpression.GetIRI().Equals(new RDFResource("ex:PremiumWine"))
+                                             && string.Equals(inf.RuleName, ontology.Rules[0].Consequent.Atoms[0].ToString())));
+        Assert.IsTrue(inferences.Any(inf => inf.Axiom is OWLClassAssertion ca && ca.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Barolo"))));
+        Assert.IsTrue(inferences.Any(inf => inf.Axiom is OWLClassAssertion ca && ca.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Barbaresco"))));
+        Assert.IsFalse(inferences.Any(inf => inf.Axiom is OWLClassAssertion ca && ca.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Dolcetto"))));
+    }
+
+    [TestMethod]
+    public async Task ShouldEntailPremiumWineFromAnInferenceOfAnotherRuleInALaterIterationAsync()
+    {
+        // Rule A (VAT) infers priceWithVAT in the first iteration: rule B can only fire on it in the following one
+        OWLOntology ontology = BuildWinePricingOntology(("ex:Dolcetto", "14.50"), ("ex:Barolo", "32.00"), ("ex:Barbaresco", "38.00"));
+        ontology.Rules = [
+            BuildValueAddedTaxRule(),
+            new SWRLRule(new RDFPlainLiteral("PremiumWineRule"), new RDFPlainLiteral("Wines whose inferred price with VAT exceeds 40"),
+                new SWRLAntecedent
+                {
+                    Atoms = [
+                        new SWRLClassAtom(new OWLClass(new RDFResource("ex:Wine")), new SWRLVariableArgument(new RDFVariable("?w"))),
+                        new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:priceWithVAT")), new SWRLVariableArgument(new RDFVariable("?w")), new SWRLVariableArgument(new RDFVariable("?v")))
+                    ],
+                    BuiltIns = [
+                        SWRLBuiltIn.GreaterThan(new SWRLVariableArgument(new RDFVariable("?v")), new SWRLLiteralArgument(new RDFTypedLiteral("40", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))
+                    ]
+                },
+                new SWRLConsequent
+                {
+                    Atoms = [ new SWRLClassAtom(new OWLClass(new RDFResource("ex:PremiumWine")), new SWRLVariableArgument(new RDFVariable("?w"))) ]
+                })
+        ];
+
+        OWLReasonerReport report = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+
+        // Default options are enough: rule A in iteration 1, rule B in iteration 2
+        Assert.IsTrue(report.ReachedFixpoint);
+        Assert.IsLessThanOrEqualTo(3u, report.IterationsPerformed);
+        List<OWLInference> priceInferences = report.Inferences.Where(inf => inf.Axiom is OWLDataPropertyAssertion).ToList();
+        Assert.HasCount(3, priceInferences);
+        Assert.IsTrue(priceInferences.Any(inf => IsPriceWithVATAssertion(inf, "ex:Dolcetto", "17.69")));
+        Assert.IsTrue(priceInferences.Any(inf => IsPriceWithVATAssertion(inf, "ex:Barolo", "39.04")));
+        Assert.IsTrue(priceInferences.Any(inf => IsPriceWithVATAssertion(inf, "ex:Barbaresco", "46.36")));
+        // 39.04 does not exceed 40: only the 46.36 wine becomes premium
+        List<OWLInference> premiumInferences = report.Inferences.Where(inf => inf.Axiom is OWLClassAssertion).ToList();
+        Assert.HasCount(1, premiumInferences);
+        Assert.IsTrue(premiumInferences[0].Axiom is OWLClassAssertion ca
+                      && ca.ClassExpression.GetIRI().Equals(new RDFResource("ex:PremiumWine"))
+                      && ca.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Barbaresco")));
+    }
+
+    [TestMethod]
+    public async Task ShouldEntailTaxedItemFromTheDataPropertyDomainOverAnAssertionBoundByABuiltInAsync()
+    {
+        // The priceWithVAT assertions only exist as bound values of the VAT rule: the domain entailment must still use them
+        OWLOntology ontology = BuildWinePricingOntology(("ex:Dolcetto", "14.50"), ("ex:Barolo", "32.00"));
+        ontology.DataPropertyAxioms.Add(new OWLDataPropertyDomain(new OWLDataProperty(new RDFResource("ex:priceWithVAT")), new OWLClass(new RDFResource("ex:TaxedItem"))));
+        ontology.Rules = [ BuildValueAddedTaxRule() ];
+
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FactDataPropertyDomainEntailment] };
+        OWLReasonerReport report = await reasoner.ApplyToOntologyAsync(ontology);
+
+        List<OWLInference> taxedInferences = report.Inferences.Where(inf => inf.Axiom is OWLClassAssertion ca && ca.ClassExpression.GetIRI().Equals(new RDFResource("ex:TaxedItem"))).ToList();
+        Assert.HasCount(2, taxedInferences);
+        Assert.IsTrue(taxedInferences.All(inf => string.Equals(inf.RuleName, OWLFactDataPropertyDomainEntailment.rulename)));
+        Assert.IsTrue(taxedInferences.Any(inf => inf.Axiom is OWLClassAssertion ca && ca.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Dolcetto"))));
+        Assert.IsTrue(taxedInferences.Any(inf => inf.Axiom is OWLClassAssertion ca && ca.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Barolo"))));
+        Assert.IsTrue(report.Inferences.Any(inf => IsPriceWithVATAssertion(inf, "ex:Dolcetto", "17.69")));
+        Assert.IsTrue(report.Inferences.Any(inf => IsPriceWithVATAssertion(inf, "ex:Barolo", "39.04")));
+    }
+
+    [TestMethod]
+    public async Task ShouldEntailDiscountedPriceChainingTwoBindingBuiltInsInTheSameRuleAsync()
+    {
+        // Rule: Product(?x) ^ hasPrice(?x,?price) ^ hasDiscount(?x,?discount) ^ multiply(?discAmount,?price,?discount) ^ subtract(?finalPrice,?price,?discAmount) -> hasDiscountedPrice(?x,?finalPrice)
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Product"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:hasPrice"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:hasDiscount"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:hasDiscountedPrice"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Chair"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Lamp")))
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Product")), new OWLNamedIndividual(new RDFResource("ex:Chair"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Product")), new OWLNamedIndividual(new RDFResource("ex:Lamp"))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasPrice")), new OWLNamedIndividual(new RDFResource("ex:Chair")), new OWLLiteral(new RDFTypedLiteral("200.00", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasDiscount")), new OWLNamedIndividual(new RDFResource("ex:Chair")), new OWLLiteral(new RDFTypedLiteral("0.15", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasPrice")), new OWLNamedIndividual(new RDFResource("ex:Lamp")), new OWLLiteral(new RDFTypedLiteral("80.50", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:hasDiscount")), new OWLNamedIndividual(new RDFResource("ex:Lamp")), new OWLLiteral(new RDFTypedLiteral("0.10", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))
+            ],
+            Rules = [
+                new SWRLRule(new RDFPlainLiteral("DiscountedPriceRule"), new RDFPlainLiteral("Price minus the discount amount"),
+                    new SWRLAntecedent
+                    {
+                        Atoms = [
+                            new SWRLClassAtom(new OWLClass(new RDFResource("ex:Product")), new SWRLVariableArgument(new RDFVariable("?x"))),
+                            new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:hasPrice")), new SWRLVariableArgument(new RDFVariable("?x")), new SWRLVariableArgument(new RDFVariable("?price"))),
+                            new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:hasDiscount")), new SWRLVariableArgument(new RDFVariable("?x")), new SWRLVariableArgument(new RDFVariable("?discount")))
+                        ],
+                        BuiltIns = [
+                            SWRLBuiltIn.Multiply(new SWRLVariableArgument(new RDFVariable("?discAmount")), new SWRLVariableArgument(new RDFVariable("?price")), new SWRLVariableArgument(new RDFVariable("?discount"))),
+                            SWRLBuiltIn.Subtract(new SWRLVariableArgument(new RDFVariable("?finalPrice")), new SWRLVariableArgument(new RDFVariable("?price")), new SWRLVariableArgument(new RDFVariable("?discAmount")))
+                        ]
+                    },
+                    new SWRLConsequent
+                    {
+                        Atoms = [ new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:hasDiscountedPrice")), new SWRLVariableArgument(new RDFVariable("?x")), new SWRLVariableArgument(new RDFVariable("?finalPrice"))) ]
+                    })
+            ]
+        };
+
+        List<OWLInference> inferences = (await new OWLReasoner().ApplyToOntologyAsync(ontology)).Inferences;
+
+        // Chair: 200.00 - 200.00 * 0.15 = 170.0 | Lamp: 80.50 - 80.50 * 0.10 = 72.45
+        Assert.HasCount(2, inferences);
+        Assert.IsTrue(inferences.Any(inf => inf.Axiom is OWLDataPropertyAssertion dpa
+                                             && dpa.DataProperty.GetIRI().Equals(new RDFResource("ex:hasDiscountedPrice"))
+                                             && dpa.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Chair"))
+                                             && dpa.Literal.GetLiteral().Equals(new RDFTypedLiteral("170.0", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))));
+        Assert.IsTrue(inferences.Any(inf => inf.Axiom is OWLDataPropertyAssertion dpa
+                                             && dpa.DataProperty.GetIRI().Equals(new RDFResource("ex:hasDiscountedPrice"))
+                                             && dpa.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Lamp"))
+                                             && dpa.Literal.GetLiteral().Equals(new RDFTypedLiteral("72.45", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))));
+    }
+
+    [TestMethod]
+    public async Task ShouldNotEntailPremiumWineWhenTheBuiltInVariableIsMisspelledAsync()
+    {
+        // Rule: Wine(?w) ^ price(?w,?price) ^ greaterThan(?prce,30) -> PremiumWine(?w) with a typo in the built-in variable
+        OWLOntology ontology = BuildWinePricingOntology(("ex:Barolo", "32.00"), ("ex:Barbaresco", "38.00"));
+        ontology.Rules = [
+            new SWRLRule(new RDFPlainLiteral("PremiumWineRule"), new RDFPlainLiteral("Wines priced above 30"),
+                new SWRLAntecedent
+                {
+                    Atoms = [
+                        new SWRLClassAtom(new OWLClass(new RDFResource("ex:Wine")), new SWRLVariableArgument(new RDFVariable("?w"))),
+                        new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:price")), new SWRLVariableArgument(new RDFVariable("?w")), new SWRLVariableArgument(new RDFVariable("?price")))
+                    ],
+                    BuiltIns = [
+                        SWRLBuiltIn.GreaterThan(new SWRLVariableArgument(new RDFVariable("?prce")), new SWRLLiteralArgument(new RDFTypedLiteral("30", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))
+                    ]
+                },
+                new SWRLConsequent
+                {
+                    Atoms = [ new SWRLClassAtom(new OWLClass(new RDFResource("ex:PremiumWine")), new SWRLVariableArgument(new RDFVariable("?w"))) ]
+                })
+        ];
+
+        List<OWLInference> inferences = (await new OWLReasoner().ApplyToOntologyAsync(ontology)).Inferences;
+
+        Assert.IsEmpty(inferences);
+    }
+
+    [TestMethod]
+    public async Task ShouldBindRoundedValuesWithHalvesRoundedUpwardsViaSWRLRuleAsync()
+    {
+        // round(2.5) is 3 and round(-2.5) is -2 as in XPath fn:round while roundHalfToEven(2.5) is 2
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Measure"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:value"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:rounded"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:roundedToEven"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Positive"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Negative")))
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Measure")), new OWLNamedIndividual(new RDFResource("ex:Positive"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Measure")), new OWLNamedIndividual(new RDFResource("ex:Negative"))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:value")), new OWLNamedIndividual(new RDFResource("ex:Positive")), new OWLLiteral(new RDFTypedLiteral("2.5", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))),
+                new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:value")), new OWLNamedIndividual(new RDFResource("ex:Negative")), new OWLLiteral(new RDFTypedLiteral("-2.5", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))
+            ],
+            Rules = [
+                new SWRLRule(new RDFPlainLiteral("RoundRule"), new RDFPlainLiteral("Rounds the measure with halves upwards"),
+                    new SWRLAntecedent
+                    {
+                        Atoms = [
+                            new SWRLClassAtom(new OWLClass(new RDFResource("ex:Measure")), new SWRLVariableArgument(new RDFVariable("?m"))),
+                            new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:value")), new SWRLVariableArgument(new RDFVariable("?m")), new SWRLVariableArgument(new RDFVariable("?v")))
+                        ],
+                        BuiltIns = [ SWRLBuiltIn.Round(new SWRLVariableArgument(new RDFVariable("?r")), new SWRLVariableArgument(new RDFVariable("?v"))) ]
+                    },
+                    new SWRLConsequent
+                    {
+                        Atoms = [ new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:rounded")), new SWRLVariableArgument(new RDFVariable("?m")), new SWRLVariableArgument(new RDFVariable("?r"))) ]
+                    }),
+                new SWRLRule(new RDFPlainLiteral("RoundToEvenRule"), new RDFPlainLiteral("Rounds the measure with halves to the even neighbour"),
+                    new SWRLAntecedent
+                    {
+                        Atoms = [
+                            new SWRLClassAtom(new OWLClass(new RDFResource("ex:Measure")), new SWRLVariableArgument(new RDFVariable("?m"))),
+                            new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:value")), new SWRLVariableArgument(new RDFVariable("?m")), new SWRLVariableArgument(new RDFVariable("?v")))
+                        ],
+                        BuiltIns = [ SWRLBuiltIn.RoundHalfToEven(new SWRLVariableArgument(new RDFVariable("?r")), new SWRLVariableArgument(new RDFVariable("?v"))) ]
+                    },
+                    new SWRLConsequent
+                    {
+                        Atoms = [ new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:roundedToEven")), new SWRLVariableArgument(new RDFVariable("?m")), new SWRLVariableArgument(new RDFVariable("?r"))) ]
+                    })
+            ]
+        };
+
+        List<OWLInference> inferences = (await new OWLReasoner().ApplyToOntologyAsync(ontology)).Inferences;
+
+        Assert.HasCount(4, inferences);
+        Assert.IsTrue(inferences.Any(inf => inf.Axiom is OWLDataPropertyAssertion dpa
+                                             && dpa.DataProperty.GetIRI().Equals(new RDFResource("ex:rounded"))
+                                             && dpa.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Positive"))
+                                             && dpa.Literal.GetLiteral().Equals(new RDFTypedLiteral("3.0", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))));
+        Assert.IsTrue(inferences.Any(inf => inf.Axiom is OWLDataPropertyAssertion dpa
+                                             && dpa.DataProperty.GetIRI().Equals(new RDFResource("ex:rounded"))
+                                             && dpa.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Negative"))
+                                             && dpa.Literal.GetLiteral().Equals(new RDFTypedLiteral("-2.0", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))));
+        Assert.IsTrue(inferences.Any(inf => inf.Axiom is OWLDataPropertyAssertion dpa
+                                             && dpa.DataProperty.GetIRI().Equals(new RDFResource("ex:roundedToEven"))
+                                             && dpa.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Positive"))
+                                             && dpa.Literal.GetLiteral().Equals(new RDFTypedLiteral("2.0", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))));
+        Assert.IsTrue(inferences.Any(inf => inf.Axiom is OWLDataPropertyAssertion dpa
+                                             && dpa.DataProperty.GetIRI().Equals(new RDFResource("ex:roundedToEven"))
+                                             && dpa.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Negative"))
+                                             && dpa.Literal.GetLiteral().Equals(new RDFTypedLiteral("-2.0", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))));
+    }
+
+    [TestMethod]
+    public async Task ShouldNotRepeatPriceWithVATWhenReasoningTwiceOnTheSameOntologyAsync()
+    {
+        // The computed lexical form is canonical: the second run recognizes the already asserted inference
+        OWLOntology ontology = BuildWinePricingOntology(("ex:Dolcetto", "14.50"), ("ex:Barolo", "32.00"));
+        ontology.Rules = [ BuildValueAddedTaxRule() ];
+
+        OWLReasonerReport firstReport = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+        int priceWithVATAssertionsAfterFirstRun = ontology.AssertionAxioms.Count(ax => ax is OWLDataPropertyAssertion dpa && dpa.DataProperty.GetIRI().Equals(new RDFResource("ex:priceWithVAT")));
+        OWLReasonerReport secondReport = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+        int priceWithVATAssertionsAfterSecondRun = ontology.AssertionAxioms.Count(ax => ax is OWLDataPropertyAssertion dpa && dpa.DataProperty.GetIRI().Equals(new RDFResource("ex:priceWithVAT")));
+
+        Assert.HasCount(2, firstReport.Inferences);
+        Assert.AreEqual(2, priceWithVATAssertionsAfterFirstRun);
+        Assert.IsEmpty(secondReport.Inferences);
+        Assert.AreEqual(2, priceWithVATAssertionsAfterSecondRun);
+    }
+    #endregion
     #endregion
 }
