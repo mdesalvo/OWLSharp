@@ -16,9 +16,9 @@
 
 using System.Collections.Generic;
 using System;
-using RDFSharp.Query;
+using System.Linq;
 using RDFSharp.Model;
-using System.Globalization;
+using RDFSharp.Query;
 
 namespace OWLSharp.Ontology
 {
@@ -29,55 +29,24 @@ namespace OWLSharp.Ontology
     {
         #region Methods
         /// <summary>
-        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// Computes the product of the arguments after the first
         /// </summary>
         /// <exception cref="ArgumentException"></exception>
-        internal static bool EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
+        internal static RDFLiteral EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
             if (builtInArguments?.Count < 2)
                 throw new ArgumentException("it requires at least 2 arguments");
             #endregion
 
-            #region Arguments
-            double? leftValue = null, rightValue = null;
-            for (int i=0; i<builtInArguments.Count; i++)
-            {
-                //Parse current argument
-                RDFPatternMember patternMember = null;
-                switch (builtInArguments[i])
-                {
-                    case SWRLVariableArgument argVar when antecedentResultsRow.HasColumn(argVar.GetVariable().ToString()):
-                        patternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[argVar.GetVariable().ToString()] ?? string.Empty));
-                        break;
-                    case SWRLLiteralArgument argLit:
-                        patternMember = argLit.GetLiteral();
-                        break;
-                }
+            //Only numbers take part in the computation: an unbound or non-numeric operand leaves the result undefined
+            if (!SWRLHelper.TryGetNumericOperands(antecedentResultsRow, builtInArguments, out SWRLNumericFamily numericFamily, out decimal[] exactOperands, out double[] approximateOperands))
+                return null;
 
-                //Collect current argument
-                if (patternMember is RDFTypedLiteral typedLiteral
-                     && typedLiteral.HasDecimalDatatype()
-                     && double.TryParse(typedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double argValue))
-                {
-                    //First argument concurs to the left value
-                    if (i == 0)
-                        leftValue = argValue;
-                    //Other arguments concur to the right value
-                    else if (rightValue == null)
-                        rightValue = argValue;
-                    else
-                        rightValue *= argValue;
-                }
-                //In case of type error just discard the current row
-                else
-                {
-                    return false;
-                }
-            }
-
-            return leftValue.HasValue && rightValue.HasValue && leftValue.Value == rightValue.Value;
-            #endregion
+            //A float operand gives a double product, otherwise the product is exact (beyond the decimal range it overflows and the row is dropped)
+            return numericFamily == SWRLNumericFamily.Float
+                ? SWRLHelper.ToNumericLiteral(approximateOperands.Aggregate(1d, (product, operand) => product * operand))
+                : SWRLHelper.ToNumericLiteral(exactOperands.Aggregate(1m, (product, operand) => product * operand), numericFamily);
         }
         #endregion
     }

@@ -16,9 +16,8 @@
 
 using System.Collections.Generic;
 using System;
-using RDFSharp.Query;
 using RDFSharp.Model;
-using System.Globalization;
+using RDFSharp.Query;
 
 namespace OWLSharp.Ontology
 {
@@ -29,69 +28,24 @@ namespace OWLSharp.Ontology
     {
         #region Methods
         /// <summary>
-        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// Rounds the second argument to the closest integral value with halves rounded to the even neighbour
         /// </summary>
         /// <exception cref="ArgumentException"></exception>
-        internal static bool EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
+        internal static RDFLiteral EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
             if (builtInArguments?.Count != 2)
                 throw new ArgumentException("it requires exactly 2 arguments");
             #endregion
 
-            #region LeftArgument
-            RDFPatternMember leftPatternMember = null;
-            switch (builtInArguments[0])
-            {
-                case SWRLVariableArgument leftArgVar:
-                {
-                    #region Guards
-                    string leftArgVarName = leftArgVar.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(leftArgVarName))
-                        return true;
-                    #endregion
+            //Only numbers take part in the computation: an unbound or non-numeric operand leaves the result undefined
+            if (!SWRLHelper.TryGetNumericOperands(antecedentResultsRow, builtInArguments, out SWRLNumericFamily numericFamily, out decimal[] exactOperands, out double[] approximateOperands))
+                return null;
 
-                    leftPatternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[leftArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument leftArgLit:
-                    leftPatternMember = leftArgLit.GetLiteral();
-                    break;
-            }
-            #endregion
-
-            #region RightArgument
-            RDFPatternMember rightPatternMember = null;
-            switch (builtInArguments[1])
-            {
-                case SWRLVariableArgument rightArgVar:
-                {
-                    #region Guards
-                    string rightArgVarName = rightArgVar.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(rightArgVarName))
-                        return true;
-                    #endregion
-
-                    rightPatternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[rightArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument rightArgLit:
-                    rightPatternMember = rightArgLit.GetLiteral();
-                    break;
-            }
-            #endregion
-
-            if (leftPatternMember is RDFTypedLiteral leftTypedLiteral
-                 && leftTypedLiteral.HasDecimalDatatype()
-                 && double.TryParse(leftTypedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double leftNumber)
-                 && rightPatternMember is RDFTypedLiteral rightTypedLiteral
-                 && rightTypedLiteral.HasDecimalDatatype()
-                 && double.TryParse(rightTypedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double rightNumber))
-            {
-                return leftNumber == Math.Round(rightNumber, MidpointRounding.ToEven);
-            }
-
-            return false;
+            //Halves round to the even neighbour as in XQuery fn:round-half-to-even and the result keeps the family of the operand
+            return numericFamily == SWRLNumericFamily.Float
+                ? SWRLHelper.ToNumericLiteral(Math.Round(approximateOperands[0], MidpointRounding.ToEven))
+                : SWRLHelper.ToNumericLiteral(Math.Round(exactOperands[0], MidpointRounding.ToEven), numericFamily);
         }
         #endregion
     }

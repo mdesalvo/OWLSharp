@@ -151,13 +151,11 @@ public class SWRLStringEqualIgnoreCaseBuiltInTest
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
-        Assert.HasCount(3, builtinResults.Rows);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "hello"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "HeLlo"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), "http://example.org/test/"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Y"] ?? string.Empty), "http://exAmple.org/Test/"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "http://example.org/test/"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "http://exAmple.org/Test/"));
 
         //Test with unexisting variables
 
@@ -167,7 +165,7 @@ public class SWRLStringEqualIgnoreCaseBuiltInTest
         RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(2, builtinResults2.Columns);
-        Assert.HasCount(13, builtinResults2.Rows);
+        Assert.HasCount(0, builtinResults2.Rows);
 
         SWRLBuiltIn builtin3 = SWRLBuiltIn.StringEqualIgnoreCase(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
@@ -175,7 +173,7 @@ public class SWRLStringEqualIgnoreCaseBuiltInTest
         RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(2, builtinResults3.Columns);
-        Assert.HasCount(13, builtinResults3.Rows);
+        Assert.HasCount(0, builtinResults3.Rows);
 
         //Test exception on unknown builtIn
         Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLBuiltIn
@@ -283,6 +281,63 @@ public class SWRLStringEqualIgnoreCaseBuiltInTest
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Rows);
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateStringEqualIgnoreCaseBuiltInWithUnexistingVariableDroppingEveryRow()
+    {
+        //An unbound variable never satisfies a built-in: the same row is kept by the complete built-in and dropped once one variable has no column
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(["Hello", "hELLO"]);
+
+        SWRLBuiltIn completeBuiltin = SWRLBuiltIn.StringEqualIgnoreCase(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")));
+        RDFTable completeResults = completeBuiltin.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(2, completeResults.Columns);
+        Assert.HasCount(1, completeResults.Rows);
+        Assert.AreEqual("Hello", completeResults.Rows[0][0]);
+        Assert.AreEqual("hELLO", completeResults.Rows[0][1]);
+
+        SWRLBuiltIn builtin1 = SWRLBuiltIn.StringEqualIgnoreCase(
+            new SWRLVariableArgument(new RDFVariable("?F")),
+            new SWRLVariableArgument(new RDFVariable("?Y")));
+        RDFTable builtinResults1 = builtin1.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(2, builtinResults1.Columns);
+        Assert.IsEmpty(builtinResults1.Rows);
+
+        SWRLBuiltIn builtin2 = SWRLBuiltIn.StringEqualIgnoreCase(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?F")));
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(2, builtinResults2.Columns);
+        Assert.IsEmpty(builtinResults2.Rows);
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateStringEqualIgnoreCaseBuiltInWithNullCellDroppingTheRow()
+    {
+        //A null cell is an unbound variable: the row holding it is dropped while the complete row is kept
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(["Hello", "hELLO"]);
+        antecedentResults.AddRow([null, "hELLO"]);
+        antecedentResults.AddRow(["Hello", null]);
+
+        SWRLBuiltIn builtin = SWRLBuiltIn.StringEqualIgnoreCase(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")));
+
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+        Assert.IsNotNull(builtinResults);
+        Assert.HasCount(2, builtinResults.Columns);
+        Assert.HasCount(1, builtinResults.Rows);
+        Assert.AreEqual("Hello", builtinResults.Rows[0][0]);
+        Assert.AreEqual("hELLO", builtinResults.Rows[0][1]);
     }
     #endregion
 }

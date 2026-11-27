@@ -151,13 +151,11 @@ public class SWRLLowerCaseBuiltInTest
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
-        Assert.HasCount(3, builtinResults.Rows);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "hello"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "Hello"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), "http://example.org/"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Y"] ?? string.Empty), "htTp://example.org/"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "http://example.org/"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "htTp://example.org/"));
 
         //Test with unexisting variables
 
@@ -167,15 +165,33 @@ public class SWRLLowerCaseBuiltInTest
         RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(2, builtinResults2.Columns);
-        Assert.HasCount(13, builtinResults2.Rows);
+        Assert.HasCount(0, builtinResults2.Rows);
 
         SWRLBuiltIn builtin3 = SWRLBuiltIn.LowerCase(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Y")));
         RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
-        Assert.HasCount(2, builtinResults3.Columns);
-        Assert.HasCount(13, builtinResults3.Rows);
+        Assert.HasCount(3, builtinResults3.Columns);
+        Assert.HasCount(6, builtinResults3.Rows);
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[0][0] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[0][1] ?? string.Empty), "Hello"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[0][2] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[1][0] ?? string.Empty), "hello@EN-US"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[1][1] ?? string.Empty), "EN-US"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[1][2] ?? string.Empty), "en-us"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[2][0] ?? string.Empty), "2^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[2][1] ?? string.Empty), "hello^^http://www.w3.org/2001/XMLSchema#string"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[2][2] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[3][0] ?? string.Empty), "2^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[3][1] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[3][2] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[4][0] ?? string.Empty), "2^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[4][1] ?? string.Empty), "hello@EN"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[4][2] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[5][0] ?? string.Empty), "http://example.org/"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[5][1] ?? string.Empty), "htTp://example.org/"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[5][2] ?? string.Empty), "http://example.org/"));
 
         //Test exception on unknown builtIn
         Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLBuiltIn
@@ -259,10 +275,9 @@ public class SWRLLowerCaseBuiltInTest
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
-        Assert.HasCount(3, builtinResults.Rows);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "hello^^http://www.w3.org/2001/XMLSchema#string"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "hello"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), "hello@EN"));
     }
 
     [TestMethod]
@@ -281,6 +296,136 @@ public class SWRLLowerCaseBuiltInTest
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Rows);
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateLowerCaseBuiltInBindingFirstArgument()
+    {
+        //The first variable has no column: the built-in adds it and fills it with the computed value of the rows it can compute
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(["HELLO"]);
+        antecedentResults.AddRow(["HeLLo@EN"]);
+        antecedentResults.AddRow(["ABC^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow(["http://EXAMPLE.org/"]);
+        antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow([null]);
+
+        SWRLBuiltIn builtin = SWRLBuiltIn.LowerCase(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")));
+
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+        string[][] expectedRows = [
+            ["HELLO", "hello"],
+            ["HeLLo@EN", "hello"],
+            ["ABC^^http://www.w3.org/2001/XMLSchema#string", "abc"],
+            ["http://EXAMPLE.org/", "http://example.org/"]
+        ];
+        Assert.IsNotNull(builtinResults);
+        Assert.HasCount(2, builtinResults.Columns);
+        Assert.AreEqual("?X", builtinResults.Columns[1].Name);
+        Assert.HasCount(4, builtinResults.Rows);
+        for (int i = 0; i < expectedRows.Length; i++)
+            for (int j = 0; j < expectedRows[i].Length; j++)
+                Assert.AreEqual(expectedRows[i][j], builtinResults.Rows[i][j]);
+        //The incoming table keeps its own columns
+        Assert.HasCount(1, antecedentResults.Columns);
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateLowerCaseBuiltInInPredicateMode()
+    {
+        //The first variable is bound: a row is kept only when its first cell holds the computed value
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(["hello", "HELLO"]);
+        antecedentResults.AddRow(["zzz", "HELLO"]);
+        antecedentResults.AddRow(["hello@EN", "HELLO"]);
+        antecedentResults.AddRow(["hello^^http://www.w3.org/2001/XMLSchema#string", "HELLO"]);
+        antecedentResults.AddRow(["hello", "HeLLo@EN"]);
+        antecedentResults.AddRow(["zzz", "HeLLo@EN"]);
+        antecedentResults.AddRow(["abc", "ABC^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow(["zzz", "ABC^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow(["http://example.org/", "http://EXAMPLE.org/"]);
+        antecedentResults.AddRow(["zzz", "http://EXAMPLE.org/"]);
+        antecedentResults.AddRow([null, "HELLO"]);
+
+        SWRLBuiltIn builtin = SWRLBuiltIn.LowerCase(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")));
+
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+        string[][] expectedRows = [
+            ["hello", "HELLO"],
+            ["hello^^http://www.w3.org/2001/XMLSchema#string", "HELLO"],
+            ["hello", "HeLLo@EN"],
+            ["abc", "ABC^^http://www.w3.org/2001/XMLSchema#string"],
+            ["http://example.org/", "http://EXAMPLE.org/"]
+        ];
+        Assert.IsNotNull(builtinResults);
+        Assert.HasCount(2, builtinResults.Columns);
+        Assert.HasCount(5, builtinResults.Rows);
+        for (int i = 0; i < expectedRows.Length; i++)
+            for (int j = 0; j < expectedRows[i].Length; j++)
+                Assert.AreEqual(expectedRows[i][j], builtinResults.Rows[i][j]);
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateLowerCaseBuiltInWithUnexistingNonFirstArgument()
+    {
+        //A non-first variable with no column is unbound: no row can satisfy the built-in whether the first variable is bound or not
+        RDFTable bindingResults = new RDFTable();
+        bindingResults.AddColumn("?Y");
+        bindingResults.AddRow(["HELLO"]);
+        RDFTable predicateResults = new RDFTable();
+        predicateResults.AddColumn("?X");
+        predicateResults.AddColumn("?Y");
+        predicateResults.AddRow(["hello", "HELLO"]);
+
+        SWRLBuiltIn builtin1 = SWRLBuiltIn.LowerCase(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?F")));
+        RDFTable bindingTable1 = builtin1.EvaluateOnAntecedent(bindingResults);
+        Assert.HasCount(2, bindingTable1.Columns);
+        Assert.IsEmpty(bindingTable1.Rows);
+        RDFTable predicateTable1 = builtin1.EvaluateOnAntecedent(predicateResults);
+        Assert.HasCount(2, predicateTable1.Columns);
+        Assert.IsEmpty(predicateTable1.Rows);
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateLowerCaseBuiltInIndependentlyFromCurrentCulture()
+    {
+        //Turkish casing maps i to a dotted capital and I to a dotless small: the built-in must not follow the process culture
+        System.Globalization.CultureInfo originalCulture = System.Globalization.CultureInfo.CurrentCulture;
+        try
+        {
+            System.Globalization.CultureInfo.CurrentCulture = new System.Globalization.CultureInfo("tr-TR");
+
+            RDFTable antecedentResults = new RDFTable();
+            antecedentResults.AddColumn("?Y");
+            antecedentResults.AddRow(["I"]);
+
+            SWRLBuiltIn builtin = SWRLBuiltIn.LowerCase(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Y")));
+
+            RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.HasCount(2, builtinResults.Columns);
+            Assert.HasCount(1, builtinResults.Rows);
+            Assert.AreEqual("I", builtinResults.Rows[0][0]);
+            Assert.AreEqual("i", builtinResults.Rows[0][1]);
+        }
+        finally
+        {
+            System.Globalization.CultureInfo.CurrentCulture = originalCulture;
+        }
     }
     #endregion
 }

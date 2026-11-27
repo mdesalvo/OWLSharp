@@ -16,9 +16,8 @@
 
 using System.Collections.Generic;
 using System;
-using RDFSharp.Query;
 using RDFSharp.Model;
-using System.Globalization;
+using RDFSharp.Query;
 
 namespace OWLSharp.Ontology
 {
@@ -29,69 +28,22 @@ namespace OWLSharp.Ontology
     {
         #region Methods
         /// <summary>
-        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// Computes the sine of the second argument
         /// </summary>
         /// <exception cref="ArgumentException"></exception>
-        internal static bool EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
+        internal static RDFLiteral EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
             if (builtInArguments?.Count != 2)
                 throw new ArgumentException("it requires exactly 2 arguments");
             #endregion
 
-            #region LeftArgument
-            RDFPatternMember leftPatternMember = null;
-            switch (builtInArguments[0])
-            {
-                case SWRLVariableArgument leftArgVar:
-                {
-                    #region Guards
-                    string leftArgVarName = leftArgVar.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(leftArgVarName))
-                        return true;
-                    #endregion
+            //Only numbers take part in the computation: an unbound or non-numeric operand leaves the result undefined
+            if (!SWRLHelper.TryGetNumericOperands(antecedentResultsRow, builtInArguments, out SWRLNumericFamily _, out decimal[] _, out double[] approximateOperands))
+                return null;
 
-                    leftPatternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[leftArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument leftArgLit:
-                    leftPatternMember = leftArgLit.GetLiteral();
-                    break;
-            }
-            #endregion
-
-            #region RightArgument
-            RDFPatternMember rightPatternMember = null;
-            switch (builtInArguments[1])
-            {
-                case SWRLVariableArgument rightArgVar:
-                {
-                    #region Guards
-                    string rightArgVarName = rightArgVar.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(rightArgVarName))
-                        return true;
-                    #endregion
-
-                    rightPatternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[rightArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument rightArgLit:
-                    rightPatternMember = rightArgLit.GetLiteral();
-                    break;
-            }
-            #endregion
-
-            if (leftPatternMember is RDFTypedLiteral leftTypedLiteral
-                 && leftTypedLiteral.HasDecimalDatatype()
-                 && double.TryParse(leftTypedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double leftNumber)
-                 && rightPatternMember is RDFTypedLiteral rightTypedLiteral
-                 && rightTypedLiteral.HasDecimalDatatype()
-                 && double.TryParse(rightTypedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double rightNumber))
-            {
-                return leftNumber == Math.Sin(rightNumber);
-            }
-
-            return false;
+            //A trigonometric value is irrational in general, so it is always computed in double precision
+            return SWRLHelper.ToNumericLiteral(Math.Sin(approximateOperands[0]));
         }
         #endregion
     }

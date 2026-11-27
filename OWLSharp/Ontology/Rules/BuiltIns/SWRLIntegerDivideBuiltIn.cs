@@ -16,9 +16,8 @@
 
 using System.Collections.Generic;
 using System;
-using RDFSharp.Query;
 using RDFSharp.Model;
-using System.Globalization;
+using RDFSharp.Query;
 
 namespace OWLSharp.Ontology
 {
@@ -29,55 +28,31 @@ namespace OWLSharp.Ontology
     {
         #region Methods
         /// <summary>
-        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// Computes the quotient of the second and the third argument truncated toward zero
         /// </summary>
         /// <exception cref="ArgumentException"></exception>
-        internal static bool EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
+        internal static RDFLiteral EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
             if (builtInArguments?.Count != 3)
                 throw new ArgumentException("it requires exactly 3 arguments");
             #endregion
 
-            #region Arguments
-            int? leftValue = null, rightValue = null;
-            for (int i=0; i<builtInArguments.Count; i++)
-            {
-                //Parse current argument
-                RDFPatternMember patternMember = null;
-                switch (builtInArguments[i])
-                {
-                    case SWRLVariableArgument argVar when antecedentResultsRow.HasColumn(argVar.GetVariable().ToString()):
-                        patternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[argVar.GetVariable().ToString()] ?? string.Empty));
-                        break;
-                    case SWRLLiteralArgument argLit:
-                        patternMember = argLit.GetLiteral();
-                        break;
-                }
+            //Only numbers take part in the computation: an unbound or non-numeric operand leaves the result undefined
+            if (!SWRLHelper.TryGetNumericOperands(antecedentResultsRow, builtInArguments, out SWRLNumericFamily numericFamily, out decimal[] exactOperands, out double[] approximateOperands))
+                return null;
 
-                //Collect current argument
-                if (patternMember is RDFTypedLiteral typedLiteral
-                     && typedLiteral.HasDecimalDatatype()
-                     && double.TryParse(typedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double argValue))
-                {
-                    //First argument concurs to the left value
-                    if (i == 0)
-                        leftValue = Convert.ToInt32(argValue);
-                    //Other arguments concur to the right value
-                    else if (rightValue == null)
-                        rightValue = Convert.ToInt32(argValue);
-                    else
-                        rightValue /= argValue == 0d ? throw new ArgumentException("cannot divide by zero!") : Convert.ToInt32(argValue);
-                }
-                //In case of type error just discard the current row
-                else
-                {
-                    return false;
-                }
-            }
+            //A division by zero has no quotient
+            if (approximateOperands[1] == 0d)
+                return null;
 
-            return leftValue.HasValue && rightValue.HasValue && leftValue.Value == rightValue.Value;
-            #endregion
+            //The quotient is truncated toward zero, as XQuery idiv does: a float operand makes the division happen in double precision first
+            decimal truncatedQuotient = numericFamily == SWRLNumericFamily.Float
+                ? (decimal)Math.Truncate(approximateOperands[0] / approximateOperands[1])
+                : decimal.Truncate(exactOperands[0] / exactOperands[1]);
+
+            //The truncated quotient is always an integer (beyond the decimal range it overflows and the row is dropped)
+            return SWRLHelper.ToNumericLiteral(truncatedQuotient, SWRLNumericFamily.Integer);
         }
         #endregion
     }

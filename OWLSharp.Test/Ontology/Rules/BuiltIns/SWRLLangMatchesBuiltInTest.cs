@@ -156,7 +156,7 @@ public class SWRLLangMatchesBuiltInTest
         RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(2, builtinResults2.Columns);
-        Assert.HasCount(4, builtinResults2.Rows);
+        Assert.HasCount(0, builtinResults2.Rows);
 
         SWRLBuiltIn builtin3 = SWRLBuiltIn.LangMatches(
             new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
@@ -164,7 +164,7 @@ public class SWRLLangMatchesBuiltInTest
         RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(2, builtinResults3.Columns);
-        Assert.HasCount(4, builtinResults3.Rows);
+        Assert.HasCount(0, builtinResults3.Rows);
 
         //Test exception on unknown builtIn
         Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLBuiltIn
@@ -184,6 +184,63 @@ public class SWRLLangMatchesBuiltInTest
                 new SWRLVariableArgument(new RDFVariable("?V"))
             ]
         }.EvaluateOnAntecedent(antecedentResults));
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateLangMatchesBuiltInWithUnexistingVariableDroppingEveryRow()
+    {
+        //An unbound variable never satisfies a built-in: the same row is kept by the complete built-in and dropped once one variable has no column
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(["hello@EN-US", "hi@EN-US"]);
+
+        SWRLBuiltIn completeBuiltin = SWRLBuiltIn.LangMatches(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")));
+        RDFTable completeResults = completeBuiltin.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(2, completeResults.Columns);
+        Assert.HasCount(1, completeResults.Rows);
+        Assert.AreEqual("hello@EN-US", completeResults.Rows[0][0]);
+        Assert.AreEqual("hi@EN-US", completeResults.Rows[0][1]);
+
+        SWRLBuiltIn builtin1 = SWRLBuiltIn.LangMatches(
+            new SWRLVariableArgument(new RDFVariable("?F")),
+            new SWRLVariableArgument(new RDFVariable("?Y")));
+        RDFTable builtinResults1 = builtin1.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(2, builtinResults1.Columns);
+        Assert.IsEmpty(builtinResults1.Rows);
+
+        SWRLBuiltIn builtin2 = SWRLBuiltIn.LangMatches(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?F")));
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(2, builtinResults2.Columns);
+        Assert.IsEmpty(builtinResults2.Rows);
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateLangMatchesBuiltInWithNullCellDroppingTheRow()
+    {
+        //A null cell is an unbound variable: the row holding it is dropped while the complete row is kept
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(["hello@EN-US", "hi@EN-US"]);
+        antecedentResults.AddRow([null, "hi@EN-US"]);
+        antecedentResults.AddRow(["hello@EN-US", null]);
+
+        SWRLBuiltIn builtin = SWRLBuiltIn.LangMatches(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")));
+
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+        Assert.IsNotNull(builtinResults);
+        Assert.HasCount(2, builtinResults.Columns);
+        Assert.HasCount(1, builtinResults.Rows);
+        Assert.AreEqual("hello@EN-US", builtinResults.Rows[0][0]);
+        Assert.AreEqual("hi@EN-US", builtinResults.Rows[0][1]);
     }
     #endregion
 }

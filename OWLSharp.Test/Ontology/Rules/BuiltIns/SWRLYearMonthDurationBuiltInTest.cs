@@ -138,7 +138,7 @@ public class SWRLYearMonthDurationBuiltInTest
         RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(3, builtinResults2.Columns);
-        Assert.HasCount(3, builtinResults2.Rows);
+        Assert.HasCount(0, builtinResults2.Rows);
 
         SWRLBuiltIn builtin3 = SWRLBuiltIn.YearMonthDuration(
             new SWRLVariableArgument(new RDFVariable("?X")),
@@ -147,7 +147,7 @@ public class SWRLYearMonthDurationBuiltInTest
         RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(3, builtinResults3.Columns);
-        Assert.HasCount(3, builtinResults3.Rows);
+        Assert.HasCount(0, builtinResults3.Rows);
 
         //Test exception on unknown builtIn
         Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLBuiltIn
@@ -264,6 +264,80 @@ public class SWRLYearMonthDurationBuiltInTest
         Assert.HasCount(1, builtinResults.Rows);
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "P1Y7M^^http://www.w3.org/2001/XMLSchema#duration"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "1^^http://www.w3.org/2001/XMLSchema#int"));
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateYearMonthDurationBuiltInWithUnexistingVariableDroppingEveryRow()
+    {
+        //An unbound variable never satisfies a built-in: the same row is kept by the complete built-in and dropped once one variable has no column
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddRow(["P2Y7M^^http://www.w3.org/2001/XMLSchema#duration", "2^^http://www.w3.org/2001/XMLSchema#int", "7^^http://www.w3.org/2001/XMLSchema#int"]);
+
+        SWRLBuiltIn completeBuiltin = SWRLBuiltIn.YearMonthDuration(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?Z")));
+        RDFTable completeResults = completeBuiltin.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(3, completeResults.Columns);
+        Assert.HasCount(1, completeResults.Rows);
+        Assert.AreEqual("P2Y7M^^http://www.w3.org/2001/XMLSchema#duration", completeResults.Rows[0][0]);
+        Assert.AreEqual("2^^http://www.w3.org/2001/XMLSchema#int", completeResults.Rows[0][1]);
+        Assert.AreEqual("7^^http://www.w3.org/2001/XMLSchema#int", completeResults.Rows[0][2]);
+
+        SWRLBuiltIn builtin1 = SWRLBuiltIn.YearMonthDuration(
+            new SWRLVariableArgument(new RDFVariable("?F")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?Z")));
+        RDFTable builtinResults1 = builtin1.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(3, builtinResults1.Columns);
+        Assert.IsEmpty(builtinResults1.Rows);
+
+        SWRLBuiltIn builtin2 = SWRLBuiltIn.YearMonthDuration(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?F")),
+            new SWRLVariableArgument(new RDFVariable("?Z")));
+        RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(3, builtinResults2.Columns);
+        Assert.IsEmpty(builtinResults2.Rows);
+
+        SWRLBuiltIn builtin3 = SWRLBuiltIn.YearMonthDuration(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?F")));
+        RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+        Assert.HasCount(3, builtinResults3.Columns);
+        Assert.IsEmpty(builtinResults3.Rows);
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateYearMonthDurationBuiltInWithNullCellDroppingTheRow()
+    {
+        //A null cell is an unbound variable: the row holding it is dropped while the complete row is kept
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddRow(["P2Y7M^^http://www.w3.org/2001/XMLSchema#duration", "2^^http://www.w3.org/2001/XMLSchema#int", "7^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow([null, "2^^http://www.w3.org/2001/XMLSchema#int", "7^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["P2Y7M^^http://www.w3.org/2001/XMLSchema#duration", null, "7^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow(["P2Y7M^^http://www.w3.org/2001/XMLSchema#duration", "2^^http://www.w3.org/2001/XMLSchema#int", null]);
+
+        SWRLBuiltIn builtin = SWRLBuiltIn.YearMonthDuration(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?Z")));
+
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+        Assert.IsNotNull(builtinResults);
+        Assert.HasCount(3, builtinResults.Columns);
+        Assert.HasCount(1, builtinResults.Rows);
+        Assert.AreEqual("P2Y7M^^http://www.w3.org/2001/XMLSchema#duration", builtinResults.Rows[0][0]);
+        Assert.AreEqual("2^^http://www.w3.org/2001/XMLSchema#int", builtinResults.Rows[0][1]);
+        Assert.AreEqual("7^^http://www.w3.org/2001/XMLSchema#int", builtinResults.Rows[0][2]);
     }
     #endregion
 }

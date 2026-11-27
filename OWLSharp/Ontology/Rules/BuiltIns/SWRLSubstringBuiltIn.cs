@@ -16,9 +16,9 @@
 
 using System.Collections.Generic;
 using System;
-using RDFSharp.Query;
-using RDFSharp.Model;
 using System.Globalization;
+using RDFSharp.Model;
+using RDFSharp.Query;
 
 namespace OWLSharp.Ontology
 {
@@ -29,138 +29,41 @@ namespace OWLSharp.Ontology
     {
         #region Methods
         /// <summary>
-        /// Evaluates the built-in in the context of being part of a SWRL antecedent
+        /// Computes the part of the second argument that starts at the position given by the third one with the optional length of the fourth one
         /// </summary>
         /// <exception cref="ArgumentException"></exception>
-        internal static bool EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
+        internal static RDFLiteral EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
             if (builtInArguments?.Count != 3 && builtInArguments?.Count != 4)
                 throw new ArgumentException("it requires exactly 3 or exactly 4 arguments");
             #endregion
 
-            #region LeftArgument
-            RDFPatternMember leftPatternMember = null;
-            switch (builtInArguments[0])
-            {
-                case SWRLVariableArgument leftArgVar:
-                {
-                    #region Guards
-                    string leftArgVarName = leftArgVar.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(leftArgVarName))
-                        return true;
-                    #endregion
+            //Only strings can be cut: an unbound or non-string argument leaves the result undefined
+            string sourceValue = SWRLHelper.GetStringValue(SWRLHelper.GetArgumentValue(antecedentResultsRow, builtInArguments[1]));
+            if (sourceValue == null)
+                return null;
 
-                    leftPatternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[leftArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument leftArgLit:
-                    leftPatternMember = leftArgLit.GetLiteral();
-                    break;
-                case SWRLIndividualArgument leftArgIdv:
-                    leftPatternMember = leftArgIdv.GetResource();
-                    break;
-            }
-            #endregion
+            //The start position is a 1-based integer, as in XPath fn:substring: it may point just after the end of the source
+            if (!(SWRLHelper.GetArgumentValue(antecedentResultsRow, builtInArguments[2]) is RDFTypedLiteral startLiteral)
+                 || !startLiteral.HasDecimalDatatype()
+                 || !int.TryParse(startLiteral.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int startPosition)
+                 || startPosition < 1 || startPosition > sourceValue.Length + 1)
+                return null;
 
-            #region RightArgument (SOURCE)
-            RDFPatternMember rightPatternMemberSRC = null;
-            switch (builtInArguments[1])
-            {
-                case SWRLVariableArgument rightArgVarSRC:
-                {
-                    #region Guards
-                    string rightArgVarName = rightArgVarSRC.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(rightArgVarName))
-                        return true;
-                    #endregion
+            //Without a length the result runs up to the end of the source
+            if (builtInArguments.Count == 3)
+                return new RDFPlainLiteral(sourceValue.Substring(startPosition - 1));
 
-                    rightPatternMemberSRC = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[rightArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument rightArgLitSRC:
-                    rightPatternMemberSRC = rightArgLitSRC.GetLiteral();
-                    break;
-                case SWRLIndividualArgument rightArgIdvSRC:
-                    rightPatternMemberSRC = rightArgIdvSRC.GetResource();
-                    break;
-            }
-            #endregion
+            //The length is a non-negative integer that must fit within the source after the start position
+            if (!(SWRLHelper.GetArgumentValue(antecedentResultsRow, builtInArguments[3]) is RDFTypedLiteral lengthLiteral)
+                 || !lengthLiteral.HasDecimalDatatype()
+                 || !int.TryParse(lengthLiteral.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int length)
+                 || length < 0 || length > sourceValue.Length - startPosition + 1)
+                return null;
 
-            #region RightArgument (INDEX)
-            RDFPatternMember rightPatternMemberIDX = null;
-            switch (builtInArguments[2])
-            {
-                case SWRLVariableArgument rightArgVarIDX:
-                {
-                    #region Guards
-                    string rightArgVarName = rightArgVarIDX.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(rightArgVarName))
-                        return true;
-                    #endregion
-
-                    rightPatternMemberIDX = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[rightArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument rightArgLitIDX:
-                    rightPatternMemberIDX = rightArgLitIDX.GetLiteral();
-                    break;
-            }
-            #endregion
-
-            #region RightArgument (LENGTH)
-            RDFPatternMember rightPatternMemberLEN = null;
-            if (builtInArguments.Count == 4)
-                switch (builtInArguments[3])
-                {
-                    case SWRLVariableArgument rightArgVarLEN:
-                    {
-                        #region Guards
-                        string rightArgVarName = rightArgVarLEN.GetVariable().ToString();
-                        if (!antecedentResultsRow.HasColumn(rightArgVarName))
-                            return true;
-                        #endregion
-
-                        rightPatternMemberLEN = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[rightArgVarName] ?? string.Empty));
-                        break;
-                    }
-                    case SWRLLiteralArgument rightArgLitLEN:
-                        rightPatternMemberLEN = rightArgLitLEN.GetLiteral();
-                        break;
-                }
-            #endregion
-
-            //This is a string builtIn, so ensure to have information compatible with "string" semantic
-            bool isStringLeftPM = leftPatternMember is RDFResource
-                                   || leftPatternMember is RDFPlainLiteral
-                                   || (leftPatternMember is RDFTypedLiteral leftPMTLit && leftPMTLit.HasStringDatatype());
-            bool isStringRightPMSRC = rightPatternMemberSRC is RDFResource
-                                        || rightPatternMemberSRC is RDFPlainLiteral
-                                        || (rightPatternMemberSRC is RDFTypedLiteral rightPMTLit && rightPMTLit.HasStringDatatype());
-            if (isStringLeftPM && isStringRightPMSRC)
-            {
-                string leftPMValue = leftPatternMember is RDFLiteral leftPMLit ? leftPMLit.Value : leftPatternMember.ToString();
-                string rightPMValue = rightPatternMemberSRC is RDFLiteral rightPMLit ? rightPMLit.Value : rightPatternMemberSRC.ToString();
-
-                //This builtIn also requires numeric literals in 3rd (and optional 4th) arguments to execute a substring operation on the 2nd
-                if (rightPatternMemberIDX is RDFTypedLiteral leftTypedLiteralIDX
-                     && leftTypedLiteralIDX.HasDecimalDatatype()
-                     && int.TryParse(leftTypedLiteralIDX.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int leftNumberIDX))
-                {
-                    //startIndex (W3C SWRL spec uses 1-based indexing, aligned with XPath fn:substring)
-                    if (builtInArguments.Count == 3)
-                        return string.Equals(leftPMValue, rightPMValue.Substring(leftNumberIDX - 1));
-
-                    //startIndex+length (W3C SWRL spec uses 1-based indexing, aligned with XPath fn:substring)
-                    if (rightPatternMemberLEN is RDFTypedLiteral leftTypedLiteralLEN
-                        && leftTypedLiteralLEN.HasDecimalDatatype()
-                        && int.TryParse(leftTypedLiteralLEN.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int leftNumberLEN))
-                    {
-                        return string.Equals(leftPMValue, rightPMValue.Substring(leftNumberIDX - 1, leftNumberLEN));
-                    }
-                }
-            }
-            return false;
+            //The result is the requested slice of the source
+            return new RDFPlainLiteral(sourceValue.Substring(startPosition - 1, length));
         }
         #endregion
     }

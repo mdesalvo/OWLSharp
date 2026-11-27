@@ -122,27 +122,15 @@ public class SWRLReplaceBuiltInTest
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(4, builtinResults.Columns);
-        Assert.HasCount(5, builtinResults.Rows);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "heMMo"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "hello"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Z"] ?? string.Empty), "ll"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Q"] ?? string.Empty), "MM"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "heMMo@EN"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "hello@EN"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Z"] ?? string.Empty), "ll@EN"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Q"] ?? string.Empty), "MM@EN"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Y"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Z"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Q"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?X"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?Y"] ?? string.Empty), "hello"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?Z"] ?? string.Empty), "[a-z]+"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?Q"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[4]["?X"] ?? string.Empty), "http://example.org/test/"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[4]["?Y"] ?? string.Empty), "ftp://example.org/test/"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[4]["?Z"] ?? string.Empty), "ftp"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[4]["?Q"] ?? string.Empty), "http"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "http://example.org/test/"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "ftp://example.org/test/"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Z"] ?? string.Empty), "ftp"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Q"] ?? string.Empty), "http"));
 
         //Test with unexisting variables
 
@@ -154,7 +142,7 @@ public class SWRLReplaceBuiltInTest
         RDFTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.HasCount(4, builtinResults2.Columns);
-        Assert.HasCount(8, builtinResults2.Rows);
+        Assert.HasCount(0, builtinResults2.Rows);
 
         SWRLBuiltIn builtin3 = SWRLBuiltIn.Replace(
             new SWRLVariableArgument(new RDFVariable("?P")),  //unexisting
@@ -163,8 +151,38 @@ public class SWRLReplaceBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?Q")));
         RDFTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults3);
-        Assert.HasCount(4, builtinResults3.Columns);
-        Assert.HasCount(8, builtinResults3.Rows);
+        Assert.HasCount(5, builtinResults3.Columns);
+        Assert.HasCount(6, builtinResults3.Rows);
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[0][0] ?? string.Empty), "heMMo"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[0][1] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[0][2] ?? string.Empty), "ll"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[0][3] ?? string.Empty), "MM"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[0][4] ?? string.Empty), "heMMo"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[1][0] ?? string.Empty), "hemMo"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[1][1] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[1][2] ?? string.Empty), "ll"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[1][3] ?? string.Empty), "MM"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[1][4] ?? string.Empty), "heMMo"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[2][0] ?? string.Empty), "heMMo@EN"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[2][1] ?? string.Empty), "hello@EN"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[2][2] ?? string.Empty), "ll@EN"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[2][3] ?? string.Empty), "MM@EN"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[2][4] ?? string.Empty), "heMMo"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[3][0] ?? string.Empty), "2^^http://www.w3.org/2001/XMLSchema#int"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[3][1] ?? string.Empty), "2"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[3][2] ?? string.Empty), "2"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[3][3] ?? string.Empty), "2"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[3][4] ?? string.Empty), "2"));
+        Assert.IsNull(builtinResults3.Rows[4][0]);
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[4][1] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[4][2] ?? string.Empty), "[a-z]+"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[4][3] ?? string.Empty), ""));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[4][4] ?? string.Empty), ""));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[5][0] ?? string.Empty), "http://example.org/test/"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[5][1] ?? string.Empty), "ftp://example.org/test/"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[5][2] ?? string.Empty), "ftp"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[5][3] ?? string.Empty), "http"));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[5][4] ?? string.Empty), "http://example.org/test/"));
 
         //Test exception on unknown builtIn
         Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLBuiltIn
@@ -212,19 +230,13 @@ public class SWRLReplaceBuiltInTest
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);
-        Assert.HasCount(4, builtinResults.Rows);
+        Assert.HasCount(2, builtinResults.Rows);
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "heMMo"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Z"] ?? string.Empty), "ll"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Q"] ?? string.Empty), "MM"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "heMMo@EN"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Z"] ?? string.Empty), "ll@EN"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Q"] ?? string.Empty), "MM@EN"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Z"] ?? string.Empty), "[a-z]+"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Q"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?X"] ?? string.Empty), "hello"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?Z"] ?? string.Empty), "hello"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[3]["?Q"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Z"] ?? string.Empty), "hello"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Q"] ?? string.Empty), "hello"));
     }
 
     [TestMethod]
@@ -253,16 +265,10 @@ public class SWRLReplaceBuiltInTest
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);
-        Assert.HasCount(3, builtinResults.Rows);
+        Assert.HasCount(1, builtinResults.Rows);
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "heMMo"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "hello"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Q"] ?? string.Empty), "MM"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "heMMo@EN"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "hello@EN"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Q"] ?? string.Empty), "MM@EN"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?X"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Y"] ?? string.Empty), ""));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[2]["?Q"] ?? string.Empty), ""));
     }
 
     [TestMethod]
@@ -291,13 +297,150 @@ public class SWRLReplaceBuiltInTest
 
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(3, builtinResults.Columns);
-        Assert.HasCount(2, builtinResults.Rows);
+        Assert.HasCount(1, builtinResults.Rows);
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "heMMo"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), "hello"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Z"] ?? string.Empty), "ll"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "heMMo@EN"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Y"] ?? string.Empty), "hello@EN"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?Z"] ?? string.Empty), "ll@EN"));
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateReplaceBuiltInBindingFirstArgument()
+    {
+        //The first variable has no column: the built-in adds it and fills it with the computed value of the rows it can compute
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddColumn("?Q");
+        antecedentResults.AddRow(["hello", "l+", "L"]);
+        antecedentResults.AddRow(["abracadabra", "a.*?a", "*"]);
+        antecedentResults.AddRow(["hello@EN", "l", "L"]);
+        antecedentResults.AddRow(["hello^^http://www.w3.org/2001/XMLSchema#string", "l", "L"]);
+        antecedentResults.AddRow(["hello", "2^^http://www.w3.org/2001/XMLSchema#int", "L"]);
+        antecedentResults.AddRow(["hello", "l", "2^^http://www.w3.org/2001/XMLSchema#int"]);
+        antecedentResults.AddRow([null, "l+", "L"]);
+        antecedentResults.AddRow(["hello", null, "L"]);
+        antecedentResults.AddRow(["hello", "l+", null]);
+
+        SWRLBuiltIn builtin = SWRLBuiltIn.Replace(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?Z")),
+            new SWRLVariableArgument(new RDFVariable("?Q")));
+
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+        string[][] expectedRows = [
+            ["hello", "l+", "L", "heLo"],
+            ["abracadabra", "a.*?a", "*", "*c*bra"],
+            ["hello@EN", "l", "L", "heLLo"],
+            ["hello^^http://www.w3.org/2001/XMLSchema#string", "l", "L", "heLLo"]
+        ];
+        Assert.IsNotNull(builtinResults);
+        Assert.HasCount(4, builtinResults.Columns);
+        Assert.AreEqual("?X", builtinResults.Columns[3].Name);
+        Assert.HasCount(4, builtinResults.Rows);
+        for (int i = 0; i < expectedRows.Length; i++)
+            for (int j = 0; j < expectedRows[i].Length; j++)
+                Assert.AreEqual(expectedRows[i][j], builtinResults.Rows[i][j]);
+        //The incoming table keeps its own columns
+        Assert.HasCount(3, antecedentResults.Columns);
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateReplaceBuiltInInPredicateMode()
+    {
+        //The first variable is bound: a row is kept only when its first cell holds the computed value
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?X");
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddColumn("?Z");
+        antecedentResults.AddColumn("?Q");
+        antecedentResults.AddRow(["heLo", "hello", "l+", "L"]);
+        antecedentResults.AddRow(["zzz", "hello", "l+", "L"]);
+        antecedentResults.AddRow(["heLo@EN", "hello", "l+", "L"]);
+        antecedentResults.AddRow(["heLo^^http://www.w3.org/2001/XMLSchema#string", "hello", "l+", "L"]);
+        antecedentResults.AddRow(["*c*bra", "abracadabra", "a.*?a", "*"]);
+        antecedentResults.AddRow(["zzz", "abracadabra", "a.*?a", "*"]);
+        antecedentResults.AddRow(["heLLo", "hello@EN", "l", "L"]);
+        antecedentResults.AddRow(["zzz", "hello@EN", "l", "L"]);
+        antecedentResults.AddRow(["heLLo", "hello^^http://www.w3.org/2001/XMLSchema#string", "l", "L"]);
+        antecedentResults.AddRow(["zzz", "hello^^http://www.w3.org/2001/XMLSchema#string", "l", "L"]);
+        antecedentResults.AddRow([null, "hello", "l+", "L"]);
+
+        SWRLBuiltIn builtin = SWRLBuiltIn.Replace(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?Z")),
+            new SWRLVariableArgument(new RDFVariable("?Q")));
+
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+        string[][] expectedRows = [
+            ["heLo", "hello", "l+", "L"],
+            ["heLo^^http://www.w3.org/2001/XMLSchema#string", "hello", "l+", "L"],
+            ["*c*bra", "abracadabra", "a.*?a", "*"],
+            ["heLLo", "hello@EN", "l", "L"],
+            ["heLLo", "hello^^http://www.w3.org/2001/XMLSchema#string", "l", "L"]
+        ];
+        Assert.IsNotNull(builtinResults);
+        Assert.HasCount(4, builtinResults.Columns);
+        Assert.HasCount(5, builtinResults.Rows);
+        for (int i = 0; i < expectedRows.Length; i++)
+            for (int j = 0; j < expectedRows[i].Length; j++)
+                Assert.AreEqual(expectedRows[i][j], builtinResults.Rows[i][j]);
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateReplaceBuiltInWithUnexistingNonFirstArgument()
+    {
+        //A non-first variable with no column is unbound: no row can satisfy the built-in whether the first variable is bound or not
+        RDFTable bindingResults = new RDFTable();
+        bindingResults.AddColumn("?Y");
+        bindingResults.AddColumn("?Z");
+        bindingResults.AddColumn("?Q");
+        bindingResults.AddRow(["hello", "l+", "L"]);
+        RDFTable predicateResults = new RDFTable();
+        predicateResults.AddColumn("?X");
+        predicateResults.AddColumn("?Y");
+        predicateResults.AddColumn("?Z");
+        predicateResults.AddColumn("?Q");
+        predicateResults.AddRow(["heLo", "hello", "l+", "L"]);
+
+        SWRLBuiltIn builtin1 = SWRLBuiltIn.Replace(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?F")),
+            new SWRLVariableArgument(new RDFVariable("?Z")),
+            new SWRLVariableArgument(new RDFVariable("?Q")));
+        RDFTable bindingTable1 = builtin1.EvaluateOnAntecedent(bindingResults);
+        Assert.HasCount(4, bindingTable1.Columns);
+        Assert.IsEmpty(bindingTable1.Rows);
+        RDFTable predicateTable1 = builtin1.EvaluateOnAntecedent(predicateResults);
+        Assert.HasCount(4, predicateTable1.Columns);
+        Assert.IsEmpty(predicateTable1.Rows);
+
+        SWRLBuiltIn builtin2 = SWRLBuiltIn.Replace(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?F")),
+            new SWRLVariableArgument(new RDFVariable("?Q")));
+        RDFTable bindingTable2 = builtin2.EvaluateOnAntecedent(bindingResults);
+        Assert.HasCount(4, bindingTable2.Columns);
+        Assert.IsEmpty(bindingTable2.Rows);
+        RDFTable predicateTable2 = builtin2.EvaluateOnAntecedent(predicateResults);
+        Assert.HasCount(4, predicateTable2.Columns);
+        Assert.IsEmpty(predicateTable2.Rows);
+
+        SWRLBuiltIn builtin3 = SWRLBuiltIn.Replace(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")),
+            new SWRLVariableArgument(new RDFVariable("?Z")),
+            new SWRLVariableArgument(new RDFVariable("?F")));
+        RDFTable bindingTable3 = builtin3.EvaluateOnAntecedent(bindingResults);
+        Assert.HasCount(4, bindingTable3.Columns);
+        Assert.IsEmpty(bindingTable3.Rows);
+        RDFTable predicateTable3 = builtin3.EvaluateOnAntecedent(predicateResults);
+        Assert.HasCount(4, predicateTable3.Columns);
+        Assert.IsEmpty(predicateTable3.Rows);
     }
     #endregion
 }

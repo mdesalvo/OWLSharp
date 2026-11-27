@@ -38,68 +38,20 @@ namespace OWLSharp.Ontology
                 throw new ArgumentException("it requires exactly 2 arguments");
             #endregion
 
-            #region LeftArgument
-            RDFPatternMember leftPatternMember = null;
-            switch (builtInArguments[0])
-            {
-                case SWRLVariableArgument leftArgVar:
-                {
-                    #region Guards
-                    string leftArgVarName = leftArgVar.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(leftArgVarName))
-                        return true;
-                    #endregion
+            //An argument that no atom has bound never satisfies the built-in
+            RDFPatternMember leftPatternMember = SWRLHelper.GetArgumentValue(antecedentResultsRow, builtInArguments[0]);
+            if (leftPatternMember == null)
+                return false;
 
-                    leftPatternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[leftArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument leftArgLit:
-                    leftPatternMember = leftArgLit.GetLiteral();
-                    break;
-                case SWRLIndividualArgument leftArgIdv:
-                    leftPatternMember = leftArgIdv.GetResource();
-                    break;
-            }
-            #endregion
+            //An argument that no atom has bound never satisfies the built-in
+            RDFPatternMember rightPatternMember = SWRLHelper.GetArgumentValue(antecedentResultsRow, builtInArguments[1]);
+            if (rightPatternMember == null)
+                return false;
 
-            #region RightArgument
-            RDFPatternMember rightPatternMember = null;
-            switch (builtInArguments[1])
-            {
-                case SWRLVariableArgument rightArgVar:
-                {
-                    #region Guards
-                    string rightArgVarName = rightArgVar.GetVariable().ToString();
-                    if (!antecedentResultsRow.HasColumn(rightArgVarName))
-                        return true;
-                    #endregion
-
-                    rightPatternMember = RDFQueryUtilities.ParseRDFPatternMember((antecedentResultsRow[rightArgVarName] ?? string.Empty));
-                    break;
-                }
-                case SWRLLiteralArgument rightArgLit:
-                    rightPatternMember = rightArgLit.GetLiteral();
-                    break;
-                case SWRLIndividualArgument rightArgIdv:
-                    rightPatternMember = rightArgIdv.GetResource();
-                    break;
-            }
-            #endregion
-
-            //This is a string builtIn, so ensure to have information compatible with "string" semantic
-            bool isStringLeftPM = leftPatternMember is RDFResource
-                                   || leftPatternMember is RDFPlainLiteral
-                                   || (leftPatternMember is RDFTypedLiteral leftPMTLit && leftPMTLit.HasStringDatatype());
-            bool isStringRightPM = rightPatternMember is RDFResource
-                                    || rightPatternMember is RDFPlainLiteral
-                                    || (rightPatternMember is RDFTypedLiteral rightPMTLit && rightPMTLit.HasStringDatatype());
-            if (isStringLeftPM && isStringRightPM)
-            {
-                string leftPMValue = leftPatternMember is RDFLiteral leftPMLit ? leftPMLit.Value : leftPatternMember.ToString();
-                string rightPMValue = rightPatternMember is RDFLiteral rightPMLit ? rightPMLit.Value : rightPatternMember.ToString();
-                return leftPMValue.IndexOf(rightPMValue, StringComparison.OrdinalIgnoreCase) > -1;
-            }
-            return false;
+            //Only strings take part in the test: a value that is not a string never satisfies the built-in
+            string leftPMValue = SWRLHelper.GetStringValue(leftPatternMember);
+            string rightPMValue = SWRLHelper.GetStringValue(rightPatternMember);
+            return leftPMValue != null && rightPMValue != null && leftPMValue.IndexOf(rightPMValue, StringComparison.OrdinalIgnoreCase) > -1;
         }
         #endregion
     }
