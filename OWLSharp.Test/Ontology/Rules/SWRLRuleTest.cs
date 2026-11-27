@@ -220,6 +220,44 @@ public class SWRLRuleTest
         Assert.IsTrue(inferences[0].Axiom is OWLClassAssertion clsAsnInf
                       && clsAsnInf.ClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
                       && clsAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark")));
+        //The inference is named after the rule that produced it
+        Assert.AreEqual("SWRL1", inferences[0].RuleName);
+    }
+
+    [TestMethod]
+    public async Task ShouldNameInferencesAfterTheRuleThatProducedThemAsync()
+    {
+        //Two rules reach the same consequent from different premises: a person is an agent, so is an organization
+        SWRLConsequent agentConsequent = new SWRLConsequent { Atoms = [ new SWRLClassAtom(new OWLClass(RDFVocabulary.FOAF.AGENT), new SWRLVariableArgument(new RDFVariable("?X"))) ] };
+        SWRLRule personRule = new SWRLRule(new RDFPlainLiteral("PersonIsAgent"), new RDFPlainLiteral("Every person is an agent"),
+            new SWRLAntecedent { Atoms = [ new SWRLClassAtom(new OWLClass(RDFVocabulary.FOAF.PERSON), new SWRLVariableArgument(new RDFVariable("?X"))) ] }, agentConsequent);
+        SWRLRule organizationRule = new SWRLRule(new RDFPlainLiteral("OrganizationIsAgent"), new RDFPlainLiteral("Every organization is an agent"),
+            new SWRLAntecedent { Atoms = [ new SWRLClassAtom(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION), new SWRLVariableArgument(new RDFVariable("?X"))) ] }, agentConsequent);
+        //A rule read from a document may come without a label: it is named by its own text
+        SWRLRule unlabeledRule = new SWRLRule
+        {
+            Antecedent = new SWRLAntecedent { Atoms = [ new SWRLClassAtom(new OWLClass(RDFVocabulary.FOAF.PERSON), new SWRLVariableArgument(new RDFVariable("?X"))) ] },
+            Consequent = agentConsequent
+        };
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION), new OWLNamedIndividual(new RDFResource("ex:Acme")))
+            ]
+        };
+
+        //Each rule names its own inferences, so the report tells them apart even if their consequent is the same
+        List<OWLInference> personInferences = await personRule.ApplyToOntologyAsync(ontology);
+        List<OWLInference> organizationInferences = await organizationRule.ApplyToOntologyAsync(ontology);
+        List<OWLInference> unlabeledInferences = await unlabeledRule.ApplyToOntologyAsync(ontology);
+
+        Assert.HasCount(1, personInferences);
+        Assert.AreEqual("PersonIsAgent", personInferences[0].RuleName);
+        Assert.HasCount(1, organizationInferences);
+        Assert.AreEqual("OrganizationIsAgent", organizationInferences[0].RuleName);
+        Assert.HasCount(1, unlabeledInferences);
+        Assert.AreEqual(unlabeledRule.ToString(), unlabeledInferences[0].RuleName);
     }
 
     [TestMethod]
