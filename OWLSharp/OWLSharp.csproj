@@ -3,7 +3,7 @@
     <AssemblyTitle>OWLSharp</AssemblyTitle>
     <AssemblyName>OWLSharp</AssemblyName>
     <AssemblyVersion>$(Version)</AssemblyVersion>
-    <Version>5.0.1</Version>
+    <Version>5.0.2</Version>
     <Authors>Marco De Salvo</Authors>
     <Copyright>Marco De Salvo</Copyright>
     <Description>Lightweight and friendly .NET library for working with OWL2 ontologies</Description>
@@ -42,7 +42,7 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="RDFSharp" Version="4.0.1" />
+    <PackageReference Include="RDFSharp" Version="4.0.2" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
     <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
