@@ -47,11 +47,11 @@ Both `OWLReasoner` (`Reasoner/OWLReasoner.cs`) and `OWLValidator` (`Validator/OW
 
 `ApplyToOntologyAsync` returns `Task<OWLReasonerReport>` (`Inferences`, `IterationsPerformed`/`ReachedFixpoint` scoped to the Fact phase, `SchemaClosureRounds`) for the Reasoner and `Task<OWLValidatorReport>` (`Issues`, `IsConsistent` — true iff no `Error`-severity issue) for the Validator — mirroring the `OWLProfileReport` pattern already used by the Profiler (`Profiler/OWLProfiler.cs`).
 
-### SWRL engine and the OWLShims layer
+### SWRL engine
 
-`Ontology/Rules/` implements SWRL: `SWRLAntecedent`/`SWRLConsequent` combine `SWRLAtom`s (`Atoms/`) and evaluate `SWRLBuiltIn`s (`BuiltIns/`, one file per built-in predicate, e.g. `swrl:greaterThan`, `swrl:substring`). Antecedent evaluation builds and combines binding tables by calling directly into Mirella (RDFSharp's query engine) internals: `RDFTable`/`RDFTableRow`/`RDFTableColumn`.
+`Ontology/Rules/` implements SWRL: `SWRLAntecedent`/`SWRLConsequent` combine `SWRLAtom`s (`Atoms/`) and evaluate `SWRLBuiltIn`s (`BuiltIns/`, one file per built-in, e.g. `swrlb:greaterThan`, `swrlb:substring`). Antecedent evaluation builds and combines binding tables by calling directly into Mirella (RDFSharp's query engine) internals: `RDFTable`/`RDFTableRow`/`RDFTableColumn`.
 
-Those RDFSharp types are `internal sealed` and only friend-visible to the `OWLSharp` assembly (not `OWLSharp.Test`). `OWLShims.cs` defines composition wrappers — `OWLTable`, `OWLTableRow`, `OWLTableColumn`, `OWLTableRowCollection`, `OWLTableColumnCollection` — that mirror the RDFSharp member names exactly, so production SWRL code and its tests use the same `OWLTable*` API instead of the underlying `RDFTable*`. When touching SWRL antecedent/table-combination code or its tests, use `OWLTable*`, not `RDFTable*` directly; if a new `RDFTable*` member needs to be exposed, add it to the matching shim with the same name/signature.
+Those RDFSharp types are `internal`: RDFSharp's `InternalsVisibleTo` grant (`RDFSharp/Properties/AssemblyInfo.cs` in the RDFSharp repo) opens them to both `OWLSharp` and `OWLSharp.Test`, so production SWRL code and its tests use `RDFTable*` directly. A change to their members in RDFSharp can break OWLSharp at build time.
 
 ### Ontology model & serialization
 

@@ -49,7 +49,7 @@ namespace OWLSharp.Validator
                     return true; //Unregistered/custom datatype: no known value space to validate against, so it is out of scope for dt-not-type
 
                 //RDFDatatype.Validate is internal to RDFSharp, exposed to OWLSharp via the InternalsVisibleTo grant
-                //(same mechanism already used for the OWLShims/RDFTable* SWRL machinery documented in CLAUDE.md)
+                //(the same grant gives the SWRL engine its RDFTable* binding tables)
                 return datatype.Validate(literal.Value ?? string.Empty).Item1;
             }
 
