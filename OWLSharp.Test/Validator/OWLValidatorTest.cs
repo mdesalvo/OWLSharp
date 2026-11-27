@@ -12,9 +12,11 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
+using OWLSharp.Reasoner;
 using OWLSharp.Validator;
 using RDFSharp.Model;
 
@@ -522,6 +524,34 @@ public class OWLValidatorTest
         Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubClassOfAnalysis.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubClassOfAnalysis.rulesugg1)));
+    }
+
+    [TestMethod]
+    public async Task ShouldNotAnalyzeSubClassOfNothingAfterReasoningAsync()
+    {
+        //Two disjoint classes: the reasoner entails owl:Nothing as subclass of both of them
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [
+                new OWLDisjointClasses([
+                    new OWLClass(new RDFResource("ex:A")), new OWLClass(new RDFResource("ex:B")) ])
+            ],
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:A"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:B")))
+            ]
+        };
+        OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SchemaClassEntailment, OWLEnums.OWLReasonerRules.SchemaDisjointClassesEntailment] };
+        await reasoner.ApplyToOntologyAsync(ontology);
+
+        //The entailed SubClassOf of owl:Nothing is not a modeling smell: the validator must not report it
+        OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.SubClassOfAnalysis] };
+        List<OWLIssue> issues = (await validator.ApplyToOntologyAsync(ontology)).Issues;
+
+        Assert.IsNotNull(issues);
+        Assert.IsEmpty(issues);
+        Assert.IsTrue(ontology.GetClassAxiomsOfType<OWLSubClassOf>().Any(sco => sco.SubClassExpression is OWLClass subClass
+                                                                                 && subClass.GetIRI().Equals(RDFVocabulary.OWL.NOTHING)));
     }
 
     [TestMethod]

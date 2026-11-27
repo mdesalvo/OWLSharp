@@ -103,6 +103,33 @@ public class OWLSubClassOfAnalysisTest
     }
 
     [TestMethod]
+    public void ShouldNotAnalyzeSubClassOfNothingDisjointClassesCase()
+    {
+        //owl:Nothing is a subclass of every class and the classes are disjoint: for the bottom class this is its normal state
+        OWLOntology ontology = new OWLOntology
+        {
+            ClassAxioms = [
+                new OWLDisjointClasses([
+                    new OWLClass(new RDFResource("ex:A")), new OWLClass(new RDFResource("ex:B")) ]),
+                new OWLSubClassOf(
+                    new OWLClass(RDFVocabulary.OWL.NOTHING),
+                    new OWLClass(new RDFResource("ex:A"))),
+                new OWLSubClassOf(
+                    new OWLClass(RDFVocabulary.OWL.NOTHING),
+                    new OWLClass(new RDFResource("ex:B")))
+            ],
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:A"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:B")))
+            ]
+        };
+        List<OWLIssue> issues = OWLSubClassOfAnalysis.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.IsEmpty(issues);
+    }
+
+    [TestMethod]
     public void ShouldAnalyzeSubClassOfExactObjectCardinalityCase()
     {
         //With an upper bound of 0 a single filler already is N+1 (1) pairwise different fillers: it stays an Error even without DifferentIndividuals

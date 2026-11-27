@@ -50,7 +50,10 @@ namespace OWLSharp.Validator
                 //NOTE: SubClassOf(CLS1,CLS2) combined with the mutual SubClassOf(CLS2,CLS1) or with EquivalentClasses(CLS1,CLS2) is NOT
                 //flagged: both are just redundant (not contradictory) restatements of CLS1=CLS2, and mutual SubClassOf in particular is a
                 //common, deliberate idiom for expressing class equivalence without an explicit EquivalentClasses axiom
-                if (ontology.CheckAreDisjointClasses(subClassOf.SubClassExpression, subClassOf.SuperClassExpression))
+                //owl:Nothing is the bottom class: it is a subclass of every class and disjoint with every class
+                //(the Reasoner entails both), so for it the overlap is the normal state and not a modeling smell
+                if (!(subClassOf.SubClassExpression is OWLClass subClassAsNamedClass && subClassAsNamedClass.GetIRI().Equals(RDFVocabulary.OWL.NOTHING))
+                     && ontology.CheckAreDisjointClasses(subClassOf.SubClassExpression, subClassOf.SuperClassExpression))
                 {
                     issues.Add(new OWLIssue(
                         OWLEnums.OWLIssueSeverity.Warning,
