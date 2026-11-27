@@ -2078,6 +2078,33 @@ public class OWLOntologyTest
     }
 
     [TestMethod]
+    public async Task ShouldReadEveryBuiltInAnnotationOfAllDisjointClassesFromGraphAsync()
+    {
+        //A disjointness among three classes annotated with a comment and with a version, both built-in annotation properties
+        RDFGraph graph = await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.Turtle, new MemoryStream(System.Text.Encoding.UTF8.GetBytes(
+            """
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix ex: <http://example.org/> .
+            ex:ont a owl:Ontology .
+            ex:RedWine a owl:Class . ex:WhiteWine a owl:Class . ex:RoseWine a owl:Class .
+            [] a owl:AllDisjointClasses ; owl:members ( ex:RedWine ex:WhiteWine ex:RoseWine ) ;
+               rdfs:comment "Colours of the catalog" ; owl:versionInfo "2025 edition" .
+            """)));
+
+        //Every built-in annotation property can annotate the axiom, owl:versionInfo as well as rdfs:comment
+        OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+        OWLDisjointClasses disjointClasses = ontology.ClassAxioms.OfType<OWLDisjointClasses>().Single();
+        Assert.HasCount(3, disjointClasses.ClassExpressions);
+        Assert.HasCount(2, disjointClasses.Annotations);
+        Assert.IsTrue(disjointClasses.Annotations.Any(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                                                             && ann.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("Colours of the catalog"))));
+        Assert.IsTrue(disjointClasses.Annotations.Any(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.VERSION_INFO)
+                                                             && ann.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("2025 edition"))));
+    }
+
+    [TestMethod]
     public async Task ShouldNotDuplicateDeprecatedClassAnnotationAssertionFromGraphAsync()
     {
         //A deprecated class stated both through owl:DeprecatedClass and through the owl:deprecated annotation
