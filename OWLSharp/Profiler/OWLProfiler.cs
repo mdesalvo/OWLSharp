@@ -30,6 +30,7 @@ namespace OWLSharp.Profiler
         /// <summary>
         /// Checks the given ontology against the given OWL2 profile
         /// </summary>
+        /// <remarks>Inferred axioms are left out, so a reasoned ontology keeps the profile of the axioms it was written with.</remarks>
         /// <exception cref="OWLException"></exception>
         public static async Task<OWLProfileReport> CheckProfileAsync(this OWLOntology ontology, OWLEnums.OWLProfiles profile)
         {
@@ -40,10 +41,22 @@ namespace OWLSharp.Profiler
 
             OWLEvents.RaiseInfo($"Launching profiler on ontology '{ontology.IRI}' for profile {profile}...");
 
+            //A profile is a grammar for the axioms of the ontology, not for the consequences the reasoner materializes in it:
+            //these stay outside the grammar on purpose (e.g. scm-cls entails SubClassOf(C,owl:Thing), which no RL superclass admits)
+            OWLOntology assertedOntology = new OWLOntology(ontology);
+            assertedOntology.DeclarationAxioms.RemoveAll(ax => ax.IsInference);
+            assertedOntology.ClassAxioms.RemoveAll(ax => ax.IsInference);
+            assertedOntology.ObjectPropertyAxioms.RemoveAll(ax => ax.IsInference);
+            assertedOntology.DataPropertyAxioms.RemoveAll(ax => ax.IsInference);
+            assertedOntology.DatatypeDefinitionAxioms.RemoveAll(ax => ax.IsInference);
+            assertedOntology.KeyAxioms.RemoveAll(ax => ax.IsInference);
+            assertedOntology.AssertionAxioms.RemoveAll(ax => ax.IsInference);
+            assertedOntology.AnnotationAxioms.RemoveAll(ax => ax.IsInference);
+
             //If Violations stays empty, the ontology is compliant with the profile's grammar (OWLProfileReport.IsCompliant).
             OWLProfileReport report = new OWLProfileReport(profile)
             {
-                Violations = await ExecuteProfileRuleAsync(profile, ontology)
+                Violations = await ExecuteProfileRuleAsync(profile, assertedOntology)
             };
 
             OWLEvents.RaiseInfo($"Completed profiler on ontology '{ontology.IRI}' for profile {profile} => {report.Violations.Count} violations");

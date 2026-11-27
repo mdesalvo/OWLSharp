@@ -75,6 +75,27 @@ public class OWLProfilerTest
     }
 
     [TestMethod]
+    public async Task ShouldCheckRLProfileOfOntologyLeavingOutInferredAxiomsAsync()
+    {
+        //The reasoner entails SubClassOf(C,owl:Thing) for every class (scm-cls), while the RL grammar admits no owl:Thing in superclass position
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [ new OWLDeclaration(new OWLClass(new RDFResource("ex:Wine"))) ],
+            ClassAxioms = [ new OWLSubClassOf(new OWLClass(new RDFResource("ex:Wine")), new OWLClass(RDFVocabulary.OWL.THING)) { IsInference=true } ]
+        };
+
+        //The inferred axiom is a consequence of the ontology, not one of its axioms: the ontology keeps its profile
+        OWLProfileReport inferredReport = await ontology.CheckProfileAsync(OWLEnums.OWLProfiles.RL);
+        Assert.IsTrue(inferredReport.IsCompliant);
+
+        //The same axiom written by hand is part of the ontology and breaks the grammar
+        ontology.ClassAxioms[0].IsInference = false;
+        OWLProfileReport assertedReport = await ontology.CheckProfileAsync(OWLEnums.OWLProfiles.RL);
+        Assert.IsFalse(assertedReport.IsCompliant);
+        Assert.HasCount(1, assertedReport.Violations);
+    }
+
+    [TestMethod]
     public async Task ShouldCheckAllProfilesOfOntologyAsync()
     {
         OWLOntology ontology = new OWLOntology();
