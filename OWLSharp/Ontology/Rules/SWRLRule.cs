@@ -132,8 +132,17 @@ namespace OWLSharp.Ontology
 
         #region Utilities
         internal Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology)
-            => Task.Run(() => Consequent?.Evaluate(Antecedent?.Evaluate(ontology), ontology)
-                                       ?? Enumerable.Empty<OWLInference>().ToList());
+            => Task.Run(() =>
+            {
+                //The inferences are named after the rule, as the OWL2 rules are, so that rules sharing a consequent stay apart in the report:
+                //the name is the label the rule was built with, or its text when it has none
+                string ruleName = Annotations?.FirstOrDefault(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.LABEL)
+                                                                      && ann.ValueLiteral != null)?.ValueLiteral.Value ?? ToString();
+
+                //The consequent asserts what the antecedent bindings allow, then every inference takes the name of the rule
+                return (Consequent?.Evaluate(Antecedent?.Evaluate(ontology), ontology) ?? new List<OWLInference>())
+                        .ConvertAll(inference => new OWLInference(ruleName, inference.Axiom));
+            });
 
         internal static RDFGraph ReifySWRLCollection(RDFCollection collection, bool isAtomList)
         {

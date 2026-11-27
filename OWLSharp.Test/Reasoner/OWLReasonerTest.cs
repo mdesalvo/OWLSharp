@@ -2088,7 +2088,8 @@ public class OWLReasonerTest
 
         Assert.HasCount(1, inferences);
         Assert.IsTrue(IsPriceWithVATAssertion(inferences[0], "ex:Barolo", "17.69"));
-        Assert.AreEqual(ontology.Rules[0].Consequent.Atoms[0].ToString(), inferences[0].RuleName);
+        //The inference is named after the rule that produced it
+        Assert.AreEqual("ValueAddedTaxRule", inferences[0].RuleName);
         // The inferred assertion is merged into the ontology flagged as inference
         Assert.IsTrue(ontology.AssertionAxioms.Any(ax => ax is OWLDataPropertyAssertion dpa
                                                           && dpa.IsInference
@@ -2128,7 +2129,7 @@ public class OWLReasonerTest
         Assert.IsTrue(inferences.All(inf => inf.Axiom is OWLClassAssertion ca
                                              && ca.IsInference
                                              && ca.ClassExpression.GetIRI().Equals(new RDFResource("ex:PremiumWine"))
-                                             && string.Equals(inf.RuleName, ontology.Rules[0].Consequent.Atoms[0].ToString())));
+                                             && string.Equals(inf.RuleName, "PremiumWineRule")));
         Assert.IsTrue(inferences.Any(inf => inf.Axiom is OWLClassAssertion ca && ca.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Barolo"))));
         Assert.IsTrue(inferences.Any(inf => inf.Axiom is OWLClassAssertion ca && ca.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Barbaresco"))));
         Assert.IsFalse(inferences.Any(inf => inf.Axiom is OWLClassAssertion ca && ca.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Dolcetto"))));
