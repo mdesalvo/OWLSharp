@@ -54,12 +54,11 @@ namespace OWLSharp.Reasoner
                 RDFPattern templatePattern = subObjectPropertyOf.SuperObjectPropertyExpression is OWLObjectInverseOf objInvOfSuperObjPropExpr
                     ? new RDFPattern(new RDFVariable("?PROPERTY_CHAIN_AXIOM_END"), objInvOfSuperObjPropExpr.ObjectProperty.GetIRI(), new RDFVariable("?PROPERTY_CHAIN_AXIOM_START"))
                     : new RDFPattern(new RDFVariable("?PROPERTY_CHAIN_AXIOM_START"), subObjectPropertyOf.SuperObjectPropertyExpression.GetIRI(), new RDFVariable("?PROPERTY_CHAIN_AXIOM_END"));
+                //Both ends of the chain are individuals, named or anonymous, so every end reached by the path is kept
                 RDFConstructQueryResult materializedChainTriples =
                     new RDFConstructQuery()
                         .AddPatternGroup(new RDFPatternGroup()
-                            .AddPropertyPath(propertyPath)
-                            .AddFilter(new RDFFilter(new RDFIsUriExpression(new RDFVariable("?PROPERTY_CHAIN_AXIOM_START"))))
-                            .AddFilter(new RDFFilter(new RDFIsUriExpression(new RDFVariable("?PROPERTY_CHAIN_AXIOM_END")))))
+                            .AddPropertyPath(propertyPath))
                         .AddTemplate(templatePattern)
                         .ApplyToGraph(lazyOPAsnsGraph.Value);
 
