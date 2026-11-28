@@ -1,0 +1,256 @@
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
+Prefix: vr: <https://vallerosa.example/vocab#>
+Prefix: vrd: <https://vallerosa.example/id/>
+Prefix: dbr: <http://dbpedia.org/resource/>
+
+Ontology: <https://vallerosa.example/ontology>
+Annotations: rdfs:label "The Vallerosa ontology"@EN, rdfs:comment "The running example of the OWLSharp manual (https://mdesalvo.github.io/OWLSharp/): the vocabulary and the catalog of the RDFSharp manual, grown into an OWL2 ontology."@EN
+
+Datatype: vr:abv
+    EquivalentTo: xsd:decimal[>= "0"^^xsd:decimal, <= "20"^^xsd:decimal]
+    Annotations: rdfs:label "alcohol by volume"@EN, rdfs:comment "A decimal from 0 to 20."@EN
+
+ObjectProperty: vr:memberOf
+    Domain: vr:Producer
+    Range: vr:Cooperative
+    Annotations: rdfs:label "member of"@EN
+
+ObjectProperty: vr:locatedIn
+    Domain: vr:Producer
+    Range: vr:Area
+    Annotations: rdfs:label "located in"@EN
+
+ObjectProperty: vr:partOf
+    Domain: vr:Area
+    Range: vr:Area
+    Characteristics: Transitive
+    Annotations: rdfs:label "part of"@EN
+
+ObjectProperty: vr:producedBy
+    Domain: vr:Wine
+    Range: vr:Producer
+    InverseOf: vr:produces
+    Characteristics: Functional
+    Annotations: rdfs:label "produced by"@EN
+
+ObjectProperty: vr:produces
+    Domain: vr:Producer
+    Range: vr:Wine
+    Annotations: rdfs:label "produces"@EN
+
+ObjectProperty: vr:grape
+    Domain: vr:Wine
+    Range: vr:Grape
+    Annotations: rdfs:comment "A grape variety the wine is made from."@EN, rdfs:label "grape"@EN
+
+ObjectProperty: vr:pairsWith
+    Domain: vr:Wine
+    Range: vr:Dish
+    Annotations: rdfs:label "pairs with"@EN
+
+ObjectProperty: vr:comesFrom
+    SubPropertyChain: vr:producedBy o vr:locatedIn, vr:comesFrom o vr:partOf
+    Domain: vr:Wine
+    Range: vr:Area
+    Annotations: rdfs:label "comes from"@EN, rdfs:label "proviene da"@IT, rdfs:comment "The area a wine comes from, at any depth: the subzone of its producer and every area that contains it."@EN
+
+ObjectProperty: vr:method
+    Domain: vr:Wine
+    Annotations: rdfs:label "method"@EN, rdfs:label "metodo"@IT, rdfs:comment "A winemaking method used for the wine."@EN
+
+DataProperty: vr:vintage
+    Domain: vr:Wine
+    Characteristics: Functional
+    Range: xsd:integer
+    Annotations: rdfs:label "vintage"@EN
+
+DataProperty: vr:alcohol
+    Domain: vr:Wine
+    Characteristics: Functional
+    Range: vr:abv
+    Annotations: rdfs:comment "Alcohol by volume, in percent."@EN, rdfs:label "alcohol"@EN
+
+DataProperty: vr:price
+    Domain: vr:Wine
+    Range: xsd:decimal
+    Characteristics: Functional
+    Annotations: rdfs:comment "Cellar door price of one bottle in euros, VAT excluded."@EN, rdfs:label "price"@EN
+
+DataProperty: vr:organic
+    Domain: vr:Wine
+    Range: xsd:boolean
+    Characteristics: Functional
+    Annotations: rdfs:label "organic"@EN
+
+Class: vr:Cooperative
+    Annotations: rdfs:comment "A group of wine producers who sell under a common name."@EN, rdfs:label "Cooperative"@EN, rdfs:label "Cooperativa"@IT
+
+Class: vr:Producer
+    Annotations: rdfs:comment "A winery that makes and bottles its own wines."@EN, rdfs:label "Producer"@EN, rdfs:label "Produttore"@IT
+
+Class: vr:Area
+    Annotations: rdfs:comment "A geographic area: a country, a region, a valley or a subzone of it."@EN, rdfs:label "Area"@EN, rdfs:label "Zona"@IT
+
+Class: vr:Grape
+    Annotations: rdfs:label "Grape variety"@EN, rdfs:label "Vitigno"@IT
+
+Class: vr:Wine
+    Annotations: rdfs:comment "A wine of a given vintage, as it is sold in the bottle."@EN, rdfs:label "Wine"@EN, rdfs:label "Vino"@IT
+
+Class: vr:RedWine
+    SubClassOf: vr:Wine
+    Annotations: rdfs:label "Red wine"@EN, rdfs:label "Vino rosso"@IT
+
+Class: vr:WhiteWine
+    SubClassOf: vr:Wine
+    Annotations: rdfs:label "White wine"@EN, rdfs:label "Vino bianco"@IT
+
+Class: vr:RoseWine
+    SubClassOf: vr:Wine
+    Annotations: rdfs:label "Rosé wine"@EN, rdfs:label "Vino rosato"@IT
+
+Class: vr:SweetWine
+    SubClassOf: vr:Wine
+    Annotations: rdfs:label "Sweet wine"@EN, rdfs:label "Vino dolce"@IT
+
+Class: vr:Dish
+    Annotations: rdfs:label "Dish"@EN, rdfs:label "Piatto"@IT
+
+Class: vr:Person
+    Annotations: rdfs:label "Person"@EN, rdfs:label "Persona"@IT
+
+Class: vr:Shop
+    Annotations: rdfs:comment "A partner shop that buys from the cooperative and sells to the public."@EN, rdfs:label "Wine shop"@EN, rdfs:label "Enoteca"@IT
+
+Class: vr:Sale
+    Annotations: rdfs:comment "One delivery of bottles of one wine to one shop."@EN, rdfs:label "Sale"@EN, rdfs:label "Vendita"@IT
+
+Class: vr:TuscanWine
+    Annotations: rdfs:label "Tuscan wine"@EN, rdfs:label "Vino toscano"@IT, rdfs:comment "A wine that comes from Tuscany."@EN
+
+Class: vr:OrganicWine
+    Annotations: rdfs:label "Organic wine"@EN, rdfs:label "Vino biologico"@IT, rdfs:comment "A wine made from organic grapes."@EN
+
+Individual: vrd:vallerosa
+    Types: vr:Cooperative
+    Annotations: rdfs:label "Vallerosa Wine Cooperative"@EN, rdfs:label "Cantina Cooperativa di Vallerosa"@IT
+
+Individual: vrd:poggio-alto
+    Facts: vr:memberOf vrd:vallerosa, vr:locatedIn vrd:poggio
+    Types: vr:Producer
+    Annotations: rdfs:label "Fattoria Poggio Alto"
+
+Individual: vrd:le-crete
+    Facts: vr:memberOf vrd:vallerosa, vr:locatedIn vrd:colle-nord
+    Types: vr:Producer
+    Annotations: rdfs:label "Tenuta Le Crete"
+
+Individual: vrd:tre-ulivi
+    Facts: vr:memberOf vrd:vallerosa, vr:locatedIn vrd:piana
+    Types: vr:Producer
+    Annotations: rdfs:label "Cantina dei Tre Ulivi"
+
+Individual: vrd:italy
+    Types: vr:Area
+    Annotations: rdfs:label "Italy"@EN, rdfs:label "Italia"@IT
+
+Individual: vrd:tuscany
+    Facts: vr:partOf vrd:italy
+    Types: vr:Area
+    Annotations: rdfs:label "Tuscany"@EN, rdfs:label "Toscana"@IT
+
+Individual: vrd:valle-rosa
+    Facts: vr:partOf vrd:tuscany
+    Types: vr:Area
+    Annotations: rdfs:label "Rose Valley"@EN, rdfs:label "Valle Rosa"@IT
+
+Individual: vrd:poggio
+    Facts: vr:partOf vrd:valle-rosa
+    Types: vr:Area
+    Annotations: rdfs:label "Hilltop"@EN, rdfs:label "Poggio"@IT
+
+Individual: vrd:colle-nord
+    Facts: vr:partOf vrd:valle-rosa
+    Types: vr:Area
+    Annotations: rdfs:label "North Hill"@EN, rdfs:label "Colle Nord"@IT
+
+Individual: vrd:piana
+    Facts: vr:partOf vrd:valle-rosa
+    Types: vr:Area
+    Annotations: rdfs:label "The Plain"@EN, rdfs:label "Piana"@IT
+
+Individual: vrd:sangiovese
+    Types: vr:Grape
+    Annotations: rdfs:label "Sangiovese"
+
+Individual: vrd:canaiolo
+    Types: vr:Grape
+    Annotations: rdfs:label "Canaiolo"
+
+Individual: vrd:trebbiano
+    Types: vr:Grape
+    Annotations: rdfs:label "Trebbiano"
+
+Individual: vrd:malvasia
+    Types: vr:Grape
+    Annotations: rdfs:label "Malvasia"
+
+Individual: vrd:vermentino
+    Types: vr:Grape
+    Annotations: rdfs:label "Vermentino"
+
+Individual: vrd:rosso-2021
+    Facts: vr:producedBy vrd:poggio-alto, vr:grape vrd:sangiovese, vr:grape vrd:canaiolo, vr:alcohol "13.5"^^xsd:decimal, vr:price "14.50"^^xsd:decimal, vr:organic "false"^^xsd:boolean, vr:vintage "2021"^^xsd:integer
+    Types: vr:RedWine
+    Annotations: rdfs:label "Rosso di Vallerosa"@IT, rdfs:label "Vallerosa Red"@EN
+
+Individual: vrd:riserva-2019
+    Facts: vr:producedBy vrd:poggio-alto, vr:grape vrd:sangiovese, vr:alcohol "14.0"^^xsd:decimal, vr:price "32.00"^^xsd:decimal, vr:organic "false"^^xsd:boolean, vr:vintage "2019"^^xsd:integer
+    Types: vr:RedWine
+    Annotations: rdfs:label "Vallerosa Riserva"@IT, rdfs:label "Vallerosa Reserve"@EN
+
+Individual: vrd:bianco-2023
+    Facts: vr:producedBy vrd:le-crete, vr:grape vrd:trebbiano, vr:grape vrd:malvasia, vr:alcohol "12.0"^^xsd:decimal, vr:price "11.00"^^xsd:decimal, vr:organic "true"^^xsd:boolean, vr:vintage "2023"^^xsd:integer
+    Types: vr:WhiteWine
+    Annotations: rdfs:label "Bianco delle Crete"@IT, rdfs:label "Le Crete White"@EN
+
+Individual: vrd:vermentino-2023
+    Facts: vr:producedBy vrd:tre-ulivi, vr:grape vrd:vermentino, vr:alcohol "12.5"^^xsd:decimal, vr:price "13.00"^^xsd:decimal, vr:organic "true"^^xsd:boolean, vr:vintage "2023"^^xsd:integer
+    Types: vr:WhiteWine
+    Annotations: rdfs:label "Vermentino della Piana"@IT, rdfs:label "Vermentino of the Plain"@EN
+
+Individual: vrd:rosato-2024
+    Facts: vr:producedBy vrd:tre-ulivi, vr:grape vrd:sangiovese, vr:alcohol "12.0"^^xsd:decimal, vr:price "10.00"^^xsd:decimal, vr:organic "false"^^xsd:boolean, vr:vintage "2024"^^xsd:integer
+    Types: vr:RoseWine
+    Annotations: rdfs:label "Rosa di Valle"@IT, rdfs:label "Valley Rosé"@EN
+
+Individual: vrd:vinsanto-2015
+    Facts: vr:producedBy vrd:le-crete, vr:grape vrd:trebbiano, vr:grape vrd:malvasia, vr:alcohol "16.0"^^xsd:decimal, vr:price "38.00"^^xsd:decimal, vr:organic "false"^^xsd:boolean, vr:vintage "2015"^^xsd:integer, vr:method vrd:appassimento
+    Types: vr:SweetWine
+    Annotations: rdfs:label "Vin Santo della Valle"@IT, rdfs:label "Valley Vin Santo"@EN
+
+Individual: vrd:appassimento
+    Annotations: rdfs:label "Appassimento"@EN, rdfs:label "Appassimento"@IT, rdfs:comment "Drying the grapes before pressing them, which makes a sweeter and stronger wine."@EN
+
+DisjointClasses: vr:RedWine, vr:WhiteWine, vr:RoseWine
+
+DisjointClasses: vr:Cooperative, vr:Producer, vr:Area, vr:Grape, vr:Wine, vr:Dish, vr:Person, vr:Shop, vr:Sale
+
+EquivalentClasses: vr:TuscanWine, vr:Wine and (vr:comesFrom value vrd:tuscany)
+
+EquivalentClasses: vr:OrganicWine, vr:Wine and (vr:organic value "true"^^xsd:boolean)
+
+SameIndividual: vrd:sangiovese, dbr:Sangiovese
+
+SameIndividual: vrd:canaiolo, dbr:Canaiolo
+
+SameIndividual: vrd:trebbiano, dbr:Trebbiano
+
+SameIndividual: vrd:malvasia, dbr:Malvasia
+
+SameIndividual: vrd:vermentino, dbr:Vermentino
+
