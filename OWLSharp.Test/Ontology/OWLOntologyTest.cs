@@ -2061,6 +2061,313 @@ public class OWLOntologyTest
     }
 
     [TestMethod]
+    public async Task ShouldReadDataPropertyRangeOfBuiltInDatatypeWithoutDeclarationFromGraphAsync()
+    {
+        //A data property ranging over xsd:decimal, which no vocabulary written in Turtle ever declares as a datatype
+        RDFGraph graph = await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.Turtle, new MemoryStream(System.Text.Encoding.UTF8.GetBytes(
+            """
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+            @prefix vr: <https://vallerosa.example/vocab#> .
+            <https://vallerosa.example/ontology> a owl:Ontology .
+            vr:price a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+            """)));
+
+        //The datatypes of the OWL2 datatype map are implicitly declared: the range is read and no declaration is added
+        OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+        OWLDataPropertyRange dataPropertyRange = ontology.DataPropertyAxioms.OfType<OWLDataPropertyRange>().Single();
+        Assert.IsTrue(dataPropertyRange.DataProperty.GetIRI().Equals(new RDFResource("https://vallerosa.example/vocab#price")));
+        Assert.IsTrue(dataPropertyRange.DataRangeExpression is OWLDatatype datatype
+                      && datatype.GetIRI().Equals(RDFVocabulary.XSD.DECIMAL));
+        Assert.IsEmpty(ontology.GetDeclarationAxiomsOfType<OWLDatatype>());
+    }
+
+    [TestMethod]
+    public async Task ShouldNotReadDataPropertyRangeOfDatatypeOutsideDatatypeMapWithoutDeclarationFromGraphAsync()
+    {
+        //A data property ranging over xsd:gYear, which is not in the OWL2 datatype map
+        RDFGraph graph = await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.Turtle, new MemoryStream(System.Text.Encoding.UTF8.GetBytes(
+            """
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+            @prefix vr: <https://vallerosa.example/vocab#> .
+            <https://vallerosa.example/ontology> a owl:Ontology .
+            vr:vintage a owl:DatatypeProperty ; rdfs:range xsd:gYear .
+            """)));
+
+        //Only the datatypes of the map are implicit: any other one keeps needing its declaration
+        OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+        Assert.IsEmpty(ontology.DataPropertyAxioms.OfType<OWLDataPropertyRange>().ToList());
+    }
+
+    [TestMethod]
+    public async Task ShouldReadDataSomeValuesFromBuiltInDatatypeWithoutDeclarationFromGraphAsync()
+    {
+        //A restriction over a data property and xsd:string, used as the super class of a class
+        RDFGraph graph = await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.Turtle, new MemoryStream(System.Text.Encoding.UTF8.GetBytes(
+            """
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+            @prefix vr: <https://vallerosa.example/vocab#> .
+            <https://vallerosa.example/ontology> a owl:Ontology .
+            vr:Wine a owl:Class ; rdfs:subClassOf [ a owl:Restriction ; owl:onProperty vr:name ; owl:someValuesFrom xsd:string ] .
+            vr:name a owl:DatatypeProperty .
+            """)));
+
+        //The undeclared xsd:string is read as the data range of the restriction
+        OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+        OWLSubClassOf subClassOf = ontology.ClassAxioms.OfType<OWLSubClassOf>().Single();
+        Assert.IsTrue(subClassOf.SuperClassExpression is OWLDataSomeValuesFrom someValuesFrom
+                      && someValuesFrom.DataProperty.GetIRI().Equals(new RDFResource("https://vallerosa.example/vocab#name"))
+                      && someValuesFrom.DataRangeExpression is OWLDatatype datatype
+                      && datatype.GetIRI().Equals(RDFVocabulary.XSD.STRING));
+    }
+
+    [TestMethod]
+    public async Task ShouldReadSameIndividualTowardsUntypedIRIFromGraphAsync()
+    {
+        //A grape linked to the DBpedia resource that describes it, which the local graph never types
+        RDFGraph graph = await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.Turtle, new MemoryStream(System.Text.Encoding.UTF8.GetBytes(
+            """
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix vr: <https://vallerosa.example/vocab#> .
+            @prefix vrd: <https://vallerosa.example/data#> .
+            <https://vallerosa.example/ontology> a owl:Ontology .
+            vr:Grape a owl:Class .
+            vrd:sangiovese a vr:Grape ; owl:sameAs <http://dbpedia.org/resource/Sangiovese> .
+            """)));
+
+        //Any IRI can be an individual without being declared or typed
+        OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+        OWLSameIndividual sameIndividual = ontology.AssertionAxioms.OfType<OWLSameIndividual>().Single();
+        Assert.HasCount(2, sameIndividual.IndividualExpressions);
+        Assert.IsTrue(sameIndividual.IndividualExpressions.OfType<OWLNamedIndividual>().Any(idv => idv.GetIRI().Equals(new RDFResource("https://vallerosa.example/data#sangiovese"))));
+        Assert.IsTrue(sameIndividual.IndividualExpressions.OfType<OWLNamedIndividual>().Any(idv => idv.GetIRI().Equals(new RDFResource("http://dbpedia.org/resource/Sangiovese"))));
+    }
+
+    [TestMethod]
+    public async Task ShouldReadDifferentIndividualsTowardsUntypedIRIFromGraphAsync()
+    {
+        //A grape declared different from a resource that the local graph never types
+        RDFGraph graph = await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.Turtle, new MemoryStream(System.Text.Encoding.UTF8.GetBytes(
+            """
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix vr: <https://vallerosa.example/vocab#> .
+            @prefix vrd: <https://vallerosa.example/data#> .
+            <https://vallerosa.example/ontology> a owl:Ontology .
+            vr:Grape a owl:Class .
+            vrd:sangiovese a vr:Grape ; owl:differentFrom <http://dbpedia.org/resource/Merlot> .
+            """)));
+
+        //Any IRI can be an individual without being declared or typed
+        OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+        OWLDifferentIndividuals differentIndividuals = ontology.AssertionAxioms.OfType<OWLDifferentIndividuals>().Single();
+        Assert.HasCount(2, differentIndividuals.IndividualExpressions);
+        Assert.IsTrue(differentIndividuals.IndividualExpressions.OfType<OWLNamedIndividual>().Any(idv => idv.GetIRI().Equals(new RDFResource("http://dbpedia.org/resource/Merlot"))));
+    }
+
+    [TestMethod]
+    public async Task ShouldReadObjectPropertyAssertionTowardsUntypedIRIFromGraphAsync()
+    {
+        //A grape grown in an area that the local graph never types
+        RDFGraph graph = await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.Turtle, new MemoryStream(System.Text.Encoding.UTF8.GetBytes(
+            """
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix vr: <https://vallerosa.example/vocab#> .
+            @prefix vrd: <https://vallerosa.example/data#> .
+            <https://vallerosa.example/ontology> a owl:Ontology .
+            vr:Grape a owl:Class .
+            vr:grownIn a owl:ObjectProperty .
+            vrd:sangiovese a vr:Grape ; vr:grownIn <http://dbpedia.org/resource/Tuscany> .
+            """)));
+
+        //Any IRI can be the target of a property assertion without being declared or typed
+        OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+        OWLObjectPropertyAssertion objectPropertyAssertion = ontology.AssertionAxioms.OfType<OWLObjectPropertyAssertion>().Single();
+        Assert.IsTrue(objectPropertyAssertion.SourceIndividualExpression is OWLNamedIndividual source
+                      && source.GetIRI().Equals(new RDFResource("https://vallerosa.example/data#sangiovese")));
+        Assert.IsTrue(objectPropertyAssertion.TargetIndividualExpression is OWLNamedIndividual target
+                      && target.GetIRI().Equals(new RDFResource("http://dbpedia.org/resource/Tuscany")));
+    }
+
+    [TestMethod]
+    public async Task ShouldDeclareAndAnnotateMembersOfRDFSClassFromGraphAsync()
+    {
+        //An RDFS vocabulary: the class is an rdfs:Class and its member carries a label
+        RDFGraph graph = await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.Turtle, new MemoryStream(System.Text.Encoding.UTF8.GetBytes(
+            """
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix vr: <https://vallerosa.example/vocab#> .
+            @prefix vrd: <https://vallerosa.example/data#> .
+            <https://vallerosa.example/ontology> a owl:Ontology .
+            vr:Grape a rdfs:Class .
+            vrd:sangiovese a vr:Grape ; rdfs:label "Sangiovese" .
+            """)));
+
+        //The member of an rdfs:Class is declared as a named individual like the member of an owl:Class
+        OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+        RDFResource sangiovese = new RDFResource("https://vallerosa.example/data#sangiovese");
+        Assert.HasCount(1, ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>());
+        Assert.IsTrue(ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>().Single().Entity.GetIRI().Equals(sangiovese));
+        Assert.IsTrue(ontology.AssertionAxioms.OfType<OWLClassAssertion>().Single() is { } classAssertion
+                      && classAssertion.ClassExpression.GetIRI().Equals(new RDFResource("https://vallerosa.example/vocab#Grape"))
+                      && classAssertion.IndividualExpression.GetIRI().Equals(sangiovese));
+        Assert.IsTrue(ontology.AnnotationAxioms.OfType<OWLAnnotationAssertion>().Single() is { } annotationAssertion
+                      && annotationAssertion.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.LABEL)
+                      && string.Equals(annotationAssertion.SubjectIRI, sangiovese.ToString(), StringComparison.Ordinal)
+                      && annotationAssertion.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("Sangiovese")));
+    }
+
+    [TestMethod]
+    public async Task ShouldReadAnnotationAssertionOnUntypedIRIFromGraphAsync()
+    {
+        //A label on an IRI that the graph never types
+        RDFGraph graph = await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.Turtle, new MemoryStream(System.Text.Encoding.UTF8.GetBytes(
+            """
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix vrd: <https://vallerosa.example/data#> .
+            <https://vallerosa.example/ontology> a owl:Ontology .
+            vrd:mystery rdfs:label "Mystery" .
+            """)));
+
+        //Any IRI can be annotated without being declared (OWL2 Mapping to RDF Graphs, section 3.2.5)
+        OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+        Assert.IsTrue(ontology.AnnotationAxioms.OfType<OWLAnnotationAssertion>().Single() is { } annotationAssertion
+                      && annotationAssertion.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.LABEL)
+                      && string.Equals(annotationAssertion.SubjectIRI, "https://vallerosa.example/data#mystery", StringComparison.Ordinal)
+                      && annotationAssertion.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("Mystery")));
+    }
+
+    [TestMethod]
+    public async Task ShouldKeepOntologyAnnotationsOutOfAnnotationAssertionsFromGraphAsync()
+    {
+        //A comment on the ontology IRI itself
+        RDFGraph graph = await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.Turtle, new MemoryStream(System.Text.Encoding.UTF8.GetBytes(
+            """
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            <https://vallerosa.example/ontology> a owl:Ontology ; rdfs:comment "The Vallerosa catalog" .
+            """)));
+
+        //The header annotations are ontology annotations: no assertion is produced for them
+        OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+        Assert.HasCount(1, ontology.Annotations);
+        Assert.IsEmpty(ontology.AnnotationAxioms.OfType<OWLAnnotationAssertion>().ToList());
+    }
+
+    [TestMethod]
+    public async Task ShouldNotReadAxiomAnnotationsAsAnnotationAssertionsFromGraphAsync()
+    {
+        //A subclass axiom annotated through an owl:Axiom reification, whose blank node carries a comment
+        RDFGraph graph = await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.Turtle, new MemoryStream(System.Text.Encoding.UTF8.GetBytes(
+            """
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix vr: <https://vallerosa.example/vocab#> .
+            <https://vallerosa.example/ontology> a owl:Ontology .
+            rdfs:comment a owl:AnnotationProperty .
+            vr:Grape a owl:Class ; rdfs:subClassOf vr:Fruit .
+            vr:Fruit a owl:Class .
+            [] a owl:Axiom ; owl:annotatedSource vr:Grape ; owl:annotatedProperty rdfs:subClassOf ; owl:annotatedTarget vr:Fruit ;
+               rdfs:comment "A grape is a fruit" .
+            """)));
+
+        //The comment annotates the axiom: the reification node is never the subject of an annotation assertion
+        OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+        Assert.IsEmpty(ontology.AnnotationAxioms.OfType<OWLAnnotationAssertion>().ToList());
+        Assert.HasCount(1, ontology.ClassAxioms.OfType<OWLSubClassOf>().Single().Annotations);
+    }
+
+    [TestMethod]
+    public async Task ShouldReadAnnotationAssertionOnAnonymousIndividualFromGraphAsync()
+    {
+        //A grape without an IRI that carries a label
+        RDFGraph graph = await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.Turtle, new MemoryStream(System.Text.Encoding.UTF8.GetBytes(
+            """
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix vr: <https://vallerosa.example/vocab#> .
+            <https://vallerosa.example/ontology> a owl:Ontology .
+            vr:Grape a owl:Class .
+            _:g a vr:Grape ; rdfs:label "Unknown grape" .
+            """)));
+
+        //The anonymous individual is annotated like any IRI (OWL2 Mapping to RDF Graphs, section 3.2.5)
+        OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+        OWLClassAssertion classAssertion = ontology.AssertionAxioms.OfType<OWLClassAssertion>().Single();
+        Assert.IsInstanceOfType<OWLAnonymousIndividual>(classAssertion.IndividualExpression);
+        OWLAnnotationAssertion annotationAssertion = ontology.AnnotationAxioms.OfType<OWLAnnotationAssertion>().Single();
+        Assert.IsTrue(annotationAssertion.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.LABEL));
+        Assert.AreEqual(classAssertion.IndividualExpression.GetIRI().ToString(), annotationAssertion.SubjectIRI);
+        Assert.IsTrue(annotationAssertion.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("Unknown grape")));
+    }
+
+    [TestMethod]
+    public async Task ShouldNotReadAnnotationAssertionOnRestrictionFromGraphAsync()
+    {
+        //A restriction node that carries a comment
+        RDFGraph graph = await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.Turtle, new MemoryStream(System.Text.Encoding.UTF8.GetBytes(
+            """
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix vr: <https://vallerosa.example/vocab#> .
+            <https://vallerosa.example/ontology> a owl:Ontology .
+            vr:Grape a owl:Class .
+            vr:Fruit a owl:Class .
+            vr:Wine a owl:Class .
+            vr:comesFrom a owl:ObjectProperty .
+            vr:Grape rdfs:subClassOf [ a owl:Restriction ; owl:onProperty vr:comesFrom ; owl:someValuesFrom vr:Fruit ; rdfs:comment "Where it comes from" ] .
+            """)));
+
+        //Only anonymous individuals are annotated: the blank node of a class expression is not
+        OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+        Assert.IsEmpty(ontology.AnnotationAxioms.OfType<OWLAnnotationAssertion>().ToList());
+    }
+
+    [TestMethod]
+    public async Task ShouldRoundTripAnnotationAssertionOnAnonymousIndividualThroughOWL2XMLAsync()
+    {
+        RDFGraph graph = await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.Turtle, new MemoryStream(System.Text.Encoding.UTF8.GetBytes(
+            """
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix vr: <https://vallerosa.example/vocab#> .
+            <https://vallerosa.example/ontology> a owl:Ontology .
+            vr:Grape a owl:Class .
+            _:g a vr:Grape ; rdfs:label "Unknown grape" .
+            """)));
+        OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+        //The assertion on the anonymous individual survives the write and the read of OWL2/XML
+        MemoryStream stream = new MemoryStream();
+        await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2XML, stream);
+        OWLOntology reloadedOntology = await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2XML, new MemoryStream(stream.ToArray()));
+
+        OWLClassAssertion classAssertion = reloadedOntology.AssertionAxioms.OfType<OWLClassAssertion>().Single();
+        OWLAnnotationAssertion annotationAssertion = reloadedOntology.AnnotationAxioms.OfType<OWLAnnotationAssertion>().Single();
+        Assert.IsTrue(annotationAssertion.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.LABEL));
+        Assert.AreEqual(classAssertion.IndividualExpression.GetIRI().ToString(), annotationAssertion.SubjectIRI);
+        Assert.IsTrue(annotationAssertion.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("Unknown grape")));
+    }
+
+    [TestMethod]
     public async Task ShouldNotDuplicateDeclaredBuiltInAnnotationAssertionsFromGraphAsync()
     {
         //A vocabulary that explicitly declares rdfs:label, which is also one of the implicitly declared built-in annotation properties
@@ -5908,11 +6215,11 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology);
         Assert.AreEqual(RDFVocabulary.SHACL.BASE_URI, ontology.IRI);
         Assert.HasCount(2, ontology.Annotations);
-        Assert.HasCount(129, ontology.AnnotationAxioms);
+        Assert.HasCount(719, ontology.AnnotationAxioms);
         Assert.HasCount(109, ontology.AssertionAxioms);
         Assert.HasCount(37, ontology.ClassAxioms);
         Assert.IsEmpty(ontology.DataPropertyAxioms);
-        Assert.HasCount(43, ontology.DeclarationAxioms);
+        Assert.HasCount(152, ontology.DeclarationAxioms);
         Assert.IsEmpty(ontology.ObjectPropertyAxioms);
     }
 

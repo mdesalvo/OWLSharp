@@ -68,9 +68,9 @@ public class OWLImportHelperTest
         await ontology.ResolveImportsAsync();
 
         Assert.HasCount(3, ontology.Imports);
-        Assert.HasCount(758, ontology.AnnotationAxioms);
+        Assert.HasCount(763, ontology.AnnotationAxioms);
         Assert.IsTrue(ontology.AnnotationAxioms.TrueForAll(ax => ax.IsImport));
-        Assert.HasCount(77, ontology.ClassAxioms);
+        Assert.HasCount(86, ontology.ClassAxioms);
         Assert.IsTrue(ontology.ClassAxioms.TrueForAll(ax => ax.IsImport));
         Assert.HasCount(237, ontology.DeclarationAxioms);
         Assert.IsTrue(ontology.DeclarationAxioms.TrueForAll(ax => ax.IsImport));
@@ -78,7 +78,7 @@ public class OWLImportHelperTest
         Assert.IsTrue(ontology.ObjectPropertyAxioms.TrueForAll(ax => ax.IsImport));
         Assert.HasCount(63, ontology.AssertionAxioms);
         Assert.IsTrue(ontology.AssertionAxioms.TrueForAll(ax => ax.IsImport));
-        Assert.HasCount(54, ontology.DataPropertyAxioms);
+        Assert.HasCount(94, ontology.DataPropertyAxioms);
         Assert.IsEmpty(ontology.DatatypeDefinitionAxioms);
         Assert.IsEmpty(ontology.KeyAxioms);
         Assert.HasCount(5, ontology.Prefixes);
