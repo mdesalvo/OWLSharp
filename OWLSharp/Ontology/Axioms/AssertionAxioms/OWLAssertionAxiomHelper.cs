@@ -154,15 +154,34 @@ namespace OWLSharp.Ontology
                                                                 .Select(ax => ax.IndividualExpression));
 
                 //ClassAssertion(C1,I) ^ SubClassOf(C1,C2) -> ClassAssertion(C2,I)
+                //A named subclass is answered by the class assertions made on it. An anonymous subclass (a general class inclusion such as
+                //an intersection on the left of SubClassOf) is evaluated by its own kind: OWL 2 Direct Semantics 2.3.1 (Table 5) satisfies
+                //SubClassOf(CE1 CE2) when the extension of CE1 is contained in that of CE2, as OWL 2 RL rules cls-int1 and cax-sco
+                //(Profiles 4.3, Tables 6 and 7) derive the members of CE1 and then those of CE2.
                 foreach (OWLClassExpression subClsExpr in ontology.GetSubClassesOf(visitingClsExpr))
                 {
+                    //The anonymous subclass is visited like any other expression, which also includes the class assertions made on it
+                    if (!subClsExpr.IsClass)
+                    {
+                        foundVisitingClsExprIndividuals.AddRange(FindIndividualsOf(subClsExpr, visitContext));
+                        continue;
+                    }
+
+                    //The named subclass contributes the individuals asserted to it
                     RDFResource subClsExprIRI = subClsExpr.GetIRI();
                     foundVisitingClsExprIndividuals.AddRange(clsAsns.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExprIRI))
                                                                     .Select(ax => ax.IndividualExpression));
                 }
 
+                //An anonymous expression (an operand of an intersection or union, a restriction asked directly) is evaluated by its own kind
+                //before its equivalent classes: OWL 2 Direct Semantics 2.2.3 (Table 4) interprets intersections and unions from the extensions
+                //of their operands, whatever their kind. A named class is left out, since the class assertions on it and on its subclasses answer for it.
+                IEnumerable<OWLClassExpression> equivClsExprs = visitingClsExpr.IsClass
+                    ? ontology.GetEquivalentClasses(visitingClsExpr)
+                    : new[] { visitingClsExpr }.Concat(ontology.GetEquivalentClasses(visitingClsExpr));
+
                 //ClassAssertion(C1,I) ^ EquivalentClasses(C1,C2) -> ClassAssertion(C2,I)
-                foreach (OWLClassExpression equivClsExpr in ontology.GetEquivalentClasses(visitingClsExpr))
+                foreach (OWLClassExpression equivClsExpr in equivClsExprs)
                 {
                     RDFResource equivClsExprIRI = equivClsExpr.GetIRI();
 
@@ -195,6 +214,10 @@ namespace OWLSharp.Ontology
                             }
                             case OWLObjectIntersectionOf objIntersectionOf:
                             {
+                                //The members of the intersection are computed apart from the individuals collected so far: an individual asserted to the
+                                //visiting class or member of its subclasses stays a member whatever the equivalent definitions (Direct Semantics 2.3.6 Table 10
+                                //for ClassAssertion and 2.3.1 Table 5 for EquivalentClasses), so the intersection can only add to them.
+                                List<OWLIndividualExpression> objIntersectionOfIdvExprs = new List<OWLIndividualExpression>();
                                 bool isFirstIntersectionElement = true;
                                 foreach (OWLClassExpression objIntersectionOfElement in objIntersectionOf.ClassExpressions)
                                 {
@@ -202,13 +225,14 @@ namespace OWLSharp.Ontology
                                     if (isFirstIntersectionElement)
                                     {
                                         isFirstIntersectionElement = false;
-                                        foundVisitingClsExprIndividuals.AddRange(objIntersectionOfElementIdvExprs);
+                                        objIntersectionOfIdvExprs.AddRange(objIntersectionOfElementIdvExprs);
                                     }
                                     else
                                     {
-                                        foundVisitingClsExprIndividuals.RemoveAll(iex => !objIntersectionOfElementIdvExprs.Any(objIntOfElmIdv => objIntOfElmIdv.GetIRI().Equals(iex.GetIRI())));
+                                        objIntersectionOfIdvExprs.RemoveAll(iex => !objIntersectionOfElementIdvExprs.Any(objIntOfElmIdv => objIntOfElmIdv.GetIRI().Equals(iex.GetIRI())));
                                     }
                                 }
+                                foundVisitingClsExprIndividuals.AddRange(objIntersectionOfIdvExprs);
 
                                 break;
                             }
@@ -427,6 +451,10 @@ namespace OWLSharp.Ontology
                     #endregion
                 }
                 #endregion
+
+                //The visit context only stops cycles through equivalent classes, which live on the current path of the visit: once this
+                //expression is answered it is released, so another branch of the same query (an operand shared by two intersections) can visit it again.
+                visitContext.Remove(visitingClsExprIRI.PatternMemberID);
 
                 return foundVisitingClsExprIndividuals;
             }
