@@ -29,13 +29,16 @@ namespace OWLSharp.Ontology
     {
         #region Statics
         private const string NormalizeSpacesReplacement = " ";
-        private const string NormalizeSpacesPattern = @"\s{2,}";
+        //Whitespace is exactly the four characters of the XML production S (#x20, #x9, #xD, #xA): XPath 3.1 fn:normalize-space (5.4.5) leaves Unicode spaces such as U+00A0 alone
+        private const string NormalizeSpacesPattern = @"[\x20\x09\x0D\x0A]+";
+        //The same four characters are the only ones fn:normalize-space strips at both ends of the string
+        private static readonly char[] NormalizeSpacesTrimCharacters = { ' ', '\t', '\r', '\n' };
         private static readonly Lazy<Regex> NormalizeSpacesRegex = new Lazy<Regex>(() => new Regex(NormalizeSpacesPattern, RegexOptions.Compiled));
         #endregion
 
         #region Methods
         /// <summary>
-        /// Computes the second argument with every run of whitespace collapsed into a single space
+        /// Computes the second argument without leading and trailing whitespace and with every inner run of whitespace collapsed into a single space
         /// </summary>
         /// <exception cref="ArgumentException"></exception>
         internal static RDFLiteral EvaluateOnAntecedent(RDFTableRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
@@ -50,8 +53,8 @@ namespace OWLSharp.Ontology
             if (sourceValue == null)
                 return null;
 
-            //Every run of whitespace becomes a single space
-            return new RDFPlainLiteral(NormalizeSpacesRegex.Value.Replace(sourceValue, NormalizeSpacesReplacement));
+            //Leading and trailing whitespace is dropped first (only the four XML whitespace characters) then every inner run becomes a single space
+            return new RDFPlainLiteral(NormalizeSpacesRegex.Value.Replace(sourceValue.Trim(NormalizeSpacesTrimCharacters), NormalizeSpacesReplacement));
         }
         #endregion
     }
