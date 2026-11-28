@@ -882,6 +882,385 @@ public class OWLAssertionAxiomHelperTest
     }
 
     [TestMethod]
+    public void ShouldGetIndividualsOfIntersectionWithDataSomeValuesFromOperand()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:vinsanto"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:rosso"))),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("ex:alcohol")),
+                    new OWLNamedIndividual(new RDFResource("ex:vinsanto")),
+                    new OWLLiteral(new RDFTypedLiteral("16.0", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))
+            ],
+            ClassAxioms = [
+                new OWLEquivalentClasses([
+                    new OWLClass(new RDFResource("ex:StrongWine")),
+                    new OWLObjectIntersectionOf([
+                        new OWLClass(new RDFResource("ex:Wine")),
+                        new OWLDataSomeValuesFrom(new OWLDataProperty(new RDFResource("ex:alcohol")), new OWLDatatype(RDFVocabulary.XSD.DECIMAL)) ]) ])
+            ]
+        };
+
+        List<OWLIndividualExpression> strongWines = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:StrongWine")));
+        Assert.HasCount(1, strongWines);
+        Assert.IsTrue(strongWines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:vinsanto"))));
+    }
+
+    [TestMethod]
+    public void ShouldGetIndividualsOfIntersectionWithDataSomeValuesFromDatatypeRestrictionOperand()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:vinsanto"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:rosso"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:bianco"))),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("ex:alcohol")),
+                    new OWLNamedIndividual(new RDFResource("ex:vinsanto")),
+                    new OWLLiteral(new RDFTypedLiteral("16.0", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("ex:alcohol")),
+                    new OWLNamedIndividual(new RDFResource("ex:bianco")),
+                    new OWLLiteral(new RDFTypedLiteral("13.5", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))
+            ],
+            ClassAxioms = [
+                new OWLEquivalentClasses([
+                    new OWLClass(new RDFResource("ex:StrongWine")),
+                    new OWLObjectIntersectionOf([
+                        new OWLClass(new RDFResource("ex:Wine")),
+                        new OWLDataSomeValuesFrom(
+                            new OWLDataProperty(new RDFResource("ex:alcohol")),
+                            new OWLDatatypeRestriction(
+                                new OWLDatatype(RDFVocabulary.XSD.DECIMAL),
+                                [ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("15", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)), RDFVocabulary.XSD.MIN_EXCLUSIVE) ])) ]) ])
+            ]
+        };
+
+        List<OWLIndividualExpression> strongWines = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:StrongWine")));
+        Assert.HasCount(1, strongWines);
+        Assert.IsTrue(strongWines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:vinsanto"))));
+    }
+
+    [TestMethod]
+    public void ShouldGetIndividualsOfIntersectionWithHasValueOperands()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:vinsanto"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:amarone"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:rosso"))),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("ex:alcohol")),
+                    new OWLNamedIndividual(new RDFResource("ex:vinsanto")),
+                    new OWLLiteral(new RDFTypedLiteral("16.0", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:method")),
+                    new OWLNamedIndividual(new RDFResource("ex:amarone")),
+                    new OWLNamedIndividual(new RDFResource("ex:appassimento")))
+            ],
+            ClassAxioms = [
+                new OWLEquivalentClasses([
+                    new OWLClass(new RDFResource("ex:StrongWine")),
+                    new OWLObjectIntersectionOf([
+                        new OWLClass(new RDFResource("ex:Wine")),
+                        new OWLDataHasValue(new OWLDataProperty(new RDFResource("ex:alcohol")), new OWLLiteral(new RDFTypedLiteral("16.0", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))) ]) ]),
+                new OWLEquivalentClasses([
+                    new OWLClass(new RDFResource("ex:DriedGrapesWine")),
+                    new OWLObjectIntersectionOf([
+                        new OWLClass(new RDFResource("ex:Wine")),
+                        new OWLObjectHasValue(new OWLObjectProperty(new RDFResource("ex:method")), new OWLNamedIndividual(new RDFResource("ex:appassimento"))) ]) ])
+            ]
+        };
+
+        List<OWLIndividualExpression> strongWines = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:StrongWine")));
+        Assert.HasCount(1, strongWines);
+        Assert.IsTrue(strongWines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:vinsanto"))));
+
+        List<OWLIndividualExpression> driedGrapesWines = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:DriedGrapesWine")));
+        Assert.HasCount(1, driedGrapesWines);
+        Assert.IsTrue(driedGrapesWines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:amarone"))));
+    }
+
+    [TestMethod]
+    public void ShouldGetIndividualsOfUnionWithHasValueOperands()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("ex:alcohol")),
+                    new OWLNamedIndividual(new RDFResource("ex:vinsanto")),
+                    new OWLLiteral(new RDFTypedLiteral("16.0", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:method")),
+                    new OWLNamedIndividual(new RDFResource("ex:amarone")),
+                    new OWLNamedIndividual(new RDFResource("ex:appassimento"))),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("ex:alcohol")),
+                    new OWLNamedIndividual(new RDFResource("ex:rosso")),
+                    new OWLLiteral(new RDFTypedLiteral("12.0", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))
+            ],
+            ClassAxioms = [
+                new OWLEquivalentClasses([
+                    new OWLClass(new RDFResource("ex:SpecialWine")),
+                    new OWLObjectUnionOf([
+                        new OWLDataHasValue(new OWLDataProperty(new RDFResource("ex:alcohol")), new OWLLiteral(new RDFTypedLiteral("16.0", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))),
+                        new OWLObjectHasValue(new OWLObjectProperty(new RDFResource("ex:method")), new OWLNamedIndividual(new RDFResource("ex:appassimento"))) ]) ])
+            ]
+        };
+
+        List<OWLIndividualExpression> specialWines = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:SpecialWine")));
+        Assert.HasCount(2, specialWines);
+        Assert.IsTrue(specialWines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:vinsanto"))));
+        Assert.IsTrue(specialWines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:amarone"))));
+    }
+
+    [TestMethod]
+    public void ShouldGetIndividualsOfAnonymousDataSomeValuesFromRestriction()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("ex:alcohol")),
+                    new OWLNamedIndividual(new RDFResource("ex:vinsanto")),
+                    new OWLLiteral(new RDFTypedLiteral("16.0", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:rosso")))
+            ]
+        };
+
+        List<OWLIndividualExpression> alcoholicIndividuals = ontology.GetIndividualsOf(
+            new OWLDataSomeValuesFrom(new OWLDataProperty(new RDFResource("ex:alcohol")), new OWLDatatype(RDFVocabulary.XSD.DECIMAL)));
+        Assert.HasCount(1, alcoholicIndividuals);
+        Assert.IsTrue(alcoholicIndividuals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:vinsanto"))));
+    }
+
+    [TestMethod]
+    public void ShouldGetIndividualsOfAnonymousSubClassIntersectionWithHasValueOperand()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:vinsanto"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:rosso"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:method")),
+                    new OWLNamedIndividual(new RDFResource("ex:vinsanto")),
+                    new OWLNamedIndividual(new RDFResource("ex:appassimento")))
+            ],
+            ClassAxioms = [
+                new OWLSubClassOf(
+                    new OWLObjectIntersectionOf([
+                        new OWLClass(new RDFResource("ex:Wine")),
+                        new OWLObjectHasValue(new OWLObjectProperty(new RDFResource("ex:method")), new OWLNamedIndividual(new RDFResource("ex:appassimento"))) ]),
+                    new OWLClass(new RDFResource("ex:SweetWine")))
+            ]
+        };
+
+        List<OWLIndividualExpression> sweetWines = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:SweetWine")));
+        Assert.HasCount(1, sweetWines);
+        Assert.IsTrue(sweetWines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:vinsanto"))));
+    }
+
+    [TestMethod]
+    public void ShouldGetIndividualsOfAnonymousSubClassIntersectionWithDataSomeValuesFromOperand()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:vinsanto"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:amarone"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:rosso"))),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("ex:alcohol")),
+                    new OWLNamedIndividual(new RDFResource("ex:vinsanto")),
+                    new OWLLiteral(new RDFTypedLiteral("16.0", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("ex:alcohol")),
+                    new OWLNamedIndividual(new RDFResource("ex:amarone")),
+                    new OWLLiteral(new RDFTypedLiteral("15.0", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("ex:alcohol")),
+                    new OWLNamedIndividual(new RDFResource("ex:rosso")),
+                    new OWLLiteral(new RDFTypedLiteral("16.5", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:method")),
+                    new OWLNamedIndividual(new RDFResource("ex:vinsanto")),
+                    new OWLNamedIndividual(new RDFResource("ex:appassimento"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:method")),
+                    new OWLNamedIndividual(new RDFResource("ex:amarone")),
+                    new OWLNamedIndividual(new RDFResource("ex:appassimento")))
+            ],
+            ClassAxioms = [
+                new OWLSubClassOf(
+                    new OWLObjectIntersectionOf([
+                        new OWLClass(new RDFResource("ex:Wine")),
+                        new OWLDataSomeValuesFrom(
+                            new OWLDataProperty(new RDFResource("ex:alcohol")),
+                            new OWLDatatypeRestriction(
+                                new OWLDatatype(RDFVocabulary.XSD.DECIMAL),
+                                [ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("15", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)), RDFVocabulary.XSD.MIN_EXCLUSIVE) ])),
+                        new OWLObjectHasValue(new OWLObjectProperty(new RDFResource("ex:method")), new OWLNamedIndividual(new RDFResource("ex:appassimento"))) ]),
+                    new OWLClass(new RDFResource("ex:SweetWine")))
+            ]
+        };
+
+        List<OWLIndividualExpression> sweetWines = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:SweetWine")));
+        Assert.HasCount(1, sweetWines);
+        Assert.IsTrue(sweetWines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:vinsanto"))));
+    }
+
+    [TestMethod]
+    public void ShouldGetIndividualsOfAnonymousSubClassHasValueRestriction()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:method")),
+                    new OWLNamedIndividual(new RDFResource("ex:vinsanto")),
+                    new OWLNamedIndividual(new RDFResource("ex:appassimento")))
+            ],
+            ClassAxioms = [
+                new OWLSubClassOf(
+                    new OWLObjectHasValue(new OWLObjectProperty(new RDFResource("ex:method")), new OWLNamedIndividual(new RDFResource("ex:appassimento"))),
+                    new OWLClass(new RDFResource("ex:SweetWine")))
+            ]
+        };
+
+        List<OWLIndividualExpression> sweetWines = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:SweetWine")));
+        Assert.HasCount(1, sweetWines);
+        Assert.IsTrue(sweetWines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:vinsanto"))));
+    }
+
+    [TestMethod]
+    public void ShouldGetIndividualsOfAnonymousSubClassAndEquivalentIntersectionSharingAnOperand()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:vinsanto"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:passito"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:rosso"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:method")),
+                    new OWLNamedIndividual(new RDFResource("ex:vinsanto")),
+                    new OWLNamedIndividual(new RDFResource("ex:appassimento"))),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("ex:sugar")),
+                    new OWLNamedIndividual(new RDFResource("ex:passito")),
+                    new OWLLiteral(new RDFPlainLiteral("high")))
+            ],
+            ClassAxioms = [
+                new OWLSubClassOf(
+                    new OWLObjectIntersectionOf([
+                        new OWLClass(new RDFResource("ex:Wine")),
+                        new OWLObjectHasValue(new OWLObjectProperty(new RDFResource("ex:method")), new OWLNamedIndividual(new RDFResource("ex:appassimento"))) ]),
+                    new OWLClass(new RDFResource("ex:SweetWine"))),
+                new OWLEquivalentClasses([
+                    new OWLClass(new RDFResource("ex:SweetWine")),
+                    new OWLObjectIntersectionOf([
+                        new OWLClass(new RDFResource("ex:Wine")),
+                        new OWLDataHasValue(new OWLDataProperty(new RDFResource("ex:sugar")), new OWLLiteral(new RDFPlainLiteral("high"))) ]) ])
+            ]
+        };
+
+        List<OWLIndividualExpression> sweetWines = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:SweetWine")));
+        Assert.HasCount(2, sweetWines);
+        Assert.IsTrue(sweetWines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:vinsanto"))));
+        Assert.IsTrue(sweetWines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:passito"))));
+    }
+
+    [TestMethod]
+    public void ShouldGetIndividualsOfAssertedClassWithEquivalentIntersection()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:TuscanWine")), new OWLNamedIndividual(new RDFResource("ex:rosso")))
+            ],
+            ClassAxioms = [
+                new OWLEquivalentClasses([
+                    new OWLClass(new RDFResource("ex:TuscanWine")),
+                    new OWLObjectIntersectionOf([
+                        new OWLClass(new RDFResource("ex:Wine")),
+                        new OWLObjectHasValue(new OWLObjectProperty(new RDFResource("ex:comesFrom")), new OWLNamedIndividual(new RDFResource("ex:tuscany"))) ]) ])
+            ]
+        };
+
+        List<OWLIndividualExpression> tuscanWines = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:TuscanWine")));
+        Assert.HasCount(1, tuscanWines);
+        Assert.IsTrue(tuscanWines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:rosso"))));
+    }
+
+    [TestMethod]
+    public void ShouldGetIndividualsOfUnionOfIntersectionsSharingAnOperand()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:rosso"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:Wine")), new OWLNamedIndividual(new RDFResource("ex:bianco"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:comesFrom")),
+                    new OWLNamedIndividual(new RDFResource("ex:rosso")),
+                    new OWLNamedIndividual(new RDFResource("ex:tuscany"))),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("ex:organic")),
+                    new OWLNamedIndividual(new RDFResource("ex:bianco")),
+                    new OWLLiteral(new RDFTypedLiteral("true", RDFModelEnums.RDFDatatypes.XSD_BOOLEAN)))
+            ],
+            ClassAxioms = [
+                new OWLEquivalentClasses([
+                    new OWLClass(new RDFResource("ex:SweetWine")),
+                    new OWLObjectUnionOf([
+                        new OWLObjectIntersectionOf([
+                            new OWLClass(new RDFResource("ex:Wine")),
+                            new OWLObjectHasValue(new OWLObjectProperty(new RDFResource("ex:comesFrom")), new OWLNamedIndividual(new RDFResource("ex:tuscany"))) ]),
+                        new OWLObjectIntersectionOf([
+                            new OWLClass(new RDFResource("ex:Wine")),
+                            new OWLDataHasValue(new OWLDataProperty(new RDFResource("ex:organic")), new OWLLiteral(new RDFTypedLiteral("true", RDFModelEnums.RDFDatatypes.XSD_BOOLEAN))) ]) ]) ])
+            ]
+        };
+
+        List<OWLIndividualExpression> sweetWines = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:SweetWine")));
+        Assert.HasCount(2, sweetWines);
+        Assert.IsTrue(sweetWines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:rosso"))));
+        Assert.IsTrue(sweetWines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:bianco"))));
+    }
+
+    [TestMethod]
+    public void ShouldGetIndividualsOfMutuallyEquivalentClassesWithIntersectionWithoutLooping()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:A")), new OWLNamedIndividual(new RDFResource("ex:idv"))),
+                new OWLClassAssertion(new OWLClass(new RDFResource("ex:C")), new OWLNamedIndividual(new RDFResource("ex:idv")))
+            ],
+            ClassAxioms = [
+                new OWLEquivalentClasses([
+                    new OWLClass(new RDFResource("ex:A")),
+                    new OWLClass(new RDFResource("ex:B")) ]),
+                new OWLEquivalentClasses([
+                    new OWLClass(new RDFResource("ex:B")),
+                    new OWLObjectIntersectionOf([
+                        new OWLClass(new RDFResource("ex:A")),
+                        new OWLClass(new RDFResource("ex:C")) ]) ])
+            ]
+        };
+
+        List<OWLIndividualExpression> classAIndividuals = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:A")));
+        Assert.HasCount(1, classAIndividuals);
+        Assert.IsTrue(classAIndividuals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:idv"))));
+    }
+
+    [TestMethod]
     public void ShouldCheckIsNegativeIndividualOf()
     {
         OWLOntology ontology = new OWLOntology

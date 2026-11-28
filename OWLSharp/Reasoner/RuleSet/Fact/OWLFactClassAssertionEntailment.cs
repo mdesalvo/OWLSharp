@@ -29,14 +29,18 @@ namespace OWLSharp.Reasoner
             List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
             //Seed the "in scope" set with every class expression that could possibly gain new individuals: declared classes,
             //classes already used in a ClassAssertion, and classes only ever mentioned as operands of EquivalentClasses/DisjointClasses/DisjointUnion
-            //(these last three would otherwise never surface, since they don't necessarily have their own declaration or assertion)
+            //(these last three would otherwise never surface, since they don't necessarily have their own declaration or assertion).
+            //Named superclasses of general class inclusions (SubClassOf with an anonymous subclass) are seeded too: nothing else mentions
+            //them when undeclared (OWL 2 Structural Specification 5.8.1 makes declarations optional) while cax-sco applies to any subClassOf triple.
             List<OWLClassExpression> inScopeClsExprs =
                 ontology.GetDeclarationAxiomsOfType<OWLClass>().Select(ax => (OWLClass)ax.Entity)
                         .Union(clsAsns.Select(ax => ax.ClassExpression))
                         .Union(ontology.GetClassAxiomsOfType<OWLEquivalentClasses>().SelectMany(ax => ax.ClassExpressions.Select(cls => cls)))
                         .Union(ontology.GetClassAxiomsOfType<OWLDisjointClasses>().SelectMany(ax => ax.ClassExpressions.Select(cls => cls)))
                         .Union(ontology.GetClassAxiomsOfType<OWLDisjointUnion>().Select(ax => ax.ClassIRI))
-                        .Union(ontology.GetClassAxiomsOfType<OWLDisjointUnion>().SelectMany(ax => ax.ClassExpressions.Select(cls => cls))).ToList();
+                        .Union(ontology.GetClassAxiomsOfType<OWLDisjointUnion>().SelectMany(ax => ax.ClassExpressions.Select(cls => cls)))
+                        .Union(ontology.GetClassAxiomsOfType<OWLSubClassOf>().Where(ax => !ax.SubClassExpression.IsClass && ax.SuperClassExpression.IsClass)
+                                                                              .Select(ax => ax.SuperClassExpression)).ToList();
             //Widen the scope one level along the T-Box hierarchy: for each seed class, also pull in its superclasses and equivalent
             //classes, so the materialization loop below reaches classes that are only reachable transitively (e.g. C1 subClassOf C2,
             //with C2 never directly asserted/declared elsewhere). RemoveDuplicates here only dedupes the iteration source, not inScopeClsExprs itself.

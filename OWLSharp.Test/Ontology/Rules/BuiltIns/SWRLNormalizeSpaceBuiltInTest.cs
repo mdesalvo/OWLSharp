@@ -127,7 +127,7 @@ public class SWRLNormalizeSpaceBuiltInTest
         RDFTable antecedentResults = new RDFTable();
         antecedentResults.AddColumn("?X");
         antecedentResults.AddColumn("?Y");
-        antecedentResults.AddRow([" hel lo ", " hel   lo "]);
+        antecedentResults.AddRow(["hel lo", " hel   lo "]);
         antecedentResults.AddRow(["hello@EN-US", "EN-US"]);
         antecedentResults.AddRow(["2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int"]);
         antecedentResults.AddRow([null, "-2^^http://www.w3.org/2001/XMLSchema#int"]);
@@ -151,7 +151,7 @@ public class SWRLNormalizeSpaceBuiltInTest
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(2, builtinResults.Columns);
         Assert.HasCount(1, builtinResults.Rows);
-        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), " hel lo "));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "hel lo"));
         Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?Y"] ?? string.Empty), " hel   lo "));
 
         //Test with unexisting variables
@@ -171,9 +171,9 @@ public class SWRLNormalizeSpaceBuiltInTest
         Assert.IsNotNull(builtinResults3);
         Assert.HasCount(3, builtinResults3.Columns);
         Assert.HasCount(5, builtinResults3.Rows);
-        Assert.IsTrue(string.Equals((builtinResults3.Rows[0][0] ?? string.Empty), " hel lo "));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[0][0] ?? string.Empty), "hel lo"));
         Assert.IsTrue(string.Equals((builtinResults3.Rows[0][1] ?? string.Empty), " hel   lo "));
-        Assert.IsTrue(string.Equals((builtinResults3.Rows[0][2] ?? string.Empty), " hel lo "));
+        Assert.IsTrue(string.Equals((builtinResults3.Rows[0][2] ?? string.Empty), "hel lo"));
         Assert.IsTrue(string.Equals((builtinResults3.Rows[1][0] ?? string.Empty), "hello@EN-US"));
         Assert.IsTrue(string.Equals((builtinResults3.Rows[1][1] ?? string.Empty), "EN-US"));
         Assert.IsTrue(string.Equals((builtinResults3.Rows[1][2] ?? string.Empty), "EN-US"));
@@ -226,7 +226,7 @@ public class SWRLNormalizeSpaceBuiltInTest
         {
             IRI = "http://www.w3.org/2003/11/swrlb#normalizeSpace",
             Arguments = [
-                new SWRLLiteralArgument(new RDFTypedLiteral(" hel lo ", RDFModelEnums.RDFDatatypes.XSD_STRING)),
+                new SWRLLiteralArgument(new RDFTypedLiteral("hel lo", RDFModelEnums.RDFDatatypes.XSD_STRING)),
                 new SWRLVariableArgument(new RDFVariable("?Y"))
             ]
         };
@@ -251,8 +251,8 @@ public class SWRLNormalizeSpaceBuiltInTest
         antecedentResults.AddRow(["7^^http://www.w3.org/2001/XMLSchema#int"]);
         antecedentResults.AddRow(["2.0^^http://www.w3.org/2001/XMLSchema#float"]);
         antecedentResults.AddRow([null]);
-        antecedentResults.AddRow([" h e l lo ^^http://www.w3.org/2001/XMLSchema#string"]);
-        antecedentResults.AddRow([" h e l lo "]);
+        antecedentResults.AddRow(["h e l lo^^http://www.w3.org/2001/XMLSchema#string"]);
+        antecedentResults.AddRow(["h e l lo"]);
         antecedentResults.AddRow([" h e L lo "]);
         antecedentResults.AddRow([" h e l lo @EN"]);
         antecedentResults.AddRow(["http://example.org/hello"]);
@@ -271,8 +271,8 @@ public class SWRLNormalizeSpaceBuiltInTest
         Assert.IsNotNull(builtinResults);
         Assert.HasCount(1, builtinResults.Columns);
         Assert.HasCount(2, builtinResults.Rows);
-        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), " h e l lo ^^http://www.w3.org/2001/XMLSchema#string"));
-        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), " h e l lo "));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[0]["?X"] ?? string.Empty), "h e l lo^^http://www.w3.org/2001/XMLSchema#string"));
+        Assert.IsTrue(string.Equals((builtinResults.Rows[1]["?X"] ?? string.Empty), "h e l lo"));
     }
 
     [TestMethod]
@@ -390,6 +390,32 @@ public class SWRLNormalizeSpaceBuiltInTest
         RDFTable predicateTable1 = builtin1.EvaluateOnAntecedent(predicateResults);
         Assert.HasCount(2, predicateTable1.Columns);
         Assert.IsEmpty(predicateTable1.Rows);
+    }
+
+    [TestMethod]
+    public void ShouldEvaluateNormalizeSpaceBuiltInFollowingXPathWhitespace()
+    {
+        //Only the four characters of the XML production S are whitespace: U+00A0 stays where it is
+        RDFTable antecedentResults = new RDFTable();
+        antecedentResults.AddColumn("?Y");
+        antecedentResults.AddRow(["  cherry\tand  violet  "]);
+        antecedentResults.AddRow(["a\nb"]);
+        antecedentResults.AddRow(["a\r\n\tb"]);
+        antecedentResults.AddRow(["a\u00A0b"]);
+        antecedentResults.AddRow([" \u00A0a\u00A0 "]);
+        antecedentResults.AddRow([" \t\r\n "]);
+
+        SWRLBuiltIn builtin = SWRLBuiltIn.NormalizeSpace(
+            new SWRLVariableArgument(new RDFVariable("?X")),
+            new SWRLVariableArgument(new RDFVariable("?Y")));
+
+        RDFTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+        string[] expectedValues = [ "cherry and violet", "a b", "a b", "a\u00A0b", "\u00A0a\u00A0", "" ];
+        Assert.IsNotNull(builtinResults);
+        Assert.HasCount(expectedValues.Length, builtinResults.Rows);
+        for (int i = 0; i < expectedValues.Length; i++)
+            Assert.AreEqual(expectedValues[i], builtinResults.Rows[i]["?X"]);
     }
     #endregion
 }

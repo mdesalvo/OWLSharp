@@ -47,6 +47,47 @@ namespace OWLSharp.Ontology
             RDFVocabulary.RDFS.SEE_ALSO,
             RDFVocabulary.RDFS.IS_DEFINED_BY
         };
+
+        /// <summary>
+        /// The datatypes of the OWL2 datatype map (with rdfs:Literal), which every ontology declares implicitly
+        /// </summary>
+        /// <remarks>OWL2 Structural Specification, section 4 lists them and section 5.8 (Table 5) declares them in every ontology.</remarks>
+        internal static readonly RDFResource[] BuiltInDatatypes = {
+            RDFVocabulary.RDFS.LITERAL,
+            RDFVocabulary.OWL.REAL,
+            new RDFResource($"{RDFVocabulary.OWL.BASE_URI}rational"),
+            RDFVocabulary.RDF.PLAIN_LITERAL,
+            RDFVocabulary.RDF.XML_LITERAL,
+            RDFVocabulary.XSD.DECIMAL,
+            RDFVocabulary.XSD.INTEGER,
+            RDFVocabulary.XSD.NON_NEGATIVE_INTEGER,
+            RDFVocabulary.XSD.NON_POSITIVE_INTEGER,
+            RDFVocabulary.XSD.POSITIVE_INTEGER,
+            RDFVocabulary.XSD.NEGATIVE_INTEGER,
+            RDFVocabulary.XSD.LONG,
+            RDFVocabulary.XSD.INT,
+            RDFVocabulary.XSD.SHORT,
+            RDFVocabulary.XSD.BYTE,
+            RDFVocabulary.XSD.UNSIGNED_LONG,
+            RDFVocabulary.XSD.UNSIGNED_INT,
+            RDFVocabulary.XSD.UNSIGNED_SHORT,
+            RDFVocabulary.XSD.UNSIGNED_BYTE,
+            RDFVocabulary.XSD.DOUBLE,
+            RDFVocabulary.XSD.FLOAT,
+            RDFVocabulary.XSD.STRING,
+            RDFVocabulary.XSD.NORMALIZED_STRING,
+            RDFVocabulary.XSD.TOKEN,
+            RDFVocabulary.XSD.LANGUAGE,
+            RDFVocabulary.XSD.NAME,
+            RDFVocabulary.XSD.NCNAME,
+            RDFVocabulary.XSD.NMTOKEN,
+            RDFVocabulary.XSD.BOOLEAN,
+            RDFVocabulary.XSD.HEX_BINARY,
+            RDFVocabulary.XSD.BASE64_BINARY,
+            RDFVocabulary.XSD.ANY_URI,
+            RDFVocabulary.XSD.DATETIME,
+            RDFVocabulary.XSD.DATETIMESTAMP
+        };
         #endregion
 
         #region Methods
@@ -224,11 +265,12 @@ namespace OWLSharp.Ontology
                             }
                         }
 
-                        //NamedIndividual (undeclared, type-inferred via SPARQL)
+                        //NamedIndividual (undeclared, type-inferred via SPARQL): the members of an owl:Class, of an rdfs:Class (declared as a class too) or of an owl:Restriction
                         RDFSelectQuery namedIdvQuery = new RDFSelectQuery()
                             .AddPatternGroup(new RDFPatternGroup()
                                 .AddBinaryPatternGroupMember(
                                     new RDFPattern(new RDFVariable("?CLS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS)
+                                        .Union(new RDFPattern(new RDFVariable("?CLS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.CLASS))
                                         .Union(new RDFPattern(new RDFVariable("?CLS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION)))
                                 .AddPattern(new RDFPattern(new RDFVariable("?NIDV"), RDFVocabulary.RDF.TYPE, new RDFVariable("?CLS")))
                                 .AddFilter(new RDFFilter(new RDFNotExpression(new RDFSameTermExpression(new RDFVariable("?NIDV"), new RDFVariable("?CLS")))))
@@ -1190,26 +1232,10 @@ namespace OWLSharp.Ontology
                     }
                     void LoadAnnotationAssertions(OWLOntology ont, RDFGraph annAxiomsGraph)
                     {
-                        #region Fetch Declarations
-                        List<OWLClass> declaredClasses = ont.DeclarationAxioms.Where(dax => dax.Entity is OWLClass)
-                                                                              .Select(dax => (OWLClass)dax.Entity)
-                                                                              .ToList();
-                        List<OWLDatatype> declaredDatatypes = ont.DeclarationAxioms.Where(dax => dax.Entity is OWLDatatype)
-                                                                                   .Select(dax => (OWLDatatype)dax.Entity)
-                                                                                   .ToList();
-                        List<OWLObjectProperty> declaredObjectProperties = ont.DeclarationAxioms.Where(dax => dax.Entity is OWLObjectProperty)
-                                                                                                .Select(dax => (OWLObjectProperty)dax.Entity)
-                                                                                                .ToList();
-                        List<OWLDataProperty> declaredDataProperties = ont.DeclarationAxioms.Where(dax => dax.Entity is OWLDataProperty)
-                                                                                            .Select(dax => (OWLDataProperty)dax.Entity)
-                                                                                            .ToList();
+                        //Annotation properties declared in the graph
                         List<OWLAnnotationProperty> declaredAnnotationProperties = ont.DeclarationAxioms.Where(dax => dax.Entity is OWLAnnotationProperty)
                                                                                                         .Select(dax => (OWLAnnotationProperty)dax.Entity)
                                                                                                         .ToList();
-                        List<OWLNamedIndividual> declaredIndividuals = ont.DeclarationAxioms.Where(dax => dax.Entity is OWLNamedIndividual)
-                                                                                            .Select(dax => (OWLNamedIndividual)dax.Entity)
-                                                                                            .ToList();
-                        #endregion
 
                         //The built-in annotation properties are implicitly declared in every OWL2 ontology:
                         //the ones not declared in the graph still need their assertions read, but get no declaration axiom
@@ -1225,118 +1251,41 @@ namespace OWLSharp.Ontology
                         //Annotation axioms already present (such as the owl:deprecated ones derived from owl:DeprecatedClass) must not be asserted twice
                         HashSet<string> knownAnnotationAxiomsXML = new HashSet<string>(ont.AnnotationAxioms.Select(annAxiom => annAxiom.GetXML()), StringComparer.Ordinal);
 
+                        //The annotations of the ontology IRI are the header ones, which are read as ontology annotations
+                        RDFResource ontologyIRI = new RDFResource(ont.IRI);
+
+                        //Anonymous individuals found in the assertions already loaded, on either side of a property assertion: Mapping 3.2.5 annotates
+                        //"each blank node or IRI x such that x is not in RIND", but this loader does not consume the triples of class expressions
+                        //and lists (which the Mapping removes before this step) so the blanks of those must stay out: only the individuals are taken
+                        HashSet<string> anonymousIndividualIRIs = new HashSet<string>(
+                            ont.AssertionAxioms.OfType<OWLClassAssertion>().Select(asn => asn.IndividualExpression)
+                                .Concat(ont.AssertionAxioms.OfType<OWLObjectPropertyAssertion>().SelectMany(asn => new[] { asn.SourceIndividualExpression, asn.TargetIndividualExpression }))
+                                .Concat(ont.AssertionAxioms.OfType<OWLDataPropertyAssertion>().Select(asn => asn.IndividualExpression))
+                                .OfType<OWLAnonymousIndividual>()
+                                .Select(anonymousIndividual => anonymousIndividual.GetIRI().ToString()), StringComparer.Ordinal);
+
                         assertedAnnotationProperties.ForEach(annProp =>
                         {
                             RDFResource annPropIRI = annProp.GetIRI();
                             RDFGraph annPropGraph = graph[p: annPropIRI];
 
-                            //Class Annotations
-                            declaredClasses.ForEach(cls =>
+                            //Any IRI can be annotated whether it is declared or not (OWL2 Mapping to RDF Graphs, section 3.2.5):
+                            //a blank subject is read only when it is an anonymous individual, since the others are axiom reifications or class expressions
+                            foreach (RDFTriple annPropTriple in annPropGraph.SelectTriples()
+                                                                            .Where(triple => (!((RDFResource)triple.Subject).IsBlank || anonymousIndividualIRIs.Contains(triple.Subject.ToString()))
+                                                                                               && !triple.Subject.Equals(ontologyIRI)))
                             {
-                                RDFResource clsIRI = cls.GetIRI();
-                                foreach (RDFTriple clsAnnPropTriple in annPropGraph.SelectTriples(s: clsIRI))
-                                {
-                                    var annAsn = clsAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
-                                        ? new OWLAnnotationAssertion(annProp, clsIRI, (RDFResource)clsAnnPropTriple.Object)
-                                        : new OWLAnnotationAssertion(annProp, clsIRI, new OWLLiteral((RDFLiteral)clsAnnPropTriple.Object));
+                                RDFResource subjectIRI = (RDFResource)annPropTriple.Subject;
+                                var annAsn = annPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
+                                    ? new OWLAnnotationAssertion(annProp, subjectIRI, (RDFResource)annPropTriple.Object)
+                                    : new OWLAnnotationAssertion(annProp, subjectIRI, new OWLLiteral((RDFLiteral)annPropTriple.Object));
 
-                                    LoadAxiomAnnotations(ont, clsAnnPropTriple, annAsn, annAxiomsGraph);
+                                LoadAxiomAnnotations(ont, annPropTriple, annAsn, annAxiomsGraph);
 
-                                    //The signature is taken once the axiom annotations are loaded: they are part of the assertion's identity
-                                    if (knownAnnotationAxiomsXML.Add(annAsn.GetXML()))
-                                        ont.AnnotationAxioms.Add(annAsn);
-                                }
-                            });
-
-                            //Datatype Annotations
-                            declaredDatatypes.ForEach(dt =>
-                            {
-                                RDFResource dtIRI = dt.GetIRI();
-                                foreach (RDFTriple dtAnnPropTriple in annPropGraph.SelectTriples(s: dtIRI))
-                                {
-                                    var annAsn = dtAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
-                                        ? new OWLAnnotationAssertion(annProp, dtIRI, (RDFResource)dtAnnPropTriple.Object)
-                                        : new OWLAnnotationAssertion(annProp, dtIRI, new OWLLiteral((RDFLiteral)dtAnnPropTriple.Object));
-
-                                    LoadAxiomAnnotations(ont, dtAnnPropTriple, annAsn, annAxiomsGraph);
-
-                                    //Only the first occurrence of an identical assertion is kept
-                                    if (knownAnnotationAxiomsXML.Add(annAsn.GetXML()))
-                                        ont.AnnotationAxioms.Add(annAsn);
-                                }
-                            });
-
-                            //ObjectProperty Annotations
-                            declaredObjectProperties.ForEach(op =>
-                            {
-                                RDFResource opIRI = op.GetIRI();
-                                foreach (RDFTriple opAnnPropTriple in annPropGraph.SelectTriples(s: opIRI))
-                                {
-                                    var annAsn = opAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
-                                        ? new OWLAnnotationAssertion(annProp, opIRI, (RDFResource)opAnnPropTriple.Object)
-                                        : new OWLAnnotationAssertion(annProp, opIRI, new OWLLiteral((RDFLiteral)opAnnPropTriple.Object));
-
-                                    LoadAxiomAnnotations(ont, opAnnPropTriple, annAsn, annAxiomsGraph);
-
-                                    //Only the first occurrence of an identical assertion is kept
-                                    if (knownAnnotationAxiomsXML.Add(annAsn.GetXML()))
-                                        ont.AnnotationAxioms.Add(annAsn);
-                                }
-                            });
-
-                            //DataProperty Annotations
-                            declaredDataProperties.ForEach(dp =>
-                            {
-                                RDFResource dpIRI = dp.GetIRI();
-                                foreach (RDFTriple dpAnnPropTriple in annPropGraph.SelectTriples(s: dpIRI))
-                                {
-                                    var annAsn = dpAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
-                                        ? new OWLAnnotationAssertion(annProp, dpIRI, (RDFResource)dpAnnPropTriple.Object)
-                                        : new OWLAnnotationAssertion(annProp, dpIRI, new OWLLiteral((RDFLiteral)dpAnnPropTriple.Object));
-
-                                    LoadAxiomAnnotations(ont, dpAnnPropTriple, annAsn, annAxiomsGraph);
-
-                                    //Only the first occurrence of an identical assertion is kept
-                                    if (knownAnnotationAxiomsXML.Add(annAsn.GetXML()))
-                                        ont.AnnotationAxioms.Add(annAsn);
-                                }
-                            });
-
-                            //AnnotationProperty Annotations
-                            declaredAnnotationProperties.ForEach(ap =>
-                            {
-                                RDFResource apIRI = ap.GetIRI();
-                                foreach (RDFTriple apAnnPropTriple in annPropGraph.SelectTriples(s: apIRI))
-                                {
-                                    var annAsn = apAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
-                                        ? new OWLAnnotationAssertion(annProp, apIRI, (RDFResource)apAnnPropTriple.Object)
-                                        : new OWLAnnotationAssertion(annProp, apIRI, new OWLLiteral((RDFLiteral)apAnnPropTriple.Object));
-
-                                    LoadAxiomAnnotations(ont, apAnnPropTriple, annAsn, annAxiomsGraph);
-
-                                    //Only the first occurrence of an identical assertion is kept
-                                    if (knownAnnotationAxiomsXML.Add(annAsn.GetXML()))
-                                        ont.AnnotationAxioms.Add(annAsn);
-                                }
-                            });
-
-                            //Individual Annotations
-                            declaredIndividuals.ForEach(idv =>
-                            {
-                                RDFResource idvIRI = idv.GetIRI();
-                                foreach (RDFTriple idvAnnPropTriple in annPropGraph.SelectTriples(s: idvIRI))
-                                {
-                                    var annAsn = idvAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
-                                        ? new OWLAnnotationAssertion(annProp, idvIRI, (RDFResource)idvAnnPropTriple.Object)
-                                        : new OWLAnnotationAssertion(annProp, idvIRI, new OWLLiteral((RDFLiteral)idvAnnPropTriple.Object));
-
-                                    LoadAxiomAnnotations(ont, idvAnnPropTriple, annAsn, annAxiomsGraph);
-
-                                    //Only the first occurrence of an identical assertion is kept
-                                    if (knownAnnotationAxiomsXML.Add(annAsn.GetXML()))
-                                        ont.AnnotationAxioms.Add(annAsn);
-                                }
-                            });
+                                //The signature is taken once the axiom annotations are loaded: they are part of the assertion's identity
+                                if (knownAnnotationAxiomsXML.Add(annAsn.GetXML()))
+                                    ont.AnnotationAxioms.Add(annAsn);
+                            }
                         });
                     }
                     void LoadSubAnnotationProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
@@ -1909,10 +1858,10 @@ namespace OWLSharp.Ontology
                     }
                     void LoadIndividualExpression(OWLOntology ont, RDFResource idvIRI, out OWLIndividualExpression idvex)
                     {
-                        idvex = null;
+                        //A blank node is an anonymous individual: every other IRI is a named individual without needing a declaration or a type (OWL2 Structural Specification, section 5.8.1)
                         if (idvIRI.IsBlank)
                             idvex = new OWLAnonymousIndividual(idvIRI.ToString().Substring(6));
-                        else if (typeGraph.SelectTriples(s: idvIRI).Count > 0)
+                        else
                             idvex = idvIRI.ToEntity<OWLNamedIndividual>();
                     }
                     void LoadClassExpression(OWLOntology ont, RDFResource clsIRI, out OWLClassExpression clex)
@@ -2574,6 +2523,12 @@ namespace OWLSharp.Ontology
                             drex = drIRI.ToEntity<OWLDatatype>();
                             #endregion
                         }
+                        #endregion
+
+                        #region BuiltInDatatype
+                        //The datatypes of the OWL2 datatype map are declared implicitly in every ontology (OWL2 Structural Specification, section 5.8): no rdfs:Datatype triple is needed
+                        if (drex == null && BuiltInDatatypes.Any(builtInDatatype => builtInDatatype.Equals(drIRI)))
+                            drex = drIRI.ToEntity<OWLDatatype>();
                         #endregion
                     }
                     void LoadDataUnionOf(OWLOntology ont, RDFResource dtIRI, out OWLDataUnionOf dtUNOF)
