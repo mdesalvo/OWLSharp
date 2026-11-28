@@ -1,0 +1,1216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:vr="https://vallerosa.example/vocab#" xmlns:vrd="https://vallerosa.example/id/" xmlns:dbr="http://dbpedia.org/resource/" ontologyIRI="https://vallerosa.example/ontology">
+  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+  <Prefix name="vr" IRI="https://vallerosa.example/vocab#" />
+  <Prefix name="vrd" IRI="https://vallerosa.example/id/" />
+  <Prefix name="dbr" IRI="http://dbpedia.org/resource/" />
+  <Annotation>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <Literal xml:lang="EN">The Vallerosa ontology</Literal>
+  </Annotation>
+  <Annotation>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+    <Literal xml:lang="EN">The running example of the OWLSharp manual (https://mdesalvo.github.io/OWLSharp/): the vocabulary and the catalog of the RDFSharp manual, grown into an OWL2 ontology.</Literal>
+  </Annotation>
+  <Declaration>
+    <Class IRI="https://vallerosa.example/vocab#Cooperative" />
+  </Declaration>
+  <Declaration>
+    <Class IRI="https://vallerosa.example/vocab#Producer" />
+  </Declaration>
+  <Declaration>
+    <Class IRI="https://vallerosa.example/vocab#Area" />
+  </Declaration>
+  <Declaration>
+    <Class IRI="https://vallerosa.example/vocab#Grape" />
+  </Declaration>
+  <Declaration>
+    <Class IRI="https://vallerosa.example/vocab#Wine" />
+  </Declaration>
+  <Declaration>
+    <Class IRI="https://vallerosa.example/vocab#RedWine" />
+  </Declaration>
+  <Declaration>
+    <Class IRI="https://vallerosa.example/vocab#WhiteWine" />
+  </Declaration>
+  <Declaration>
+    <Class IRI="https://vallerosa.example/vocab#RoseWine" />
+  </Declaration>
+  <Declaration>
+    <Class IRI="https://vallerosa.example/vocab#SweetWine" />
+  </Declaration>
+  <Declaration>
+    <Class IRI="https://vallerosa.example/vocab#Dish" />
+  </Declaration>
+  <Declaration>
+    <Class IRI="https://vallerosa.example/vocab#Person" />
+  </Declaration>
+  <Declaration>
+    <Class IRI="https://vallerosa.example/vocab#Shop" />
+  </Declaration>
+  <Declaration>
+    <Class IRI="https://vallerosa.example/vocab#Sale" />
+  </Declaration>
+  <Declaration>
+    <Datatype IRI="https://vallerosa.example/vocab#abv" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#memberOf" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#locatedIn" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#partOf" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#producedBy" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#produces" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#grape" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#pairsWith" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI="https://vallerosa.example/vocab#vintage" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI="https://vallerosa.example/vocab#alcohol" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI="https://vallerosa.example/vocab#price" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI="https://vallerosa.example/vocab#organic" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/vallerosa" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/poggio-alto" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/le-crete" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/tre-ulivi" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/italy" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/tuscany" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/valle-rosa" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/poggio" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/colle-nord" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/piana" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/sangiovese" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/canaiolo" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/trebbiano" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/malvasia" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/vermentino" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/rosso-2021" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/riserva-2019" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/bianco-2023" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/vermentino-2023" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/rosato-2024" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/vinsanto-2015" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#comesFrom" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#method" />
+  </Declaration>
+  <Declaration>
+    <Class IRI="https://vallerosa.example/vocab#TuscanWine" />
+  </Declaration>
+  <Declaration>
+    <Class IRI="https://vallerosa.example/vocab#OrganicWine" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI="https://vallerosa.example/id/appassimento" />
+  </Declaration>
+  <SubClassOf>
+    <Class IRI="https://vallerosa.example/vocab#RedWine" />
+    <Class IRI="https://vallerosa.example/vocab#Wine" />
+  </SubClassOf>
+  <SubClassOf>
+    <Class IRI="https://vallerosa.example/vocab#WhiteWine" />
+    <Class IRI="https://vallerosa.example/vocab#Wine" />
+  </SubClassOf>
+  <SubClassOf>
+    <Class IRI="https://vallerosa.example/vocab#RoseWine" />
+    <Class IRI="https://vallerosa.example/vocab#Wine" />
+  </SubClassOf>
+  <SubClassOf>
+    <Class IRI="https://vallerosa.example/vocab#SweetWine" />
+    <Class IRI="https://vallerosa.example/vocab#Wine" />
+  </SubClassOf>
+  <DisjointClasses>
+    <Class IRI="https://vallerosa.example/vocab#RedWine" />
+    <Class IRI="https://vallerosa.example/vocab#WhiteWine" />
+    <Class IRI="https://vallerosa.example/vocab#RoseWine" />
+  </DisjointClasses>
+  <DisjointClasses>
+    <Class IRI="https://vallerosa.example/vocab#Cooperative" />
+    <Class IRI="https://vallerosa.example/vocab#Producer" />
+    <Class IRI="https://vallerosa.example/vocab#Area" />
+    <Class IRI="https://vallerosa.example/vocab#Grape" />
+    <Class IRI="https://vallerosa.example/vocab#Wine" />
+    <Class IRI="https://vallerosa.example/vocab#Dish" />
+    <Class IRI="https://vallerosa.example/vocab#Person" />
+    <Class IRI="https://vallerosa.example/vocab#Shop" />
+    <Class IRI="https://vallerosa.example/vocab#Sale" />
+  </DisjointClasses>
+  <EquivalentClasses>
+    <Class IRI="https://vallerosa.example/vocab#TuscanWine" />
+    <ObjectIntersectionOf>
+      <Class IRI="https://vallerosa.example/vocab#Wine" />
+      <ObjectHasValue>
+        <ObjectProperty IRI="https://vallerosa.example/vocab#comesFrom" />
+        <NamedIndividual IRI="https://vallerosa.example/id/tuscany" />
+      </ObjectHasValue>
+    </ObjectIntersectionOf>
+  </EquivalentClasses>
+  <EquivalentClasses>
+    <Class IRI="https://vallerosa.example/vocab#OrganicWine" />
+    <ObjectIntersectionOf>
+      <Class IRI="https://vallerosa.example/vocab#Wine" />
+      <DataHasValue>
+        <DataProperty IRI="https://vallerosa.example/vocab#organic" />
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#boolean">true</Literal>
+      </DataHasValue>
+    </ObjectIntersectionOf>
+  </EquivalentClasses>
+  <ObjectPropertyDomain>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#memberOf" />
+    <Class IRI="https://vallerosa.example/vocab#Producer" />
+  </ObjectPropertyDomain>
+  <ObjectPropertyDomain>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#locatedIn" />
+    <Class IRI="https://vallerosa.example/vocab#Producer" />
+  </ObjectPropertyDomain>
+  <ObjectPropertyDomain>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#partOf" />
+    <Class IRI="https://vallerosa.example/vocab#Area" />
+  </ObjectPropertyDomain>
+  <ObjectPropertyDomain>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#producedBy" />
+    <Class IRI="https://vallerosa.example/vocab#Wine" />
+  </ObjectPropertyDomain>
+  <ObjectPropertyDomain>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#produces" />
+    <Class IRI="https://vallerosa.example/vocab#Producer" />
+  </ObjectPropertyDomain>
+  <ObjectPropertyDomain>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#grape" />
+    <Class IRI="https://vallerosa.example/vocab#Wine" />
+  </ObjectPropertyDomain>
+  <ObjectPropertyDomain>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#pairsWith" />
+    <Class IRI="https://vallerosa.example/vocab#Wine" />
+  </ObjectPropertyDomain>
+  <ObjectPropertyRange>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#memberOf" />
+    <Class IRI="https://vallerosa.example/vocab#Cooperative" />
+  </ObjectPropertyRange>
+  <ObjectPropertyRange>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#locatedIn" />
+    <Class IRI="https://vallerosa.example/vocab#Area" />
+  </ObjectPropertyRange>
+  <ObjectPropertyRange>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#partOf" />
+    <Class IRI="https://vallerosa.example/vocab#Area" />
+  </ObjectPropertyRange>
+  <ObjectPropertyRange>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#producedBy" />
+    <Class IRI="https://vallerosa.example/vocab#Producer" />
+  </ObjectPropertyRange>
+  <ObjectPropertyRange>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#produces" />
+    <Class IRI="https://vallerosa.example/vocab#Wine" />
+  </ObjectPropertyRange>
+  <ObjectPropertyRange>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#grape" />
+    <Class IRI="https://vallerosa.example/vocab#Grape" />
+  </ObjectPropertyRange>
+  <ObjectPropertyRange>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#pairsWith" />
+    <Class IRI="https://vallerosa.example/vocab#Dish" />
+  </ObjectPropertyRange>
+  <TransitiveObjectProperty>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#partOf" />
+  </TransitiveObjectProperty>
+  <InverseObjectProperties>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#producedBy" />
+    <ObjectProperty IRI="https://vallerosa.example/vocab#produces" />
+  </InverseObjectProperties>
+  <FunctionalObjectProperty>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#producedBy" />
+  </FunctionalObjectProperty>
+  <SubObjectPropertyOf>
+    <ObjectPropertyChain>
+      <ObjectProperty IRI="https://vallerosa.example/vocab#producedBy" />
+      <ObjectProperty IRI="https://vallerosa.example/vocab#locatedIn" />
+    </ObjectPropertyChain>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#comesFrom" />
+  </SubObjectPropertyOf>
+  <SubObjectPropertyOf>
+    <ObjectPropertyChain>
+      <ObjectProperty IRI="https://vallerosa.example/vocab#comesFrom" />
+      <ObjectProperty IRI="https://vallerosa.example/vocab#partOf" />
+    </ObjectPropertyChain>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#comesFrom" />
+  </SubObjectPropertyOf>
+  <ObjectPropertyDomain>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#comesFrom" />
+    <Class IRI="https://vallerosa.example/vocab#Wine" />
+  </ObjectPropertyDomain>
+  <ObjectPropertyRange>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#comesFrom" />
+    <Class IRI="https://vallerosa.example/vocab#Area" />
+  </ObjectPropertyRange>
+  <ObjectPropertyDomain>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#method" />
+    <Class IRI="https://vallerosa.example/vocab#Wine" />
+  </ObjectPropertyDomain>
+  <DataPropertyDomain>
+    <DataProperty IRI="https://vallerosa.example/vocab#vintage" />
+    <Class IRI="https://vallerosa.example/vocab#Wine" />
+  </DataPropertyDomain>
+  <DataPropertyDomain>
+    <DataProperty IRI="https://vallerosa.example/vocab#alcohol" />
+    <Class IRI="https://vallerosa.example/vocab#Wine" />
+  </DataPropertyDomain>
+  <DataPropertyDomain>
+    <DataProperty IRI="https://vallerosa.example/vocab#price" />
+    <Class IRI="https://vallerosa.example/vocab#Wine" />
+  </DataPropertyDomain>
+  <DataPropertyDomain>
+    <DataProperty IRI="https://vallerosa.example/vocab#organic" />
+    <Class IRI="https://vallerosa.example/vocab#Wine" />
+  </DataPropertyDomain>
+  <DataPropertyRange>
+    <DataProperty IRI="https://vallerosa.example/vocab#price" />
+    <Datatype IRI="http://www.w3.org/2001/XMLSchema#decimal" />
+  </DataPropertyRange>
+  <DataPropertyRange>
+    <DataProperty IRI="https://vallerosa.example/vocab#organic" />
+    <Datatype IRI="http://www.w3.org/2001/XMLSchema#boolean" />
+  </DataPropertyRange>
+  <FunctionalDataProperty>
+    <DataProperty IRI="https://vallerosa.example/vocab#vintage" />
+  </FunctionalDataProperty>
+  <FunctionalDataProperty>
+    <DataProperty IRI="https://vallerosa.example/vocab#alcohol" />
+  </FunctionalDataProperty>
+  <FunctionalDataProperty>
+    <DataProperty IRI="https://vallerosa.example/vocab#price" />
+  </FunctionalDataProperty>
+  <FunctionalDataProperty>
+    <DataProperty IRI="https://vallerosa.example/vocab#organic" />
+  </FunctionalDataProperty>
+  <DataPropertyRange>
+    <DataProperty IRI="https://vallerosa.example/vocab#vintage" />
+    <Datatype IRI="http://www.w3.org/2001/XMLSchema#integer" />
+  </DataPropertyRange>
+  <DataPropertyRange>
+    <DataProperty IRI="https://vallerosa.example/vocab#alcohol" />
+    <Datatype IRI="https://vallerosa.example/vocab#abv" />
+  </DataPropertyRange>
+  <DatatypeDefinition>
+    <Datatype IRI="https://vallerosa.example/vocab#abv" />
+    <DatatypeRestriction>
+      <Datatype IRI="http://www.w3.org/2001/XMLSchema#decimal" />
+      <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">0</Literal>
+      </FacetRestriction>
+      <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#maxInclusive">
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">20</Literal>
+      </FacetRestriction>
+    </DatatypeRestriction>
+  </DatatypeDefinition>
+  <SameIndividual>
+    <NamedIndividual IRI="https://vallerosa.example/id/sangiovese" />
+    <NamedIndividual IRI="http://dbpedia.org/resource/Sangiovese" />
+  </SameIndividual>
+  <SameIndividual>
+    <NamedIndividual IRI="https://vallerosa.example/id/canaiolo" />
+    <NamedIndividual IRI="http://dbpedia.org/resource/Canaiolo" />
+  </SameIndividual>
+  <SameIndividual>
+    <NamedIndividual IRI="https://vallerosa.example/id/trebbiano" />
+    <NamedIndividual IRI="http://dbpedia.org/resource/Trebbiano" />
+  </SameIndividual>
+  <SameIndividual>
+    <NamedIndividual IRI="https://vallerosa.example/id/malvasia" />
+    <NamedIndividual IRI="http://dbpedia.org/resource/Malvasia" />
+  </SameIndividual>
+  <SameIndividual>
+    <NamedIndividual IRI="https://vallerosa.example/id/vermentino" />
+    <NamedIndividual IRI="http://dbpedia.org/resource/Vermentino" />
+  </SameIndividual>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#memberOf" />
+    <NamedIndividual IRI="https://vallerosa.example/id/poggio-alto" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vallerosa" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#memberOf" />
+    <NamedIndividual IRI="https://vallerosa.example/id/le-crete" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vallerosa" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#memberOf" />
+    <NamedIndividual IRI="https://vallerosa.example/id/tre-ulivi" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vallerosa" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#locatedIn" />
+    <NamedIndividual IRI="https://vallerosa.example/id/poggio-alto" />
+    <NamedIndividual IRI="https://vallerosa.example/id/poggio" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#locatedIn" />
+    <NamedIndividual IRI="https://vallerosa.example/id/le-crete" />
+    <NamedIndividual IRI="https://vallerosa.example/id/colle-nord" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#locatedIn" />
+    <NamedIndividual IRI="https://vallerosa.example/id/tre-ulivi" />
+    <NamedIndividual IRI="https://vallerosa.example/id/piana" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#partOf" />
+    <NamedIndividual IRI="https://vallerosa.example/id/tuscany" />
+    <NamedIndividual IRI="https://vallerosa.example/id/italy" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#partOf" />
+    <NamedIndividual IRI="https://vallerosa.example/id/valle-rosa" />
+    <NamedIndividual IRI="https://vallerosa.example/id/tuscany" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#partOf" />
+    <NamedIndividual IRI="https://vallerosa.example/id/poggio" />
+    <NamedIndividual IRI="https://vallerosa.example/id/valle-rosa" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#partOf" />
+    <NamedIndividual IRI="https://vallerosa.example/id/colle-nord" />
+    <NamedIndividual IRI="https://vallerosa.example/id/valle-rosa" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#partOf" />
+    <NamedIndividual IRI="https://vallerosa.example/id/piana" />
+    <NamedIndividual IRI="https://vallerosa.example/id/valle-rosa" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#producedBy" />
+    <NamedIndividual IRI="https://vallerosa.example/id/rosso-2021" />
+    <NamedIndividual IRI="https://vallerosa.example/id/poggio-alto" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#producedBy" />
+    <NamedIndividual IRI="https://vallerosa.example/id/riserva-2019" />
+    <NamedIndividual IRI="https://vallerosa.example/id/poggio-alto" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#producedBy" />
+    <NamedIndividual IRI="https://vallerosa.example/id/bianco-2023" />
+    <NamedIndividual IRI="https://vallerosa.example/id/le-crete" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#producedBy" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vinsanto-2015" />
+    <NamedIndividual IRI="https://vallerosa.example/id/le-crete" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#producedBy" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vermentino-2023" />
+    <NamedIndividual IRI="https://vallerosa.example/id/tre-ulivi" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#producedBy" />
+    <NamedIndividual IRI="https://vallerosa.example/id/rosato-2024" />
+    <NamedIndividual IRI="https://vallerosa.example/id/tre-ulivi" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#grape" />
+    <NamedIndividual IRI="https://vallerosa.example/id/rosso-2021" />
+    <NamedIndividual IRI="https://vallerosa.example/id/sangiovese" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#grape" />
+    <NamedIndividual IRI="https://vallerosa.example/id/rosso-2021" />
+    <NamedIndividual IRI="https://vallerosa.example/id/canaiolo" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#grape" />
+    <NamedIndividual IRI="https://vallerosa.example/id/riserva-2019" />
+    <NamedIndividual IRI="https://vallerosa.example/id/sangiovese" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#grape" />
+    <NamedIndividual IRI="https://vallerosa.example/id/bianco-2023" />
+    <NamedIndividual IRI="https://vallerosa.example/id/trebbiano" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#grape" />
+    <NamedIndividual IRI="https://vallerosa.example/id/bianco-2023" />
+    <NamedIndividual IRI="https://vallerosa.example/id/malvasia" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#grape" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vinsanto-2015" />
+    <NamedIndividual IRI="https://vallerosa.example/id/trebbiano" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#grape" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vinsanto-2015" />
+    <NamedIndividual IRI="https://vallerosa.example/id/malvasia" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#grape" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vermentino-2023" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vermentino" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#grape" />
+    <NamedIndividual IRI="https://vallerosa.example/id/rosato-2024" />
+    <NamedIndividual IRI="https://vallerosa.example/id/sangiovese" />
+  </ObjectPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#alcohol" />
+    <NamedIndividual IRI="https://vallerosa.example/id/rosso-2021" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">13.5</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#alcohol" />
+    <NamedIndividual IRI="https://vallerosa.example/id/riserva-2019" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">14.0</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#alcohol" />
+    <NamedIndividual IRI="https://vallerosa.example/id/bianco-2023" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">12.0</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#alcohol" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vinsanto-2015" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">16.0</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#alcohol" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vermentino-2023" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">12.5</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#alcohol" />
+    <NamedIndividual IRI="https://vallerosa.example/id/rosato-2024" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">12.0</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#price" />
+    <NamedIndividual IRI="https://vallerosa.example/id/rosso-2021" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">14.50</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#price" />
+    <NamedIndividual IRI="https://vallerosa.example/id/riserva-2019" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">32.00</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#price" />
+    <NamedIndividual IRI="https://vallerosa.example/id/bianco-2023" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">11.00</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#price" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vinsanto-2015" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">38.00</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#price" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vermentino-2023" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">13.00</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#price" />
+    <NamedIndividual IRI="https://vallerosa.example/id/rosato-2024" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">10.00</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#organic" />
+    <NamedIndividual IRI="https://vallerosa.example/id/rosso-2021" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#boolean">false</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#organic" />
+    <NamedIndividual IRI="https://vallerosa.example/id/riserva-2019" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#boolean">false</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#organic" />
+    <NamedIndividual IRI="https://vallerosa.example/id/bianco-2023" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#boolean">true</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#organic" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vinsanto-2015" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#boolean">false</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#organic" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vermentino-2023" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#boolean">true</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#organic" />
+    <NamedIndividual IRI="https://vallerosa.example/id/rosato-2024" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#boolean">false</Literal>
+  </DataPropertyAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#Cooperative" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vallerosa" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#Area" />
+    <NamedIndividual IRI="https://vallerosa.example/id/italy" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#Area" />
+    <NamedIndividual IRI="https://vallerosa.example/id/tuscany" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#Area" />
+    <NamedIndividual IRI="https://vallerosa.example/id/valle-rosa" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#Area" />
+    <NamedIndividual IRI="https://vallerosa.example/id/poggio" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#Area" />
+    <NamedIndividual IRI="https://vallerosa.example/id/colle-nord" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#Area" />
+    <NamedIndividual IRI="https://vallerosa.example/id/piana" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#Producer" />
+    <NamedIndividual IRI="https://vallerosa.example/id/poggio-alto" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#Producer" />
+    <NamedIndividual IRI="https://vallerosa.example/id/le-crete" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#Producer" />
+    <NamedIndividual IRI="https://vallerosa.example/id/tre-ulivi" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#Grape" />
+    <NamedIndividual IRI="https://vallerosa.example/id/sangiovese" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#Grape" />
+    <NamedIndividual IRI="https://vallerosa.example/id/canaiolo" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#Grape" />
+    <NamedIndividual IRI="https://vallerosa.example/id/trebbiano" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#Grape" />
+    <NamedIndividual IRI="https://vallerosa.example/id/malvasia" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#Grape" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vermentino" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#RedWine" />
+    <NamedIndividual IRI="https://vallerosa.example/id/rosso-2021" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#RedWine" />
+    <NamedIndividual IRI="https://vallerosa.example/id/riserva-2019" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#WhiteWine" />
+    <NamedIndividual IRI="https://vallerosa.example/id/bianco-2023" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#SweetWine" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vinsanto-2015" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#WhiteWine" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vermentino-2023" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class IRI="https://vallerosa.example/vocab#RoseWine" />
+    <NamedIndividual IRI="https://vallerosa.example/id/rosato-2024" />
+  </ClassAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#vintage" />
+    <NamedIndividual IRI="https://vallerosa.example/id/rosso-2021" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">2021</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#vintage" />
+    <NamedIndividual IRI="https://vallerosa.example/id/riserva-2019" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">2019</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#vintage" />
+    <NamedIndividual IRI="https://vallerosa.example/id/bianco-2023" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">2023</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#vintage" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vinsanto-2015" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">2015</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#vintage" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vermentino-2023" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">2023</Literal>
+  </DataPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI="https://vallerosa.example/vocab#vintage" />
+    <NamedIndividual IRI="https://vallerosa.example/id/rosato-2024" />
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">2024</Literal>
+  </DataPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI="https://vallerosa.example/vocab#method" />
+    <NamedIndividual IRI="https://vallerosa.example/id/vinsanto-2015" />
+    <NamedIndividual IRI="https://vallerosa.example/id/appassimento" />
+  </ObjectPropertyAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+    <IRI>https://vallerosa.example/vocab#Cooperative</IRI>
+    <Literal xml:lang="EN">A group of wine producers who sell under a common name.</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+    <IRI>https://vallerosa.example/vocab#Producer</IRI>
+    <Literal xml:lang="EN">A winery that makes and bottles its own wines.</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+    <IRI>https://vallerosa.example/vocab#Area</IRI>
+    <Literal xml:lang="EN">A geographic area: a country, a region, a valley or a subzone of it.</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+    <IRI>https://vallerosa.example/vocab#Wine</IRI>
+    <Literal xml:lang="EN">A wine of a given vintage, as it is sold in the bottle.</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+    <IRI>https://vallerosa.example/vocab#Shop</IRI>
+    <Literal xml:lang="EN">A partner shop that buys from the cooperative and sells to the public.</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+    <IRI>https://vallerosa.example/vocab#Sale</IRI>
+    <Literal xml:lang="EN">One delivery of bottles of one wine to one shop.</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+    <IRI>https://vallerosa.example/vocab#grape</IRI>
+    <Literal xml:lang="EN">A grape variety the wine is made from.</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+    <IRI>https://vallerosa.example/vocab#alcohol</IRI>
+    <Literal xml:lang="EN">Alcohol by volume, in percent.</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+    <IRI>https://vallerosa.example/vocab#price</IRI>
+    <Literal xml:lang="EN">Cellar door price of one bottle in euros, VAT excluded.</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Cooperative</IRI>
+    <Literal xml:lang="EN">Cooperative</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Cooperative</IRI>
+    <Literal xml:lang="IT">Cooperativa</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Producer</IRI>
+    <Literal xml:lang="EN">Producer</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Producer</IRI>
+    <Literal xml:lang="IT">Produttore</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Area</IRI>
+    <Literal xml:lang="EN">Area</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Area</IRI>
+    <Literal xml:lang="IT">Zona</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Grape</IRI>
+    <Literal xml:lang="EN">Grape variety</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Grape</IRI>
+    <Literal xml:lang="IT">Vitigno</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Wine</IRI>
+    <Literal xml:lang="EN">Wine</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Wine</IRI>
+    <Literal xml:lang="IT">Vino</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#RedWine</IRI>
+    <Literal xml:lang="EN">Red wine</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#RedWine</IRI>
+    <Literal xml:lang="IT">Vino rosso</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#WhiteWine</IRI>
+    <Literal xml:lang="EN">White wine</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#WhiteWine</IRI>
+    <Literal xml:lang="IT">Vino bianco</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#RoseWine</IRI>
+    <Literal xml:lang="EN">Rosé wine</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#RoseWine</IRI>
+    <Literal xml:lang="IT">Vino rosato</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#SweetWine</IRI>
+    <Literal xml:lang="EN">Sweet wine</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#SweetWine</IRI>
+    <Literal xml:lang="IT">Vino dolce</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Dish</IRI>
+    <Literal xml:lang="EN">Dish</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Dish</IRI>
+    <Literal xml:lang="IT">Piatto</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Person</IRI>
+    <Literal xml:lang="EN">Person</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Person</IRI>
+    <Literal xml:lang="IT">Persona</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Shop</IRI>
+    <Literal xml:lang="EN">Wine shop</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Shop</IRI>
+    <Literal xml:lang="IT">Enoteca</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Sale</IRI>
+    <Literal xml:lang="EN">Sale</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#Sale</IRI>
+    <Literal xml:lang="IT">Vendita</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#memberOf</IRI>
+    <Literal xml:lang="EN">member of</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#locatedIn</IRI>
+    <Literal xml:lang="EN">located in</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#partOf</IRI>
+    <Literal xml:lang="EN">part of</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#producedBy</IRI>
+    <Literal xml:lang="EN">produced by</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#produces</IRI>
+    <Literal xml:lang="EN">produces</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#grape</IRI>
+    <Literal xml:lang="EN">grape</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#vintage</IRI>
+    <Literal xml:lang="EN">vintage</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#alcohol</IRI>
+    <Literal xml:lang="EN">alcohol</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#price</IRI>
+    <Literal xml:lang="EN">price</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#organic</IRI>
+    <Literal xml:lang="EN">organic</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#pairsWith</IRI>
+    <Literal xml:lang="EN">pairs with</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#abv</IRI>
+    <Literal xml:lang="EN">alcohol by volume</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/vallerosa</IRI>
+    <Literal xml:lang="EN">Vallerosa Wine Cooperative</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/vallerosa</IRI>
+    <Literal xml:lang="IT">Cantina Cooperativa di Vallerosa</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/italy</IRI>
+    <Literal xml:lang="EN">Italy</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/italy</IRI>
+    <Literal xml:lang="IT">Italia</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/tuscany</IRI>
+    <Literal xml:lang="EN">Tuscany</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/tuscany</IRI>
+    <Literal xml:lang="IT">Toscana</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/valle-rosa</IRI>
+    <Literal xml:lang="EN">Rose Valley</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/valle-rosa</IRI>
+    <Literal xml:lang="IT">Valle Rosa</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/poggio</IRI>
+    <Literal xml:lang="EN">Hilltop</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/poggio</IRI>
+    <Literal xml:lang="IT">Poggio</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/colle-nord</IRI>
+    <Literal xml:lang="EN">North Hill</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/colle-nord</IRI>
+    <Literal xml:lang="IT">Colle Nord</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/piana</IRI>
+    <Literal xml:lang="EN">The Plain</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/piana</IRI>
+    <Literal xml:lang="IT">Piana</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/poggio-alto</IRI>
+    <Literal>Fattoria Poggio Alto</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/le-crete</IRI>
+    <Literal>Tenuta Le Crete</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/tre-ulivi</IRI>
+    <Literal>Cantina dei Tre Ulivi</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/sangiovese</IRI>
+    <Literal>Sangiovese</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/canaiolo</IRI>
+    <Literal>Canaiolo</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/trebbiano</IRI>
+    <Literal>Trebbiano</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/malvasia</IRI>
+    <Literal>Malvasia</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/vermentino</IRI>
+    <Literal>Vermentino</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/rosso-2021</IRI>
+    <Literal xml:lang="IT">Rosso di Vallerosa</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/rosso-2021</IRI>
+    <Literal xml:lang="EN">Vallerosa Red</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/riserva-2019</IRI>
+    <Literal xml:lang="IT">Vallerosa Riserva</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/riserva-2019</IRI>
+    <Literal xml:lang="EN">Vallerosa Reserve</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/bianco-2023</IRI>
+    <Literal xml:lang="IT">Bianco delle Crete</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/bianco-2023</IRI>
+    <Literal xml:lang="EN">Le Crete White</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/vinsanto-2015</IRI>
+    <Literal xml:lang="IT">Vin Santo della Valle</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/vinsanto-2015</IRI>
+    <Literal xml:lang="EN">Valley Vin Santo</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/vermentino-2023</IRI>
+    <Literal xml:lang="IT">Vermentino della Piana</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/vermentino-2023</IRI>
+    <Literal xml:lang="EN">Vermentino of the Plain</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/rosato-2024</IRI>
+    <Literal xml:lang="IT">Rosa di Valle</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/rosato-2024</IRI>
+    <Literal xml:lang="EN">Valley Rosé</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#comesFrom</IRI>
+    <Literal xml:lang="EN">comes from</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#comesFrom</IRI>
+    <Literal xml:lang="IT">proviene da</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+    <IRI>https://vallerosa.example/vocab#comesFrom</IRI>
+    <Literal xml:lang="EN">The area a wine comes from, at any depth: the subzone of its producer and every area that contains it.</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#method</IRI>
+    <Literal xml:lang="EN">method</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#method</IRI>
+    <Literal xml:lang="IT">metodo</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+    <IRI>https://vallerosa.example/vocab#method</IRI>
+    <Literal xml:lang="EN">A winemaking method used for the wine.</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#TuscanWine</IRI>
+    <Literal xml:lang="EN">Tuscan wine</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#TuscanWine</IRI>
+    <Literal xml:lang="IT">Vino toscano</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+    <IRI>https://vallerosa.example/vocab#TuscanWine</IRI>
+    <Literal xml:lang="EN">A wine that comes from Tuscany.</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#OrganicWine</IRI>
+    <Literal xml:lang="EN">Organic wine</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/vocab#OrganicWine</IRI>
+    <Literal xml:lang="IT">Vino biologico</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+    <IRI>https://vallerosa.example/vocab#OrganicWine</IRI>
+    <Literal xml:lang="EN">A wine made from organic grapes.</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/appassimento</IRI>
+    <Literal xml:lang="EN">Appassimento</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+    <IRI>https://vallerosa.example/id/appassimento</IRI>
+    <Literal xml:lang="IT">Appassimento</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+    <IRI>https://vallerosa.example/id/appassimento</IRI>
+    <Literal xml:lang="EN">Drying the grapes before pressing them, which makes a sweeter and stronger wine.</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+    <IRI>https://vallerosa.example/vocab#abv</IRI>
+    <Literal xml:lang="EN">A decimal from 0 to 20.</Literal>
+  </AnnotationAssertion>
+</Ontology>

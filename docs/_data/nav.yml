@@ -1,0 +1,43 @@
+# The manual's index. The order here is the reading order: the pager at the foot of every page follows it.
+- group: Welcome
+  pages:
+    - { title: OWLSharp at a glance, url: / }
+    - { title: Getting started, url: /getting-started/ }
+    - { title: Meet Vallerosa, url: /vallerosa/ }
+- group: Modeling
+  pages:
+    - { title: Modeling at a glance, url: /modeling/, overview: true }
+    - { title: Ontologies and formats, url: /modeling/ontologies/, blurb: "The ontology object, its header and prefixes, OWL2/XML, Manchester and Functional syntax." }
+    - { title: From RDF to OWL, url: /modeling/from-rdf/, blurb: "Lift the RDFS vocabulary and the catalog of the RDFSharp manual into an ontology." }
+    - { title: Entities and declarations, url: /modeling/entities/, blurb: "Classes, properties, individuals and datatypes, named and declared." }
+    - { title: Class expressions, url: /modeling/class-expressions/, blurb: "Describe a class by what its members are: intersections, restrictions, values, cardinalities." }
+    - { title: Class axioms, url: /modeling/class-axioms/, blurb: "Subclasses, equivalent classes, disjoint classes: a red wine is never a white wine." }
+    - { title: Object property axioms, url: /modeling/object-properties/, blurb: "Inverse, transitive, functional properties and chains: where a wine comes from." }
+    - { title: Data properties and datatypes, url: /modeling/data-properties/, blurb: "Functional values, data ranges, datatype definitions with facets, keys." }
+    - { title: Individuals and assertions, url: /modeling/assertions/, blurb: "Facts about individuals, negative facts, same and different individuals." }
+    - { title: Annotations, url: /modeling/annotations/, blurb: "Labels and comments on entities, on axioms and on the ontology itself." }
+    - { title: Imports, url: /modeling/imports/, blurb: "Build on ontologies published by others." }
+    - { title: Views, url: /modeling/views/, blurb: "Ask the ontology what it says about one class, property or individual." }
+- group: Reasoning
+  pages:
+    - { title: Reasoning at a glance, url: /reasoning/, overview: true }
+    - { title: Running the reasoner, url: /reasoning/reasoner/, blurb: "Rules, options, iterations and the report: deduce what nobody wrote down." }
+    - { title: Schema rules, url: /reasoning/schema-rules/, blurb: "The rules that close the class and property hierarchy." }
+    - { title: Fact rules, url: /reasoning/fact-rules/, blurb: "The rules that propagate facts from individual to individual." }
+    - { title: SWRL rules, url: /reasoning/swrl-rules/, blurb: "If-then rules over classes and properties, for what OWL2 cannot say." }
+    - { title: SWRL built-ins, url: /reasoning/swrl-builtins/, blurb: "Compare, compute and transform values inside a rule: the price with VAT." }
+    - { title: Working with inferences, url: /reasoning/inferences/, blurb: "Read the inferences, keep them in the ontology or leave them out of the file." }
+- group: Profiling
+  pages:
+    - { title: Profiling at a glance, url: /profiling/, overview: true }
+    - { title: OWL2 profiles, url: /profiling/profiles/, blurb: "EL, QL and RL: what each profile gives up and what it buys." }
+    - { title: Checking profiles, url: /profiling/profiler/, blurb: "Check one profile or all three and read the violations." }
+- group: Validation
+  pages:
+    - { title: Validation at a glance, url: /validation/, overview: true }
+    - { title: Running the validator, url: /validation/validator/, blurb: "Rules, severities and the report: is the ontology consistent?" }
+    - { title: Analysis rules, url: /validation/analysis-rules/, blurb: "The thirty checks, from disjoint classes to deprecated terms." }
+    - { title: A bad import, url: /validation/bad-import/, blurb: "Find and fix what a sloppy import breaks." }
+- group: Beyond
+  pages:
+    - { title: Going further, url: /going-further/ }
